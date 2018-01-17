@@ -88,7 +88,8 @@
 <meta property="og:description" content="BackgroundPython的全局锁有时候非常烦。很多人电脑里都会同时装python2、python3。但在linux安装各种包时，长期混乱地pip、pip3随便安装，时间久了便造成安装环境混乱，导致“明明安装了某种包，在使用时却未发现该包的错误”  在这里介绍一种牛逼的包管理工具Miniconda，以明确规定python环境，再安装相应python版本的包，再安全使用该包。博主被Tensor">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/img/conda.jpeg">
-<meta property="og:updated_time" content="2018-01-16T08:30:58.050Z">
+<meta property="og:image" content="http://yoursite.com/img/conda_1.jpeg">
+<meta property="og:updated_time" content="2018-01-16T11:31:48.466Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Conda切换python2&#x2F;3环境！🐶">
 <meta name="twitter:description" content="BackgroundPython的全局锁有时候非常烦。很多人电脑里都会同时装python2、python3。但在linux安装各种包时，长期混乱地pip、pip3随便安装，时间久了便造成安装环境混乱，导致“明明安装了某种包，在使用时却未发现该包的错误”  在这里介绍一种牛逼的包管理工具Miniconda，以明确规定python环境，再安装相应python版本的包，再安全使用该包。博主被Tensor">
@@ -332,7 +333,11 @@
 </code></pre>
 <h5 id="查找是否有某个包可被安装"><a href="#查找是否有某个包可被安装" class="headerlink" title="查找是否有某个包可被安装"></a>查找是否有某个包可被安装</h5><pre><code class="bash">$ conda search pyqtgraph
 </code></pre>
-<p>最后看看Miniconda管理的成果吧！</p>
+<h5 id="有些包在国外，需要搭梯子，这里推荐清华大学的开源工具包，下载速度飞快！！"><a href="#有些包在国外，需要搭梯子，这里推荐清华大学的开源工具包，下载速度飞快！！" class="headerlink" title="有些包在国外，需要搭梯子，这里推荐清华大学的开源工具包，下载速度飞快！！"></a>有些包在国外，需要搭梯子，这里推荐清华大学的开源工具包，下载速度飞快！！</h5><pre><code class="bash">$ conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/
+$ conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main/
+$ conda config --<span class="built_in">set</span> show_channel_urls yes
+</code></pre>
+<p>最后看看Miniconda管理的成果吧！<br><img src="/img/conda_1.jpeg" alt=""></p>
 
       
     </div>
@@ -517,7 +522,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Background"><span class="nav-number">1.</span> <span class="nav-text">Background</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Minicoda安装："><span class="nav-number">1.1.</span> <span class="nav-text">Minicoda安装：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#conda创建python2环境："><span class="nav-number">1.2.</span> <span class="nav-text">conda创建python2环境：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#同时安装必要的包"><span class="nav-number">1.3.</span> <span class="nav-text">同时安装必要的包</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#切换到新环境（-linux-Mac下）"><span class="nav-number">1.4.</span> <span class="nav-text">切换到新环境（ linux/Mac下）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#退出环境"><span class="nav-number">1.5.</span> <span class="nav-text">退出环境</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#移除环境"><span class="nav-number">1.6.</span> <span class="nav-text">移除环境</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#查看当前所有环境"><span class="nav-number">1.7.</span> <span class="nav-text">查看当前所有环境</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#指定查看某环境下安装的package"><span class="nav-number">1.8.</span> <span class="nav-text">指定查看某环境下安装的package</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#查找是否有某个包可被安装"><span class="nav-number">1.9.</span> <span class="nav-text">查找是否有某个包可被安装</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Background"><span class="nav-number">1.</span> <span class="nav-text">Background</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Minicoda安装："><span class="nav-number">1.1.</span> <span class="nav-text">Minicoda安装：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#conda创建python2环境："><span class="nav-number">1.2.</span> <span class="nav-text">conda创建python2环境：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#同时安装必要的包"><span class="nav-number">1.3.</span> <span class="nav-text">同时安装必要的包</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#切换到新环境（-linux-Mac下）"><span class="nav-number">1.4.</span> <span class="nav-text">切换到新环境（ linux/Mac下）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#退出环境"><span class="nav-number">1.5.</span> <span class="nav-text">退出环境</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#移除环境"><span class="nav-number">1.6.</span> <span class="nav-text">移除环境</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#查看当前所有环境"><span class="nav-number">1.7.</span> <span class="nav-text">查看当前所有环境</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#指定查看某环境下安装的package"><span class="nav-number">1.8.</span> <span class="nav-text">指定查看某环境下安装的package</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#查找是否有某个包可被安装"><span class="nav-number">1.9.</span> <span class="nav-text">查找是否有某个包可被安装</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#有些包在国外，需要搭梯子，这里推荐清华大学的开源工具包，下载速度飞快！！"><span class="nav-number">1.10.</span> <span class="nav-text">有些包在国外，需要搭梯子，这里推荐清华大学的开源工具包，下载速度飞快！！</span></a></li></ol></li></ol></div>
             
 
           </div>
