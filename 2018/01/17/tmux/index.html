@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="Linux," />
 
 
 
@@ -79,19 +79,18 @@
 
 
 
-<meta name="description" content="指导思想：各项任务借助语义搜索，顺序执行Step 1. 用户查询与人工标题进行匹配Ps：上传视频分析直接跳转 Step 2    ============体育=============    3 世界 锦标赛 中国队 胜出 0.42    4 中国 足球 失败 0.41    2 奥运会 中国 女排 夺冠 0.40    ============农业=============    1 农民 在">
+<meta name="description" content="Background远程连接服务器跑模型时，经常由于客户端IP地址发生变化，或者关闭Terminal窗口，而导致服务器Session终端，这里介绍一种可随时从Session中抽离，又能在需要时候重新回到该Session的方法  以下程序均为在服务器端操作，或者SSH远程服务器操作  1、服务器端安装tmux$ apt-get install tmux  2、Terminal窗口直接键入tmux，进">
+<meta name="keywords" content="Linux">
 <meta property="og:type" content="article">
-<meta property="og:title" content="strucer">
-<meta property="og:url" content="http://yoursite.com/2018/01/17/strucer/index.html">
+<meta property="og:title" content="tmux——轻松实现进程后台托管! 🐶">
+<meta property="og:url" content="http://yoursite.com/2018/01/17/tmux/index.html">
 <meta property="og:site_name" content="Deep Coding">
-<meta property="og:description" content="指导思想：各项任务借助语义搜索，顺序执行Step 1. 用户查询与人工标题进行匹配Ps：上传视频分析直接跳转 Step 2    ============体育=============    3 世界 锦标赛 中国队 胜出 0.42    4 中国 足球 失败 0.41    2 奥运会 中国 女排 夺冠 0.40    ============农业=============    1 农民 在">
+<meta property="og:description" content="Background远程连接服务器跑模型时，经常由于客户端IP地址发生变化，或者关闭Terminal窗口，而导致服务器Session终端，这里介绍一种可随时从Session中抽离，又能在需要时候重新回到该Session的方法  以下程序均为在服务器端操作，或者SSH远程服务器操作  1、服务器端安装tmux$ apt-get install tmux  2、Terminal窗口直接键入tmux，进">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://yoursite.com/img/struc.jpeg">
-<meta property="og:updated_time" content="2018-01-17T11:22:15.058Z">
+<meta property="og:updated_time" content="2018-01-17T15:33:26.905Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="strucer">
-<meta name="twitter:description" content="指导思想：各项任务借助语义搜索，顺序执行Step 1. 用户查询与人工标题进行匹配Ps：上传视频分析直接跳转 Step 2    ============体育=============    3 世界 锦标赛 中国队 胜出 0.42    4 中国 足球 失败 0.41    2 奥运会 中国 女排 夺冠 0.40    ============农业=============    1 农民 在">
-<meta name="twitter:image" content="http://yoursite.com/img/struc.jpeg">
+<meta name="twitter:title" content="tmux——轻松实现进程后台托管! 🐶">
+<meta name="twitter:description" content="Background远程连接服务器跑模型时，经常由于客户端IP地址发生变化，或者关闭Terminal窗口，而导致服务器Session终端，这里介绍一种可随时从Session中抽离，又能在需要时候重新回到该Session的方法  以下程序均为在服务器端操作，或者SSH远程服务器操作  1、服务器端安装tmux$ apt-get install tmux  2、Terminal窗口直接键入tmux，进">
 
 
 
@@ -121,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/01/17/strucer/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/01/17/tmux/"/>
 
 
 
 
 
-  <title>strucer | Deep Coding</title>
+  <title>tmux——轻松实现进程后台托管! 🐶 | Deep Coding</title>
   
 
 
@@ -234,7 +233,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/17/strucer/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/17/tmux/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="深度学习(自然语言处理领域深究)">
@@ -251,7 +250,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">strucer</h1>
+          <h1 class="post-title" itemprop="name headline">tmux——轻松实现进程后台托管! 🐶</h1>
         
 
         <div class="post-meta">
@@ -263,7 +262,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-17T18:01:40+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-17T23:04:15+08:00">
                 2018-01-17
               </time>
             
@@ -282,8 +281,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/01/17/strucer/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/01/17/strucer/" itemprop="commentCount"></span>
+                <a href="/2018/01/17/tmux/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/01/17/tmux/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -311,35 +310,19 @@
       
 
       
-        <h3 id="指导思想：各项任务借助语义搜索，顺序执行"><a href="#指导思想：各项任务借助语义搜索，顺序执行" class="headerlink" title="指导思想：各项任务借助语义搜索，顺序执行"></a><font color="blue">指导思想：各项任务借助语义搜索，顺序执行</font></h3><h3 id="Step-1-用户查询与人工标题进行匹配"><a href="#Step-1-用户查询与人工标题进行匹配" class="headerlink" title="Step 1. 用户查询与人工标题进行匹配"></a>Step 1. 用户查询与人工标题进行匹配</h3><p>Ps：上传视频分析直接跳转 Step 2</p>
-<blockquote>
-<p>  ============<strong>体育</strong>=============<br>    3 世界 锦标赛 中国队 胜出 0.42<br>    4 中国 足球 失败 0.41<br>    2 奥运会 中国 女排 夺冠 0.40<br>    ============<strong>农业</strong>=============<br>    1 农民 在 江苏 种 水稻 0.55<br>    0 山东 苹果 丰收 0.42        </p>
-</blockquote>
-<p>注：一定是与标题进行匹配，若没有标题，分下面两类情况：</p>
-<blockquote>
-<ul>
-<li>“公开课/会议类”，Textrank生成3个关键词进行匹配</li>
-<li>“场景/电影类”，通过视频/图片分析，给出一段合理描述或3个关键词</li>
-</ul>
-</blockquote>
-<h3 id="Step-2-点击进入某个视频"><a href="#Step-2-点击进入某个视频" class="headerlink" title="Step 2. 点击进入某个视频"></a>Step 2. 点击进入某个视频</h3><h4 id="数据库语义关系图"><a href="#数据库语义关系图" class="headerlink" title="数据库语义关系图"></a>数据库语义关系图</h4><p><img src="/img/struc.jpeg" alt=""></p>
-<h5 id="简单但精准："><a href="#简单但精准：" class="headerlink" title="简单但精准："></a><font color="red">简单但精准：</font></h5><p>实现方式同Step 1，根据用户Query与数据库中预定义的Question<code>（如下）</code>进行匹配</p>
-<blockquote>
-<p>“视频中出现了哪些人？”   # 需要用户对人名进行标注，方便之后查询<br>“视频中出现了哪些场景？”<br>“视频中出现了哪些物体？”<br>“视频中出现了哪些地点？”<br>“视频摘要是什么？”<br>“文本摘要是什么？”<br>— Select “people/场景/物体…” from video_1</p>
-</blockquote>
-<h5 id="稍微复杂："><a href="#稍微复杂：" class="headerlink" title="稍微复杂："></a><font color="red">稍微复杂：</font></h5><p>对用户的话进行NER识别，人名/地名/普通名词。<br>1、命令实体的7小类分别对应数据库中的7类实体；<br>2、普通名词与其余实体进行哈希查询（其余实体包括场景/物体类等）</p>
-<blockquote>
-<p> “李娜讲了什么？”<br> “出现航站楼的帧有哪些？”<br> “出现足球的帧有哪些？”</p>
-</blockquote>
-<h5 id="比较复杂"><a href="#比较复杂" class="headerlink" title="比较复杂:"></a><font color="red">比较复杂:</font></h5><p>NER识别后，label取交集：某一帧需要同时出现查询的label。但label之间关系无法确定</p>
-<blockquote>
-<p> “航站楼附近经过的本田车辆有哪些？”<br> “吴京打坦克的片段” </p>
-</blockquote>
-<h5 id="非常复杂"><a href="#非常复杂" class="headerlink" title="非常复杂:"></a><font color="red">非常复杂:</font></h5><p>文字识别后进行阅读理解等需要确立label关系的方式（图中节点更复杂的逻辑关系提取）</p>
-<blockquote>
-<p> “吴京打/开/炸坦克的片段”<br> “视频中李娜唱的是那首歌？”</p>
-</blockquote>
-<h3 id="小结："><a href="#小结：" class="headerlink" title="小结："></a>小结：</h3><p>目前能做到的是能够给用户展现，但无法回答深层次问题；若要加入回答，需借助外部阅读理解/知识图谱等知识</p>
+        <h4 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h4><p>远程连接服务器跑模型时，经常由于客户端IP地址发生变化，或者关闭Terminal窗口，而导致服务器Session终端，这里介绍一种<strong>可随时从Session中抽离，又能在需要时候重新回到该Session的方法</strong></p>
+<p><font color="blue"> 以下程序均为在服务器端操作，或者SSH远程服务器操作 </font></p>
+<h5 id="1、服务器端安装tmux"><a href="#1、服务器端安装tmux" class="headerlink" title="1、服务器端安装tmux"></a>1、服务器端安装tmux</h5><pre><code class="bash">$ apt-get install tmux
+</code></pre>
+<h5 id="2、Terminal窗口直接键入tmux，进入一个session，左下角显示该session进程号"><a href="#2、Terminal窗口直接键入tmux，进入一个session，左下角显示该session进程号" class="headerlink" title="2、Terminal窗口直接键入tmux，进入一个session，左下角显示该session进程号"></a>2、Terminal窗口直接键入tmux，进入一个session，左下角显示该session进程号</h5><pre><code class="bash">$ tmux
+</code></pre>
+<p>现在便可随时关闭Terminal，Session便可以在后台安静稳定地运行！需要恢复该Session时：</p>
+<pre><code class="bash">$ tmux attach -t 0
+</code></pre>
+<h5 id="3、杀掉该session"><a href="#3、杀掉该session" class="headerlink" title="3、杀掉该session"></a>3、杀掉该session</h5><p>在某个tmux窗口内，输入exit便可以kill并退出</p>
+<pre><code class="bash">$ tmux attach -t 0
+</code></pre>
+<hr>
 
       
     </div>
@@ -354,6 +337,12 @@
     
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Linux/" rel="tag"># Linux</a>
+          
+        </div>
       
 
       
@@ -403,8 +392,8 @@
 
   
     <div class="comments" id="comments">
-      <div class="ds-thread" data-thread-key="2018/01/17/strucer/"
-           data-title="strucer" data-url="http://yoursite.com/2018/01/17/strucer/">
+      <div class="ds-thread" data-thread-key="2018/01/17/tmux/"
+           data-title="tmux——轻松实现进程后台托管! 🐶" data-url="http://yoursite.com/2018/01/17/tmux/">
       </div>
     </div>
 
@@ -456,7 +445,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -518,7 +507,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#指导思想：各项任务借助语义搜索，顺序执行"><span class="nav-number">1.</span> <span class="nav-text">指导思想：各项任务借助语义搜索，顺序执行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Step-1-用户查询与人工标题进行匹配"><span class="nav-number">2.</span> <span class="nav-text">Step 1. 用户查询与人工标题进行匹配</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Step-2-点击进入某个视频"><span class="nav-number">3.</span> <span class="nav-text">Step 2. 点击进入某个视频</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#数据库语义关系图"><span class="nav-number">3.1.</span> <span class="nav-text">数据库语义关系图</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#简单但精准："><span class="nav-number">3.1.1.</span> <span class="nav-text">简单但精准：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#稍微复杂："><span class="nav-number">3.1.2.</span> <span class="nav-text">稍微复杂：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#比较复杂"><span class="nav-number">3.1.3.</span> <span class="nav-text">比较复杂:</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#非常复杂"><span class="nav-number">3.1.4.</span> <span class="nav-text">非常复杂:</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#小结："><span class="nav-number">4.</span> <span class="nav-text">小结：</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Background"><span class="nav-number">1.</span> <span class="nav-text">Background</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1、服务器端安装tmux"><span class="nav-number">1.1.</span> <span class="nav-text">1、服务器端安装tmux</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2、Terminal窗口直接键入tmux，进入一个session，左下角显示该session进程号"><span class="nav-number">1.2.</span> <span class="nav-text">2、Terminal窗口直接键入tmux，进入一个session，左下角显示该session进程号</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3、杀掉该session"><span class="nav-number">1.3.</span> <span class="nav-text">3、杀掉该session</span></a></li></ol></li></ol></div>
             
 
           </div>

@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="Linux," />
 
 
 
@@ -79,16 +79,20 @@
 
 
 
-<meta name="description" content="Wu xj">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Deep Coding">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta name="description" content="A、Quick StartNode.js官网下载对应的安装包： [Download]  (https://nodejs.org/en/) 安装Git：Mac用Brew安装，其他方法网上一大堆不再赘述1$ brew install git Node和Git都安装好后，可执行如下命令安装hexo：1$ sudo npm install -g hexo Desktop(或其它文件夹)中新建一个Blog文">
+<meta name="keywords" content="Linux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo搭建Step by step！ 👏👏👏">
+<meta property="og:url" content="http://yoursite.com/2018/01/06/hello-world/index.html">
 <meta property="og:site_name" content="Deep Coding">
-<meta property="og:description" content="Wu xj">
+<meta property="og:description" content="A、Quick StartNode.js官网下载对应的安装包： [Download]  (https://nodejs.org/en/) 安装Git：Mac用Brew安装，其他方法网上一大堆不再赘述1$ brew install git Node和Git都安装好后，可执行如下命令安装hexo：1$ sudo npm install -g hexo Desktop(或其它文件夹)中新建一个Blog文">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/img/ssh.jpeg">
+<meta property="og:updated_time" content="2018-01-17T15:33:26.903Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Deep Coding">
-<meta name="twitter:description" content="Wu xj">
+<meta name="twitter:title" content="Hexo搭建Step by step！ 👏👏👏">
+<meta name="twitter:description" content="A、Quick StartNode.js官网下载对应的安装包： [Download]  (https://nodejs.org/en/) 安装Git：Mac用Brew安装，其他方法网上一大堆不再赘述1$ brew install git Node和Git都安装好后，可执行如下命令安装hexo：1$ sudo npm install -g hexo Desktop(或其它文件夹)中新建一个Blog文">
+<meta name="twitter:image" content="http://yoursite.com/img/ssh.jpeg">
 
 
 
@@ -118,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/01/06/hello-world/"/>
 
 
 
 
 
-  <title>Deep Coding</title>
+  <title>Hexo搭建Step by step！ 👏👏👏 | Deep Coding</title>
   
 
 
@@ -143,8 +147,7 @@
     
   
 
-  <div class="container sidebar-position-left 
-  page-home">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -217,443 +220,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/17/tmux/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="深度学习(自然语言处理领域深究)">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Deep Coding">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/17/tmux/" itemprop="url">tmux——轻松实现进程后台托管! 🐶</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-17T23:04:15+08:00">
-                2018-01-17
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/01/17/tmux/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/01/17/tmux/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h4><p>远程连接服务器跑模型时，经常由于客户端IP地址发生变化，或者关闭Terminal窗口，而导致服务器Session终端，这里介绍一种<strong>可随时从Session中抽离，又能在需要时候重新回到该Session的方法</strong></p>
-<p><font color="blue"> 以下程序均为在服务器端操作，或者SSH远程服务器操作 </font></p>
-<h5 id="1、服务器端安装tmux"><a href="#1、服务器端安装tmux" class="headerlink" title="1、服务器端安装tmux"></a>1、服务器端安装tmux</h5><pre><code class="bash">$ apt-get install tmux
-</code></pre>
-<h5 id="2、Terminal窗口直接键入tmux，进入一个session，左下角显示该session进程号"><a href="#2、Terminal窗口直接键入tmux，进入一个session，左下角显示该session进程号" class="headerlink" title="2、Terminal窗口直接键入tmux，进入一个session，左下角显示该session进程号"></a>2、Terminal窗口直接键入tmux，进入一个session，左下角显示该session进程号</h5><pre><code class="bash">$ tmux
-</code></pre>
-<p>现在便可随时关闭Terminal，Session便可以在后台安静稳定地运行！需要恢复该Session时：</p>
-<pre><code class="bash">$ tmux attach -t 0
-</code></pre>
-<h5 id="3、杀掉该session"><a href="#3、杀掉该session" class="headerlink" title="3、杀掉该session"></a>3、杀掉该session</h5><p>在某个tmux窗口内，输入exit便可以kill并退出</p>
-<pre><code class="bash">$ tmux attach -t 0
-</code></pre>
-<hr>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/16/Conda-md/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="深度学习(自然语言处理领域深究)">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Deep Coding">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/16/Conda-md/" itemprop="url">Conda切换python2/3环境！🐶</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-16T15:52:19+08:00">
-                2018-01-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/01/16/Conda-md/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/01/16/Conda-md/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h4><p>Python的全局锁有时候非常烦。很多人电脑里都会同时装python2、python3。但在linux安装各种包时，长期混乱地pip、pip3随便安装，时间久了便造成安装环境混乱，导致<font color="blue">“明明安装了某种包，在使用时却未发现该包的错误” </font></p>
-<p>在这里介绍一种牛逼的包管理工具Miniconda，以明确规定python环境，再安装相应python版本的包，再安全使用该包。博主被Tensorflow的各种版本及依赖库苦扰了好久，不要贪图省事儿，一次彻底搞定，后面才可以节节高！</p>
-<h5 id="Minicoda安装："><a href="#Minicoda安装：" class="headerlink" title="Minicoda安装："></a>Minicoda安装：</h5><p>Welcome to <a href="https://conda.io/miniconda.html" target="_blank" rel="noopener">Miniconda</a>! 点击链接，下载对应操作系统的Miniconda即可！<br><img src="/img/conda.jpeg" alt=""></p>
-<h5 id="conda创建python2环境："><a href="#conda创建python2环境：" class="headerlink" title="conda创建python2环境："></a>conda创建python2环境：</h5><pre><code class="bash">$ conda create -n py2k python=2.7
-</code></pre>
-<h5 id="同时安装必要的包"><a href="#同时安装必要的包" class="headerlink" title="同时安装必要的包"></a>同时安装必要的包</h5><pre><code class="bash">$ conda create -n py2k numpy
-</code></pre>
-<h5 id="切换到新环境（-linux-Mac下）"><a href="#切换到新环境（-linux-Mac下）" class="headerlink" title="切换到新环境（ linux/Mac下）"></a>切换到新环境（ linux/Mac下）</h5><pre><code class="bash">$ <span class="built_in">source</span> activate py2k
-</code></pre>
-<p><font color="red"> 比如说需要安装py2版本的Tensorflow及github上其他的一些包，均需要在安装、使用时先切换到该环境下 </font></p>
-<h5 id="退出环境"><a href="#退出环境" class="headerlink" title="退出环境"></a>退出环境</h5><pre><code class="bash">$ deactivate py2k
-</code></pre>
-<h5 id="移除环境"><a href="#移除环境" class="headerlink" title="移除环境"></a>移除环境</h5><pre><code class="bash">$ conda remove -n py2k --all
-</code></pre>
-<h5 id="查看当前所有环境"><a href="#查看当前所有环境" class="headerlink" title="查看当前所有环境"></a>查看当前所有环境</h5><pre><code class="bash">$ conda info -e (带*的就是当前默认环境)
-</code></pre>
-<h5 id="指定查看某环境下安装的package"><a href="#指定查看某环境下安装的package" class="headerlink" title="指定查看某环境下安装的package"></a>指定查看某环境下安装的package</h5><pre><code class="bash">$ conda list -n env_name
-</code></pre>
-<h5 id="查找是否有某个包可被安装"><a href="#查找是否有某个包可被安装" class="headerlink" title="查找是否有某个包可被安装"></a>查找是否有某个包可被安装</h5><pre><code class="bash">$ conda search pyqtgraph
-</code></pre>
-<h5 id="有些包在国外，需要搭梯子，这里推荐清华大学的开源工具包，下载速度飞快！！"><a href="#有些包在国外，需要搭梯子，这里推荐清华大学的开源工具包，下载速度飞快！！" class="headerlink" title="有些包在国外，需要搭梯子，这里推荐清华大学的开源工具包，下载速度飞快！！"></a>有些包在国外，需要搭梯子，这里推荐清华大学的开源工具包，下载速度飞快！！</h5><pre><code class="bash">$ conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/
-$ conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main/
-$ conda config --<span class="built_in">set</span> show_channel_urls yes
-</code></pre>
-<p>最后看看Miniconda管理的成果吧！<br><img src="/img/conda_1.jpeg" alt=""></p>
-<hr>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/14/Knowledge/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="深度学习(自然语言处理领域深究)">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Deep Coding">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/14/Knowledge/" itemprop="url">知识图谱私见！🐶</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-14T12:52:19+08:00">
-                2018-01-14
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/01/14/Knowledge/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/01/14/Knowledge/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="A-简述："><a href="#A-简述：" class="headerlink" title="A.    简述："></a>A.    简述：</h3><p>2012年5月，Google推出Google知识图谱（GoogleKnowledge Graph），并利用其在搜索引擎中增强搜索结果。这是“知识图谱”名称的由来，也标志着大规模知识图谱在互联网语义搜索中的成功应用。</p>
-<p>Eg：搜索“吴彦祖的国籍是什么？”，Google/Baidu会给出与之相关的详细搜索结果（可以叫“搜索++”或者“搜索杂烩且精准”，顺带提一句，搜索本身就是AI，没必要将其神秘化，之前到现在一只都有，只是如同其他任何一个行业，发展的越来越好，2012年后随着深度学习的爆发，迎来了一波小高潮）</p>
-<p><img src="/img/wuyanzu.jpeg" alt=""></p>
-<p>归根结底，知识图谱的意义在于在盘根错节的数据海洋中进行梳理和串联，让以前模糊的世界变得更加清晰。而人类对于知识体系的整理，始终未曾停歇。从永乐大典，到四库全书，再到各式各样的百科全书。作为编纂者，必须要思考的是：如何整理、组织信息，并以何种方式进行呈现</p>
-<h3 id="B-个人理解："><a href="#B-个人理解：" class="headerlink" title="B.    个人理解："></a>B.    个人理解：</h3><p>面对庞大的知识网络，我们要解决的任务，是将线性、低维特征（文本、语音、图像）用超高维分布式方式表示，再将抽取的语义映射回低维特征，被人理解（翻译、图像分类等）。</p>
-<p>写到这里，笔者更认为深度学习也是构建知识图谱的一种方式，因为用深度学习能较好解决机器翻译、客服对话等小任务，也是一定程度上对知识地综合理解，比如通过机器翻译，建立英语、中文之间的联系，通过Imagenet图像分类，建立1000种Object的对应关系。但，深度学习在NLP/图像中对“语义”的理解，还是太过单薄，设计太过简陋，面对这些非结构化的大量知识体系，真的是无从下口、束手无策。未来能够将知识图谱的各条“边”剥离清楚的，深度学习还需要再向前推进一大步，或者说很大概率都不是现在整天炒的各种CNN、RNN、GAN等工具。</p>
-<h5 id="——不能真正创造价值的概念，都是耍流氓！"><a href="#——不能真正创造价值的概念，都是耍流氓！" class="headerlink" title=" ——不能真正创造价值的概念，都是耍流氓！"></a><font color="red"> ——不能真正创造价值的概念，都是耍流氓！</font></h5><p>话说回来吧，借助某位哲人说的，希望自己摒弃热潮，以工程任务为导向。解决当下NLP能解决的任务，这也是本博客名称“Deep coding”的由来。</p>
-<hr>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
 
   
 
@@ -683,9 +252,7 @@ $ conda config --<span class="built_in">set</span> show_channel_urls yes
 
         
         
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/06/hello-world/" itemprop="url">Hexo搭建Step by step！ 👏👏👏</a></h1>
+          <h1 class="post-title" itemprop="name headline">Hexo搭建Step by step！ 👏👏👏</h1>
         
 
         <div class="post-meta">
@@ -745,9 +312,7 @@ $ conda config --<span class="built_in">set</span> show_channel_urls yes
       
 
       
-        
-          
-            <h4 id="A、Quick-Start"><a href="#A、Quick-Start" class="headerlink" title="A、Quick Start"></a>A、Quick Start</h4><h5 id="Node-js官网下载对应的安装包："><a href="#Node-js官网下载对应的安装包：" class="headerlink" title="Node.js官网下载对应的安装包："></a>Node.js官网下载对应的安装包：</h5><p><font color="blue"> [Download] </font> (<a href="https://nodejs.org/en/" target="_blank" rel="noopener">https://nodejs.org/en/</a>)</p>
+        <h4 id="A、Quick-Start"><a href="#A、Quick-Start" class="headerlink" title="A、Quick Start"></a>A、Quick Start</h4><h5 id="Node-js官网下载对应的安装包："><a href="#Node-js官网下载对应的安装包：" class="headerlink" title="Node.js官网下载对应的安装包："></a>Node.js官网下载对应的安装包：</h5><p><font color="blue"> [Download] </font> (<a href="https://nodejs.org/en/" target="_blank" rel="noopener">https://nodejs.org/en/</a>)</p>
 <h5 id="安装Git：Mac用Brew安装，其他方法网上一大堆不再赘述"><a href="#安装Git：Mac用Brew安装，其他方法网上一大堆不再赘述" class="headerlink" title="安装Git：Mac用Brew安装，其他方法网上一大堆不再赘述"></a>安装Git：Mac用Brew安装，其他方法网上一大堆不再赘述</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ brew install git</span><br></pre></td></tr></table></figure>
 <h5 id="Node和Git都安装好后，可执行如下命令安装hexo："><a href="#Node和Git都安装好后，可执行如下命令安装hexo：" class="headerlink" title="Node和Git都安装好后，可执行如下命令安装hexo："></a>Node和Git都安装好后，可执行如下命令安装hexo：</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo npm install -g hexo</span><br></pre></td></tr></table></figure>
 <h5 id="Desktop-或其它文件夹-中新建一个Blog文件夹，cd到新创建的Blog："><a href="#Desktop-或其它文件夹-中新建一个Blog文件夹，cd到新创建的Blog：" class="headerlink" title="Desktop(或其它文件夹)中新建一个Blog文件夹，cd到新创建的Blog："></a>Desktop(或其它文件夹)中新建一个Blog文件夹，cd到新创建的Blog：</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo init</span><br></pre></td></tr></table></figure>
@@ -768,8 +333,6 @@ $ conda config --<span class="built_in">set</span> show_channel_urls yes
 <h5 id="Refer："><a href="#Refer：" class="headerlink" title="Refer："></a>Refer：</h5><p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in [troubleshooting](<a href="https://hexo.io/docs/" target="_blank" rel="noopener">https://hexo.io/docs/</a></p>
 <hr>
 
-          
-        
       
     </div>
     
@@ -784,14 +347,36 @@ $ conda config --<span class="built_in">set</span> show_channel_urls yes
 
     <footer class="post-footer">
       
-
+        <div class="post-tags">
+          
+            <a href="/tags/Linux/" rel="tag"># Linux</a>
+          
+        </div>
       
 
       
+      
+      
 
       
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/01/14/Knowledge/" rel="prev" title="知识图谱私见！🐶">
+                知识图谱私见！🐶 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
       
-        <div class="post-eof"></div>
+
+      
       
     </footer>
   </div>
@@ -801,10 +386,11 @@ $ conda config --<span class="built_in">set</span> show_channel_urls yes
   </article>
 
 
-    
-  </section>
 
-  
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -812,6 +398,17 @@ $ conda config --<span class="built_in">set</span> show_channel_urls yes
 
 
           
+
+  
+    <div class="comments" id="comments">
+      <div class="ds-thread" data-thread-key="2018/01/06/hello-world/"
+           data-title="Hexo搭建Step by step！ 👏👏👏" data-url="http://yoursite.com/2018/01/06/hello-world/">
+      </div>
+    </div>
+
+  
+
+
 
         </div>
         
@@ -832,8 +429,17 @@ $ conda config --<span class="built_in">set</span> show_channel_urls yes
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -900,6 +506,22 @@ $ conda config --<span class="built_in">set</span> show_channel_urls yes
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#A、Quick-Start"><span class="nav-number">1.</span> <span class="nav-text">A、Quick Start</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Node-js官网下载对应的安装包："><span class="nav-number">1.1.</span> <span class="nav-text">Node.js官网下载对应的安装包：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#安装Git：Mac用Brew安装，其他方法网上一大堆不再赘述"><span class="nav-number">1.2.</span> <span class="nav-text">安装Git：Mac用Brew安装，其他方法网上一大堆不再赘述</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Node和Git都安装好后，可执行如下命令安装hexo："><span class="nav-number">1.3.</span> <span class="nav-text">Node和Git都安装好后，可执行如下命令安装hexo：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Desktop-或其它文件夹-中新建一个Blog文件夹，cd到新创建的Blog："><span class="nav-number">1.4.</span> <span class="nav-text">Desktop(或其它文件夹)中新建一个Blog文件夹，cd到新创建的Blog：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#至此：全部安装工作已经完成！生成静态页面："><span class="nav-number">1.5.</span> <span class="nav-text">至此：全部安装工作已经完成！生成静态页面：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#启动本地服务："><span class="nav-number">1.6.</span> <span class="nav-text">启动本地服务：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#此时浏览器输入-http-localhost-4000-即可访问原生默认网页"><span class="nav-number">1.7.</span> <span class="nav-text">此时浏览器输入 http://localhost:4000 即可访问原生默认网页</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#B、主题下载"><span class="nav-number">2.</span> <span class="nav-text">B、主题下载</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#C、绑定Github，实现远程访问"><span class="nav-number">3.</span> <span class="nav-text">C、绑定Github，实现远程访问</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Github上建立一个与用户名【相同】的Repository"><span class="nav-number">3.1.</span> <span class="nav-text">Github上建立一个与用户名【相同】的Repository</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#在建立的Repository-Setting中，最后一项Deploy添加SSH-key"><span class="nav-number">3.2.</span> <span class="nav-text">在建立的Repository Setting中，最后一项Deploy添加SSH key</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#编辑-config-yml，翻到最下面，修改相应内容如下："><span class="nav-number">3.3.</span> <span class="nav-text">编辑 _config.yml，翻到最下面，修改相应内容如下：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#保存后，执行如下命令使用git部署，便会同步到Github目录"><span class="nav-number">3.4.</span> <span class="nav-text">保存后，执行如下命令使用git部署，便会同步到Github目录</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Refer："><span class="nav-number">3.5.</span> <span class="nav-text">Refer：</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -1040,6 +662,10 @@ $ conda config --<span class="built_in">set</span> show_channel_urls yes
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
