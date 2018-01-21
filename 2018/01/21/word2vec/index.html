@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="NLP," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="1. Background1.1 词汇表示发展综述文本、字符串看似简单，其实是经过几千万年的演化，人类抽象出的非常高维、稀疏的特征。拿汉语来说，词汇数量约为几十万。如果采用ont-hot形式编码，一个词语的维度就将占据几十万维。训练时候往往是上亿个词，这便会造成巨大的维数灾难。 而Word2vec(中文名：词向量/词嵌入)，可以自由控制词汇的维度，常用的维度数一般为256、512…1024维。相对">
+<meta name="keywords" content="NLP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="word2vec词向量原理解析！ 🐶">
+<meta property="og:url" content="http://yoursite.com/2018/01/21/word2vec/index.html">
+<meta property="og:site_name" content="Deep Coding">
+<meta property="og:description" content="1. Background1.1 词汇表示发展综述文本、字符串看似简单，其实是经过几千万年的演化，人类抽象出的非常高维、稀疏的特征。拿汉语来说，词汇数量约为几十万。如果采用ont-hot形式编码，一个词语的维度就将占据几十万维。训练时候往往是上亿个词，这便会造成巨大的维数灾难。 而Word2vec(中文名：词向量/词嵌入)，可以自由控制词汇的维度，常用的维度数一般为256、512…1024维。相对">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/img/wpic1.jpeg">
+<meta property="og:image" content="http://yoursite.com/img/wpic2.jpeg">
+<meta property="og:image" content="http://yoursite.com/img/wpic3.jpeg">
+<meta property="og:image" content="http://yoursite.com/img/wpic4.jpeg">
+<meta property="og:image" content="http://yoursite.com/img/wpic5.jpeg">
+<meta property="og:image" content="http://yoursite.com/img/wpic7.jpeg">
+<meta property="og:image" content="http://yoursite.com/img/wpic8.jpeg">
+<meta property="og:image" content="http://yoursite.com/img/wpic9.jpeg">
+<meta property="og:image" content="http://yoursite.com/img/wpic12.jpeg">
+<meta property="og:image" content="http://yoursite.com/img/wpic13.jpeg">
+<meta property="og:image" content="http://yoursite.com/img/wpic10.jpeg">
+<meta property="og:image" content="http://yoursite.com/img/wpic11.jpeg">
+<meta property="og:image" content="http://yoursite.com/img/wpic14.jpeg">
+<meta property="og:image" content="http://yoursite.com/img/wpic15.jpeg">
+<meta property="og:updated_time" content="2018-01-21T08:44:33.192Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="word2vec词向量原理解析！ 🐶">
+<meta name="twitter:description" content="1. Background1.1 词汇表示发展综述文本、字符串看似简单，其实是经过几千万年的演化，人类抽象出的非常高维、稀疏的特征。拿汉语来说，词汇数量约为几十万。如果采用ont-hot形式编码，一个词语的维度就将占据几十万维。训练时候往往是上亿个词，这便会造成巨大的维数灾难。 而Word2vec(中文名：词向量/词嵌入)，可以自由控制词汇的维度，常用的维度数一般为256、512…1024维。相对">
+<meta name="twitter:image" content="http://yoursite.com/img/wpic1.jpeg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/01/21/word2vec/"/>
+
+
+
+
+
+  <title>word2vec词向量原理解析！ 🐶 | Deep Coding</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Deep Coding</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            日记形式
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/21/word2vec/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="深度学习(自然语言处理领域深究)">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Deep Coding">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">word2vec词向量原理解析！ 🐶</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-21T15:46:11+08:00">
+                2018-01-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/01/21/word2vec/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/01/21/word2vec/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="1-Background"><a href="#1-Background" class="headerlink" title="1. Background"></a>1. Background</h3><h4 id="1-1-词汇表示发展综述"><a href="#1-1-词汇表示发展综述" class="headerlink" title="1.1 词汇表示发展综述"></a>1.1 词汇表示发展综述</h4><p>文本、字符串看似简单，其实是经过几千万年的演化，人类抽象出的非常高维、稀疏的特征。拿汉语来说，词汇数量约为几十万。如果采用ont-hot形式编码，一个词语的维度就将占据几十万维。训练时候往往是上亿个词，这便会造成巨大的维数灾难。<br> <img src="/img/wpic1.jpeg" width="500" alt="图片名称" align="center"><br>而<strong>Word2vec</strong>(中文名：词向量/词嵌入)，可以自由控制词汇的维度，常用的维度数一般为256、512…1024维。相对于one-hot编码词汇的离散表示，Word2vec是一种词汇的分布式表示(distribution representation)。比如某个词汇被以维度为[1,256]的一维向量表示，如果是一个包含100个词的句子，那么这句话被表示为[100,256]。写到这里，其实便可以意识到这跟图像用像素矩阵来表示是非常类似的。<br> <img src="/img/wpic2.jpeg" width="450" alt="图片名称" align="center"><br>因为Deep learning的优势是从低维特征中自动学习、提取高维特征，词的分布式表示便可以充当词汇的低维特征表示，所以目前像文本分类、机器翻译、摘要等NLP任务，都使用Word2vec表示的词汇来作为模型的input。使得NLP领域也因为Deep learning 取得了不错的进步。<br> <img src="/img/wpic3.jpeg" width="350" alt="图片名称" align="center"><br>但因为Word2vec衡量的是文本共现程度，只能反映两者经常在相近的上下文环境中出现。所以它并不是真正意义上的语义表示，只能说一种近似，或者说其中存在很多的语义误差，并不像像素可以精确表示一副图像的底层信息。笔者认为这也是造成NLP领域并没有像图像、语音识别领域取得非常长足进步的重要原因。</p>
+<blockquote>
+<p>由于词汇背后丰富的语义信息，并不能通过Word2vec完全表示，最近也有学者尝试用更细的粒度来表示词汇。清华大学的刘知远老师利用HowNet：一种用最基本的、不宜再被分割的最小语义单位来表示的语义体系，跟Word2vec相结合，也获得了一些可以展望的成果<a href="https://www.zybuluo.com/cmd/" target="_blank" rel="noopener">《在深度学习时代用HowNet搞事情》</a></p>
+</blockquote>
+<hr>
+<h4 id="1-2-Word2vec重要组件"><a href="#1-2-Word2vec重要组件" class="headerlink" title="1.2 Word2vec重要组件"></a>1.2 Word2vec重要组件</h4><p>Word2vec(以下简称词向量)，虽然作为概率语言模型的input，但其实是训练语言模型产生的中间结果。</p>
+<blockquote>
+<ul>
+<li><strong>两个语言模型：</strong><ul>
+<li>Skip-gram：根据当前词语w<sub>t</sub>，预测上下文的词语(w<sub>t-1</sub>、w<sub>t+1</sub>)的模型。</li>
+<li>CBOW：Continuous Bag-of-Words Model的缩写，与Skip-gram正好相反</li>
+</ul>
+</li>
+<li><strong>优化Softmax归一化：</strong><ul>
+<li>Hierarchical Softmax：采用哈夫曼树思想分层求取Target概率</li>
+<li>Negative sampling：softmax时仅采样少量词汇作映射</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<hr>
+<h3 id="2-Word2vec重要组件详解"><a href="#2-Word2vec重要组件详解" class="headerlink" title="2. Word2vec重要组件详解"></a>2. Word2vec重要组件详解</h3><h4 id="2-1-神经网络语言模型简化"><a href="#2-1-神经网络语言模型简化" class="headerlink" title="2.1 神经网络语言模型简化"></a>2.1 神经网络语言模型简化</h4><p>典型的神经网络语言模型如图所示，是一个非常简单的单隐层神经网络。<br> <img src="/img/wpic4.jpeg" width="400" alt="图片名称" align="center"><br>word2vec的作者进行了简化，省略了Hidden Layer层，如图所示。<font color="red">(但其实这里只是减少了input-Hidden layer的参数，无关痛痒)</font><br> <img src="/img/wpic5.jpeg" width="400" alt="图片名称" align="center"><br>图中的三层含义：</p>
+<blockquote>
+<p>input：上下文的词向量(注意我们训练的是CBOW语言模型，词向量只是模型的一个参数，起始时是个随机值)<br>  projection：上下文词向量simply add<br>  output：按理说此处应当是在词表维度C上的概率分布</p>
+</blockquote>
+<p>参数化表示上面的CBOW语言模型后，如下图所示：<br> <img src="/img/wpic7.jpeg" width="350" alt="图片名称" align="center"><br>简单计算下这个网络从projection Layer到Output Layer 全连接网络层之间的参数：projection Layer即词向量维度在10<sup>2</sup>量级；词表(Vocab)数量在10<sup>5</sup>量级；语料库中需要训练的词汇数量一般在10<sup>7</sup>量级以上。这样的运算次数是十分吓人的！</p>
+<h4 id="2-2-Hierarchical-Softmax"><a href="#2-2-Hierarchical-Softmax" class="headerlink" title="2.2 Hierarchical Softmax"></a>2.2 Hierarchical Softmax</h4><p><strong><code>重点：</code></strong>作者此处便采用了哈夫曼树的思想：具体做法是将语料库中的词按先词频排序，然后不断合并最小的两个节点成为一棵哈夫曼树，最终合并效果如下所示，词表中的所有词汇均为于树的叶节点上(详见：<a href="http://www.icourse163.org/learn/ZJU-93001?tid=1002019005#/learn/content?type=detail&amp;id=1002635018&amp;cid=1002891113" target="_blank" rel="noopener">10分钟便能懂的公开课</a>)<br> <img src="/img/wpic8.jpeg" width="450" alt="图片名称" align="center"><br><strong>生成Target词汇的概率为从跟节点到叶子节点路径的概率连乘</strong>(见下图)。而哈夫曼树相比于其他形式的二叉树，将高频词赋予更短的编码，可以进一步减少概率P相乘次数。下面用图解的方式说明为什么采用哈夫曼树可以加快计算速度。<br>1、极限假设词向量维度为3，词表大小为20。那么全连接网络1次迭代需要训练的参数数量为60个，接着再进行softmax归一化。<br>2、哈夫曼树的形式，假设目标词汇是图中的节点8，根结点到8节点一共经过5个节点(哈夫曼树编码知识，8节点的编码表示为:11110)，那么计算Target词汇概率，仅涉及3*5=15个参数的计算。<br> <img src="/img/wpic9.jpeg" width="450" alt="图片名称" align="center"><br>基于二叉树的这种性质，计算复杂度从之前的O(N)变为O(logN)，运算速度指数级提升。<br>而Cost函数为对概率连乘取log对数，如下：<br> <img src="/img/wpic12.jpeg" width="250" alt="图片名称" align="center"><br> <img src="/img/wpic13.jpeg" width="250" alt="图片名称" align="center"></p>
+<p>训练目标便是最大化Cost函数，采用的算法叫<font color="blue">梯度上升</font>。其实跟梯度下降非常类似，cost对参数向量取偏导数得到梯度，参数更新时候再加上该梯度*lr就可以了，不过此处涉及两个参数向量，一个是$\theta$，另一个就是word2vec。此处直接复制Hankcs.com中的推导结果，两个参数更新方式如下：<br> <img src="/img/wpic10.jpeg" width="300" alt="图片名称" align="center"><br> <img src="/img/wpic11.jpeg" width="300" alt="图片名称" align="center"><br>如此便完成了一次完整的训练周期！</p>
+<hr>
+<h4 id="2-3-Negative-sampling"><a href="#2-3-Negative-sampling" class="headerlink" title="2.3 Negative sampling"></a>2.3 Negative sampling</h4><h5 id="2-3-1-定义："><a href="#2-3-1-定义：" class="headerlink" title="2.3.1 定义："></a>2.3.1 定义：</h5><p>由于Hierarchical Softmax对于频率较低的词汇，依然需要花费较长的步骤才能找到该词。所以作者引入了另一种算法：<strong>Negative sampling</strong>(sampled softmax)，即：为了加快训练速度，在loss计算时，采用负采样方式，并不是求整个vocab的softmax概率，而是随机采样的W个。这样每次训练中就可以更新这少量的W个参数，其他参数被冻结(需要注意总的参数数量不变，只是每次参与迭代计算的数量锐减)。<br><strong><code>需要注意：</code></strong>在Test阶段，要到整个词表中softmax(此时词向量本身及其权重已经被计算了出来)，来确定下一次选中的是哪些词汇(可接beam search)。若是哈夫曼树，Test时会找出一个确定的词<br>我们原来模型每次运行，假设词向量维度：300；vocab大小：1W，之前每次迭代需要跟新300W参数。现在负采样个数N=5。只要跟新300×(1+5)=1800，参数减少了非常多，训练速度大幅加快。</p>
+<h5 id="2-3-2-采样方法："><a href="#2-3-2-采样方法：" class="headerlink" title="2.3.2 采样方法："></a>2.3.2 采样方法：</h5><p>那怎样确定负采样个数N呢？其实就是随机抽取，但要考虑词频的影响，词频越高，越容易被抽出来。具体到word2vec中，作者是这样实现的：采用一个大小为M的table(M&gt;&gt;vocab size，一般取10^8)。分为M份，每份代表一个词，如图所示；<br> <img src="/img/wpic14.jpeg" width="450" alt="图片名称" align="center"><br>但具体怎么确定哪一份对应什么词呢？作者采用了如下的公示计算每个词的份额(对应在tabel上占据的长度)<br> <img src="/img/wpic15.jpeg" width="270" alt="图片名称" align="center"><br>在paper中提到0.75这个超参是试出来的，实现的话就是直接1～M取一个随机数，从中提取对应的项便可以了。</p>
+<hr>
+<h3 id="Ref："><a href="#Ref：" class="headerlink" title="Ref："></a>Ref：</h3><p><a href="http://www.hankcs.com/nlp/word2vec.html" target="_blank" rel="noopener">Blog：word2vec原理推导与代码分析</a><br><a href="https://www.zybuluo.com/Dounm/note/591752#71-paragraph2vec" target="_blank" rel="noopener">Blog：Word2Vec-知其然知其所以然</a><br><a href="http://wulc.me/" target="_blank" rel="noopener">Blog：中文维基百科语料库词向量的训练</a><br><a href="http://blog.csdn.net/layumi1993/article/details/72868399#t1" target="_blank" rel="noopener">Blog：Word2Vec教程-Negative Sampling</a><br>《word2vec中的数学原理详解》<br>《Tensorflow实战》</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/NLP/" rel="tag"># NLP</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/17/tmux/" rel="next" title="tmux——轻松实现进程后台托管! 🐶">
+                <i class="fa fa-chevron-left"></i> tmux——轻松实现进程后台托管! 🐶
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div class="ds-thread" data-thread-key="2018/01/21/word2vec/"
+           data-title="word2vec词向量原理解析！ 🐶" data-url="http://yoursite.com/2018/01/21/word2vec/">
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">深度学习(自然语言处理领域深究)</p>
+              <p class="site-description motion-element" itemprop="description">Wu xj</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://twitter.com/yourname" target="_blank" title="Twitter">
+                      
+                        <i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://weibo.com/" target="_blank" title="Weibo">
+                      
+                        <i class="fa fa-fw fa-weibo"></i>Weibo</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Background"><span class="nav-number">1.</span> <span class="nav-text">1. Background</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-词汇表示发展综述"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 词汇表示发展综述</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-Word2vec重要组件"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 Word2vec重要组件</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Word2vec重要组件详解"><span class="nav-number">2.</span> <span class="nav-text">2. Word2vec重要组件详解</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-神经网络语言模型简化"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 神经网络语言模型简化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-Hierarchical-Softmax"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 Hierarchical Softmax</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-Negative-sampling"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 Negative sampling</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#2-3-1-定义："><span class="nav-number">2.3.1.</span> <span class="nav-text">2.3.1 定义：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-3-2-采样方法："><span class="nav-number">2.3.2.</span> <span class="nav-text">2.3.2 采样方法：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Ref："><span class="nav-number">3.</span> <span class="nav-text">Ref：</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">深度学习(自然语言处理领域深究)</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"your-duoshuo-shortname"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

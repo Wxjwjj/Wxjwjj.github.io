@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Deep Coding">
 <meta property="og:description" content="Background远程连接服务器跑模型时，经常由于客户端IP地址发生变化，或者关闭Terminal窗口，而导致服务器Session终端，这里介绍一种可随时从Session中抽离，又能在需要时候重新回到该Session的方法  以下程序均为在服务器端操作，或者SSH远程服务器操作  1、服务器端安装tmux$ apt-get install tmux  2、Terminal窗口直接键入tmux，进">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-01-17T15:33:26.905Z">
+<meta property="og:updated_time" content="2018-01-17T15:34:23.651Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="tmux——轻松实现进程后台托管! 🐶">
 <meta name="twitter:description" content="Background远程连接服务器跑模型时，经常由于客户端IP地址发生变化，或者关闭Terminal窗口，而导致服务器Session终端，这里介绍一种可随时从Session中抽离，又能在需要时候重新回到该Session的方法  以下程序均为在服务器端操作，或者SSH远程服务器操作  1、服务器端安装tmux$ apt-get install tmux  2、Terminal窗口直接键入tmux，进">
@@ -320,7 +320,7 @@
 <pre><code class="bash">$ tmux attach -t 0
 </code></pre>
 <h5 id="3、杀掉该session"><a href="#3、杀掉该session" class="headerlink" title="3、杀掉该session"></a>3、杀掉该session</h5><p>在某个tmux窗口内，输入exit便可以kill并退出</p>
-<pre><code class="bash">$ tmux attach -t 0
+<pre><code class="bash">$ <span class="built_in">exit</span>
 </code></pre>
 <hr>
 
@@ -362,6 +362,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/01/21/word2vec/" rel="prev" title="word2vec词向量原理解析！ 🐶">
+                word2vec词向量原理解析！ 🐶 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -445,7 +449,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">5</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -527,7 +531,8 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
@@ -549,6 +554,12 @@
 
 
 
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
 
         
 
