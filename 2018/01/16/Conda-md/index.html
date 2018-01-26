@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next pisces use-motion" lang="zh-Hans">
+<html class="theme-next mist use-motion" lang="zh-Hans">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -89,7 +89,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/img/conda.jpeg">
 <meta property="og:image" content="http://yoursite.com/img/conda_1.jpeg">
-<meta property="og:updated_time" content="2018-01-17T02:52:47.865Z">
+<meta property="og:updated_time" content="2018-01-23T03:23:10.604Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Conda切换python2&#x2F;3环境！🐶">
 <meta name="twitter:description" content="BackgroundPython的全局锁有时候非常烦。很多人电脑里都会同时装python2、python3。但在linux安装各种包时，长期混乱地pip、pip3随便安装，时间久了便造成安装环境混乱，导致“明明安装了某种包，在使用时却未发现该包的错误”  在这里介绍一种牛逼的包管理工具Miniconda，以明确规定python环境，再安装相应python版本的包，再安全使用该包。博主被Tensor">
@@ -101,9 +101,9 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Pisces',
+    scheme: 'Mist',
     version: '5.1.4',
-    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    sidebar: {"position":"right","display":"always","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
     fancybox: true,
     tabs: true,
     motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
@@ -148,7 +148,7 @@
     
   
 
-  <div class="container sidebar-position-left page-post-detail">
+  <div class="container sidebar-position-right page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -194,12 +194,32 @@
         </li>
       
         
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
         <li class="menu-item menu-item-archives">
           <a href="/archives/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
-            日记形式
+            日志
           </a>
         </li>
       
@@ -239,9 +259,9 @@
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/16/Conda-md/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="深度学习(自然语言处理领域深究)">
+      <meta itemprop="name" content="祥吉">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -318,7 +338,8 @@
 <h5 id="Minicoda安装："><a href="#Minicoda安装：" class="headerlink" title="Minicoda安装："></a>Minicoda安装：</h5><p>Welcome to <a href="https://conda.io/miniconda.html" target="_blank" rel="noopener">Miniconda</a>! 点击链接，下载对应操作系统的Miniconda即可！<br><img src="/img/conda.jpeg" alt=""></p>
 <h5 id="conda创建python2环境："><a href="#conda创建python2环境：" class="headerlink" title="conda创建python2环境："></a>conda创建python2环境：</h5><pre><code class="bash">$ conda create -n py2k python=2.7
 </code></pre>
-<h5 id="同时安装必要的包"><a href="#同时安装必要的包" class="headerlink" title="同时安装必要的包"></a>同时安装必要的包</h5><pre><code class="bash">$ conda create -n py2k numpy
+<h5 id="同时安装必要的包"><a href="#同时安装必要的包" class="headerlink" title="同时安装必要的包"></a>同时安装必要的包</h5><p>Tips:通过conda某个环境安装的包都在…/miniconda/envs/py2k/lib/python2.7/site-packages/xxx，需要时候可以查阅各个包的源码</p>
+<pre><code class="bash">$ conda create -n py2k numpy
 </code></pre>
 <h5 id="切换到新环境（-linux-Mac下）"><a href="#切换到新环境（-linux-Mac下）" class="headerlink" title="切换到新环境（ linux/Mac下）"></a>切换到新环境（ linux/Mac下）</h5><pre><code class="bash">$ <span class="built_in">source</span> activate py2k
 </code></pre>
@@ -356,7 +377,7 @@ $ conda config --<span class="built_in">set</span> show_channel_urls yes
       
         <div class="post-tags">
           
-            <a href="/tags/Linux/" rel="tag"># Linux</a>
+            <a href="/tags/Linux/" rel="tag"><i class="fa fa-tag"></i> Linux</a>
           
         </div>
       
@@ -454,8 +475,12 @@ $ conda config --<span class="built_in">set</span> show_channel_urls yes
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
-              <p class="site-author-name" itemprop="name">深度学习(自然语言处理领域深究)</p>
-              <p class="site-description motion-element" itemprop="description">Wu xj</p>
+              <img class="site-author-image" itemprop="image"
+                src="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg"
+                alt="祥吉" />
+            
+              <p class="site-author-name" itemprop="name">祥吉</p>
+              <p class="site-description motion-element" itemprop="description">自然语言处理，Studying，Coding</p>
           </div>
 
           <nav class="site-state motion-element">
@@ -465,7 +490,7 @@ $ conda config --<span class="built_in">set</span> show_channel_urls yes
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-count">6</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -477,10 +502,10 @@ $ conda config --<span class="built_in">set</span> show_channel_urls yes
               
               
               <div class="site-state-item site-state-tags">
-                
+                <a href="/tags/index.html">
                   <span class="site-state-item-count">2</span>
                   <span class="site-state-item-name">标签</span>
-                
+                </a>
               </div>
             
 
@@ -492,13 +517,13 @@ $ conda config --<span class="built_in">set</span> show_channel_urls yes
             <div class="links-of-author motion-element">
                 
                   <span class="links-of-author-item">
-                    <a href="https://twitter.com/yourname" target="_blank" title="Twitter">
+                    <a href="mailto:wuxj231@163.com" target="_blank" title="E-Mail">
                       
-                        <i class="fa fa-fw fa-twitter"></i>Twitter</a>
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
                   </span>
                 
                   <span class="links-of-author-item">
-                    <a href="https://weibo.com/" target="_blank" title="Weibo">
+                    <a href="https://weibo.com/u/5379129372/home?wvr=5&lf=reg" target="_blank" title="Weibo">
                       
                         <i class="fa fa-fw fa-weibo"></i>Weibo</a>
                   </span>
@@ -552,7 +577,7 @@ $ conda config --<span class="built_in">set</span> show_channel_urls yes
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">深度学习(自然语言处理领域深究)</span>
+  <span class="author" itemprop="copyrightHolder">祥吉</span>
 
   
 </div>
@@ -566,16 +591,21 @@ $ conda config --<span class="built_in">set</span> show_channel_urls yes
 
 
 
-  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
 
 
               
  
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共3.8k字</span>
+  <span class="post-count">博客全站共5.8k字</span>
 </div>
 
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
         
 
 
@@ -670,13 +700,6 @@ $ conda config --<span class="built_in">set</span> show_channel_urls yes
 
   
   
-
-
-  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
-
-
 
   
   <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
