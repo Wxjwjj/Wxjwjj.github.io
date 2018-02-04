@@ -75,7 +75,7 @@
 
 
 
-  <meta name="keywords" content="python," />
+  <meta name="keywords" content="Python," />
 
 
 
@@ -86,18 +86,20 @@
 
 
 
-<meta name="description" content="找出最后一个以’.’开始的字符串123filename = &quot;/home/tucodec/ZJU.mp4&quot;str_1 = filename[filename.rindex(&quot;.&quot;):] # rindex：返回最后一个&apos;.&apos;的位置信息print(str1) # 输出“.mp4” 获取某文件夹下包含文件名称的绝对路径1234567def all_path(dirname):    result = [">
-<meta name="keywords" content="python">
+<meta name="description" content="Background在编写python程序的过程中，经常会因为字符串编码问题，造成乱码Eg：&amp;#39;\xe5\xbc\xa0\xe4\xbf\x8a&amp;#39;。有必要梳理下python2/3中的字符串编码问题，有备无患。 ASCII、Unicode和UTF-8关系由于1个字节(byte) == 8位(bit)，所以1字节最多可以表示256个字符。美国人在发明计算机时候，英文字母(大小写共64个)">
+<meta name="keywords" content="Python">
 <meta property="og:type" content="article">
-<meta property="og:title" content="python字符串的一些骚操作">
-<meta property="og:url" content="http://yoursite.com/2018/01/30/python-str/index.html">
+<meta property="og:title" content="Python2&#x2F;3字符串编码相关">
+<meta property="og:url" content="http://yoursite.com/2018/02/04/python2-3/index.html">
 <meta property="og:site_name" content="Deep Coding">
-<meta property="og:description" content="找出最后一个以’.’开始的字符串123filename = &quot;/home/tucodec/ZJU.mp4&quot;str_1 = filename[filename.rindex(&quot;.&quot;):] # rindex：返回最后一个&apos;.&apos;的位置信息print(str1) # 输出“.mp4” 获取某文件夹下包含文件名称的绝对路径1234567def all_path(dirname):    result = [">
+<meta property="og:description" content="Background在编写python程序的过程中，经常会因为字符串编码问题，造成乱码Eg：&amp;#39;\xe5\xbc\xa0\xe4\xbf\x8a&amp;#39;。有必要梳理下python2/3中的字符串编码问题，有备无患。 ASCII、Unicode和UTF-8关系由于1个字节(byte) == 8位(bit)，所以1字节最多可以表示256个字符。美国人在发明计算机时候，英文字母(大小写共64个)">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-02-01T06:44:34.414Z">
+<meta property="og:image" content="http://yoursite.com/img/python_1.jpeg">
+<meta property="og:updated_time" content="2018-02-04T03:16:06.245Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="python字符串的一些骚操作">
-<meta name="twitter:description" content="找出最后一个以’.’开始的字符串123filename = &quot;/home/tucodec/ZJU.mp4&quot;str_1 = filename[filename.rindex(&quot;.&quot;):] # rindex：返回最后一个&apos;.&apos;的位置信息print(str1) # 输出“.mp4” 获取某文件夹下包含文件名称的绝对路径1234567def all_path(dirname):    result = [">
+<meta name="twitter:title" content="Python2&#x2F;3字符串编码相关">
+<meta name="twitter:description" content="Background在编写python程序的过程中，经常会因为字符串编码问题，造成乱码Eg：&amp;#39;\xe5\xbc\xa0\xe4\xbf\x8a&amp;#39;。有必要梳理下python2/3中的字符串编码问题，有备无患。 ASCII、Unicode和UTF-8关系由于1个字节(byte) == 8位(bit)，所以1字节最多可以表示256个字符。美国人在发明计算机时候，英文字母(大小写共64个)">
+<meta name="twitter:image" content="http://yoursite.com/img/python_1.jpeg">
 
 
 
@@ -127,13 +129,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/01/30/python-str/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/02/04/python2-3/"/>
 
 
 
 
 
-  <title>python字符串的一些骚操作 | Deep Coding</title>
+  <title>Python2/3字符串编码相关 | Deep Coding</title>
   
 
 
@@ -260,7 +262,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/30/python-str/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/04/python2-3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="祥吉">
@@ -277,7 +279,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">python字符串的一些骚操作</h1>
+          <h1 class="post-title" itemprop="name headline">Python2/3字符串编码相关</h1>
         
 
         <div class="post-meta">
@@ -289,8 +291,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-30T22:05:21+08:00">
-                2018-01-30
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-04T10:32:45+08:00">
+                2018-02-04
               </time>
             
 
@@ -308,8 +310,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/01/30/python-str/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/01/30/python-str/" itemprop="commentCount"></span>
+                <a href="/2018/02/04/python2-3/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/02/04/python2-3/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -337,8 +339,14 @@
       
 
       
-        <h4 id="找出最后一个以’-’开始的字符串"><a href="#找出最后一个以’-’开始的字符串" class="headerlink" title="找出最后一个以’.’开始的字符串"></a>找出最后一个以’.’开始的字符串</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">filename = <span class="string">"/home/tucodec/ZJU.mp4"</span></span><br><span class="line">str_1 = filename[filename.rindex(<span class="string">"."</span>):] <span class="comment"># rindex：返回最后一个'.'的位置信息</span></span><br><span class="line">print(str1) <span class="comment"># 输出“.mp4”</span></span><br></pre></td></tr></table></figure>
-<h4 id="获取某文件夹下包含文件名称的绝对路径"><a href="#获取某文件夹下包含文件名称的绝对路径" class="headerlink" title="获取某文件夹下包含文件名称的绝对路径"></a>获取某文件夹下包含文件名称的绝对路径</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">all_path</span><span class="params">(dirname)</span>:</span></span><br><span class="line">    result = []</span><br><span class="line">    <span class="keyword">for</span> maindir, subdir, file_name_list <span class="keyword">in</span> os.walk(dirname):</span><br><span class="line">        <span class="keyword">for</span> filename <span class="keyword">in</span> file_name_list:</span><br><span class="line">            apath = os.path.join(maindir, filename)</span><br><span class="line">            result.append(apath)</span><br><span class="line">    <span class="keyword">return</span> result</span><br></pre></td></tr></table></figure>
+        <h3 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h3><p>在编写python程序的过程中，经常会因为字符串编码问题，造成乱码Eg：<code>&#39;\xe5\xbc\xa0\xe4\xbf\x8a&#39;</code>。有必要梳理下python2/3中的字符串编码问题，有备无患。</p>
+<h4 id="ASCII、Unicode和UTF-8关系"><a href="#ASCII、Unicode和UTF-8关系" class="headerlink" title="ASCII、Unicode和UTF-8关系"></a>ASCII、Unicode和UTF-8关系</h4><p>由于1个字节(byte) == 8位(bit)，所以1字节最多可以表示256个字符。美国人在发明计算机时候，英文字母(大小写共64个)，加上一些标点符号，256个字符安全够用。这个编码就被称为<code>ASCII</code>编码。比如’A’对应ASCII码表中的65，’z’对应122。<br><img src="/img/python_1.jpeg" alt=""><br>但我们的中文博大精深，256个字符显然不能覆盖全部字符，所以中国制定了2字节的GB2312编码。无独有偶，各个国家都制定了自己的规则把本国的文字编写进去。为了统一各个语言之间的编码，<code>Unicode</code>应运而生，具体来说，ASCII用1个字节表示字符，Unicode用2个字节，对于一些特殊符号，甚至使用4个字节。ASCII编码的’A’用Unicode编码，只需要在前面补0就可以了。</p>
+<blockquote>
+<p>虽然乱码消失，但却造成了新的问题：如果你写的文本基本上都是英语，那用Unicode编码比ASCII编码需要多一倍的存储空间，在存储和传输上就十分不划算。</p>
+</blockquote>
+<p><code>UTF-8</code>编码再次被发明，它是对Unicode编码的<code>再编码</code>，对于常用的英文编码为1字节，汉子通常为3字节。如果需要传输、保存的文本含有大量应为，这样的编码可以减少带宽，减少硬盘成本。如下所示：<br>| 字符        | ASCII   |Unicode  |UTF-8<br>| ——–   | —–:  | :—-:  |<br>| A     | 01000001 |   00000000 01000001     |01000001<br>| 中        |  None   |   01001110 00101101  |11100100 10111000 10101101<br>理解上述原理后，来看看python2/3中的编码表示情况</p>
+<h3 id="python2"><a href="#python2" class="headerlink" title="python2"></a>python2</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Python 2.7.10 (default, Jul 15 2017, 17:16:57) </span><br><span class="line">[GCC 4.2.1 Compatible Apple LLVM 9.0.0 (clang-900.0.31)] on darwin</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; <span class="string">'中国'</span> <span class="comment"># python2中默认转换为UTF-8编码的字符串</span></span><br><span class="line"><span class="string">'\xe4\xb8\xad\xe5\x9b\xbd'</span></span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; u<span class="string">'中国'</span> <span class="comment"># 字符串前+'u'，代表指定Unicode编码</span></span><br><span class="line">u<span class="string">'\u4e2d\u56fd'</span></span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; <span class="string">'中国'</span>.decode(<span class="string">'utf-8'</span>) <span class="comment"># utf-8类型字符串解码为Unicode编码</span></span><br><span class="line">u<span class="string">'\u4e2d\u56fd'</span></span><br></pre></td></tr></table></figure>
+<h3 id="python3"><a href="#python3" class="headerlink" title="python3"></a>python3</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Python 3.5.3 (v3.5.3:1880cb95a742, Jan 16 2017, 08:49:46) </span><br><span class="line">[GCC 4.2.1 (Apple Inc. build 5666) (dot 3)] on darwin</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; <span class="string">'中国'</span> <span class="comment"># python3中默认为Unicode格式(无编码)，同u'中国'</span></span><br><span class="line"><span class="string">'中国'</span></span><br><span class="line">&lt;class <span class="string">'str'</span>&gt;</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; <span class="string">'中国'</span>.encode(<span class="string">'utf-8'</span>) <span class="comment">#转UTF-8编码</span></span><br><span class="line">b<span class="string">'\xe4\xb8\xad\xe5\x9b\xbd'</span></span><br><span class="line">&lt;class <span class="string">'bytes'</span>&gt;</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; <span class="built_in">print</span> (<span class="string">'中国'</span>.encode(<span class="string">'utf-8'</span>).decode(<span class="string">'utf-8'</span>)) </span><br><span class="line"><span class="string">'中国'</span></span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -356,7 +364,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/python/" rel="tag"><i class="fa fa-tag"></i> python</a>
+            <a href="/tags/Python/" rel="tag"><i class="fa fa-tag"></i> Python</a>
           
         </div>
       
@@ -369,8 +377,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/01/30/socket/" rel="next" title="python网络编程入门">
-                <i class="fa fa-chevron-left"></i> python网络编程入门
+              <a href="/2018/02/01/Linux/" rel="next" title="Linux操作日更贴">
+                <i class="fa fa-chevron-left"></i> Linux操作日更贴
               </a>
             
           </div>
@@ -378,10 +386,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/02/01/Linux/" rel="prev" title="Linux操作日更贴">
-                Linux操作日更贴 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -412,8 +416,8 @@
 
   
     <div class="comments" id="comments">
-      <div class="ds-thread" data-thread-key="2018/01/30/python-str/"
-           data-title="python字符串的一些骚操作" data-url="http://yoursite.com/2018/01/30/python-str/">
+      <div class="ds-thread" data-thread-key="2018/02/04/python2-3/"
+           data-title="Python2/3字符串编码相关" data-url="http://yoursite.com/2018/02/04/python2-3/">
       </div>
     </div>
 
@@ -537,7 +541,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#找出最后一个以’-’开始的字符串"><span class="nav-number">1.</span> <span class="nav-text">找出最后一个以’.’开始的字符串</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#获取某文件夹下包含文件名称的绝对路径"><span class="nav-number">2.</span> <span class="nav-text">获取某文件夹下包含文件名称的绝对路径</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Background"><span class="nav-number">1.</span> <span class="nav-text">Background</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ASCII、Unicode和UTF-8关系"><span class="nav-number">1.1.</span> <span class="nav-text">ASCII、Unicode和UTF-8关系</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#python2"><span class="nav-number">2.</span> <span class="nav-text">python2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#python3"><span class="nav-number">3.</span> <span class="nav-text">python3</span></a></li></ol></div>
             
 
           </div>
