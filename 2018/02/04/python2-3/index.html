@@ -86,20 +86,20 @@
 
 
 
-<meta name="description" content="Background在编写python程序的过程中，经常会因为字符串编码问题，造成乱码Eg：&amp;#39;\xe5\xbc\xa0\xe4\xbf\x8a&amp;#39;。有必要梳理下python2/3中的字符串编码问题，有备无患。 ASCII、Unicode和UTF-8关系由于1个字节(byte) == 8位(bit)，所以1字节最多可以表示256个字符。美国人在发明计算机时候，英文字母(大小写共64个)">
+<meta name="description" content="Background中文字符一般都是编码为Unicode存储在计算机中的，然而表现形式却大不相同，有的程序喜欢给你输出中文，有的喜欢输出乱码，Eg：&amp;#39;\xe5\xbc\xa0\xe4\xbf\x8a&amp;#39;。python2/3中的字符串编码，就有这样的问题，在此进行梳理，有备无患。 ASCII、Unicode和UTF-8关系由于1个字节(byte) == 8位(bit)，所以1字节最多可">
 <meta name="keywords" content="Python">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Python2&#x2F;3字符串编码相关">
 <meta property="og:url" content="http://yoursite.com/2018/02/04/python2-3/index.html">
 <meta property="og:site_name" content="Deep Coding">
-<meta property="og:description" content="Background在编写python程序的过程中，经常会因为字符串编码问题，造成乱码Eg：&amp;#39;\xe5\xbc\xa0\xe4\xbf\x8a&amp;#39;。有必要梳理下python2/3中的字符串编码问题，有备无患。 ASCII、Unicode和UTF-8关系由于1个字节(byte) == 8位(bit)，所以1字节最多可以表示256个字符。美国人在发明计算机时候，英文字母(大小写共64个)">
+<meta property="og:description" content="Background中文字符一般都是编码为Unicode存储在计算机中的，然而表现形式却大不相同，有的程序喜欢给你输出中文，有的喜欢输出乱码，Eg：&amp;#39;\xe5\xbc\xa0\xe4\xbf\x8a&amp;#39;。python2/3中的字符串编码，就有这样的问题，在此进行梳理，有备无患。 ASCII、Unicode和UTF-8关系由于1个字节(byte) == 8位(bit)，所以1字节最多可">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/img/python_1.jpeg">
 <meta property="og:image" content="http://yoursite.com/img/python_2.jpeg">
-<meta property="og:updated_time" content="2018-02-04T03:47:49.998Z">
+<meta property="og:updated_time" content="2018-02-04T04:00:00.419Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python2&#x2F;3字符串编码相关">
-<meta name="twitter:description" content="Background在编写python程序的过程中，经常会因为字符串编码问题，造成乱码Eg：&amp;#39;\xe5\xbc\xa0\xe4\xbf\x8a&amp;#39;。有必要梳理下python2/3中的字符串编码问题，有备无患。 ASCII、Unicode和UTF-8关系由于1个字节(byte) == 8位(bit)，所以1字节最多可以表示256个字符。美国人在发明计算机时候，英文字母(大小写共64个)">
+<meta name="twitter:description" content="Background中文字符一般都是编码为Unicode存储在计算机中的，然而表现形式却大不相同，有的程序喜欢给你输出中文，有的喜欢输出乱码，Eg：&amp;#39;\xe5\xbc\xa0\xe4\xbf\x8a&amp;#39;。python2/3中的字符串编码，就有这样的问题，在此进行梳理，有备无患。 ASCII、Unicode和UTF-8关系由于1个字节(byte) == 8位(bit)，所以1字节最多可">
 <meta name="twitter:image" content="http://yoursite.com/img/python_1.jpeg">
 
 
@@ -340,7 +340,7 @@
       
 
       
-        <h2 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h2><p>在编写python程序的过程中，经常会因为字符串编码问题，造成乱码Eg：<code>&#39;\xe5\xbc\xa0\xe4\xbf\x8a&#39;</code>。有必要梳理下python2/3中的字符串编码问题，有备无患。</p>
+        <h2 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h2><p>中文字符一般都是编码为<code>Unicode</code>存储在计算机中的，然而表现形式却大不相同，有的程序喜欢给你输出中文，有的喜欢输出乱码，Eg：<code>&#39;\xe5\xbc\xa0\xe4\xbf\x8a&#39;</code>。python2/3中的字符串编码，就有这样的问题，在此进行梳理，有备无患。</p>
 <h3 id="ASCII、Unicode和UTF-8关系"><a href="#ASCII、Unicode和UTF-8关系" class="headerlink" title="ASCII、Unicode和UTF-8关系"></a>ASCII、Unicode和UTF-8关系</h3><p>由于1个字节(byte) == 8位(bit)，所以1字节最多可以表示256个字符。美国人在发明计算机时候，英文字母(大小写共64个)，加上一些标点符号，256个字符安全够用。这个编码就被称为<code>ASCII</code>编码。比如’A’对应ASCII码表中的65，’z’对应122。<br><img src="/img/python_1.jpeg" alt=""><br>但我们的中文博大精深，256个字符显然不能覆盖全部字符，所以中国制定了2字节的GB2312编码(GBK是GB2312的扩充，包含的中文字符更多)。无独有偶，各个国家都制定了自己的规则把本国的文字编写进去。为了统一各个语言之间的编码，<code>Unicode</code>应运而生，具体来说，ASCII用1个字节表示字符，Unicode用2个字节，对于一些特殊符号，甚至使用4个字节。ASCII编码的’A’用Unicode编码，只需要在前面补0就可以了。</p>
 <blockquote>
 <p>虽然乱码消失，但却造成了新的问题：如果你写的文本基本上都是英语，那用Unicode编码比ASCII编码需要多一倍的存储空间，在存储和传输上就十分不划算。</p>
@@ -394,6 +394,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/02/04/pachong-1/" rel="prev" title="爬虫入门_文本抽取">
+                爬虫入门_文本抽取 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -481,7 +485,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-count">12</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -494,7 +498,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -595,7 +599,7 @@
  
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共9.9k字</span>
+  <span class="post-count">博客全站共11.3k字</span>
 </div>
 
 <div class="powered-by">

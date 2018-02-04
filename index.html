@@ -259,6 +259,152 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/04/pachong-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="祥吉">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Deep Coding">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/02/04/pachong-1/" itemprop="url">爬虫入门_文本抽取</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-04T20:24:02+08:00">
+                2018-02-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/02/04/pachong-1/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/02/04/pachong-1/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h2><p>浏览器作为客户端，接收服务器返回的消息，进行解析后展示给我们。我们可以在本地修改html信息，对网页进行“整容”，要知道网页的任何信息都可以被修改，但是修改后的信息不影响服务器端，刷新后又会变成之前服务器端推送的格式。</p>
+<h3 id="审查元素"><a href="#审查元素" class="headerlink" title="审查元素"></a>审查元素</h3><p>有了上面的认识后，怎样修改网页的html信息呢？在你想要修改页面的某个位置右击，继续点击<code>审查</code>，即可获得该位置的html信息。Eg：在邮箱登陆输入密码的位置点击审查元素，将password属性改为text，输入密码时将不再是小圆点的形式。<br><img src="/img/pa_1.jpeg" alt=""><br>网页的全部信息都在其html语句中，接下来我们采用python中的<a href="http://docs.python-requests.org/zh_CN/latest/user/quickstart.html" target="_blank" rel="noopener">requests</a>模块，获取网页的html信息。</p>
+<h3 id="安装python-http模块requests"><a href="#安装python-http模块requests" class="headerlink" title="安装python http模块requests"></a>安装python http模块requests</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 install requests</span><br></pre></td></tr></table></figure>
+<p>这里简单的提取一个网络小说的html信息<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">target = <span class="string">'http://www.biqukan.com/1_1094/5403177.html'</span></span><br><span class="line">req = requests.get(url=target)</span><br><span class="line">html = req.text</span><br><span class="line">print(html) <span class="comment"># 网页html内容，同右键后的网页审查内容</span></span><br></pre></td></tr></table></figure></p>
+<p>requests模块获取的信息为带标签(div、br…)的html信息，还需要通过下面的beautifulsoup模块，提取中我们感兴趣的段落。</p>
+<h3 id="安装文本提取模块Beautiful-Soup"><a href="#安装文本提取模块Beautiful-Soup" class="headerlink" title="安装文本提取模块Beautiful Soup"></a>安装文本提取模块Beautiful Soup</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 install beautifulsoup4</span><br></pre></td></tr></table></figure>
+<p>这里引用<a href="http://blog.csdn.net/u012662731/article/details/78537432" target="_blank" rel="noopener">Jack-Cherish</a>对html的解释：</p>
+<blockquote>
+<p>“一个女人的包包里，会有很多东西，她们会根据自己的习惯将自己的东西进行分类放好。镜子和口红这些会经常用到的东西，会归放到容易拿到的外侧口袋里。那些不经常用到，需要注意安全存放的证件会放到不容易拿到的里侧口袋里”。而html标签就像一个个“口袋”，每个“口袋”都有自己的特定功能，负责存放不同的内容。</p>
+</blockquote>
+<p>例如：上述例子中的div标签下存放了我们关心的正文内容。这个div标签是这样的：</p>
+<p><div id="content" ,="" class="showtxt"><br>id和class就是div标签的属性，content和showtxt是属性值，一个属性对应一个属性值。它是用来区分不同的div标签的，因为div标签可以有很多，我们怎么加以区分不同的div标签呢？就是通过不同的属性值。可以发现网络小说的正文部分正唯一的对应于class=”showtxt”的div标签下。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">bf = BeautifulSoup(html) <span class="comment"># find 一对标签：&lt;div&gt; &lt;/div&gt;之间的内容</span></span><br><span class="line">texts = bf.find_all(<span class="string">'div'</span>, class_ = <span class="string">'showtxt'</span>)  <span class="comment"># 第一个参数是获取的标签名，第二个参数class_是标签的属性</span></span><br><span class="line">print(texts[<span class="number">0</span>].text.replace(<span class="string">'\xa0'</span>*<span class="number">8</span>,<span class="string">'\n\n'</span>)) </span><br><span class="line"><span class="comment">#使用text属性，提取文本内容，滤除br标签; 之后进行换行符替换及提取文本部分内容</span></span><br></pre></td></tr></table></figure></div></p>
+<p>BeautifulSoup函数处理完后，可见的是提取出了该小说完整的的正文内容。</p>
+<h3 id="获取每个章节的链接"><a href="#获取每个章节的链接" class="headerlink" title="获取每个章节的链接"></a>获取每个章节的链接</h3><p>章节信息都放在了<code>class = listmain</code>的div标签下，获取方法同上。链接和章名都放在了标签<code>&lt;a&gt;、&lt;/a&gt;</code>之间，Eg：<code>&lt;a href=&quot;/1_1094/5403177.html&quot;&gt;第一章 他叫白小纯&lt;/a&gt;</code>。<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"listmain"</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">dl</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">dt</span>&gt;</span>《一念永恒》最新章节列表<span class="tag">&lt;/<span class="name">dt</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">dd</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"/1_1094/15932394.html"</span>&gt;</span>第1027章 第十道门<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">dd</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">dd</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"/1_1094/15923072.html"</span>&gt;</span>第1026章 绝伦道法！<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">dd</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">dd</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"/1_1094/15921862.html"</span>&gt;</span>第1025章 长生灯！<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">dd</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dl</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>通过两次调用BeautifulSoup，便可以获取一对标签<code>&lt;a&gt;、&lt;/a&gt;</code>之间的内容。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">req = requests.get(url = target) </span><br><span class="line">html = req.text</span><br><span class="line">div_bf = BeautifulSoup(html)</span><br><span class="line">div = div_bf.find_all(<span class="string">'div'</span>, class_ = <span class="string">'listmain'</span>)</span><br><span class="line">a_bf = BeautifulSoup(str(div[<span class="number">0</span>]))</span><br><span class="line">a = a_bf.find_all(<span class="string">'a'</span>)</span><br><span class="line"><span class="keyword">for</span> each <span class="keyword">in</span> a:</span><br><span class="line">     print(each.string, server + each.get(<span class="string">'href'</span>))</span><br></pre></td></tr></table></figure></p>
+<h3 id="完整地爬取一部小说程序整合"><a href="#完整地爬取一部小说程序整合" class="headerlink" title="完整地爬取一部小说程序整合"></a>完整地爬取一部小说程序整合</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding:UTF-8 -*-</span></span><br><span class="line"><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">downloader</span><span class="params">(object)</span>:</span></span><br><span class="line">	<span class="string">"""下载小说《一念永恒》"""</span></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">		self.server = <span class="string">"http://www.biqukan.com/"</span></span><br><span class="line">		self.target = <span class="string">"http://www.biqukan.com/1_1094/"</span></span><br><span class="line">		self.names = [] <span class="comment"># 存放章节名称</span></span><br><span class="line">		self.urls = [] <span class="comment"># 存放每章链接</span></span><br><span class="line">		self.nums = [] <span class="comment"># 章节数量</span></span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">get_download_url</span><span class="params">(self)</span>:</span></span><br><span class="line">		<span class="string">"""获取下载链接url及每章名称names，以list形式放到实例化后的class中"""</span></span><br><span class="line">		req = requests.get(url = self.target)</span><br><span class="line">		html = req.text</span><br><span class="line">		div_bf = BeautifulSoup(html)</span><br><span class="line">		div = div_bf.find_all(<span class="string">'div'</span>, class_ = <span class="string">'listmain'</span>)</span><br><span class="line">		<span class="comment"># 获取到章节名称的html信息，在class = 'listmain'中</span></span><br><span class="line">		a_bf = BeautifulSoup(str(div[<span class="number">0</span>])) </span><br><span class="line">		a = a_bf.find_all(<span class="string">'a'</span>) <span class="comment"># 返回一个list</span></span><br><span class="line">		self.nums = len(a[<span class="number">15</span>:]) <span class="comment"># 过滤了前15条噪声章节</span></span><br><span class="line">		<span class="keyword">for</span> each <span class="keyword">in</span> a[<span class="number">15</span>:]:</span><br><span class="line">			self.names.append(each.string)</span><br><span class="line">			self.urls.append(self.server + each.get(<span class="string">'href'</span>))</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">get_contents</span><span class="params">(self, target)</span>:</span></span><br><span class="line">	    <span class="string">"""</span></span><br><span class="line"><span class="string">	    函数说明：获取class_list中每一个url下的内容</span></span><br><span class="line"><span class="string">	    target：下载地址 </span></span><br><span class="line"><span class="string">	    return: texts - 内容(string类型)</span></span><br><span class="line"><span class="string">	    """</span></span><br><span class="line">	    req = requests.get(url = target)	</span><br><span class="line">	    html = req.text</span><br><span class="line">	    bf = BeautifulSoup(html)</span><br><span class="line">	    texts = bf.find_all(<span class="string">'div'</span>, class_ = <span class="string">'showtxt'</span>)</span><br><span class="line">	    texts = texts[<span class="number">0</span>].text.replace(<span class="string">'\xa0'</span>*<span class="number">8</span>, <span class="string">'\n\n'</span>)</span><br><span class="line">	    <span class="keyword">return</span> texts</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">writer</span><span class="params">(self, name, path, text)</span>:</span></span><br><span class="line">		<span class="string">"""</span></span><br><span class="line"><span class="string">		函数说明：爬取的texts写入文件</span></span><br><span class="line"><span class="string">		name：章节名称</span></span><br><span class="line"><span class="string">        path：文件路径</span></span><br><span class="line"><span class="string">        text：章节内容</span></span><br><span class="line"><span class="string">		"""</span></span><br><span class="line">		<span class="keyword">with</span> open(path, <span class="string">'a'</span>,encoding=<span class="string">'utf-8'</span>) <span class="keyword">as</span> f:</span><br><span class="line">			f.write(name + <span class="string">'\n'</span>) <span class="comment"># write只能写入str</span></span><br><span class="line">			f.writelines(text) <span class="comment"># 自动迭代写入一个字符串列表[str]</span></span><br><span class="line">			f.write(<span class="string">'\n\n'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">	dl = downloader() <span class="comment"># 类的实例化</span></span><br><span class="line">	dl.get_download_url() <span class="comment"># 获取章节名称信息，更新类中的list变量names、urls、nums</span></span><br><span class="line">	print(<span class="string">'开始下载...'</span>)</span><br><span class="line">	<span class="comment"># print(type(dl.nums)) # int型，跟最后定义nums的变量相关</span></span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> range(dl.nums):</span><br><span class="line">		dl.writer(dl.names[i], <span class="string">'一念永恒.txt'</span>, dl.get_contents(dl.urls[i]))</span><br><span class="line">		sys.stdout.write(<span class="string">" 已经下载: %.3f%%"</span> % float(i/dl.nums) + <span class="string">'\r'</span>)</span><br><span class="line">		sys.stdout.flush()</span><br><span class="line">	print(<span class="string">"Success!"</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="Refer："><a href="#Refer：" class="headerlink" title="Refer："></a>Refer：</h3><p><a href="http://blog.csdn.net/u012662731/article/details/78537432" target="_blank" rel="noopener">Python3网络爬虫快速入门实战解析</a><br><a href="http://www.imooc.com/learn/563" target="_blank" rel="noopener">Python开发简单爬虫</a><br><a href="https://www.zhihu.com/" target="_blank" rel="noopener">当一个颜值很高的程序员是怎样一番体验？</a>question/37787176</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/04/python2-3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -340,7 +486,7 @@
       
         
           
-            <h2 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h2><p>在编写python程序的过程中，经常会因为字符串编码问题，造成乱码Eg：<code>&#39;\xe5\xbc\xa0\xe4\xbf\x8a&#39;</code>。有必要梳理下python2/3中的字符串编码问题，有备无患。</p>
+            <h2 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h2><p>中文字符一般都是编码为<code>Unicode</code>存储在计算机中的，然而表现形式却大不相同，有的程序喜欢给你输出中文，有的喜欢输出乱码，Eg：<code>&#39;\xe5\xbc\xa0\xe4\xbf\x8a&#39;</code>。python2/3中的字符串编码，就有这样的问题，在此进行梳理，有备无患。</p>
 <h3 id="ASCII、Unicode和UTF-8关系"><a href="#ASCII、Unicode和UTF-8关系" class="headerlink" title="ASCII、Unicode和UTF-8关系"></a>ASCII、Unicode和UTF-8关系</h3><p>由于1个字节(byte) == 8位(bit)，所以1字节最多可以表示256个字符。美国人在发明计算机时候，英文字母(大小写共64个)，加上一些标点符号，256个字符安全够用。这个编码就被称为<code>ASCII</code>编码。比如’A’对应ASCII码表中的65，’z’对应122。<br><img src="/img/python_1.jpeg" alt=""><br>但我们的中文博大精深，256个字符显然不能覆盖全部字符，所以中国制定了2字节的GB2312编码(GBK是GB2312的扩充，包含的中文字符更多)。无独有偶，各个国家都制定了自己的规则把本国的文字编写进去。为了统一各个语言之间的编码，<code>Unicode</code>应运而生，具体来说，ASCII用1个字节表示字符，Unicode用2个字节，对于一些特殊符号，甚至使用4个字节。ASCII编码的’A’用Unicode编码，只需要在前面补0就可以了。</p>
 <blockquote>
 <p>虽然乱码消失，但却造成了新的问题：如果你写的文本基本上都是英语，那用Unicode编码比ASCII编码需要多一倍的存储空间，在存储和传输上就十分不划算。</p>
@@ -1579,143 +1725,6 @@ $ conda config --<span class="built_in">set</span> show_channel_urls yes
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/14/Knowledge/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="祥吉">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Deep Coding">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/14/Knowledge/" itemprop="url">知识图谱私见！🐶</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-14T12:52:19+08:00">
-                2018-01-14
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/01/14/Knowledge/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/01/14/Knowledge/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="A-简述："><a href="#A-简述：" class="headerlink" title="A.    简述："></a>A.    简述：</h3><p>2012年5月，Google推出Google知识图谱（GoogleKnowledge Graph），并利用其在搜索引擎中增强搜索结果。这是“知识图谱”名称的由来，也标志着大规模知识图谱在互联网语义搜索中的成功应用。</p>
-<p>Eg：搜索“吴彦祖的国籍是什么？”，Google/Baidu会给出与之相关的详细搜索结果（可以叫“搜索++”或者“搜索杂烩且精准”，顺带提一句，搜索本身就是AI，没必要将其神秘化，之前到现在一只都有，只是如同其他任何一个行业，发展的越来越好，2012年后随着深度学习的爆发，迎来了一波小高潮）</p>
-<p><img src="/img/wuyanzu.jpeg" alt=""></p>
-<p>归根结底，知识图谱的意义在于在盘根错节的数据海洋中进行梳理和串联，让以前模糊的世界变得更加清晰。而人类对于知识体系的整理，始终未曾停歇。从永乐大典，到四库全书，再到各式各样的百科全书。作为编纂者，必须要思考的是：如何整理、组织信息，并以何种方式进行呈现</p>
-<h3 id="B-个人理解："><a href="#B-个人理解：" class="headerlink" title="B.    个人理解："></a>B.    个人理解：</h3><p>面对庞大的知识网络，我们要解决的任务，是将线性、低维特征（文本、语音、图像）用超高维分布式方式表示，再将抽取的语义映射回低维特征，被人理解（翻译、图像分类等）。</p>
-<p>写到这里，笔者更认为深度学习也是构建知识图谱的一种方式，因为用深度学习能较好解决机器翻译、客服对话等小任务，也是一定程度上对知识地综合理解，比如通过机器翻译，建立英语、中文之间的联系，通过Imagenet图像分类，建立1000种Object的对应关系。但，深度学习在NLP/图像中对“语义”的理解，还是太过单薄，设计太过简陋，面对这些非结构化的大量知识体系，真的是无从下口、束手无策。未来能够将知识图谱的各条“边”剥离清楚的，深度学习还需要再向前推进一大步，或者说很大概率都不是现在整天炒的各种CNN、RNN、GAN等工具。</p>
-<h5 id="——不能真正创造价值的概念，都是耍流氓！"><a href="#——不能真正创造价值的概念，都是耍流氓！" class="headerlink" title=" ——不能真正创造价值的概念，都是耍流氓！"></a><font color="red"> ——不能真正创造价值的概念，都是耍流氓！</font></h5><p>话说回来吧，借助某位哲人说的，希望自己摒弃热潮，以工程任务为导向。解决当下NLP能解决的任务，这也是本博客名称“Deep coding”的由来。</p>
-<hr>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1770,7 +1779,7 @@ $ conda config --<span class="built_in">set</span> show_channel_urls yes
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-count">12</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1783,7 +1792,7 @@ $ conda config --<span class="built_in">set</span> show_channel_urls yes
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -1868,7 +1877,7 @@ $ conda config --<span class="built_in">set</span> show_channel_urls yes
  
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共9.9k字</span>
+  <span class="post-count">博客全站共11.3k字</span>
 </div>
 
 <div class="powered-by">
