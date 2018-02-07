@@ -105,7 +105,7 @@
 <meta property="og:image" content="http://yoursite.com/img/wpic11.jpeg">
 <meta property="og:image" content="http://yoursite.com/img/wpic14.jpeg">
 <meta property="og:image" content="http://yoursite.com/img/wpic15.jpeg">
-<meta property="og:updated_time" content="2018-01-26T13:48:50.322Z">
+<meta property="og:updated_time" content="2018-02-05T03:10:53.076Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Word2vec词向量原理解析！">
 <meta name="twitter:description" content="1. 词汇表示Backgroundone-hot编码文本、字符串看似简单，其实是经过几千万年的演化，人类抽象出的非常高维、稀疏的特征。拿汉语来说，词汇数量约为几十万。如果采用ont-hot形式编码，一个词语的维度就将占据几十万维。训练时候往往是上亿个词，这便会造成巨大的维数灾难。 Word2vec而Word2vec(中文名：词向量/词嵌入)，可以自由控制词汇的维度，常用的维度数一般为256、512">
@@ -389,8 +389,8 @@
 <blockquote>
 <p>极限假设词向量维度为3，词表大小为20。那么全连接网络1次迭代需要训练的参数数量为60个，接着再进行softmax归一化。<br>哈夫曼树的形式，假设目标词汇是图中的节点8，根结点到8节点一共经过5个节点(哈夫曼树编码知识，8节点的编码表示为:11110，那么计算Target词汇概率，仅涉及3*5=15个参数的计算。</p>
 </blockquote>
-<p><img src="/img/wpic9.jpeg" width="450" alt="图片名称" align="center"><br>基于二叉树的这种性质，计算复杂度从之前的O(N)变为O(logN)，运算速度指数级提升。<br>而Cost函数为对概率连乘取log对数，如下：<br> <img src="/img/wpic12.jpeg" width="250" alt="图片名称" align="center"><br> <img src="/img/wpic13.jpeg" width="250" alt="图片名称" align="center"></p>
-<p>训练目标便是最大化Cost函数，采用的算法是梯度上升。其实跟梯度下降非常类似，cost对参数向量取偏导数得到梯度，参数更新时候再加上该梯度乘learning rate就可以了，不过此处涉及两个参数向量，一个是权重theta，另一个就是词向量。此处直接复制Hankcs.com中的推导结果，两个参数更新方式如下：<br> <img src="/img/wpic10.jpeg" width="300" alt="图片名称" align="center"><br> <img src="/img/wpic11.jpeg" width="300" alt="图片名称" align="center"><br>如此便完成了一次完整的训练周期！<br> <font color="red"><strong>更简单直白的总结是：扁平的softmax在计算P(y=j)，需要计算整个词表每个词的概率，而现在分层的softmax只需要计算一条路径上节点的概率值，便可以得到P(y=j)，接着进行梯度上升，不断使概率P变大</strong></font></p>
+<p><img src="/img/wpic9.jpeg" width="450" alt="图片名称" align="center"><br>基于二叉树的这种性质，计算复杂度从之前的O(N)变为O(logN)，运算速度指数级提升。<br>而<strong>Cost函数为对概率连乘取log对数</strong>，如下：<br> <img src="/img/wpic12.jpeg" width="250" alt="图片名称" align="center"><br> <img src="/img/wpic13.jpeg" width="250" alt="图片名称" align="center"></p>
+<p>训练目标是最大化Cost函数，采用的算法是梯度上升。其实跟梯度下降非常类似，cost对参数向量取偏导数得到梯度，参数更新时候再加上该梯度乘learning rate就可以了，不过此处涉及两个参数向量，一个是权重theta，另一个就是词向量。此处直接复制Hankcs.com中的推导结果，两个参数更新方式如下：<br> <img src="/img/wpic10.jpeg" width="300" alt="图片名称" align="center"><br> <img src="/img/wpic11.jpeg" width="300" alt="图片名称" align="center"><br>如此便完成了一次完整的训练周期！<br> <font color="red"><strong>更简单直白的总结是：扁平的softmax在计算P(y=j)，需要计算整个词表每个词的概率，而现在分层的softmax只需要计算一条路径上节点的概率值，便可以得到P(y=j)，接着进行梯度上升，不断使概率P变大</strong></font></p>
 <hr>
 <h3 id="Negative-sampling"><a href="#Negative-sampling" class="headerlink" title="Negative sampling"></a>Negative sampling</h3><h4 id="定义："><a href="#定义：" class="headerlink" title="定义："></a>定义：</h4><p>由于Hierarchical Softmax对于频率较低的词汇，依然需要花费较长的步骤才能找到该词。所以作者引入了另一种算法：<strong>Negative sampling</strong>(sampled softmax)，即：为了加快训练速度，在loss计算时，采用负采样方式，并不是求整个vocab的softmax概率，而是随机采样的W个。这样每次训练中就可以更新这少量的W个参数，其他参数被冻结(需要注意总的参数数量不变，只是每次参与迭代计算的数量锐减)。<br><strong><code>需要注意：</code></strong>在Test阶段，要到整个词表中softmax(此时词向量本身及其权重已经被计算了出来)，来确定下一次选中的是哪些词汇(可接beam search)。若是哈夫曼树，Test时会找出一个确定的词<br>我们原来模型每次运行，假设词向量维度：300；vocab大小：1W，之前每次迭代需要跟新300W参数。现在负采样个数N=5。只要跟新300×(1+5)=1800，参数减少了非常多，训练速度大幅加快。</p>
 <h4 id="采样方法："><a href="#采样方法：" class="headerlink" title="采样方法："></a>采样方法：</h4><p>那怎样确定负采样个数N呢？其实就是随机抽取，但要考虑词频的影响，词频越高，越容易被抽出来。具体到word2vec中，作者是这样实现的：采用一个大小为M的table(M&gt;&gt;vocab size，一般取10^8)。分为M份，每份代表一个词，如图所示；<br> <img src="/img/wpic14.jpeg" width="450" alt="图片名称" align="center"><br>但具体怎么确定哪一份对应什么词呢？作者采用了如下的公示计算每个词的份额(对应在tabel上占据的长度)<br> <img src="/img/wpic15.jpeg" width="270" alt="图片名称" align="center"><br>在paper中提到0.75这个超参是试出来的，实现的话就是直接1～M取一个随机数，从中提取对应的项便可以了。</p>
@@ -526,7 +526,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-count">16</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -539,7 +539,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -640,7 +640,7 @@
  
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共11.6k字</span>
+  <span class="post-count">博客全站共13.9k字</span>
 </div>
 
 <div class="powered-by">
