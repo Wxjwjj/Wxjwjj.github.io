@@ -75,7 +75,7 @@
 
 
 
-  <meta name="keywords" content="Linux," />
+  <meta name="keywords" content="Python," />
 
 
 
@@ -86,18 +86,18 @@
 
 
 
-<meta name="description" content="获取/var/www/下所有文件及文件夹的操作权限1chmod 777 -R /var/www/  # 用户目录下，需要在前面再加sudo pip安装软件镜像1sudo pip install -i https://pypi.tuna.tsinghua.edu.cn/simple xxx pip安装国外软件可能超时的解决方法1pip --default-timeout=100 install --">
-<meta name="keywords" content="Linux">
+<meta name="description" content="python调用shell语句1234567&apos;&apos;&apos;假设已存在run.sh的shell语句，如:cd /home/tucodec/Desktop python2 run.py&apos;&apos;&apos;import osos.system(&quot;bash run.sh&quot;) #会自动到桌面执行run.py 上面调用shell语句的方式，跟python语句是独立进行的，也就是说无法进行变量的交互12345678910111213">
+<meta name="keywords" content="Python">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Linux操作日更贴">
-<meta property="og:url" content="http://yoursite.com/2018/02/01/Linux/index.html">
+<meta property="og:title" content="python IO编程及调用shell语句">
+<meta property="og:url" content="http://yoursite.com/2018/02/10/python-2/index.html">
 <meta property="og:site_name" content="Deep Coding">
-<meta property="og:description" content="获取/var/www/下所有文件及文件夹的操作权限1chmod 777 -R /var/www/  # 用户目录下，需要在前面再加sudo pip安装软件镜像1sudo pip install -i https://pypi.tuna.tsinghua.edu.cn/simple xxx pip安装国外软件可能超时的解决方法1pip --default-timeout=100 install --">
+<meta property="og:description" content="python调用shell语句1234567&apos;&apos;&apos;假设已存在run.sh的shell语句，如:cd /home/tucodec/Desktop python2 run.py&apos;&apos;&apos;import osos.system(&quot;bash run.sh&quot;) #会自动到桌面执行run.py 上面调用shell语句的方式，跟python语句是独立进行的，也就是说无法进行变量的交互12345678910111213">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-02-08T03:14:45.762Z">
+<meta property="og:updated_time" content="2018-02-10T03:35:11.612Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Linux操作日更贴">
-<meta name="twitter:description" content="获取/var/www/下所有文件及文件夹的操作权限1chmod 777 -R /var/www/  # 用户目录下，需要在前面再加sudo pip安装软件镜像1sudo pip install -i https://pypi.tuna.tsinghua.edu.cn/simple xxx pip安装国外软件可能超时的解决方法1pip --default-timeout=100 install --">
+<meta name="twitter:title" content="python IO编程及调用shell语句">
+<meta name="twitter:description" content="python调用shell语句1234567&apos;&apos;&apos;假设已存在run.sh的shell语句，如:cd /home/tucodec/Desktop python2 run.py&apos;&apos;&apos;import osos.system(&quot;bash run.sh&quot;) #会自动到桌面执行run.py 上面调用shell语句的方式，跟python语句是独立进行的，也就是说无法进行变量的交互12345678910111213">
 
 
 
@@ -127,13 +127,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/02/01/Linux/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/02/10/python-2/"/>
 
 
 
 
 
-  <title>Linux操作日更贴 | Deep Coding</title>
+  <title>python IO编程及调用shell语句 | Deep Coding</title>
   
 
 
@@ -260,7 +260,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/01/Linux/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/10/python-2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="祥吉">
@@ -277,7 +277,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Linux操作日更贴</h1>
+          <h1 class="post-title" itemprop="name headline">python IO编程及调用shell语句</h1>
         
 
         <div class="post-meta">
@@ -289,8 +289,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-01T16:16:28+08:00">
-                2018-02-01
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-10T11:02:03+08:00">
+                2018-02-10
               </time>
             
 
@@ -308,8 +308,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/02/01/Linux/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/02/01/Linux/" itemprop="commentCount"></span>
+                <a href="/2018/02/10/python-2/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/02/10/python-2/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -337,20 +337,8 @@
       
 
       
-        <h5 id="获取-var-www-下所有文件及文件夹的操作权限"><a href="#获取-var-www-下所有文件及文件夹的操作权限" class="headerlink" title="获取/var/www/下所有文件及文件夹的操作权限"></a>获取/var/www/下所有文件及文件夹的操作权限</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod 777 -R /var/www/  <span class="comment"># 用户目录下，需要在前面再加sudo</span></span><br></pre></td></tr></table></figure>
-<h5 id="pip安装软件镜像"><a href="#pip安装软件镜像" class="headerlink" title="pip安装软件镜像"></a>pip安装软件镜像</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo pip install -i https://pypi.tuna.tsinghua.edu.cn/simple xxx</span><br></pre></td></tr></table></figure>
-<h5 id="pip安装国外软件可能超时的解决方法"><a href="#pip安装国外软件可能超时的解决方法" class="headerlink" title="pip安装国外软件可能超时的解决方法"></a>pip安装国外软件可能超时的解决方法</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip --default-timeout=100 install --upgrade gensim</span><br></pre></td></tr></table></figure>
-<h5 id="pip安装Tensorflow任意指定版本"><a href="#pip安装Tensorflow任意指定版本" class="headerlink" title="pip安装Tensorflow任意指定版本"></a>pip安装Tensorflow任意指定版本</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pip install tensorflow-gpu=1.4.1</span><br><span class="line">https://pypi.python.org/pypi/tensorflow-gpu/1.2.0 <span class="comment"># whl文件下载路径</span></span><br></pre></td></tr></table></figure>
-<h5 id="解除Ternsorboard端口占用"><a href="#解除Ternsorboard端口占用" class="headerlink" title="解除Ternsorboard端口占用"></a>解除Ternsorboard端口占用</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">lsof -i:6006  </span><br><span class="line"><span class="built_in">kill</span> -9 28508(上一个命令后弹出的实际端口号)</span><br></pre></td></tr></table></figure>
-<h5 id="没有安装tensorboard-或python版本不对从其源码打开"><a href="#没有安装tensorboard-或python版本不对从其源码打开" class="headerlink" title="没有安装tensorboard/或python版本不对从其源码打开"></a>没有安装tensorboard/或python版本不对从其源码打开</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">locate tensorboard</span><br><span class="line">python2 /usr/<span class="built_in">local</span>/lib/python2.7/dist-packages/tensorflow/tensorboard/teorboard.py --logdir=</span><br></pre></td></tr></table></figure>
-<h5 id="安装pytorch"><a href="#安装pytorch" class="headerlink" title="安装pytorch"></a>安装pytorch</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://tech.ifeng.com/a/20170921/44693375_0.shtml</span><br></pre></td></tr></table></figure>
-<h5 id="ubuntu-teamviewe-安装"><a href="#ubuntu-teamviewe-安装" class="headerlink" title="ubuntu teamviewe 安装"></a>ubuntu teamviewe 安装</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">apt-get purge teamviewer <span class="comment"># 彻底移除旧的版本</span></span><br><span class="line">sudo apt install ./teamviewerxxx.whl</span><br></pre></td></tr></table></figure>
-<h5 id="python2-7，命令行界面输出中文字符"><a href="#python2-7，命令行界面输出中文字符" class="headerlink" title="python2.7，命令行界面输出中文字符"></a>python2.7，命令行界面输出中文字符</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">import uniout</span><br><span class="line">a = [u<span class="string">'哈哈'</span>]  </span><br><span class="line"><span class="built_in">print</span> a  <span class="comment"># 哈哈，否则会有unicode编码问题[u'\u54c8\u54c8']</span></span><br></pre></td></tr></table></figure>
-<h5 id="查看硬盘容量及消耗"><a href="#查看硬盘容量及消耗" class="headerlink" title="查看硬盘容量及消耗"></a>查看硬盘容量及消耗</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo du -h --max-depth=1 .|sort -rh |head <span class="comment">#查看文件夹/程序占用，由高到低排序</span></span><br><span class="line">df -hl <span class="comment"># 查看分区容量</span></span><br></pre></td></tr></table></figure>
-<h5 id="多版本cuda安装及环境切换"><a href="#多版本cuda安装及环境切换" class="headerlink" title="多版本cuda安装及环境切换"></a>多版本cuda安装及环境切换</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">首先将~/.bashrc 下与cuda相关的路径都改为　/usr/<span class="built_in">local</span>/cuda/　</span><br><span class="line">rm -rf /usr/<span class="built_in">local</span>/cuda<span class="comment">#删除之前创建的软链接</span></span><br><span class="line">sudo ln -s /usr/<span class="built_in">local</span>/cuda-8.0/ /usr/<span class="built_in">local</span>/cuda/ <span class="comment"># 建立新连接</span></span><br><span class="line">nvcc --version <span class="comment">#查看当前 cuda 版本</span></span><br><span class="line">http://blog.csdn.net/maple2014/article/details/78574275</span><br></pre></td></tr></table></figure>
-<h5 id="ubuntu桌面死机解决"><a href="#ubuntu桌面死机解决" class="headerlink" title="ubuntu桌面死机解决"></a>ubuntu桌面死机解决</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">top 查看，记下PID后，q退出即可，输入 sudo <span class="built_in">kill</span> PID    </span><br><span class="line">sudo pkill Xorg 注销桌面重新登录</span><br></pre></td></tr></table></figure>
-<h5 id="找不到xx包相关错误…cannot-find-lxxc…"><a href="#找不到xx包相关错误…cannot-find-lxxc…" class="headerlink" title="找不到xx包相关错误…cannot find -lxxc…"></a>找不到xx包相关错误…cannot find -lxxc…</h5><p>先找下其他目录中是否存在需要的lib文件，有的话不用下载，直接指向就好了。找到缺失lib文件的物理位置，之后在需要的目录中建立软连接<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">locate libc.so</span><br><span class="line">ln -s /usr/lib/x86_64-linux-gnu/libpthread.so /home/tucodec/miniconda3/compiler_compat/</span><br><span class="line">rm -rf libc.7.gz 移除软连接</span><br></pre></td></tr></table></figure></p>
-
+        <h4 id="python调用shell语句"><a href="#python调用shell语句" class="headerlink" title="python调用shell语句"></a>python调用shell语句</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">假设已存在run.sh的shell语句，如:</span></span><br><span class="line"><span class="string">cd /home/tucodec/Desktop </span></span><br><span class="line"><span class="string">python2 run.py</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line">os.system(<span class="string">"bash run.sh"</span>) <span class="comment">#会自动到桌面执行run.py</span></span><br></pre></td></tr></table></figure>
+<h4 id="上面调用shell语句的方式，跟python语句是独立进行的，也就是说无法进行变量的交互"><a href="#上面调用shell语句的方式，跟python语句是独立进行的，也就是说无法进行变量的交互" class="headerlink" title="上面调用shell语句的方式，跟python语句是独立进行的，也就是说无法进行变量的交互"></a>上面调用shell语句的方式，跟python语句是独立进行的，也就是说无法进行变量的交互</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">采用下面的语句可以实现在python中操作文件/文件夹</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> shutil</span><br><span class="line">file_dir = <span class="string">'/Users/wxj/Desktop'</span></span><br><span class="line"><span class="keyword">print</span> (os.getcwd())  <span class="comment"># 获取当前目录</span></span><br><span class="line">os.chdir(file_dir)   <span class="comment"># 改变工作目录</span></span><br><span class="line">os.mkdir(<span class="string">"test"</span>)  <span class="comment"># 创建文件夹</span></span><br><span class="line"></span><br><span class="line">os.rename(<span class="string">"test"</span>,<span class="string">"test1"</span>)   </span><br><span class="line">os.rename(<span class="string">"test.txt"</span>,<span class="string">"test1.txt"</span>)  <span class="comment"># 重命名，注意需要带扩展名</span></span><br><span class="line"></span><br><span class="line">shutil.copyfile(<span class="string">"test_org.txt"</span>,<span class="string">"test1.txt"</span>)  <span class="comment"># 存在则覆盖，用于copy文件</span></span><br><span class="line">shutil.copytree(<span class="string">"/Users/wxj/Desktop/1"</span>,<span class="string">"/Users/wxj/Desktop/2"</span>) <span class="comment"># 2文件夹不存在，用于copy文件夹</span></span><br><span class="line"></span><br><span class="line">shutil.move(<span class="string">"/Users/wxj/Desktop/1"</span>,<span class="string">"/Users/wxj/Desktop/2"</span>） <span class="comment"># 2文件夹存在，用于移动文件夹</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> os.path.exists(path_x): <span class="comment"># 判定是否存在某个文件夹</span></span><br><span class="line">    shutil.rmtree(Path_x)  <span class="comment"># 删除文件夹</span></span><br></pre></td></tr></table></figure>
       
     </div>
     
@@ -367,7 +355,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Linux/" rel="tag"><i class="fa fa-tag"></i> Linux</a>
+            <a href="/tags/Python/" rel="tag"><i class="fa fa-tag"></i> Python</a>
           
         </div>
       
@@ -380,8 +368,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/01/30/python-str/" rel="next" title="python字符串的一些骚操作">
-                <i class="fa fa-chevron-left"></i> python字符串的一些骚操作
+              <a href="/2018/02/07/textsum/" rel="next" title="Textsum：深度学习应用于自动文本摘要">
+                <i class="fa fa-chevron-left"></i> Textsum：深度学习应用于自动文本摘要
               </a>
             
           </div>
@@ -389,10 +377,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/02/04/python2-3/" rel="prev" title="Python2/3字符串编码相关">
-                Python2/3字符串编码相关 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -423,8 +407,8 @@
 
   
     <div class="comments" id="comments">
-      <div class="ds-thread" data-thread-key="2018/02/01/Linux/"
-           data-title="Linux操作日更贴" data-url="http://yoursite.com/2018/02/01/Linux/">
+      <div class="ds-thread" data-thread-key="2018/02/10/python-2/"
+           data-title="python IO编程及调用shell语句" data-url="http://yoursite.com/2018/02/10/python-2/">
       </div>
     </div>
 
@@ -548,7 +532,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#获取-var-www-下所有文件及文件夹的操作权限"><span class="nav-number">1.</span> <span class="nav-text">获取/var/www/下所有文件及文件夹的操作权限</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#pip安装软件镜像"><span class="nav-number">2.</span> <span class="nav-text">pip安装软件镜像</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#pip安装国外软件可能超时的解决方法"><span class="nav-number">3.</span> <span class="nav-text">pip安装国外软件可能超时的解决方法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#pip安装Tensorflow任意指定版本"><span class="nav-number">4.</span> <span class="nav-text">pip安装Tensorflow任意指定版本</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#解除Ternsorboard端口占用"><span class="nav-number">5.</span> <span class="nav-text">解除Ternsorboard端口占用</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#没有安装tensorboard-或python版本不对从其源码打开"><span class="nav-number">6.</span> <span class="nav-text">没有安装tensorboard/或python版本不对从其源码打开</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#安装pytorch"><span class="nav-number">7.</span> <span class="nav-text">安装pytorch</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ubuntu-teamviewe-安装"><span class="nav-number">8.</span> <span class="nav-text">ubuntu teamviewe 安装</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#python2-7，命令行界面输出中文字符"><span class="nav-number">9.</span> <span class="nav-text">python2.7，命令行界面输出中文字符</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#查看硬盘容量及消耗"><span class="nav-number">10.</span> <span class="nav-text">查看硬盘容量及消耗</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#多版本cuda安装及环境切换"><span class="nav-number">11.</span> <span class="nav-text">多版本cuda安装及环境切换</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ubuntu桌面死机解决"><span class="nav-number">12.</span> <span class="nav-text">ubuntu桌面死机解决</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#找不到xx包相关错误…cannot-find-lxxc…"><span class="nav-number">13.</span> <span class="nav-text">找不到xx包相关错误…cannot find -lxxc…</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#python调用shell语句"><span class="nav-number">1.</span> <span class="nav-text">python调用shell语句</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#上面调用shell语句的方式，跟python语句是独立进行的，也就是说无法进行变量的交互"><span class="nav-number">2.</span> <span class="nav-text">上面调用shell语句的方式，跟python语句是独立进行的，也就是说无法进行变量的交互</span></a></li></ol></div>
             
 
           </div>
