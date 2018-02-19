@@ -89,14 +89,14 @@
 <meta name="description" content="找出最后一个以’.’开始的字符串1234567# 第一种方法filename = &quot;/home/tucodec/ZJU.mp4&quot;str_1 = filename[filename.rindex(&quot;.&quot;):] # rindex：返回最后一个&apos;.&apos;的位置信息print(str1) # 输出“.mp4”# 第二种方法str_1 = filename.split(&apos;.&apos;)[-1] 获取某文件夹下包含文件名">
 <meta name="keywords" content="Python">
 <meta property="og:type" content="article">
-<meta property="og:title" content="python操作之字符串(一)">
+<meta property="og:title" content="python操作(二)：字符串">
 <meta property="og:url" content="http://yoursite.com/2018/01/30/python-str/index.html">
 <meta property="og:site_name" content="Deep Coding">
 <meta property="og:description" content="找出最后一个以’.’开始的字符串1234567# 第一种方法filename = &quot;/home/tucodec/ZJU.mp4&quot;str_1 = filename[filename.rindex(&quot;.&quot;):] # rindex：返回最后一个&apos;.&apos;的位置信息print(str1) # 输出“.mp4”# 第二种方法str_1 = filename.split(&apos;.&apos;)[-1] 获取某文件夹下包含文件名">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-02-10T14:26:17.357Z">
+<meta property="og:updated_time" content="2018-02-10T14:43:31.118Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="python操作之字符串(一)">
+<meta name="twitter:title" content="python操作(二)：字符串">
 <meta name="twitter:description" content="找出最后一个以’.’开始的字符串1234567# 第一种方法filename = &quot;/home/tucodec/ZJU.mp4&quot;str_1 = filename[filename.rindex(&quot;.&quot;):] # rindex：返回最后一个&apos;.&apos;的位置信息print(str1) # 输出“.mp4”# 第二种方法str_1 = filename.split(&apos;.&apos;)[-1] 获取某文件夹下包含文件名">
 
 
@@ -133,7 +133,7 @@
 
 
 
-  <title>python操作之字符串(一) | Deep Coding</title>
+  <title>python操作(二)：字符串 | Deep Coding</title>
   
 
 
@@ -277,7 +277,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">python操作之字符串(一)</h1>
+          <h1 class="post-title" itemprop="name headline">python操作(二)：字符串</h1>
         
 
         <div class="post-meta">
@@ -343,7 +343,7 @@
 <h4 id="3种连接字符串方式"><a href="#3种连接字符串方式" class="headerlink" title="3种连接字符串方式"></a>3种连接字符串方式</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">seq1 = [<span class="string">'hello'</span>,<span class="string">'good'</span>,<span class="string">'boy'</span>,<span class="string">'doiido'</span>]</span><br><span class="line"><span class="keyword">print</span> <span class="string">' '</span>.join(seq1) <span class="comment"># 已空格符连接一个list中的字符串</span></span><br><span class="line">输出：hello good boy doiido</span><br><span class="line">===============================================</span><br><span class="line">os.path.join(<span class="string">'/hello/'</span>,<span class="string">'good/boy/'</span>,<span class="string">'doiido'</span>) <span class="comment"># 合并目录</span></span><br><span class="line">输出：<span class="string">'/hello/good/boy/doiido'</span> <span class="comment"># 这样可以正确处理不同操作系统的路径分隔符</span></span><br><span class="line">===============================================</span><br><span class="line">a = <span class="string">'/hello/'</span></span><br><span class="line">b = <span class="string">'good/boy/'</span></span><br><span class="line">print(a+b)  </span><br><span class="line">输出：<span class="string">'/hello/good/boy/'</span></span><br></pre></td></tr></table></figure>
 <h4 id="分割字符串成list"><a href="#分割字符串成list" class="headerlink" title="分割字符串成list"></a>分割字符串成list</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">line = <span class="string">"我们 大 中国"</span></span><br><span class="line">line.split()</span><br><span class="line">[<span class="string">'我们'</span>, <span class="string">'大'</span>, <span class="string">'中国'</span>]</span><br></pre></td></tr></table></figure>
 <h4 id="删除不同位置的空格"><a href="#删除不同位置的空格" class="headerlink" title="删除不同位置的空格"></a>删除不同位置的空格</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">s.strip(rm)        <span class="comment">#删除s字符串中开头、结尾处，位于rm删除序列的字符</span></span><br><span class="line">s.lstrip(rm)       <span class="comment">#删除s字符串中开头处</span></span><br><span class="line">s.rstrip(rm)      <span class="comment">#删除s字符串中结尾处</span></span><br><span class="line"><span class="comment"># rm删除序列是只要边（开头或结尾）上的字符在删除序列内，就删除掉</span></span><br><span class="line">a = <span class="string">'123abc'</span></span><br><span class="line">a.strip(<span class="string">'21'</span>)</span><br><span class="line">a.strip(<span class="string">'12'</span>)</span><br><span class="line"><span class="comment"># 结果是一样的：'3abc'</span></span><br></pre></td></tr></table></figure>
-<h4 id="python全局变量"><a href="#python全局变量" class="headerlink" title="python全局变量"></a>python全局变量</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">global</span> str1 <span class="comment"># 在给全局变量str1赋值时，需要先声明global，否则str1会被当作新定义的局部变量</span></span><br><span class="line">str1 = <span class="string">"new year"</span></span><br><span class="line"></span><br><span class="line">str2 = str1 <span class="comment"># 全局变量赋值给另一个局部变量时，不需global声明，程序会先找局部变量str1，没得话就去全局变量区域找</span></span><br></pre></td></tr></table></figure>
+<h4 id="python全局变量"><a href="#python全局变量" class="headerlink" title="python全局变量"></a>python全局变量</h4><p>Python 中只有模块（module），类（class）以及函数（def、lambda）才会引入新的作用域，其它的代码块是不会引入新的作用域的。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="keyword">True</span>:</span><br><span class="line">    msg = <span class="string">'I am from Runoob'</span></span><br><span class="line">print(msg)  <span class="comment"># 'I am from Runoob'</span></span><br><span class="line"><span class="comment">#=============global=======nonlocal===================</span></span><br><span class="line"><span class="keyword">global</span> str1 <span class="comment"># 在给全局变量str1赋值时，需要先声明global，否则str1会被当作新定义的局部变量</span></span><br><span class="line">str1 = <span class="string">"new year"</span></span><br><span class="line">str2 = str1 <span class="comment"># 全局变量赋值给另一个局部变量时，不需global声明，程序会先找局部变量str1，没得话就去全局变量区域找</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">()</span>:</span></span><br><span class="line">    str1 = <span class="string">"中国"</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">func_1</span><span class="params">()</span>:</span></span><br><span class="line">        <span class="keyword">nonlocal</span> str1</span><br><span class="line">        str1 = <span class="string">"南京"</span>  <span class="comment">#修改嵌套作用域（函数A的变量作用在子函数B时）中的变量需要使用 nonlocal 关键字</span></span><br></pre></td></tr></table></figure></p>
 <h4 id="python-list、dict、tuple、set"><a href="#python-list、dict、tuple、set" class="headerlink" title="python list、dict、tuple、set"></a>python list、dict、tuple、set</h4><p>set：通过set.add()函数添加元素，set会自动去重，且查找效率高(hash)<br>tuple是只读的list()，list可以通过下标、循环等方式访问，通过.append()来访问<br>dict是key、value一一对应的关系，常用于序号跟真值之间的查询，比如NMT任务的vocab<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">dict1 = &#123;<span class="string">'1'</span>:<span class="string">'飞机'</span>,<span class="string">'2'</span>:<span class="string">'自行车'</span>,<span class="string">'3'</span>:<span class="string">'鸟'</span>,<span class="string">'4'</span>:<span class="string">'船'</span>,<span class="string">'5'</span>:<span class="string">'瓶子'</span>,<span class="string">'6'</span>:<span class="string">'公共汽车'</span>,<span class="string">'7'</span>:<span class="string">'车'</span>,<span class="string">'8'</span>:<span class="string">'猫'</span>,<span class="string">'9'</span>:<span class="string">'椅子'</span>,<span class="string">'10'</span>:<span class="string">'牛'</span>,<span class="string">'11'</span>:<span class="string">'餐桌'</span>,<span class="string">'12'</span>:<span class="string">'狗'</span>, \</span><br><span class="line">    <span class="string">'13'</span>:<span class="string">'马'</span>,<span class="string">'14'</span>:<span class="string">'摩托车'</span>,<span class="string">'15'</span>:<span class="string">'人'</span>,<span class="string">'16'</span>:<span class="string">'植物'</span>,<span class="string">'17'</span>:<span class="string">'羊'</span>,<span class="string">'18'</span>:<span class="string">'沙发'</span>,<span class="string">'19'</span>:<span class="string">'火车'</span>,<span class="string">'20'</span>:<span class="string">'电视'</span>&#125;</span><br><span class="line">    <span class="keyword">for</span> str_i <span class="keyword">in</span> list(A):</span><br><span class="line">    List.append(dict1[str_i]) <span class="comment">#listA中是一个纯数字列表，LIST中对应其在字典中的真实类别</span></span><br></pre></td></tr></table></figure></p>
 
       
@@ -375,8 +375,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/01/30/socket/" rel="next" title="python网络编程入门">
-                <i class="fa fa-chevron-left"></i> python网络编程入门
+              <a href="/2018/01/30/socket/" rel="next" title="python操作(一)：网络编程入门">
+                <i class="fa fa-chevron-left"></i> python操作(一)：网络编程入门
               </a>
             
           </div>
@@ -385,8 +385,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/02/01/Linux/" rel="prev" title="Linux操作日更贴">
-                Linux操作日更贴 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/02/01/python2-3/" rel="prev" title="python操作(三)：Unicode编码">
+                python操作(三)：Unicode编码 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -419,7 +419,7 @@
   
     <div class="comments" id="comments">
       <div class="ds-thread" data-thread-key="2018/01/30/python-str/"
-           data-title="python操作之字符串(一)" data-url="http://yoursite.com/2018/01/30/python-str/">
+           data-title="python操作(二)：字符串" data-url="http://yoursite.com/2018/01/30/python-str/">
       </div>
     </div>
 
@@ -475,7 +475,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -488,7 +488,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -589,7 +589,7 @@
  
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共12.7k字</span>
+  <span class="post-count">博客全站共12.9k字</span>
 </div>
 
 <div class="powered-by">

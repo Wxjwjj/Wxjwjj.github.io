@@ -259,136 +259,6 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/10/python-2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="祥吉">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Deep Coding">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/02/10/python-2/" itemprop="url">python操作之IO编程/调用shell语句(三)</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-10T11:02:03+08:00">
-                2018-02-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/02/10/python-2/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/02/10/python-2/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="python调用shell语句"><a href="#python调用shell语句" class="headerlink" title="python调用shell语句"></a>python调用shell语句</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">假设已存在run.sh的shell语句，如:</span></span><br><span class="line"><span class="string">cd /home/tucodec/Desktop </span></span><br><span class="line"><span class="string">python2 run.py</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line">os.system(<span class="string">"bash run.sh"</span>) <span class="comment">#会自动到桌面执行run.py</span></span><br></pre></td></tr></table></figure>
-<h4 id="上面调用shell语句的方式，跟python语句是独立进行的，也就是说无法进行变量的交互"><a href="#上面调用shell语句的方式，跟python语句是独立进行的，也就是说无法进行变量的交互" class="headerlink" title="上面调用shell语句的方式，跟python语句是独立进行的，也就是说无法进行变量的交互"></a>上面调用shell语句的方式，跟python语句是独立进行的，也就是说无法进行变量的交互</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">采用下面的语句可以实现在python中操作文件/文件夹</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> shutil</span><br><span class="line">file_dir = <span class="string">'/Users/wxj/Desktop'</span></span><br><span class="line"><span class="keyword">print</span> (os.getcwd())  <span class="comment"># 获取当前目录</span></span><br><span class="line">os.chdir(file_dir)   <span class="comment"># 改变工作目录</span></span><br><span class="line">os.mkdir(<span class="string">"test"</span>)  <span class="comment"># 创建文件夹</span></span><br><span class="line"></span><br><span class="line">os.rename(<span class="string">"test"</span>,<span class="string">"test1"</span>)   </span><br><span class="line">os.rename(<span class="string">"test.txt"</span>,<span class="string">"test1.txt"</span>)  <span class="comment"># 重命名，注意需要带扩展名</span></span><br><span class="line"></span><br><span class="line">shutil.copyfile(<span class="string">"test_org.txt"</span>,<span class="string">"test1.txt"</span>)  <span class="comment"># 存在则覆盖，用于copy文件</span></span><br><span class="line">shutil.copytree(<span class="string">"/Users/wxj/Desktop/1"</span>,<span class="string">"/Users/wxj/Desktop/2"</span>) <span class="comment"># 2文件夹不存在，用于copy文件夹</span></span><br><span class="line"></span><br><span class="line">shutil.move(<span class="string">"/Users/wxj/Desktop/1"</span>,<span class="string">"/Users/wxj/Desktop/2"</span>） <span class="comment"># 2文件夹存在，用于移动文件夹</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> os.path.exists(path_x): <span class="comment"># 判定是否存在某个文件夹</span></span><br><span class="line">    shutil.rmtree(Path_x)  <span class="comment"># 删除文件夹</span></span><br></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/07/textsum/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -522,135 +392,6 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/05/ranfang/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="祥吉">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Deep Coding">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/02/05/ranfang/" itemprop="url">《大染坊_2003版》观后感</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-05T23:14:44+08:00">
-                2018-02-05
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/02/05/ranfang/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/02/05/ranfang/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/05/0to1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -732,136 +473,9 @@
       
         
           
-            
-          
-        
-      
-    </div>
-    
-    
-    
+            <p>2017.09～2018.02，加入创业公司工作已近半年。再读《从0到1》，对作者要表达的思想才开始有了一些了解。合上书本，按自己对书中内容的印象，由深及浅</p>
+<p>#### </p>
 
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/05/baijinqi/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="祥吉">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Deep Coding">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/02/05/baijinqi/" itemprop="url">《大宅门_2000版》观后感</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-05T23:11:27+08:00">
-                2018-02-05
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/02/05/baijinqi/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/02/05/baijinqi/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            
           
         
       
@@ -1055,150 +669,6 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/04/python2-3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="祥吉">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Deep Coding">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/02/04/python2-3/" itemprop="url">python操作之unicode编码(二)</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-04T10:32:45+08:00">
-                2018-02-04
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/02/04/python2-3/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/02/04/python2-3/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h2><p>中文字符一般都是编码为<code>Unicode</code>存储在计算机中的，然而表现形式却大不相同，有的程序喜欢给你输出中文，有的喜欢输出乱码，Eg：<code>&#39;\xe5\xbc\xa0\xe4\xbf\x8a&#39;</code>。python2/3中的字符串编码，就有这样的问题，在此进行梳理，有备无患。</p>
-<h3 id="ASCII、Unicode和UTF-8关系"><a href="#ASCII、Unicode和UTF-8关系" class="headerlink" title="ASCII、Unicode和UTF-8关系"></a>ASCII、Unicode和UTF-8关系</h3><p>由于1个字节(byte) == 8位(bit)，所以1字节最多可以表示256个字符。美国人在发明计算机时候，英文字母(大小写共64个)，加上一些标点符号，256个字符安全够用。这个编码就被称为<code>ASCII</code>编码。比如’A’对应ASCII码表中的65，’z’对应122。<br><img src="/img/python_1.jpeg" alt=""><br>但我们的中文博大精深，256个字符显然不能覆盖全部字符，所以中国制定了2字节的GB2312编码(GBK是GB2312的扩充，包含的中文字符更多)。无独有偶，各个国家都制定了自己的规则把本国的文字编写进去。为了统一各个语言之间的编码，<code>Unicode</code>应运而生，具体来说，ASCII用1个字节表示字符，Unicode用2个字节，对于一些特殊符号，甚至使用4个字节。ASCII编码的’A’用Unicode编码，只需要在前面补0就可以了。</p>
-<blockquote>
-<p>虽然乱码消失，但却造成了新的问题：如果你写的文本基本上都是英语，那用Unicode编码比ASCII编码需要多一倍的存储空间，在存储和传输上就十分不划算。</p>
-</blockquote>
-<p><code>UTF-8</code>编码再次被发明，它是对Unicode编码的<code>再编码</code>，对于常用的英文编码为1字节，汉子通常为3字节。如果需要传输、保存的文本含有大量应为，这样的编码可以减少带宽，减少硬盘成本。如下所示：<br><img src="/img/python_2.jpeg" alt=""></p>
-<h2 id="python2"><a href="#python2" class="headerlink" title="python2"></a>python2</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Python 2.7.10 (default, Jul 15 2017, 17:16:57) </span><br><span class="line">[GCC 4.2.1 Compatible Apple LLVM 9.0.0 (clang-900.0.31)] on darwin</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; <span class="string">'中国'</span> <span class="comment"># python2中默认转换为UTF-8编码的字符串</span></span><br><span class="line"><span class="string">'\xe4\xb8\xad\xe5\x9b\xbd'</span></span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; u<span class="string">'中国'</span> <span class="comment"># 字符串前+'u'，代表指定Unicode编码</span></span><br><span class="line">u<span class="string">'\u4e2d\u56fd'</span></span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; <span class="string">'中国'</span>.decode(<span class="string">'utf-8'</span>) <span class="comment"># utf-8类型字符串解码为Unicode编码</span></span><br><span class="line">u<span class="string">'\u4e2d\u56fd'</span></span><br></pre></td></tr></table></figure>
-<h2 id="python3"><a href="#python3" class="headerlink" title="python3"></a>python3</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Python 3.5.3 (v3.5.3:1880cb95a742, Jan 16 2017, 08:49:46) </span><br><span class="line">[GCC 4.2.1 (Apple Inc. build 5666) (dot 3)] on darwin</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; <span class="string">'中国'</span> <span class="comment"># python3中默认为Unicode格式(无编码)，同u'中国'</span></span><br><span class="line"><span class="string">'中国'</span></span><br><span class="line">&lt;class <span class="string">'str'</span>&gt;</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; <span class="string">'中国'</span>.encode(<span class="string">'utf-8'</span>) <span class="comment">#转UTF-8编码</span></span><br><span class="line">b<span class="string">'\xe4\xb8\xad\xe5\x9b\xbd'</span></span><br><span class="line">&lt;class <span class="string">'bytes'</span>&gt;</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; <span class="built_in">print</span> (<span class="string">'中国'</span>.encode(<span class="string">'utf-8'</span>).decode(<span class="string">'utf-8'</span>)) </span><br><span class="line"><span class="string">'中国'</span></span><br></pre></td></tr></table></figure>
-<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><blockquote>
-<ul>
-<li>python2中字符串有str和unicode两种类型，str有各种编码区别(UTF-8、GBK等)，unicode是没有编码的标准形式。unicode通过encode转化成str，str通过decode转化成unicode。</li>
-<li>python3中字符串有str和bytes两种类型，字符串str与python2中unicode类似是标准形式，bytes类似python2中的str有各种编码区别。所以在python3中查看某个字符串的编码序列，只能先将str编码为一定形式的bytes数据，然后再输出</li>
-</ul>
-</blockquote>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Python 3.5.3 (v3.5.3:1880cb95a742, Jan 16 2017, 08:49:46) </span><br><span class="line">[GCC 4.2.1 (Apple Inc. build 5666) (dot 3)] on darwin</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; ss = <span class="string">'北京市'</span>  </span><br><span class="line">&gt;&gt;&gt; <span class="built_in">type</span>(ss)  </span><br><span class="line">&lt;class <span class="string">'str'</span>&gt;  </span><br><span class="line">&gt;&gt;&gt; us = ss.encode(<span class="string">'gbk'</span>)  </span><br><span class="line">&gt;&gt;&gt; <span class="built_in">type</span>(us)  </span><br><span class="line">&lt;class <span class="string">'bytes'</span>&gt;  </span><br><span class="line">&gt;&gt;&gt; us  </span><br><span class="line">b<span class="string">'\xb1\xb1\xbe\xa9\xca\xd0'</span></span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/01/Linux/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1341,6 +811,280 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/01/python-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="祥吉">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Deep Coding">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/02/01/python-2/" itemprop="url">python操作(四)：IO编程/调用shell语句</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-01T11:02:03+08:00">
+                2018-02-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/02/01/python-2/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/02/01/python-2/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="python调用shell语句"><a href="#python调用shell语句" class="headerlink" title="python调用shell语句"></a>python调用shell语句</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">假设已存在run.sh的shell语句，如:</span></span><br><span class="line"><span class="string">cd /home/tucodec/Desktop </span></span><br><span class="line"><span class="string">python2 run.py</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line">os.system(<span class="string">"bash run.sh"</span>) <span class="comment">#会自动到桌面执行run.py</span></span><br></pre></td></tr></table></figure>
+<h4 id="上面调用shell语句的方式，跟python语句是独立进行的，也就是说无法进行变量的交互"><a href="#上面调用shell语句的方式，跟python语句是独立进行的，也就是说无法进行变量的交互" class="headerlink" title="上面调用shell语句的方式，跟python语句是独立进行的，也就是说无法进行变量的交互"></a>上面调用shell语句的方式，跟python语句是独立进行的，也就是说无法进行变量的交互</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">采用下面的语句可以实现在python中操作文件/文件夹</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> shutil</span><br><span class="line">file_dir = <span class="string">'/Users/wxj/Desktop'</span></span><br><span class="line"><span class="keyword">print</span> (os.getcwd())  <span class="comment"># 获取当前目录</span></span><br><span class="line">os.chdir(file_dir)   <span class="comment"># 改变工作目录</span></span><br><span class="line">os.mkdir(<span class="string">"test"</span>)  <span class="comment"># 创建文件夹</span></span><br><span class="line"></span><br><span class="line">os.rename(<span class="string">"test"</span>,<span class="string">"test1"</span>)   </span><br><span class="line">os.rename(<span class="string">"test.txt"</span>,<span class="string">"test1.txt"</span>)  <span class="comment"># 重命名，注意需要带扩展名</span></span><br><span class="line"></span><br><span class="line">shutil.copyfile(<span class="string">"test_org.txt"</span>,<span class="string">"test1.txt"</span>)  <span class="comment"># 存在则覆盖，用于copy文件</span></span><br><span class="line">shutil.copytree(<span class="string">"/Users/wxj/Desktop/1"</span>,<span class="string">"/Users/wxj/Desktop/2"</span>) <span class="comment"># 2文件夹不存在，用于copy文件夹</span></span><br><span class="line"></span><br><span class="line">shutil.move(<span class="string">"/Users/wxj/Desktop/1"</span>,<span class="string">"/Users/wxj/Desktop/2"</span>） <span class="comment"># 2文件夹存在，用于移动文件夹</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> os.path.exists(path_x): <span class="comment"># 判定是否存在某个文件夹</span></span><br><span class="line">    shutil.rmtree(Path_x)  <span class="comment"># 删除文件夹</span></span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/01/python2-3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="祥吉">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Deep Coding">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/02/01/python2-3/" itemprop="url">python操作(三)：Unicode编码</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-01T10:32:45+08:00">
+                2018-02-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/02/01/python2-3/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/02/01/python2-3/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h2><p>中文字符一般都是编码为<code>Unicode</code>存储在计算机中的，然而表现形式却大不相同，有的程序喜欢给你输出中文，有的喜欢输出乱码，Eg：<code>&#39;\xe5\xbc\xa0\xe4\xbf\x8a&#39;</code>。python2/3中的字符串编码，就有这样的问题，在此进行梳理，有备无患。</p>
+<h3 id="ASCII、Unicode和UTF-8关系"><a href="#ASCII、Unicode和UTF-8关系" class="headerlink" title="ASCII、Unicode和UTF-8关系"></a>ASCII、Unicode和UTF-8关系</h3><p>由于1个字节(byte) == 8位(bit)，所以1字节最多可以表示256个字符。美国人在发明计算机时候，英文字母(大小写共64个)，加上一些标点符号，256个字符安全够用。这个编码就被称为<code>ASCII</code>编码。比如’A’对应ASCII码表中的65，’z’对应122。<br><img src="/img/python_1.jpeg" alt=""><br>但我们的中文博大精深，256个字符显然不能覆盖全部字符，所以中国制定了2字节的GB2312编码(GBK是GB2312的扩充，包含的中文字符更多)。无独有偶，各个国家都制定了自己的规则把本国的文字编写进去。为了统一各个语言之间的编码，<code>Unicode</code>应运而生，具体来说，ASCII用1个字节表示字符，Unicode用2个字节，对于一些特殊符号，甚至使用4个字节。ASCII编码的’A’用Unicode编码，只需要在前面补0就可以了。</p>
+<blockquote>
+<p>虽然乱码消失，但却造成了新的问题：如果你写的文本基本上都是英语，那用Unicode编码比ASCII编码需要多一倍的存储空间，在存储和传输上就十分不划算。</p>
+</blockquote>
+<p><code>UTF-8</code>编码再次被发明，它是对Unicode编码的<code>再编码</code>，对于常用的英文编码为1字节，汉子通常为3字节。如果需要传输、保存的文本含有大量应为，这样的编码可以减少带宽，减少硬盘成本。如下所示：<br><img src="/img/python_2.jpeg" alt=""></p>
+<h2 id="python2"><a href="#python2" class="headerlink" title="python2"></a>python2</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Python 2.7.10 (default, Jul 15 2017, 17:16:57) </span><br><span class="line">[GCC 4.2.1 Compatible Apple LLVM 9.0.0 (clang-900.0.31)] on darwin</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; <span class="string">'中国'</span> <span class="comment"># python2中默认转换为UTF-8编码的字符串</span></span><br><span class="line"><span class="string">'\xe4\xb8\xad\xe5\x9b\xbd'</span></span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; u<span class="string">'中国'</span> <span class="comment"># 字符串前+'u'，代表指定Unicode编码</span></span><br><span class="line">u<span class="string">'\u4e2d\u56fd'</span></span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; <span class="string">'中国'</span>.decode(<span class="string">'utf-8'</span>) <span class="comment"># utf-8类型字符串解码为Unicode编码</span></span><br><span class="line">u<span class="string">'\u4e2d\u56fd'</span></span><br></pre></td></tr></table></figure>
+<h2 id="python3"><a href="#python3" class="headerlink" title="python3"></a>python3</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Python 3.5.3 (v3.5.3:1880cb95a742, Jan 16 2017, 08:49:46) </span><br><span class="line">[GCC 4.2.1 (Apple Inc. build 5666) (dot 3)] on darwin</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; <span class="string">'中国'</span> <span class="comment"># python3中默认为Unicode格式(无编码)，同u'中国'</span></span><br><span class="line"><span class="string">'中国'</span></span><br><span class="line">&lt;class <span class="string">'str'</span>&gt;</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; <span class="string">'中国'</span>.encode(<span class="string">'utf-8'</span>) <span class="comment">#转UTF-8编码</span></span><br><span class="line">b<span class="string">'\xe4\xb8\xad\xe5\x9b\xbd'</span></span><br><span class="line">&lt;class <span class="string">'bytes'</span>&gt;</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; <span class="built_in">print</span> (<span class="string">'中国'</span>.encode(<span class="string">'utf-8'</span>).decode(<span class="string">'utf-8'</span>)) </span><br><span class="line"><span class="string">'中国'</span></span><br></pre></td></tr></table></figure>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><blockquote>
+<ul>
+<li>python2中字符串有str和unicode两种类型，str有各种编码区别(UTF-8、GBK等)，unicode是没有编码的标准形式。unicode通过encode转化成str，str通过decode转化成unicode。</li>
+<li>python3中字符串有str和bytes两种类型，字符串str与python2中unicode类似是标准形式，bytes类似python2中的str有各种编码区别。所以在python3中查看某个字符串的编码序列，只能先将str编码为一定形式的bytes数据，然后再输出</li>
+</ul>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Python 3.5.3 (v3.5.3:1880cb95a742, Jan 16 2017, 08:49:46) </span><br><span class="line">[GCC 4.2.1 (Apple Inc. build 5666) (dot 3)] on darwin</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; ss = <span class="string">'北京市'</span>  </span><br><span class="line">&gt;&gt;&gt; <span class="built_in">type</span>(ss)  </span><br><span class="line">&lt;class <span class="string">'str'</span>&gt;  </span><br><span class="line">&gt;&gt;&gt; us = ss.encode(<span class="string">'gbk'</span>)  </span><br><span class="line">&gt;&gt;&gt; <span class="built_in">type</span>(us)  </span><br><span class="line">&lt;class <span class="string">'bytes'</span>&gt;  </span><br><span class="line">&gt;&gt;&gt; us  </span><br><span class="line">b<span class="string">'\xb1\xb1\xbe\xa9\xca\xd0'</span></span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/30/python-str/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1360,7 +1104,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/01/30/python-str/" itemprop="url">python操作之字符串(一)</a></h1>
+                <a class="post-title-link" href="/2018/01/30/python-str/" itemprop="url">python操作(二)：字符串</a></h1>
         
 
         <div class="post-meta">
@@ -1428,7 +1172,7 @@
 <h4 id="3种连接字符串方式"><a href="#3种连接字符串方式" class="headerlink" title="3种连接字符串方式"></a>3种连接字符串方式</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">seq1 = [<span class="string">'hello'</span>,<span class="string">'good'</span>,<span class="string">'boy'</span>,<span class="string">'doiido'</span>]</span><br><span class="line"><span class="keyword">print</span> <span class="string">' '</span>.join(seq1) <span class="comment"># 已空格符连接一个list中的字符串</span></span><br><span class="line">输出：hello good boy doiido</span><br><span class="line">===============================================</span><br><span class="line">os.path.join(<span class="string">'/hello/'</span>,<span class="string">'good/boy/'</span>,<span class="string">'doiido'</span>) <span class="comment"># 合并目录</span></span><br><span class="line">输出：<span class="string">'/hello/good/boy/doiido'</span> <span class="comment"># 这样可以正确处理不同操作系统的路径分隔符</span></span><br><span class="line">===============================================</span><br><span class="line">a = <span class="string">'/hello/'</span></span><br><span class="line">b = <span class="string">'good/boy/'</span></span><br><span class="line">print(a+b)  </span><br><span class="line">输出：<span class="string">'/hello/good/boy/'</span></span><br></pre></td></tr></table></figure>
 <h4 id="分割字符串成list"><a href="#分割字符串成list" class="headerlink" title="分割字符串成list"></a>分割字符串成list</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">line = <span class="string">"我们 大 中国"</span></span><br><span class="line">line.split()</span><br><span class="line">[<span class="string">'我们'</span>, <span class="string">'大'</span>, <span class="string">'中国'</span>]</span><br></pre></td></tr></table></figure>
 <h4 id="删除不同位置的空格"><a href="#删除不同位置的空格" class="headerlink" title="删除不同位置的空格"></a>删除不同位置的空格</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">s.strip(rm)        <span class="comment">#删除s字符串中开头、结尾处，位于rm删除序列的字符</span></span><br><span class="line">s.lstrip(rm)       <span class="comment">#删除s字符串中开头处</span></span><br><span class="line">s.rstrip(rm)      <span class="comment">#删除s字符串中结尾处</span></span><br><span class="line"><span class="comment"># rm删除序列是只要边（开头或结尾）上的字符在删除序列内，就删除掉</span></span><br><span class="line">a = <span class="string">'123abc'</span></span><br><span class="line">a.strip(<span class="string">'21'</span>)</span><br><span class="line">a.strip(<span class="string">'12'</span>)</span><br><span class="line"><span class="comment"># 结果是一样的：'3abc'</span></span><br></pre></td></tr></table></figure>
-<h4 id="python全局变量"><a href="#python全局变量" class="headerlink" title="python全局变量"></a>python全局变量</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">global</span> str1 <span class="comment"># 在给全局变量str1赋值时，需要先声明global，否则str1会被当作新定义的局部变量</span></span><br><span class="line">str1 = <span class="string">"new year"</span></span><br><span class="line"></span><br><span class="line">str2 = str1 <span class="comment"># 全局变量赋值给另一个局部变量时，不需global声明，程序会先找局部变量str1，没得话就去全局变量区域找</span></span><br></pre></td></tr></table></figure>
+<h4 id="python全局变量"><a href="#python全局变量" class="headerlink" title="python全局变量"></a>python全局变量</h4><p>Python 中只有模块（module），类（class）以及函数（def、lambda）才会引入新的作用域，其它的代码块是不会引入新的作用域的。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="keyword">True</span>:</span><br><span class="line">    msg = <span class="string">'I am from Runoob'</span></span><br><span class="line">print(msg)  <span class="comment"># 'I am from Runoob'</span></span><br><span class="line"><span class="comment">#=============global=======nonlocal===================</span></span><br><span class="line"><span class="keyword">global</span> str1 <span class="comment"># 在给全局变量str1赋值时，需要先声明global，否则str1会被当作新定义的局部变量</span></span><br><span class="line">str1 = <span class="string">"new year"</span></span><br><span class="line">str2 = str1 <span class="comment"># 全局变量赋值给另一个局部变量时，不需global声明，程序会先找局部变量str1，没得话就去全局变量区域找</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">()</span>:</span></span><br><span class="line">    str1 = <span class="string">"中国"</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">func_1</span><span class="params">()</span>:</span></span><br><span class="line">        <span class="keyword">nonlocal</span> str1</span><br><span class="line">        str1 = <span class="string">"南京"</span>  <span class="comment">#修改嵌套作用域（函数A的变量作用在子函数B时）中的变量需要使用 nonlocal 关键字</span></span><br></pre></td></tr></table></figure></p>
 <h4 id="python-list、dict、tuple、set"><a href="#python-list、dict、tuple、set" class="headerlink" title="python list、dict、tuple、set"></a>python list、dict、tuple、set</h4><p>set：通过set.add()函数添加元素，set会自动去重，且查找效率高(hash)<br>tuple是只读的list()，list可以通过下标、循环等方式访问，通过.append()来访问<br>dict是key、value一一对应的关系，常用于序号跟真值之间的查询，比如NMT任务的vocab<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">dict1 = &#123;<span class="string">'1'</span>:<span class="string">'飞机'</span>,<span class="string">'2'</span>:<span class="string">'自行车'</span>,<span class="string">'3'</span>:<span class="string">'鸟'</span>,<span class="string">'4'</span>:<span class="string">'船'</span>,<span class="string">'5'</span>:<span class="string">'瓶子'</span>,<span class="string">'6'</span>:<span class="string">'公共汽车'</span>,<span class="string">'7'</span>:<span class="string">'车'</span>,<span class="string">'8'</span>:<span class="string">'猫'</span>,<span class="string">'9'</span>:<span class="string">'椅子'</span>,<span class="string">'10'</span>:<span class="string">'牛'</span>,<span class="string">'11'</span>:<span class="string">'餐桌'</span>,<span class="string">'12'</span>:<span class="string">'狗'</span>, \</span><br><span class="line">    <span class="string">'13'</span>:<span class="string">'马'</span>,<span class="string">'14'</span>:<span class="string">'摩托车'</span>,<span class="string">'15'</span>:<span class="string">'人'</span>,<span class="string">'16'</span>:<span class="string">'植物'</span>,<span class="string">'17'</span>:<span class="string">'羊'</span>,<span class="string">'18'</span>:<span class="string">'沙发'</span>,<span class="string">'19'</span>:<span class="string">'火车'</span>,<span class="string">'20'</span>:<span class="string">'电视'</span>&#125;</span><br><span class="line">    <span class="keyword">for</span> str_i <span class="keyword">in</span> list(A):</span><br><span class="line">    List.append(dict1[str_i]) <span class="comment">#listA中是一个纯数字列表，LIST中对应其在字典中的真实类别</span></span><br></pre></td></tr></table></figure></p>
 
           
@@ -1497,7 +1241,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/01/30/socket/" itemprop="url">python网络编程入门</a></h1>
+                <a class="post-title-link" href="/2018/01/30/socket/" itemprop="url">python操作(一)：网络编程入门</a></h1>
         
 
         <div class="post-meta">
@@ -1614,6 +1358,300 @@
 
 
     
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/30/doc2vec/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="祥吉">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Deep Coding">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/30/doc2vec/" itemprop="url">文本语义匹配/相似度度量</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-30T10:03:31+08:00">
+                2018-01-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/01/30/doc2vec/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/01/30/doc2vec/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="Word2vec语义相似度计算"><a href="#Word2vec语义相似度计算" class="headerlink" title="Word2vec语义相似度计算"></a>Word2vec语义相似度计算</h3><p>上一章节，我们用1.1G的中文维基百科语料训练了词向量。而短文本的语义相似度度量，最简单的方法便是把每个句子的词向量相加，然后计算其余弦相似度。gensim包中同样用函数实现了这一算法，如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">n_similarity</span><span class="params">(self, ws1, ws2)</span>:</span></span><br><span class="line">    v1 = [self[word] <span class="keyword">for</span> word <span class="keyword">in</span> ws1]</span><br><span class="line">    v2 = [self[word] <span class="keyword">for</span> word <span class="keyword">in</span> ws2]</span><br><span class="line">    <span class="keyword">return</span> dot(matutils.unitvec(array(v1).mean(axis=<span class="number">0</span>)), matutils.unitvec(array(v2).mean(axis=<span class="number">0</span>)))</span><br></pre></td></tr></table></figure></p>
+<p>建立一个<code>target.txt</code>文件存放待匹配的问题，代码比较简单如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"><span class="comment">#!/usr/bin/env Python</span></span><br><span class="line"><span class="keyword">from</span> gensim.models <span class="keyword">import</span> Word2Vec</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> jieba</span><br><span class="line">jieba.load_userdict(<span class="string">"dict.txt"</span>)</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ResultInfo</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, index, score, text)</span>:</span></span><br><span class="line">        self.id = index</span><br><span class="line">        self.score = score</span><br><span class="line">        self.text = text</span><br><span class="line"></span><br><span class="line">target = <span class="string">"target.txt"</span> <span class="comment"># 问题集合</span></span><br><span class="line">model = <span class="string">"./model/word2vec"</span></span><br><span class="line"></span><br><span class="line">model_w2v = Word2Vec.load(model) <span class="comment">#加载模型 文字摘要</span></span><br><span class="line"><span class="keyword">print</span> (<span class="string">"模型加载成功！"</span>)</span><br><span class="line">candidates = []</span><br><span class="line"><span class="keyword">with</span> open(target) <span class="keyword">as</span> f:</span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> f:</span><br><span class="line">        candidates.append(line.strip().split()) <span class="comment"># candidates列表中加载所有问题，</span></span><br><span class="line">并用空格分割</span><br><span class="line"><span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">    text = input(<span class="string">"请输入查询指令： "</span>)</span><br><span class="line">    words = list(jieba.cut(text.strip()))</span><br><span class="line">    <span class="keyword">if</span> len(words) == <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">continue</span></span><br><span class="line">    flag = <span class="keyword">False</span></span><br><span class="line">    <span class="keyword">for</span> w <span class="keyword">in</span> words:</span><br><span class="line">        <span class="keyword">if</span> w <span class="keyword">not</span> <span class="keyword">in</span> model_w2v.wv.vocab:</span><br><span class="line">            <span class="keyword">print</span> (<span class="string">"输入指令中词汇“%s”不在字典中"</span> % w)</span><br><span class="line">            flag = <span class="keyword">True</span></span><br><span class="line">    <span class="keyword">if</span> flag:</span><br><span class="line">        <span class="keyword">continue</span></span><br><span class="line">    res = []</span><br><span class="line">    index = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> candidate <span class="keyword">in</span> candidates:</span><br><span class="line">        score = model_w2v.n_similarity(words, candidate)</span><br><span class="line">        res.append(ResultInfo(index, score, <span class="string">" "</span>.join(candidate)))</span><br><span class="line">        index += <span class="number">1</span></span><br><span class="line">    res.sort(key=<span class="keyword">lambda</span> x:x.score, reverse=<span class="keyword">True</span>)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> res:</span><br><span class="line">        <span class="keyword">print</span> i.text <span class="comment"># 输出相似度最高的语句</span></span><br></pre></td></tr></table></figure></p>
+<p>最后测试结果如下，在短文本的相似度测量上，基于词向量相似度度量的算法在计算速度和质量上均是比较满意的。</p>
+<blockquote>
+<p>  ============<strong>体育</strong>=============<br>    3 世界 锦标赛 中国队 胜出 0.42<br>    4 中国 足球 失败 0.41<br>    2 奥运会 中国 女排 夺冠 0.40<br>    ============<strong>农业</strong>=============<br>    1 农民 在 江苏 种 水稻 0.55<br>    0 人工智能 和 农业 怎么 结合 0.45<br>    5 山东 苹果 丰收 0.42  </p>
+</blockquote>
+<h3 id="Doc2vec语义相似度计算"><a href="#Doc2vec语义相似度计算" class="headerlink" title="Doc2vec语义相似度计算"></a>Doc2vec语义相似度计算</h3><p>Doc2vec的原理暂未深入研究，参照网上各路教程跑通后的代码如下。笔者用该doc2vec进行了语义相似度检测，但效果差强人意（具体来说，能捕捉到一定程度句子结构信息，但对语义很模糊）。可能跟语料库选取关系较大，此处用的不是一行行的短句，而是训练word2vec的语料，一行一段话…接下来若有文本分类等任务，再补上详细研究路线<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> gensim</span><br><span class="line"><span class="keyword">import</span> smart_open</span><br><span class="line"><span class="keyword">import</span> multiprocessing</span><br><span class="line"><span class="keyword">import</span> logging</span><br><span class="line"><span class="keyword">from</span> gensim.models.doc2vec <span class="keyword">import</span> TaggedDocument, Doc2Vec</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line">reload(sys)</span><br><span class="line">sys.setdefaultencoding(<span class="string">'utf-8'</span>)</span><br><span class="line"></span><br><span class="line">data_set = <span class="string">"pre0"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">read_corpus</span><span class="params">(fname, tokens_only=False)</span>:</span></span><br><span class="line">    <span class="keyword">with</span> smart_open.smart_open(fname, encoding=<span class="string">"utf-8"</span>) <span class="keyword">as</span> f:</span><br><span class="line">        <span class="keyword">for</span> i, line <span class="keyword">in</span> enumerate(f):</span><br><span class="line">            <span class="keyword">if</span> tokens_only:</span><br><span class="line">                <span class="keyword">yield</span> gensim.utils.simple_preprocess(line)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                text = line.split()</span><br><span class="line">                <span class="keyword">yield</span> TaggedDocument(text[:], [i])</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">train_data = list(read_corpus(data_set))</span><br><span class="line"><span class="keyword">print</span> len(train_data)</span><br><span class="line"></span><br><span class="line">logging.basicConfig(format=<span class="string">'%(asctime)s : %(levelname)s : %(message)s'</span>, level=logging.INFO)</span><br><span class="line">model = Doc2Vec(size=<span class="number">100</span>, min_count=<span class="number">1</span>, iter=<span class="number">10</span>, workers=multiprocessing.cpu_count())</span><br><span class="line">model.build_vocab(train_data)</span><br><span class="line">model.train(train_data, total_examples=model.corpus_count, epochs=<span class="number">100</span>)</span><br><span class="line">model.save(<span class="string">'./model/model_new.doc2vec'</span>)</span><br></pre></td></tr></table></figure></p>
+<h3 id="Ref："><a href="#Ref：" class="headerlink" title="Ref："></a>Ref：</h3><p><a href="http://someth.duapp.com/2017/08/10/LSTM-%E5%8F%A5%E5%AD%90%E7%9B%B8%E4%BC%BC%E5%BA%A6%E5%88%86%E6%9E%90/" target="_blank" rel="noopener">LSTM 句子相似度分析</a><br><a href="http://blog.csdn.net/lenbow/article/details/52120230" target="_blank" rel="noopener">基于gensim的Doc2Vec简析</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/25/word2vec-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="祥吉">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Deep Coding">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/25/word2vec-1/" itemprop="url">中文维基百科词向量Word2vec实战！</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-25T23:11:28+08:00">
+                2018-01-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/01/25/word2vec-1/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/01/25/word2vec-1/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>上一篇文章详细学习了Word2vec的含义及实现原理，包含两大语言模型：Cbow、Skip-Gram，以及两大快速训练技巧：Negative sampling、哈夫曼树形式查找Target word。这一篇主要讲基于中文维基百科语料库的Word2vec训练，采用了开源的python gensim包</p>
+<h2 id="安装gensim包"><a href="#安装gensim包" class="headerlink" title="安装gensim包"></a>安装gensim包</h2><p>Google最初开源的Word2vec是用C++写的，后来陆续出现了很多版本，我们采用的是<a href="https://radimrehurek.com/gensim/models/word2vec.html" target="_blank" rel="noopener"><font color="blue"><strong>gensim</strong></font></a> ，gensim已经被集成在了conda中，所以我们可以方便地利用miniconda进行安装。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span> activate py2k  <span class="comment"># 激活python2环境，当然python3也可以的，只不过笔者此处用的python2版本</span></span><br><span class="line">conda install gensim</span><br></pre></td></tr></table></figure></p>
+<h2 id="获取维基百科语料库"><a href="#获取维基百科语料库" class="headerlink" title="获取维基百科语料库"></a>获取维基百科语料库</h2><h3 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h3><p>2017版百科语料下载地址为：<a href="https://dumps.wikimedia.org/zhwiki/latest/zhwiki-latest-pages-articles.xml.bz2。" target="_blank" rel="noopener">https://dumps.wikimedia.org/zhwiki/latest/zhwiki-latest-pages-articles.xml.bz2。</a> 下载后是一个压缩包，里面的内容是从网上爬取的“标题–摘要–正文”对，以及其他的html、json标志符等。</p>
+<h3 id="语料抽取"><a href="#语料抽取" class="headerlink" title="语料抽取"></a>语料抽取</h3><p><a href="https://github.com/attardi/wikiextractor" target="_blank" rel="noopener">Wikipedia Extractor</a>是一个开源的语料抽取工具，语料库压缩包不用在本地解压，直接用Wikipedia Extractor脚本执行：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ git <span class="built_in">clone</span> https://github.com/attardi/wikiextractor.git wikiextractor</span><br><span class="line">$ <span class="built_in">cd</span> wikiextractor</span><br><span class="line">$ sudo python setup.py install</span><br><span class="line">$ ./WikiExtractor.py -b 1024M -o extracted zhwiki-latest-pages-articles.xml.bz2 <span class="comment">#</span></span><br></pre></td></tr></table></figure></p>
+<p>其中<code>2000M</code>代表抽取后的预料库最大允许size，因为原始语料库size约1.3G，这里用2000M的话相当于把语料全部抽取到一个文本文件“wiki_00”中。<code>extracted</code>代表抽取后语料存放路径。<br>最终控制台log输出：INFO: Finished 7-process extraction of 986891 articles in 1393.9s (708.0 art/s)，代表全部抽取完成共986891篇文章。<br>抽取后的内容格式为：每篇文章被一对<code>&lt;doc&gt;</code>、<code>&lt;/doc&gt;</code>包起来，而<code>&lt;doc&gt;</code>中的包含的属性有文章id、url和title属性，如<code>&lt;doc id=&quot;xxx&quot; url=&quot;https://zh.wikipedia.org/xxx&quot; title=&quot;xxx&quot;&gt;</code>。</p>
+<h3 id="繁体字转简体"><a href="#繁体字转简体" class="headerlink" title="繁体字转简体"></a>繁体字转简体</h3><p>上一步抽取的中文维基百科语料库比较杂乱，既有繁体字也有简体字，这里需要将其统一变为简体字，采用开源的 <a href="https://github.com/BYVoid/OpenCC" target="_blank" rel="noopener">OpenCC</a>转换器。ubuntu下使用方法如下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt-get install opencc</span><br><span class="line">$ opencc -i wiki_00 -o zh_wiki_00 -c zht2zhs.ini</span><br></pre></td></tr></table></figure></p>
+<h3 id="去除标点"><a href="#去除标点" class="headerlink" title="去除标点"></a>去除标点</h3><p>去除标点是因为：训练标点符号意义不大，且标点符号出现次数过多，影响一定训练效率。可以通过正则表达式去除。感谢<a href="http://wulc.me" target="_blank" rel="noopener">吴良超的学习笔记</a>提供的去标点程序，使用格式为：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python script.py input_file output_file</span><br></pre></td></tr></table></figure></p>
+<p>pre1.py源码如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*- </span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> io</span><br><span class="line"></span><br><span class="line">reload(sys)</span><br><span class="line">sys.setdefaultencoding(<span class="string">'utf-8'</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">pre_process</span><span class="params">(input_file, output_file)</span>:</span></span><br><span class="line">    multi_version = re.compile(<span class="string">ur'-\&#123;.*?(zh-hans|zh-cn):([^;]*?)(;.*?)?\&#125;-'</span>)</span><br><span class="line">    punctuation = re.compile(<span class="string">u"[-~!@#$%^&amp;*()_+`=\[\]\\\&#123;\&#125;\"|;':,./&lt;&gt;?·！@#￥%……&amp;*（）——+【】、；‘：“”，。、《》？「『」』]"</span>)</span><br><span class="line">    <span class="keyword">with</span> io.open(output_file, mode = <span class="string">'w'</span>, encoding = <span class="string">'utf-8'</span>) <span class="keyword">as</span> outfile:</span><br><span class="line">        <span class="keyword">with</span> io.open(input_file, mode = <span class="string">'r'</span>, encoding =<span class="string">'utf-8'</span>) <span class="keyword">as</span> infile:</span><br><span class="line">            <span class="keyword">for</span> line <span class="keyword">in</span> infile:</span><br><span class="line">                line = multi_version.sub(<span class="string">ur'\2'</span>, line)</span><br><span class="line">                line = punctuation.sub(<span class="string">''</span>, line.decode(<span class="string">'utf8'</span>))</span><br><span class="line">                outfile.write(line)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    <span class="keyword">if</span> len(sys.argv) != <span class="number">3</span>:</span><br><span class="line">        <span class="keyword">print</span> <span class="string">"Usage: python pre1.py input_file output_file"</span></span><br><span class="line">        sys.exit()</span><br><span class="line">    input_file, output_file = sys.argv[<span class="number">1</span>], sys.argv[<span class="number">2</span>]</span><br><span class="line">    pre_process(input_file, output_file)</span><br></pre></td></tr></table></figure></p>
+<h3 id="去除标识符及分词"><a href="#去除标识符及分词" class="headerlink" title="去除标识符及分词"></a>去除标识符及分词</h3><p>经过上一步处理，每一篇文章被存放在了<code>doc</code>/doc<code>标签。同时肉眼对比抽取后的句子，每一段落的开头跟标题都是重复的，也需要去除。还有前辈们建议把一篇段落的文章放到一行，但词向量关注的</code>window size`一般大小为3、5，感觉也没这个必要。安装<a href="https://github.com/fxsjy/jieba" target="_blank" rel="noopener">jieba分词</a>，pre2.py代码如下:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> io</span><br><span class="line"><span class="keyword">import</span> jieba</span><br><span class="line"></span><br><span class="line">reload(sys)</span><br><span class="line">sys.setdefaultencoding(<span class="string">'utf-8'</span>)</span><br><span class="line"></span><br><span class="line">jieba.load_userdict(<span class="string">"dict.txt"</span>) <span class="comment"># 如果有的话加载用户自定义词典</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">cut_words</span><span class="params">(input_file, output_file)</span>:</span></span><br><span class="line">    count = <span class="number">0</span></span><br><span class="line">    a = <span class="number">1</span> <span class="comment"># 标识符</span></span><br><span class="line">    <span class="keyword">with</span> io.open(output_file, mode = <span class="string">'w'</span>, encoding = <span class="string">'utf-8'</span>) <span class="keyword">as</span> outfile:</span><br><span class="line">        <span class="keyword">with</span> io.open(input_file, mode = <span class="string">'r'</span>, encoding = <span class="string">'utf-8'</span>) <span class="keyword">as</span> infile:</span><br><span class="line">            <span class="keyword">for</span> line <span class="keyword">in</span> infile:</span><br><span class="line">                <span class="keyword">if</span> a == <span class="number">-1</span>:</span><br><span class="line">                    a = a*(<span class="number">-1</span>)</span><br><span class="line">                    <span class="keyword">continue</span></span><br><span class="line">                line = line.strip() </span><br><span class="line">                <span class="keyword">if</span> len(line) &lt; <span class="number">1</span>: </span><br><span class="line">                    <span class="keyword">continue</span></span><br><span class="line">                <span class="comment"># 移除字符串首尾的\r \n 空格等字符，此处希望一篇文章的所有内容位于一行，使得训练预料更规整</span></span><br><span class="line">                <span class="keyword">if</span> line.startswith(<span class="string">'doc'</span>):</span><br><span class="line">                    <span class="keyword">if</span> line == <span class="string">'doc'</span>: </span><br><span class="line">                        outfile.write(<span class="string">u'\n'</span>) </span><br><span class="line">                        count += <span class="number">1</span></span><br><span class="line">                        str = <span class="string">"已完成 %d 篇百科文章转换"</span> % (count)</span><br><span class="line">                        <span class="keyword">print</span> str </span><br><span class="line">                    <span class="keyword">else</span>:</span><br><span class="line">                        a = <span class="number">-1</span></span><br><span class="line">                        <span class="keyword">continue</span></span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    <span class="keyword">for</span> word <span class="keyword">in</span> jieba.cut(line):</span><br><span class="line">                        outfile.write(word + <span class="string">' '</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    <span class="keyword">if</span> len(sys.argv) &lt; <span class="number">3</span>:</span><br><span class="line">        <span class="keyword">print</span> <span class="string">"Terminal Format: python script.py input_file output_file"</span></span><br><span class="line">        sys.exit()</span><br><span class="line">    input_file, output_file = sys.argv[<span class="number">1</span>], sys.argv[<span class="number">2</span>]</span><br><span class="line">    cut_words(input_file, output_file)</span><br></pre></td></tr></table></figure></p>
+<p>最终log输出：<code>已完成 986891 篇百科文章转换</code>，代表全部文章转换完毕。</p>
+<h3 id="文本去重"><a href="#文本去重" class="headerlink" title="文本去重"></a>文本去重</h3><p>NLP常规操作，这么大的数据量，采用利用哈希表检测重复并去除，pre3.py代码如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*- </span></span><br><span class="line"><span class="comment">#程序功能是为了完成判断文件中是否有重复句子</span></span><br><span class="line"><span class="comment">#并将重复句子打印出来</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> shutil</span><br><span class="line">res_list = set()</span><br><span class="line">f = open(<span class="string">'pre2'</span>,<span class="string">'r'</span>)</span><br><span class="line">w = open(<span class="string">'pre3'</span>, <span class="string">'w'</span>)</span><br><span class="line">k = <span class="number">1</span></span><br><span class="line">index = <span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> f.readlines():</span><br><span class="line">    index = index + <span class="number">1</span></span><br><span class="line">    <span class="keyword">if</span> line <span class="keyword">in</span> res_list:</span><br><span class="line">        k = k + <span class="number">1</span></span><br><span class="line">        print(<span class="string">"Repeat"</span>, k, <span class="string">"All:"</span>, index, <span class="string">"Percent: %.5f%%"</span> % (<span class="number">100</span>*k/index))</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        res_list.add(line)</span><br><span class="line">        w.write(line)</span><br></pre></td></tr></table></figure></p>
+<p>最终log输出:<code>Repeat&#39;, 18649, &#39;All:&#39;, 986884, &#39;Percent: 1.00000%&#39;</code>，重复了1%的语料。</p>
+<h2 id="用gensim训练词向量"><a href="#用gensim训练词向量" class="headerlink" title="用gensim训练词向量"></a>用gensim训练词向量</h2><h3 id="初始训练"><a href="#初始训练" class="headerlink" title="初始训练"></a>初始训练</h3><p>解释下参数含义：<br><code>multiprocessing</code>:python中的多线程模块，这里这里采用的是8核CPU进行训练，网络比较简单的情况下速度要比GPU快。<br><code>LineSentence</code>：将输入文件转为 gensim 内部的 LineSentence 对象，要求输入的文件的格式为<strong>每行一篇文章，对于中文每篇文章经过分词处理。</strong><br><code>min_count</code>：低于min_count的词频的词不参与训练；<code>sg</code>:0表示CBOW语言模型，1表示Skip-gram模型；<code>size</code>：词向量维度<br><code>iter</code>:迭代的epoch次数，这里着重讲下<strong>#此处的iter值会被直接设置到百分比进度条中，而不是日常训练神经网络一样epoch1、epoch2…epoch100</strong></p>
+<p>train.py代码如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> os, sys</span><br><span class="line"><span class="keyword">import</span> multiprocessing</span><br><span class="line"><span class="keyword">import</span> gensim  </span><br><span class="line"><span class="keyword">import</span> logging</span><br><span class="line"></span><br><span class="line">reload(sys)</span><br><span class="line">sys.setdefaultencoding(<span class="string">'utf-8'</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">word2vec_train</span><span class="params">(input_file, output_file)</span>:</span></span><br><span class="line">    logging.basicConfig(format=<span class="string">'%(asctime)s : %(levelname)s : %(message)s'</span>, level=logging.INFO)</span><br><span class="line">    sentences = gensim.models.word2vec.LineSentence(input_file)</span><br><span class="line">    model = gensim.models.Word2Vec(sentences, size=<span class="number">800</span>, window=<span class="number">5</span>, min_count=<span class="number">3</span>, iter=<span class="number">100</span>,sg=<span class="number">0</span>, workers=multiprocessing.cpu_count())</span><br><span class="line">    <span class="comment"># model.train(sentences, total_examples=model.corpus_count, epochs = 100) 默认参数，也可以指定</span></span><br><span class="line">    model.save(output_file)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    <span class="keyword">if</span> len(sys.argv) &lt; <span class="number">3</span>:</span><br><span class="line">        <span class="keyword">print</span> <span class="string">"Terminal Format: python script.py infile outfile"</span></span><br><span class="line">        sys.exit()</span><br><span class="line">    input_file, output_file = sys.argv[<span class="number">1</span>], sys.argv[<span class="number">2</span>]</span><br><span class="line">    word2vec_train(input_file, output_file)</span><br></pre></td></tr></table></figure></p>
+<p>最终log输出：<code>2018-01-22 19:37:52,179 : INFO : PROGRESS: at 100.00% examples, 122591 words/s, in_qsize 16, out_qsize 0</code><br>代表完成训练。</p>
+<blockquote>
+<ul>
+<li>实验环境：ubuntu16.04、 CPU：8核</li>
+</ul>
+<ol>
+<li>迭代5次epoch，耗时1.5小时</li>
+<li>相同参数下，迭代100次epcoh，耗时40小时</li>
+</ol>
+</blockquote>
+<h3 id="增量训练"><a href="#增量训练" class="headerlink" title="增量训练"></a>增量训练</h3><p>增量训练可以在新的语料库上，基于原有模型进行叠加训练，而不用从头开始。<br>train_add.py关键部分代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">def word2vec_train(input_file, output_file):</span><br><span class="line">    logging.basicConfig(format=&apos;%(asctime)s : %(levelname)s : %(message)s&apos;, level=logging.INFO)</span><br><span class="line">    model = gensim.models.Word2Vec.load(&apos;word2vec&apos;)</span><br><span class="line">    more_sentences = gensim.models.word2vec.LineSentence(input_file)</span><br><span class="line">    model.build_vocab(more_sentences, update=True)</span><br><span class="line">    model.train(more_sentences, total_examples=model.corpus_count, epochs=model.iter)</span><br></pre></td></tr></table></figure></p>
+<p>上面的代码先加载了一个已经训练好的词向量模型，然后再添加新的文章进行训练，同样新增的文章的格式也要满足每行一篇文章，每篇文章的词语通过空格分开的格式。由于前段时间参加Ai Challenge比赛，正好有1000W行处理后的中文数据可以加入训练。</p>
+<h2 id="使用词向量模型"><a href="#使用词向量模型" class="headerlink" title="使用词向量模型"></a>使用词向量模型</h2><p>直接上代码了，infer.py如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#encoding=utf-8</span></span><br><span class="line"><span class="keyword">import</span> gensim</span><br><span class="line"><span class="keyword">from</span> gensim.models <span class="keyword">import</span> word2vec</span><br><span class="line">model=gensim.models.Word2Vec.load(<span class="string">'word2vec'</span>)</span><br><span class="line"><span class="keyword">print</span> <span class="string">"模型加载成功！"</span></span><br><span class="line"><span class="keyword">print</span> <span class="string">"----词向量维度------"</span></span><br><span class="line"><span class="keyword">print</span> len(model[<span class="string">u'男人'</span>])</span><br><span class="line"><span class="keyword">print</span> <span class="string">"----跟“滋润”相近的词------"</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> model.most_similar(<span class="string">u"滋润"</span>):</span><br><span class="line">    <span class="keyword">print</span> i[<span class="number">0</span>],i[<span class="number">1</span>]</span><br></pre></td></tr></table></figure></p>
+<p>Refer：<br><a href="http://blog.csdn.net/qq_32166627/article/details/68942216" target="_blank" rel="noopener">word2vec实战：获取和预处理中文维基百科(Wikipedia)语料库，并训练成word2vec模型</a><br><a href="http://wulc.me" target="_blank" rel="noopener">中文维基百科语料库词向量的训练</a><br><a href="http://kexue.fm/archives/4304/" target="_blank" rel="noopener">不可思议的Word2Vec</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
   </section>
 
   
@@ -1668,7 +1706,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1681,7 +1719,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -1766,7 +1804,7 @@
  
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共12.7k字</span>
+  <span class="post-count">博客全站共12.9k字</span>
 </div>
 
 <div class="powered-by">

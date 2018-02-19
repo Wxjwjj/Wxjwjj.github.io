@@ -75,7 +75,7 @@
 
 
 
-  <meta name="keywords" content="电影观后感," />
+  <meta name="keywords" content="Python," />
 
 
 
@@ -86,18 +86,18 @@
 
 
 
-<meta name="description" content="自然语言处理，Studying，Coding">
-<meta name="keywords" content="电影观后感">
+<meta name="description" content="python调用shell语句1234567&apos;&apos;&apos;假设已存在run.sh的shell语句，如:cd /home/tucodec/Desktop python2 run.py&apos;&apos;&apos;import osos.system(&quot;bash run.sh&quot;) #会自动到桌面执行run.py 上面调用shell语句的方式，跟python语句是独立进行的，也就是说无法进行变量的交互12345678910111213">
+<meta name="keywords" content="Python">
 <meta property="og:type" content="article">
-<meta property="og:title" content="《大染坊_2003版》观后感">
-<meta property="og:url" content="http://yoursite.com/2018/02/05/ranfang/index.html">
+<meta property="og:title" content="python操作(四)：IO编程&#x2F;调用shell语句">
+<meta property="og:url" content="http://yoursite.com/2018/02/01/python-2/index.html">
 <meta property="og:site_name" content="Deep Coding">
-<meta property="og:description" content="自然语言处理，Studying，Coding">
+<meta property="og:description" content="python调用shell语句1234567&apos;&apos;&apos;假设已存在run.sh的shell语句，如:cd /home/tucodec/Desktop python2 run.py&apos;&apos;&apos;import osos.system(&quot;bash run.sh&quot;) #会自动到桌面执行run.py 上面调用shell语句的方式，跟python语句是独立进行的，也就是说无法进行变量的交互12345678910111213">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-02-05T15:15:23.440Z">
+<meta property="og:updated_time" content="2018-02-10T14:32:56.225Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="《大染坊_2003版》观后感">
-<meta name="twitter:description" content="自然语言处理，Studying，Coding">
+<meta name="twitter:title" content="python操作(四)：IO编程&#x2F;调用shell语句">
+<meta name="twitter:description" content="python调用shell语句1234567&apos;&apos;&apos;假设已存在run.sh的shell语句，如:cd /home/tucodec/Desktop python2 run.py&apos;&apos;&apos;import osos.system(&quot;bash run.sh&quot;) #会自动到桌面执行run.py 上面调用shell语句的方式，跟python语句是独立进行的，也就是说无法进行变量的交互12345678910111213">
 
 
 
@@ -127,13 +127,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/02/05/ranfang/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/02/01/python-2/"/>
 
 
 
 
 
-  <title>《大染坊_2003版》观后感 | Deep Coding</title>
+  <title>python操作(四)：IO编程/调用shell语句 | Deep Coding</title>
   
 
 
@@ -260,7 +260,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/05/ranfang/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/01/python-2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="祥吉">
@@ -277,7 +277,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">《大染坊_2003版》观后感</h1>
+          <h1 class="post-title" itemprop="name headline">python操作(四)：IO编程/调用shell语句</h1>
         
 
         <div class="post-meta">
@@ -289,8 +289,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-05T23:14:44+08:00">
-                2018-02-05
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-01T11:02:03+08:00">
+                2018-02-01
               </time>
             
 
@@ -308,8 +308,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/02/05/ranfang/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/02/05/ranfang/" itemprop="commentCount"></span>
+                <a href="/2018/02/01/python-2/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/02/01/python-2/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -337,7 +337,8 @@
       
 
       
-        
+        <h4 id="python调用shell语句"><a href="#python调用shell语句" class="headerlink" title="python调用shell语句"></a>python调用shell语句</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">假设已存在run.sh的shell语句，如:</span></span><br><span class="line"><span class="string">cd /home/tucodec/Desktop </span></span><br><span class="line"><span class="string">python2 run.py</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line">os.system(<span class="string">"bash run.sh"</span>) <span class="comment">#会自动到桌面执行run.py</span></span><br></pre></td></tr></table></figure>
+<h4 id="上面调用shell语句的方式，跟python语句是独立进行的，也就是说无法进行变量的交互"><a href="#上面调用shell语句的方式，跟python语句是独立进行的，也就是说无法进行变量的交互" class="headerlink" title="上面调用shell语句的方式，跟python语句是独立进行的，也就是说无法进行变量的交互"></a>上面调用shell语句的方式，跟python语句是独立进行的，也就是说无法进行变量的交互</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">采用下面的语句可以实现在python中操作文件/文件夹</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> shutil</span><br><span class="line">file_dir = <span class="string">'/Users/wxj/Desktop'</span></span><br><span class="line"><span class="keyword">print</span> (os.getcwd())  <span class="comment"># 获取当前目录</span></span><br><span class="line">os.chdir(file_dir)   <span class="comment"># 改变工作目录</span></span><br><span class="line">os.mkdir(<span class="string">"test"</span>)  <span class="comment"># 创建文件夹</span></span><br><span class="line"></span><br><span class="line">os.rename(<span class="string">"test"</span>,<span class="string">"test1"</span>)   </span><br><span class="line">os.rename(<span class="string">"test.txt"</span>,<span class="string">"test1.txt"</span>)  <span class="comment"># 重命名，注意需要带扩展名</span></span><br><span class="line"></span><br><span class="line">shutil.copyfile(<span class="string">"test_org.txt"</span>,<span class="string">"test1.txt"</span>)  <span class="comment"># 存在则覆盖，用于copy文件</span></span><br><span class="line">shutil.copytree(<span class="string">"/Users/wxj/Desktop/1"</span>,<span class="string">"/Users/wxj/Desktop/2"</span>) <span class="comment"># 2文件夹不存在，用于copy文件夹</span></span><br><span class="line"></span><br><span class="line">shutil.move(<span class="string">"/Users/wxj/Desktop/1"</span>,<span class="string">"/Users/wxj/Desktop/2"</span>） <span class="comment"># 2文件夹存在，用于移动文件夹</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> os.path.exists(path_x): <span class="comment"># 判定是否存在某个文件夹</span></span><br><span class="line">    shutil.rmtree(Path_x)  <span class="comment"># 删除文件夹</span></span><br></pre></td></tr></table></figure>
       
     </div>
     
@@ -354,7 +355,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/电影观后感/" rel="tag"><i class="fa fa-tag"></i> 电影观后感</a>
+            <a href="/tags/Python/" rel="tag"><i class="fa fa-tag"></i> Python</a>
           
         </div>
       
@@ -367,8 +368,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/02/05/0to1/" rel="next" title="《从0到1》读书笔记">
-                <i class="fa fa-chevron-left"></i> 《从0到1》读书笔记
+              <a href="/2018/02/01/python2-3/" rel="next" title="python操作(三)：Unicode编码">
+                <i class="fa fa-chevron-left"></i> python操作(三)：Unicode编码
               </a>
             
           </div>
@@ -377,8 +378,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/02/07/textsum/" rel="prev" title="Textsum：深度学习应用于自动文本摘要">
-                Textsum：深度学习应用于自动文本摘要 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/02/01/Linux/" rel="prev" title="Linux操作日更贴">
+                Linux操作日更贴 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -410,8 +411,8 @@
 
   
     <div class="comments" id="comments">
-      <div class="ds-thread" data-thread-key="2018/02/05/ranfang/"
-           data-title="《大染坊_2003版》观后感" data-url="http://yoursite.com/2018/02/05/ranfang/">
+      <div class="ds-thread" data-thread-key="2018/02/01/python-2/"
+           data-title="python操作(四)：IO编程/调用shell语句" data-url="http://yoursite.com/2018/02/01/python-2/">
       </div>
     </div>
 
@@ -438,8 +439,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -458,7 +468,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -471,7 +481,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -517,6 +527,22 @@
       </section>
 
       
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#python调用shell语句"><span class="nav-number">1.</span> <span class="nav-text">python调用shell语句</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#上面调用shell语句的方式，跟python语句是独立进行的，也就是说无法进行变量的交互"><span class="nav-number">2.</span> <span class="nav-text">上面调用shell语句的方式，跟python语句是独立进行的，也就是说无法进行变量的交互</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
 
       
 
@@ -556,7 +582,7 @@
  
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共12.7k字</span>
+  <span class="post-count">博客全站共12.9k字</span>
 </div>
 
 <div class="powered-by">
