@@ -96,7 +96,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/img/gaosi.jpeg">
 <meta property="og:image" content="http://yoursite.com/img/gaosi2.jpeg">
-<meta property="og:updated_time" content="2018-02-24T07:18:55.058Z">
+<meta property="og:updated_time" content="2018-02-24T09:13:49.049Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="神经网络中的权重初始化">
 <meta name="twitter:description" content="概念先行正态分布（Normal distribution），又名高斯分布（Gaussian distribution），呈钟型，两头低，中间高。数学定义：随机变量X服从一个数学期望为μ、方差为σ^2的正态分布，记为N(μ，σ^2)。其中期望值μ决定了其集中趋势位置；标准差σ决定了分布的幅度，σ越大，曲线越扁平，反之σ越小，曲线越瘦高。标准正态分布：当μ = 0,σ = 1时是标准正态分布。方差：s">
@@ -342,11 +342,11 @@
       
         <h3 id="概念先行"><a href="#概念先行" class="headerlink" title="概念先行"></a>概念先行</h3><p>正态分布（Normal distribution），又名高斯分布（Gaussian distribution），呈钟型，两头低，中间高。<br><code>数学定义：</code>随机变量X服从一个数学期望为μ、方差为σ^2的正态分布，记为N(μ，σ^2)。其中期望值μ决定了其集中趋势位置；标准差σ决定了分布的幅度，σ越大，曲线越扁平，反之σ越小，曲线越瘦高。<br><code>标准正态分布：</code>当μ = 0,σ = 1时是标准正态分布。<br><code>方差：</code>sum(x-u)^2/N </p>
 <h3 id="一个简单的神经网络"><a href="#一个简单的神经网络" class="headerlink" title="一个简单的神经网络"></a>一个简单的神经网络</h3><p>对于<code>z = np.sum(x*w)</code>，假如w为一个1000维的向量，服从均值为0、方差为1的正态分布，输入层x一共1000个神经元，且全为1。所以z服从的是一个均值近似为0、方差为1000的正态分布：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="function"><span class="keyword">def</span>  <span class="title">run</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="comment"># z的个数</span></span><br><span class="line">    t = <span class="number">20000</span></span><br><span class="line">    z_lst = np.empty(t)</span><br><span class="line">    x = np.ones(<span class="number">1000</span>)</span><br><span class="line">    b = <span class="number">0</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> xrange(t):</span><br><span class="line">        w = np.random.randn(<span class="number">1000</span>) <span class="comment">#从标准正态分布中返回一个或多个样本值</span></span><br><span class="line">        <span class="comment"># w = np.random.rand(1000) # 返回[0,1)之间的随机样本</span></span><br><span class="line">        <span class="comment">#plt.hist(w, bins=50, normed=1)</span></span><br><span class="line">        <span class="comment">#plt.show()</span></span><br><span class="line">        z = np.sum(x * w) + b</span><br><span class="line">        z_lst[i] = z</span><br><span class="line"></span><br><span class="line">    <span class="keyword">print</span> <span class="string">'z 均值：'</span>, np.mean(z_lst)</span><br><span class="line">    <span class="keyword">print</span> <span class="string">'z 方差：'</span>, np.var(z_lst)</span><br><span class="line">    plt.hist(z_lst, bins=<span class="number">50</span>, normed=<span class="number">1</span>) <span class="comment"># hist直方图绘制函数，bins：直方图的柱数，默认为10，normed：是否进行归一化</span></span><br><span class="line">    plt.show()</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    run()</span><br></pre></td></tr></table></figure></p>
-<p>从图中看出：z有非常大的概率是一个远小于-1或者远大于1的数，通过激活函数（比如sigmoid）后所得到的输出非常接近0或者1。这样一来对权重的微小调整，基本不会使得隐藏层z的神经元激活值发生变化。BP时，权重更新就会非常慢。<br><img src="/img/gaosi.jpeg" alt=""></p>
-<p><font color="red">Target：</font>那么我们的目标就是通过改变权重矩阵w的分布，使|z|尽量接近于0。经过激活函数后神经元的变化便会比较敏感。</p>
+<p>从图中看出：z有非常大的概率是一个远小于-1或者远大于1的数，通过激活函数（比如sigmoid）后所得到的输出非常接近0或者1。这样一来对权重的微小调整，基本不会使得隐藏层z的神经元激活值发生变化。BP时，权重更新就会非常慢。<br><img src="/img/gaosi.jpeg" width="500" alt="图片名称" align="center"></p>
+<p><font color="red"><strong>Target：</strong></font>那么我们的目标就是通过改变权重矩阵w的分布，使|z|尽量接近于0。经过激活函数后神经元的变化便会比较敏感。</p>
 <h3 id="怎样进行权重初始化"><a href="#怎样进行权重初始化" class="headerlink" title="怎样进行权重初始化"></a>怎样进行权重初始化</h3><p>根据上述方差的计算公式：<code>sum(x-u)^2/N</code> ，只要x缩小sqrt(m)倍，总的方差便缩小m倍。对上述代码进行改进：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">w = np.random.randn(<span class="number">1000</span>)/np.sqrt(<span class="number">1000</span>)</span><br><span class="line"><span class="comment"># 保持与z分布（1）图像横坐标刻度不变，使得结果更加直观</span></span><br><span class="line">plt.xlim([<span class="number">-150</span>, <span class="number">150</span>])</span><br><span class="line">plt.hist(z_lst, bins=<span class="number">50</span>)</span><br><span class="line">plt.show()</span><br><span class="line"><span class="comment">#z 均值： 0.013468729222</span></span><br><span class="line"><span class="comment">#z 方差： 1.00195898464</span></span><br></pre></td></tr></table></figure></p>
-<p><img src="/img/gaosi2.jpeg" alt=""><br>由上图可以看出，隐藏层神经元z的分布是一个比较接近于0的数，使得神经元的变化比较敏感，让BP过程能够正常进行下去。</p>
-<h3 id="Ref："><a href="#Ref：" class="headerlink" title="Ref："></a>Ref：</h3><p><a href="https://www.jianshu.com/p/03009cfdf733" target="_blank" rel="noopener">《神经网络中的权重初始化：Why and How》</a></p>
+<p><img src="/img/gaosi2.jpeg" width="500" alt="图片名称" align="center"><br>由上图可以看出，隐藏层神经元z的分布是一个比较接近于0的数，使得神经元的变化比较敏感，让BP过程能够正常进行下去。</p>
+<h3 id="Ref："><a href="#Ref：" class="headerlink" title="Ref："></a>Ref：</h3><p><a href="https://www.jianshu.com/p/03009cfdf733" target="_blank" rel="noopener">《神经网络中的权重初始化：Why and How》</a><br><a href="http://blog.csdn.net/shuzfan/article/details/51338178" target="_blank" rel="noopener">深度学习——Xavier初始化方法</a></p>
 
       
     </div>
@@ -386,6 +386,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/02/25/gcc/" rel="prev" title="Ubuntu下gcc/g++多版本切换">
+                Ubuntu下gcc/g++多版本切换 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -463,7 +467,7 @@
                 alt="祥吉" />
             
               <p class="site-author-name" itemprop="name">祥吉</p>
-              <p class="site-description motion-element" itemprop="description">自然语言处理，Studying，Coding</p>
+              <p class="site-description motion-element" itemprop="description">NLP/CV，Studying，Coding</p>
           </div>
 
           <nav class="site-state motion-element">
@@ -473,7 +477,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-count">22</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -486,7 +490,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">9</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -587,7 +591,7 @@
  
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共13.6k字</span>
+  <span class="post-count">博客全站共14.9k字</span>
 </div>
 
 <div class="powered-by">
