@@ -259,6 +259,295 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/04/pachong-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="祥吉">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Deep Coding">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/02/04/pachong-1/" itemprop="url">爬虫入门_文本抽取</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-04T20:24:02+08:00">
+                2018-02-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/02/04/pachong-1/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/02/04/pachong-1/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h2><p>浏览器作为客户端，接收服务器返回的消息，进行解析后展示给我们。我们可以在本地修改html信息，对网页进行“整容”，要知道网页的任何信息都可以被修改，但是修改后的信息不影响服务器端，刷新后又会变成之前服务器端推送的格式。</p>
+<h3 id="审查元素"><a href="#审查元素" class="headerlink" title="审查元素"></a>审查元素</h3><p>有了上面的认识后，怎样修改网页的html信息呢？在你想要修改页面的某个位置右击，继续点击<code>审查</code>，即可获得该位置的html信息。Eg：在邮箱登陆输入密码的位置点击审查元素，将password属性改为text，输入密码时将不再是小圆点的形式。<br><img src="/img/pa_1.jpeg" alt=""><br>网页的全部信息都在其html语句中，接下来我们采用python中的<a href="http://docs.python-requests.org/zh_CN/latest/user/quickstart.html" target="_blank" rel="noopener">requests</a>模块，获取网页的html信息。</p>
+<h3 id="安装python-http模块requests"><a href="#安装python-http模块requests" class="headerlink" title="安装python http模块requests"></a>安装python http模块requests</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 install requests</span><br></pre></td></tr></table></figure>
+<p>这里简单的提取一个网络小说的html信息<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">target = <span class="string">'http://www.biqukan.com/1_1094/5403177.html'</span></span><br><span class="line">req = requests.get(url=target)</span><br><span class="line">html = req.text</span><br><span class="line">print(html) <span class="comment"># 网页html内容，同右键后的网页审查内容</span></span><br></pre></td></tr></table></figure></p>
+<p>requests模块获取的信息为带标签(div、br…)的html信息，还需要通过下面的beautifulsoup模块，提取中我们感兴趣的段落。</p>
+<h3 id="安装文本提取模块Beautiful-Soup"><a href="#安装文本提取模块Beautiful-Soup" class="headerlink" title="安装文本提取模块Beautiful Soup"></a>安装文本提取模块Beautiful Soup</h3><p>python的第三方库，用于从html、xml文件中提取数据，以树状结构的方式执行查询。并且支持正则表达式的模糊匹配。<br> <img src="/img/pa_2.jpeg" width="550" alt="图片名称" align="center"><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 install beautifulsoup4</span><br></pre></td></tr></table></figure></p>
+<p>这里引用<a href="http://blog.csdn.net/u012662731/article/details/78537432" target="_blank" rel="noopener">Jack-Cherish</a>对html的解释：</p>
+<blockquote>
+<p>“一个女人的包包里，会有很多东西，她们会根据自己的习惯将自己的东西进行分类放好。镜子和口红这些会经常用到的东西，会归放到容易拿到的外侧口袋里。那些不经常用到，需要注意安全存放的证件会放到不容易拿到的里侧口袋里”。而html标签就像一个个“口袋”，每个“口袋”都有自己的特定功能，负责存放不同的内容。</p>
+</blockquote>
+<p>例如：上述例子中的div标签下存放了我们关心的正文内容。这个div标签是这样的：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;div id=<span class="string">"content"</span>, class=<span class="string">"showtxt"</span>&gt;</span><br></pre></td></tr></table></figure></p>
+<p>id和class就是div标签的属性，content和showtxt是属性值，一个属性对应一个属性值。它是用来区分不同的div标签的，因为div标签可以有很多，我们怎么加以区分不同的div标签呢？就是通过不同的属性值。可以发现网络小说的正文部分正唯一的对应于class=”showtxt”的div标签下。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">bf = BeautifulSoup(html) <span class="comment"># find 一对标签：&lt;div&gt; &lt;/div&gt;之间的内容</span></span><br><span class="line">texts = bf.find_all(<span class="string">'div'</span>, class_ = <span class="string">'showtxt'</span>)  <span class="comment"># 第一个参数是获取的标签名，第二个参数class_是标签的属性</span></span><br><span class="line">print(texts[<span class="number">0</span>].text.replace(<span class="string">'\xa0'</span>*<span class="number">8</span>,<span class="string">'\n\n'</span>)) </span><br><span class="line"><span class="comment">#使用text属性，提取文本内容，滤除br标签; 之后进行换行符替换及提取文本部分内容</span></span><br></pre></td></tr></table></figure></p>
+<p>BeautifulSoup函数处理完后，可见的是提取出了该小说完整的的正文内容。</p>
+<h3 id="获取每个章节的链接"><a href="#获取每个章节的链接" class="headerlink" title="获取每个章节的链接"></a>获取每个章节的链接</h3><p>章节信息都放在了<code>class = listmain</code>的div标签下，获取方法同上。链接和章名都放在了标签<code>&lt;a&gt;、&lt;/a&gt;</code>之间，Eg：<code>&lt;a href=&quot;/1_1094/5403177.html&quot;&gt;第一章 他叫白小纯&lt;/a&gt;</code>。<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"listmain"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">dl</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dt</span>&gt;</span>《一念永恒》最新章节列表<span class="tag">&lt;/<span class="name">dt</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dd</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"/1_1094/15932394.html"</span>&gt;</span>第1027章 第十道门<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">dd</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dd</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"/1_1094/15923072.html"</span>&gt;</span>第1026章 绝伦道法！<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">dd</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dd</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"/1_1094/15921862.html"</span>&gt;</span>第1025章 长生灯！<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">dd</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">dl</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>通过两次调用BeautifulSoup，便可以获取一对标签<code>&lt;a&gt;、&lt;/a&gt;</code>之间的内容。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">req = requests.get(url = target) </span><br><span class="line">html = req.text</span><br><span class="line">div_bf = BeautifulSoup(html)</span><br><span class="line">div = div_bf.find_all(<span class="string">'div'</span>, class_ = <span class="string">'listmain'</span>)</span><br><span class="line">a_bf = BeautifulSoup(str(div[<span class="number">0</span>]))</span><br><span class="line">a = a_bf.find_all(<span class="string">'a'</span>)</span><br><span class="line"><span class="keyword">for</span> each <span class="keyword">in</span> a:</span><br><span class="line">     print(each.string, server + each.get(<span class="string">'href'</span>))</span><br></pre></td></tr></table></figure></p>
+<h2 id="完整地爬取一部小说程序整合"><a href="#完整地爬取一部小说程序整合" class="headerlink" title="完整地爬取一部小说程序整合"></a>完整地爬取一部小说程序整合</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding:UTF-8 -*-</span></span><br><span class="line"><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">downloader</span><span class="params">(object)</span>:</span></span><br><span class="line">	<span class="string">"""下载小说《一念永恒》"""</span></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">		self.server = <span class="string">"http://www.biqukan.com/"</span></span><br><span class="line">		self.target = <span class="string">"http://www.biqukan.com/1_1094/"</span></span><br><span class="line">		self.names = [] <span class="comment"># 存放章节名称</span></span><br><span class="line">		self.urls = [] <span class="comment"># 存放每章链接</span></span><br><span class="line">		self.nums = [] <span class="comment"># 章节数量</span></span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">get_download_url</span><span class="params">(self)</span>:</span></span><br><span class="line">		<span class="string">"""获取下载链接url及每章名称names，以list形式放到实例化后的class中"""</span></span><br><span class="line">		req = requests.get(url = self.target)</span><br><span class="line">		html = req.text</span><br><span class="line">		div_bf = BeautifulSoup(html)</span><br><span class="line">		div = div_bf.find_all(<span class="string">'div'</span>, class_ = <span class="string">'listmain'</span>)</span><br><span class="line">		<span class="comment"># 获取到章节名称的html信息，在class = 'listmain'中</span></span><br><span class="line">		a_bf = BeautifulSoup(str(div[<span class="number">0</span>])) </span><br><span class="line">		a = a_bf.find_all(<span class="string">'a'</span>) <span class="comment"># 返回一个list</span></span><br><span class="line">		self.nums = len(a[<span class="number">15</span>:]) <span class="comment"># 过滤了前15条噪声章节</span></span><br><span class="line">		<span class="keyword">for</span> each <span class="keyword">in</span> a[<span class="number">15</span>:]:</span><br><span class="line">			self.names.append(each.string)</span><br><span class="line">			self.urls.append(self.server + each.get(<span class="string">'href'</span>))</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">get_contents</span><span class="params">(self, target)</span>:</span></span><br><span class="line">	    <span class="string">"""</span></span><br><span class="line"><span class="string">	    函数说明：获取class_list中每一个url下的内容</span></span><br><span class="line"><span class="string">	    target：下载地址 </span></span><br><span class="line"><span class="string">	    return: texts - 内容(string类型)</span></span><br><span class="line"><span class="string">	    """</span></span><br><span class="line">	    req = requests.get(url = target)	</span><br><span class="line">	    html = req.text</span><br><span class="line">	    bf = BeautifulSoup(html)</span><br><span class="line">	    texts = bf.find_all(<span class="string">'div'</span>, class_ = <span class="string">'showtxt'</span>)</span><br><span class="line">	    texts = texts[<span class="number">0</span>].text.replace(<span class="string">'\xa0'</span>*<span class="number">8</span>, <span class="string">'\n\n'</span>)</span><br><span class="line">	    <span class="keyword">return</span> texts</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">writer</span><span class="params">(self, name, path, text)</span>:</span></span><br><span class="line">		<span class="string">"""</span></span><br><span class="line"><span class="string">		函数说明：爬取的texts写入文件</span></span><br><span class="line"><span class="string">		name：章节名称</span></span><br><span class="line"><span class="string">		path：文件路径</span></span><br><span class="line"><span class="string">		text：章节内容</span></span><br><span class="line"><span class="string">		"""</span></span><br><span class="line">		<span class="keyword">with</span> open(path, <span class="string">'a'</span>,encoding=<span class="string">'utf-8'</span>) <span class="keyword">as</span> f:</span><br><span class="line">			f.write(name + <span class="string">'\n'</span>) <span class="comment"># write只能写入str</span></span><br><span class="line">			f.writelines(text) <span class="comment"># 自动迭代写入一个字符串列表[str]</span></span><br><span class="line">			f.write(<span class="string">'\n\n'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">	dl = downloader() <span class="comment"># 类的实例化</span></span><br><span class="line">	dl.get_download_url() <span class="comment"># 获取章节名称信息，更新类中的list变量names、urls、nums</span></span><br><span class="line">	print(<span class="string">'开始下载...'</span>)</span><br><span class="line">	<span class="comment"># print(type(dl.nums)) # int型，跟最后定义nums的变量相关</span></span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> range(dl.nums):</span><br><span class="line">		dl.writer(dl.names[i], <span class="string">'一念永恒.txt'</span>, dl.get_contents(dl.urls[i]))</span><br><span class="line">		sys.stdout.write(<span class="string">" 已经下载: %.3f%%"</span> % float(i/dl.nums) + <span class="string">'\r'</span>)</span><br><span class="line">		sys.stdout.flush()</span><br><span class="line">	print(<span class="string">"Success!"</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="Refer："><a href="#Refer：" class="headerlink" title="Refer："></a>Refer：</h2><p><a href="http://blog.csdn.net/u012662731/article/details/78537432" target="_blank" rel="noopener">Python3网络爬虫快速入门实战解析</a><br><a href="http://www.imooc.com/learn/563" target="_blank" rel="noopener">Python开发简单爬虫</a><br><a href="https://www.zhihu.com/question/37787176" target="_blank" rel="noopener">当一个颜值很高的程序员是怎样一番体验？</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/01/Linux/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="祥吉">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Deep Coding">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/02/01/Linux/" itemprop="url">Linux操作日更贴</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-01T16:16:28+08:00">
+                2018-02-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/02/01/Linux/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/02/01/Linux/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h5 id="获取-var-www-下所有文件及文件夹的操作权限"><a href="#获取-var-www-下所有文件及文件夹的操作权限" class="headerlink" title="获取/var/www/下所有文件及文件夹的操作权限"></a>获取/var/www/下所有文件及文件夹的操作权限</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod 777 -R /var/www/  <span class="comment"># 用户目录下，需要在前面再加sudo</span></span><br></pre></td></tr></table></figure>
+<h5 id="pip安装软件镜像"><a href="#pip安装软件镜像" class="headerlink" title="pip安装软件镜像"></a>pip安装软件镜像</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo pip install -i https://pypi.tuna.tsinghua.edu.cn/simple xxx</span><br></pre></td></tr></table></figure>
+<h5 id="pip安装国外软件可能超时的解决方法"><a href="#pip安装国外软件可能超时的解决方法" class="headerlink" title="pip安装国外软件可能超时的解决方法"></a>pip安装国外软件可能超时的解决方法</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip --default-timeout=100 install --upgrade gensim</span><br></pre></td></tr></table></figure>
+<h5 id="pip安装Tensorflow任意指定版本"><a href="#pip安装Tensorflow任意指定版本" class="headerlink" title="pip安装Tensorflow任意指定版本"></a>pip安装Tensorflow任意指定版本</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pip install tensorflow-gpu=1.4.1</span><br><span class="line">https://pypi.python.org/pypi/tensorflow-gpu/1.2.0 <span class="comment"># whl文件下载路径</span></span><br></pre></td></tr></table></figure>
+<h5 id="解除Ternsorboard端口占用"><a href="#解除Ternsorboard端口占用" class="headerlink" title="解除Ternsorboard端口占用"></a>解除Ternsorboard端口占用</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">lsof -i:6006  </span><br><span class="line"><span class="built_in">kill</span> -9 28508(上一个命令后弹出的实际端口号)</span><br></pre></td></tr></table></figure>
+<h5 id="没有安装tensorboard-或python版本不对从其源码打开"><a href="#没有安装tensorboard-或python版本不对从其源码打开" class="headerlink" title="没有安装tensorboard/或python版本不对从其源码打开"></a>没有安装tensorboard/或python版本不对从其源码打开</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">locate tensorboard</span><br><span class="line">python2 /usr/<span class="built_in">local</span>/lib/python2.7/dist-packages/tensorflow/tensorboard/teorboard.py --logdir=</span><br></pre></td></tr></table></figure>
+<h5 id="安装pytorch"><a href="#安装pytorch" class="headerlink" title="安装pytorch"></a>安装pytorch</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://tech.ifeng.com/a/20170921/44693375_0.shtml</span><br></pre></td></tr></table></figure>
+<h5 id="ubuntu-teamviewe-安装"><a href="#ubuntu-teamviewe-安装" class="headerlink" title="ubuntu teamviewe 安装"></a>ubuntu teamviewe 安装</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">apt-get purge teamviewer <span class="comment"># 彻底移除旧的版本</span></span><br><span class="line">sudo apt install ./teamviewerxxx.whl</span><br></pre></td></tr></table></figure>
+<h5 id="python2-7，命令行界面输出中文字符"><a href="#python2-7，命令行界面输出中文字符" class="headerlink" title="python2.7，命令行界面输出中文字符"></a>python2.7，命令行界面输出中文字符</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">import uniout</span><br><span class="line">a = [u<span class="string">'哈哈'</span>]  </span><br><span class="line"><span class="built_in">print</span> a  <span class="comment"># 哈哈，否则会有unicode编码问题[u'\u54c8\u54c8']</span></span><br></pre></td></tr></table></figure>
+<h5 id="查看硬盘容量及消耗"><a href="#查看硬盘容量及消耗" class="headerlink" title="查看硬盘容量及消耗"></a>查看硬盘容量及消耗</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo du -h --max-depth=1 .|sort -rh |head <span class="comment">#查看文件夹/程序占用，由高到低排序</span></span><br><span class="line">df -hl <span class="comment"># 查看分区容量</span></span><br></pre></td></tr></table></figure>
+<h5 id="多版本cuda安装及环境切换"><a href="#多版本cuda安装及环境切换" class="headerlink" title="多版本cuda安装及环境切换"></a>多版本cuda安装及环境切换</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">首先将~/.bashrc 下与cuda相关的路径都改为　/usr/<span class="built_in">local</span>/cuda/　</span><br><span class="line">rm -rf /usr/<span class="built_in">local</span>/cuda<span class="comment">#删除之前创建的软链接</span></span><br><span class="line">sudo ln -s /usr/<span class="built_in">local</span>/cuda-8.0/ /usr/<span class="built_in">local</span>/cuda/ <span class="comment"># 建立新连接</span></span><br><span class="line">nvcc --version <span class="comment">#查看当前 cuda 版本</span></span><br><span class="line">http://blog.csdn.net/maple2014/article/details/78574275</span><br></pre></td></tr></table></figure>
+<h5 id="多版本cudnn安装及环境切换"><a href="#多版本cudnn安装及环境切换" class="headerlink" title="多版本cudnn安装及环境切换"></a>多版本cudnn安装及环境切换</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#解压文件</span></span><br><span class="line">tar -zxvf cudnn-8.0-linux-x64-v7.tgz</span><br><span class="line"><span class="comment">#切换到刚刚解压出来的文件夹路径</span></span><br><span class="line"><span class="built_in">cd</span> cuda </span><br><span class="line"><span class="comment">#复制include里的头文件</span></span><br><span class="line">sudo cp /include/cudnn.h  /usr/<span class="built_in">local</span>/cuda/include/</span><br><span class="line"><span class="comment">#复制lib64下的lib文件到cuda安装路径下的lib64</span></span><br><span class="line">sudo cp lib*  /usr/<span class="built_in">local</span>/cuda/lib64/</span><br><span class="line"><span class="comment">#设置权限</span></span><br><span class="line">sudo chmod a+r /usr/<span class="built_in">local</span>/cuda/include/cudnn.h </span><br><span class="line">sudo chmod a+r /usr/<span class="built_in">local</span>/cuda/lib64/libcudnn* <span class="comment">#(后面不删除此软连接)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#======更新软连接======</span></span><br><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/cuda/lib64/ </span><br><span class="line">sudo rm -rf libcudnn.so libcudnn.so.7   <span class="comment"># 除了新复制的libcudnn.so.7.0.2，删除其余所有的cudnn动态文件，该文件夹下直接ls指令查看</span></span><br><span class="line">sudo ln -s libcudnn.so.7.0.2 libcudnn.so.7  <span class="comment"># 生成软衔接（注意这里要和自己下载的cudnn版本对应，可以在/usr/local/cuda/lib64下查看自己libcudnn的版本）</span></span><br><span class="line">sudo ln -s libcudnn.so.7 libcudnn.so <span class="comment"># 生成软链接</span></span><br><span class="line">sudo ldconfig -v <span class="comment"># 立刻生效</span></span><br></pre></td></tr></table></figure>
+<h5 id="ubuntu桌面死机解决"><a href="#ubuntu桌面死机解决" class="headerlink" title="ubuntu桌面死机解决"></a>ubuntu桌面死机解决</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">top 查看，记下PID后，q退出即可，输入 sudo <span class="built_in">kill</span> PID    </span><br><span class="line">sudo pkill Xorg 注销桌面重新登录</span><br></pre></td></tr></table></figure>
+<h5 id="找不到xx包相关错误…cannot-find-lxxc…"><a href="#找不到xx包相关错误…cannot-find-lxxc…" class="headerlink" title="找不到xx包相关错误…cannot find -lxxc…"></a>找不到xx包相关错误…cannot find -lxxc…</h5><p>先找下其他目录中是否存在需要的lib文件，有的话不用下载，直接指向就好了。找到缺失lib文件的物理位置，之后在需要的目录中建立软连接<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">locate libc.so</span><br><span class="line">ln -s /usr/lib/x86_64-linux-gnu/libpthread.so /home/tucodec/miniconda3/compiler_compat/</span><br><span class="line">rm -rf libc.7.gz 移除软连接</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/01/python-5/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1421,310 +1710,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/17/tmux/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="祥吉">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Deep Coding">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/17/tmux/" itemprop="url">tmux——轻松实现进程后台托管!</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-17T23:04:15+08:00">
-                2018-01-17
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/01/17/tmux/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/01/17/tmux/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h4><p>远程连接服务器跑模型时，经常由于客户端IP地址发生变化，或者关闭Terminal窗口，而导致服务器Session终端，这里介绍一种<strong>可随时从Session中抽离，又能在需要时候重新回到该Session的方法</strong></p>
-<p><font color="blue"> 以下程序均为在服务器端操作，或者SSH远程服务器操作 </font></p>
-<h5 id="1、服务器端安装tmux"><a href="#1、服务器端安装tmux" class="headerlink" title="1、服务器端安装tmux"></a>1、服务器端安装tmux</h5><pre><code class="bash">$ apt-get install tmux
-</code></pre>
-<h5 id="2、Terminal窗口直接键入tmux，进入一个session，左下角显示该session进程号"><a href="#2、Terminal窗口直接键入tmux，进入一个session，左下角显示该session进程号" class="headerlink" title="2、Terminal窗口直接键入tmux，进入一个session，左下角显示该session进程号"></a>2、Terminal窗口直接键入tmux，进入一个session，左下角显示该session进程号</h5><pre><code class="bash">$ tmux
-</code></pre>
-<p>现在便可随时关闭Terminal，Session便可以在后台安静稳定地运行！需要恢复该Session时：</p>
-<pre><code class="bash">$ tmux attach -t 0
-</code></pre>
-<h5 id="3、杀掉该session"><a href="#3、杀掉该session" class="headerlink" title="3、杀掉该session"></a>3、杀掉该session</h5><p>在某个tmux窗口内，输入exit便可以kill并退出</p>
-<pre><code class="bash">$ <span class="built_in">exit</span>
-</code></pre>
-<hr>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/16/Conda-md/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="祥吉">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Deep Coding">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/16/Conda-md/" itemprop="url">Conda切换python2/3环境！🐶</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-16T15:52:19+08:00">
-                2018-01-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/01/16/Conda-md/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/01/16/Conda-md/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h3><p>Python的全局锁有时候非常烦。很多人电脑里都会同时装python2、python3。但在linux安装各种包时，长期混乱地pip、pip3随便安装，时间久了便造成安装环境混乱，导致<font color="blue">“明明安装了某种包，在使用时却未发现该包的错误” </font></p>
-<p>在这里介绍一种牛逼的包管理工具Miniconda，以明确规定python环境，再安装相应python版本的包，再安全使用该包。博主被Tensorflow的各种版本及依赖库苦扰了好久，不要贪图省事儿，一次彻底搞定，后面才可以节节高！</p>
-<h5 id="Minicoda安装："><a href="#Minicoda安装：" class="headerlink" title="Minicoda安装："></a>Minicoda安装：</h5><p>Welcome to <a href="https://conda.io/miniconda.html" target="_blank" rel="noopener">Miniconda</a>! 点击链接，下载对应操作系统的Miniconda即可！<br><img src="/img/conda.jpeg" alt=""><br><strong>Tips：</strong>安装miniconda时不要以root权限安装，同时安装过程最好选择默认选项，最后在Linux的用户目录下创建一个叫miniconda的文件夹。这样的好处，同一台主机的不同用户可以安装自己的anaconda，配置自己的Python环境，大家不相互影响。</p>
-<h5 id="将conda添加到系统环境变量"><a href="#将conda添加到系统环境变量" class="headerlink" title="将conda添加到系统环境变量"></a>将conda添加到系统环境变量</h5><pre><code class="bash">$ vi ~/.bashrc
-在最后添加一项：<span class="built_in">export</span> PATH=<span class="string">"~/miniconda3/bin:<span class="variable">$PATH</span>"</span>
-$ <span class="built_in">source</span> ~/.bashrc
-</code></pre>
-<h5 id="conda创建python2环境"><a href="#conda创建python2环境" class="headerlink" title="conda创建python2环境"></a>conda创建python2环境</h5><pre><code class="bash">$ conda create -n py2k python=2.7
-</code></pre>
-<h5 id="同时安装必要的包"><a href="#同时安装必要的包" class="headerlink" title="同时安装必要的包"></a>同时安装必要的包</h5><p>Tips:通过conda某个环境安装的包都在…/miniconda/envs/py2k/lib/python2.7/site-packages/xxx，需要时候可以查阅各个包的源码</p>
-<pre><code class="bash">$ conda create -n py2k numpy
-</code></pre>
-<h5 id="切换到新环境（-linux-Mac下）"><a href="#切换到新环境（-linux-Mac下）" class="headerlink" title="切换到新环境（ linux/Mac下）"></a>切换到新环境（ linux/Mac下）</h5><pre><code class="bash">$ <span class="built_in">source</span> activate py2k
-</code></pre>
-<p><font color="red"> 比如说需要安装py2版本的Tensorflow及github上其他的一些包，均需要在安装、使用时先切换到该环境下 </font></p>
-<h5 id="退出环境"><a href="#退出环境" class="headerlink" title="退出环境"></a>退出环境</h5><pre><code class="bash">$ deactivate py2k
-</code></pre>
-<h5 id="移除环境"><a href="#移除环境" class="headerlink" title="移除环境"></a>移除环境</h5><pre><code class="bash">$ conda remove -n py2k --all
-</code></pre>
-<h5 id="查看当前所有环境"><a href="#查看当前所有环境" class="headerlink" title="查看当前所有环境"></a>查看当前所有环境</h5><pre><code class="bash">$ conda info -e (带*的就是当前默认环境)
-</code></pre>
-<h5 id="指定查看某环境下安装的package"><a href="#指定查看某环境下安装的package" class="headerlink" title="指定查看某环境下安装的package"></a>指定查看某环境下安装的package</h5><pre><code class="bash">$ conda list -n env_name
-</code></pre>
-<h5 id="查找是否有某个包可被安装"><a href="#查找是否有某个包可被安装" class="headerlink" title="查找是否有某个包可被安装"></a>查找是否有某个包可被安装</h5><pre><code class="bash">$ conda search pyqtgraph
-</code></pre>
-<h5 id="有些包在国外，需要搭梯子，这里推荐清华大学的开源工具包，下载速度飞快！！"><a href="#有些包在国外，需要搭梯子，这里推荐清华大学的开源工具包，下载速度飞快！！" class="headerlink" title="有些包在国外，需要搭梯子，这里推荐清华大学的开源工具包，下载速度飞快！！"></a>有些包在国外，需要搭梯子，这里推荐清华大学的开源工具包，下载速度飞快！！</h5><p>Ps：仅需配置一次，配置文件位于<code>/home/tucodec/.condarc</code></p>
-<pre><code class="bash">$ conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/
-$ conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main/
-$ conda config --<span class="built_in">set</span> show_channel_urls yes
-</code></pre>
-<p>最后看看Miniconda管理的成果吧！<br><img src="/img/conda_1.jpeg" alt=""></p>
-<h5 id="conda与系统环境相关事宜"><a href="#conda与系统环境相关事宜" class="headerlink" title="conda与系统环境相关事宜"></a>conda与系统环境相关事宜</h5><p>1、Terminal窗口下，直接<code>pip install xxx</code>，会默认安装到系统的~/python/sitepackage目录中；conda的python环境下，才会安装到对应~/miniconda/python/sitepackage目录中。<br>2、直接在Terminal窗口输入python2/3，会优先搜索安装在系统路径的python，如果没有对应的python版本，才会调用miniconda中的python。<br>3、假如在系统路径直接pip install gensim，那么在miniconda的python环境下是调不到的，所以最好是先source activate python环境，再pip/conda安装相应的软件 </p>
-<hr>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1779,7 +1764,7 @@ $ conda config --<span class="built_in">set</span> show_channel_urls yes
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-count">24</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1877,7 +1862,7 @@ $ conda config --<span class="built_in">set</span> show_channel_urls yes
  
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共14.9k字</span>
+  <span class="post-count">博客全站共17.5k字</span>
 </div>
 
 <div class="powered-by">

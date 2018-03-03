@@ -86,18 +86,20 @@
 
 
 
-<meta name="description" content="NLP/CV，Studying，Coding">
+<meta name="description" content="背景计算机视觉目标检测任务中，输出的result是一系列图像及对应的txt文档，文档里面记录了检测到类别的bounding box信息：其中每行是一个类别，第1列代表哪一类，第2列是该类别置信度，后面4列是该bounding box的左上、右下的坐标信息(以图的左上方为坐标0点)，如下所示：  7 0.9482899 157.50272 192.24951 216.85303 248.506381">
 <meta name="keywords" content="计算机视觉">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Bounding box绘制">
+<meta property="og:title" content="目标检测任务中的Bounding box绘制">
 <meta property="og:url" content="http://yoursite.com/2018/03/02/box/index.html">
 <meta property="og:site_name" content="Deep Coding">
-<meta property="og:description" content="NLP/CV，Studying，Coding">
+<meta property="og:description" content="背景计算机视觉目标检测任务中，输出的result是一系列图像及对应的txt文档，文档里面记录了检测到类别的bounding box信息：其中每行是一个类别，第1列代表哪一类，第2列是该类别置信度，后面4列是该bounding box的左上、右下的坐标信息(以图的左上方为坐标0点)，如下所示：  7 0.9482899 157.50272 192.24951 216.85303 248.506381">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-03-02T03:08:14.088Z">
+<meta property="og:image" content="http://yoursite.com/img/ren.jpg">
+<meta property="og:updated_time" content="2018-03-03T03:43:17.412Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Bounding box绘制">
-<meta name="twitter:description" content="NLP/CV，Studying，Coding">
+<meta name="twitter:title" content="目标检测任务中的Bounding box绘制">
+<meta name="twitter:description" content="背景计算机视觉目标检测任务中，输出的result是一系列图像及对应的txt文档，文档里面记录了检测到类别的bounding box信息：其中每行是一个类别，第1列代表哪一类，第2列是该类别置信度，后面4列是该bounding box的左上、右下的坐标信息(以图的左上方为坐标0点)，如下所示：  7 0.9482899 157.50272 192.24951 216.85303 248.506381">
+<meta name="twitter:image" content="http://yoursite.com/img/ren.jpg">
 
 
 
@@ -133,7 +135,7 @@
 
 
 
-  <title>Bounding box绘制 | Deep Coding</title>
+  <title>目标检测任务中的Bounding box绘制 | Deep Coding</title>
   
 
 
@@ -277,7 +279,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Bounding box绘制</h1>
+          <h1 class="post-title" itemprop="name headline">目标检测任务中的Bounding box绘制</h1>
         
 
         <div class="post-meta">
@@ -337,7 +339,13 @@
       
 
       
-        
+        <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>计算机视觉目标检测任务中，输出的result是一系列图像及对应的txt文档，文档里面记录了检测到类别的<code>bounding box</code>信息：其中每行是一个类别，第1列代表哪一类，第2列是该类别置信度，后面4列是该<code>bounding box</code>的左上、右下的坐标信息(以图的左上方为坐标0点)，如下所示：</p>
+<blockquote>
+<p>7 0.9482899 157.50272 192.24951 216.85303 248.50638<br>12 0.7890044 247.94312 211.89938 304.7307 280.8666<br>18 0.5444266 101.857285 215.64401 181.53456 261.96036</p>
+</blockquote>
+<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><p>为了直观显示每张图像包含了哪些类别，我们用python对<code>bounding box</code>进行了重绘，<strong>并将图像按类别放置于对应的文件夹中，文件夹名称为1～21，以字典形式对应于21个类别，</strong>代码如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"><span class="comment">#!/usr/bin/env Python</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> shutil</span><br><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image, ImageDraw</span><br><span class="line"></span><br><span class="line"><span class="comment">#==========================建立索引文件夹==========================</span></span><br><span class="line"></span><br><span class="line">Path1_A = <span class="string">"/home/tucoder/Desktop/demo1_result/S1/"</span> <span class="comment"># 图像按类型分配到各个文件夹</span></span><br><span class="line">Path2_A = <span class="string">"/home/tucoder/Desktop/demo1_result/S2/"</span> <span class="comment"># 存储类型文本</span></span><br><span class="line"></span><br><span class="line">dict1 = &#123;<span class="string">'1'</span>:<span class="string">'飞机'</span>,<span class="string">'2'</span>:<span class="string">'自行车'</span>,<span class="string">'3'</span>:<span class="string">'鸟'</span>,<span class="string">'4'</span>:<span class="string">'船'</span>,<span class="string">'5'</span>:<span class="string">'瓶子'</span>,<span class="string">'6'</span>:<span class="string">'公共汽车'</span>,<span class="string">'7'</span>:<span class="string">'车'</span>,<span class="string">'8'</span>:<span class="string">'猫'</span>,<span class="string">'9'</span>:<span class="string">'椅子'</span>,<span class="string">'10'</span>:<span class="string">'牛'</span>,<span class="string">'11'</span>:<span class="string">'餐桌'</span>,<span class="string">'12'</span>:<span class="string">'狗'</span>, \</span><br><span class="line">    <span class="string">'13'</span>:<span class="string">'马'</span>,<span class="string">'14'</span>:<span class="string">'摩托车'</span>,<span class="string">'15'</span>:<span class="string">'人'</span>,<span class="string">'16'</span>:<span class="string">'植物'</span>,<span class="string">'17'</span>:<span class="string">'羊'</span>,<span class="string">'18'</span>:<span class="string">'沙发'</span>,<span class="string">'19'</span>:<span class="string">'火车'</span>,<span class="string">'20'</span>:<span class="string">'电视'</span>&#125; <span class="comment"># 21类</span></span><br><span class="line">    </span><br><span class="line">os.mkdir(Path1_A)</span><br><span class="line">  </span><br><span class="line">os.mkdir(Path2_A)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, <span class="number">21</span>):</span><br><span class="line">        os.mkdir(Path1_A+str(i))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">draw</span><span class="params">(Path1, x1, y1, x2, y2, path2)</span>:</span></span><br><span class="line">    <span class="string">'''</span></span><br><span class="line"><span class="string">    绘制矩形框函数</span></span><br><span class="line"><span class="string">    原pic位置path1</span></span><br><span class="line"><span class="string">    处理后的pic被存储到path2中</span></span><br><span class="line"><span class="string">    '''</span></span><br><span class="line">    im = Image.open(Path1)</span><br><span class="line">    draw = ImageDraw.Draw(im)</span><br><span class="line">    line = <span class="number">5</span></span><br><span class="line">    x, y = x1, y1</span><br><span class="line">    x_1, y_1 = x2, y2</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, line + <span class="number">1</span>):</span><br><span class="line">        draw.rectangle((x + (line - i), y + (line - i), x_1 + i, y_1 + i), outline=<span class="string">'red'</span>)</span><br><span class="line">    im.save(path2)</span><br><span class="line"></span><br><span class="line"><span class="comment">#==========================main==========================</span></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    result = []</span><br><span class="line">    alllist=os.listdir(<span class="string">"/home/tucoder/Desktop/demo1_result"</span>)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> alllist:</span><br><span class="line">        <span class="keyword">if</span> <span class="string">"."</span> <span class="keyword">in</span> i:</span><br><span class="line">            aa, bb=i.split(<span class="string">"."</span>)</span><br><span class="line">            <span class="keyword">if</span> bb == <span class="string">"txt"</span>:</span><br><span class="line">                result.append(aa+<span class="string">"."</span>+bb)</span><br><span class="line">    A = set()</span><br><span class="line">    <span class="keyword">for</span> filename <span class="keyword">in</span> result:</span><br><span class="line">        set1 = set()</span><br><span class="line">        string = <span class="string">''</span> <span class="comment"># 每幅图片包含其class属性</span></span><br><span class="line">        str1 = filename[:filename.rindex(<span class="string">"."</span>)]</span><br><span class="line">        <span class="keyword">with</span> open(filename, <span class="string">'r'</span>) <span class="keyword">as</span> f:</span><br><span class="line">            <span class="keyword">for</span> line <span class="keyword">in</span> f.readlines():</span><br><span class="line">                list1 = line.split()</span><br><span class="line">                <span class="keyword">if</span> float(list1[<span class="number">1</span>]) &gt;= <span class="number">0.80</span>: <span class="comment"># 类别置信度&gt;=0.8，判定其为真</span></span><br><span class="line">                    A.add(list1[<span class="number">0</span>])</span><br><span class="line">                    Path_1 = str1+<span class="string">".jpg"</span></span><br><span class="line">                    Path_2 = Path1_A+<span class="string">'/'</span>+list1[<span class="number">0</span>]+<span class="string">"/"</span>+str1+<span class="string">".jpg"</span></span><br><span class="line">                    <span class="keyword">if</span> list1[<span class="number">0</span>] <span class="keyword">not</span> <span class="keyword">in</span> set1:</span><br><span class="line">                        set1.add(list1[<span class="number">0</span>]) </span><br><span class="line">                        draw(Path_1, float(list1[<span class="number">2</span>]), float(list1[<span class="number">3</span>]), float(list1[<span class="number">4</span>]), float(list1[<span class="number">5</span>]), Path_2)</span><br><span class="line">                        string = string +list1[<span class="number">0</span>]+<span class="string">"-"</span></span><br><span class="line">                    <span class="keyword">else</span>:</span><br><span class="line">                        draw(Path_2, float(list1[<span class="number">2</span>]), float(list1[<span class="number">3</span>]), float(list1[<span class="number">4</span>]), float(list1[<span class="number">5</span>]), Path_2)</span><br><span class="line">        set1.clear()</span><br><span class="line">        List = []</span><br><span class="line">    <span class="keyword">for</span> str_i <span class="keyword">in</span> list(A):</span><br><span class="line">        List.append(dict1[str_i])</span><br><span class="line">    print(List)</span><br><span class="line">    <span class="keyword">with</span> open(Path2_A+<span class="string">'text'</span>, <span class="string">'w'</span>) <span class="keyword">as</span> f:</span><br><span class="line">        f.write(str(List))</span><br></pre></td></tr></table></figure></p>
+<h3 id="最终效果如图："><a href="#最终效果如图：" class="headerlink" title="最终效果如图："></a>最终效果如图：</h3><p> <img src="/img/ren.jpg" width="600" alt="图片名称" align="center"></p>
+
       
     </div>
     
@@ -367,8 +375,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/02/28/baiduapi/" rel="next" title="调用百度api进行长语音识别">
-                <i class="fa fa-chevron-left"></i> 调用百度api进行长语音识别
+              <a href="/2018/02/28/baiduapi/" rel="next" title="调用百度SDK进行长语音识别">
+                <i class="fa fa-chevron-left"></i> 调用百度SDK进行长语音识别
               </a>
             
           </div>
@@ -376,6 +384,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/03/signal/" rel="prev" title="信号相关知识">
+                信号相关知识 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -407,7 +419,7 @@
   
     <div class="comments" id="comments">
       <div class="ds-thread" data-thread-key="2018/03/02/box/"
-           data-title="Bounding box绘制" data-url="http://yoursite.com/2018/03/02/box/">
+           data-title="目标检测任务中的Bounding box绘制" data-url="http://yoursite.com/2018/03/02/box/">
       </div>
     </div>
 
@@ -434,8 +446,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -454,7 +475,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-count">24</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -513,6 +534,22 @@
       </section>
 
       
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解决方案"><span class="nav-number">2.</span> <span class="nav-text">解决方案</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#最终效果如图："><span class="nav-number">3.</span> <span class="nav-text">最终效果如图：</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
 
       
 
@@ -552,7 +589,7 @@
  
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共14.9k字</span>
+  <span class="post-count">博客全站共17.5k字</span>
 </div>
 
 <div class="powered-by">

@@ -259,7 +259,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/02/box/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/03/Search/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="祥吉">
@@ -278,7 +278,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/03/02/box/" itemprop="url">Bounding box绘制</a></h1>
+                <a class="post-title-link" href="/2018/03/03/Search/" itemprop="url">Search</a></h1>
         
 
         <div class="post-meta">
@@ -290,8 +290,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-02T11:03:57+08:00">
-                2018-03-02
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-03T16:31:39+08:00">
+                2018-03-03
               </time>
             
 
@@ -309,8 +309,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/03/02/box/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/03/02/box/" itemprop="commentCount"></span>
+                <a href="/2018/03/03/Search/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/03/03/Search/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -388,6 +388,288 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/03/signal/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="祥吉">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Deep Coding">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/03/signal/" itemprop="url">信号相关知识</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-03T16:31:13+08:00">
+                2018-03-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/03/03/signal/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/03/03/signal/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="傅立叶级数"><a href="#傅立叶级数" class="headerlink" title="傅立叶级数"></a>傅立叶级数</h3><p>周期为T的周期信号，若满足“狄里赫利”条件，则可以将其展开为有限或无限个离散的正余弦函数累加的形式。它的物理意义是很明显的，这就是把一个比较复杂的周期运动看成许多不同运动的叠加，如下：<br><img src="/img/ft.jpg" width="700" alt="图片名称" align="center"><br>而对于任何一个非周期信号，同样可以用傅立叶展开的形式，只不过它的频域曲线是连续的(后文有涉及)，在计算上也从累加符号变成了积分符号。两者的关系如下：<br><img src="/img/fft.jpg" width="600" alt="图片名称" align="center"><br>那傅立叶变换的用处是什么？给你一个正弦曲线，让你从中拿走某个频率的分量（即滤波），时域图中基本无法看懂，频域中只要拿走几条竖线就好了。而在反向传播算法中，FFT可以把微分、积分，在频域中变为加减乘除的简单运算。</p>
+<h3 id="时域-amp-频域"><a href="#时域-amp-频域" class="headerlink" title="时域&amp;频域"></a>时域&amp;频域</h3><p><strong>时域</strong>反应的是现实世界中我们最能感知的信号，横轴为时间，纵轴为振幅；而<strong>频域</strong>反应的是频率与振幅的关系。将一个表示波的函数从时域转化为频域的关系，便称为傅立叶变换。两个例子如下所示：<br><img src="/img/ft2.jpeg" width="800" alt="图片名称" align="center"></p>
+<p>PS：玄学傅立叶：</p>
+<blockquote>
+<p>我们看似不规律的事情反而是规律的正弦波在时域上的投影，而正弦波又是一个旋转的圆在直线上的投影。<br>我们眼中的世界就像皮影戏的大幕布，幕布的后面有无数的齿轮，大齿轮带动小齿轮，小齿轮再带动更小的。在最外面的小齿轮上有一个小人——那就是我们自己。我们只看到这个小人毫无规律的在幕布前表演，却无法预测他下一步会去哪。而幕布后面的齿轮却永远一直那样不停的旋转，永不停歇。</p>
+</blockquote>
+<p>如何用一幅图总结频域、时域、相位谱的关系(引自<a href="https://zhuanlan.zhihu.com/p/19763358?from=singlemessage&amp;isappinstalled=1" target="_blank" rel="noopener">知乎</a>)<br><img src="/img/ft3.jpeg" width="700" alt="图片名称" align="center"></p>
+<h3 id="采样"><a href="#采样" class="headerlink" title="采样"></a>采样</h3><p>以音频文件采样为例：同图像bmp文件一样，pcm文件保存的是未压缩的音频信息。<br>16bits 编码是指，每次采样的音频信息用2个字节保存。可以对比下bmp文件用分别用2个字节保存RGB颜色的信息。<br>16000采样率 是指 1秒钟采样 16000次。当前声卡常用的采样频率一般为44.1KHz，即一秒采样44100次，人耳最敏感的听力范围20Hz到8000Hz。显然采样频率越高声音的还原就越真实越自然。<br>即：1秒的16000采样率音频文件大小是 2*16000 = 32000字节 ，约为32K<br>采样定理：衡量的是采样频率与信号频率之间的关系。采样定理规定，采样频率必须大于等于信号频率的两倍，才能够将原始信号从采样定理中完全恢复出来，否则会造成频率曲线混叠</p>
+<h3 id="图像大小变换"><a href="#图像大小变换" class="headerlink" title="图像大小变换"></a>图像大小变换</h3><p>图像像素数量 = 图像分辨率相乘，例如：图像分辨率为1280<em>720，那么这张图片像素有100万。在同一台设备上，图片分辨率越高，这张图片1:1放大时，图片面积越大；图片分辨率越低，这张图片1:1缩放时，图片面积越小。<br>所以，将1280</em>720的图像缩小到720*540时，便需要采用下采样，这样再在同一台设备上，处理后的图片size就比较小。python代码如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line">filename = <span class="string">"/Users/wxj/Desktop/WechatIMG2.jpeg"</span></span><br><span class="line">img = Image.open(filename)</span><br><span class="line">imgSize = img.size <span class="comment">#图片的长和宽</span></span><br><span class="line"><span class="keyword">print</span> (imgSize) <span class="comment"># 1920*1080</span></span><br><span class="line">out = img.resize((<span class="number">1080</span>，<span class="number">640</span>),Image.ANTIALIAS) <span class="comment">#降低分辨率</span></span><br><span class="line">out.save(<span class="string">"1.jpg"</span>)</span><br></pre></td></tr></table></figure></p>
+<h4 id="图像尺寸怎么计算呢？"><a href="#图像尺寸怎么计算呢？" class="headerlink" title="图像尺寸怎么计算呢？"></a>图像尺寸怎么计算呢？</h4><p>pic_size = 分辨率*3字节(rgb)图像，但这样发现跟电脑中显示的大小不同，因为图像文件(.jpg、png)等，都是有损压缩，一般会压缩几十到几百倍不等这样子。</p>
+<h4 id="图像金字塔"><a href="#图像金字塔" class="headerlink" title="图像金字塔"></a>图像金字塔</h4><p>图像金字塔算法是对图像的下采样、上采样：</p>
+<blockquote>
+<ul>
+<li>其中下采样为采用高斯内核卷积；之后去除偶数行列</li>
+<li>上采样为将图像在每个方向扩大为原来的两倍，新增的行和列以0填充；再使用先前同样的内核(乘以4)与放大后的图像卷积，获得 “新增像素”的近似值<br>而resize函数改变大小与图像金字塔的不同，采用的是线性插值补全丢失的像素，但实际用下来差别不大。</li>
+</ul>
+</blockquote>
+<h3 id="Ref"><a href="#Ref" class="headerlink" title="Ref:"></a>Ref:</h3><p><a href="https://zhuanlan.zhihu.com/p/19763358?from=singlemessage&amp;isappinstalled=1" target="_blank" rel="noopener">傅里叶分析之掐死教程（完整版）更新于2014.06.06</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/02/box/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="祥吉">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Deep Coding">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/02/box/" itemprop="url">目标检测任务中的Bounding box绘制</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-02T11:03:57+08:00">
+                2018-03-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/03/02/box/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/03/02/box/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>计算机视觉目标检测任务中，输出的result是一系列图像及对应的txt文档，文档里面记录了检测到类别的<code>bounding box</code>信息：其中每行是一个类别，第1列代表哪一类，第2列是该类别置信度，后面4列是该<code>bounding box</code>的左上、右下的坐标信息(以图的左上方为坐标0点)，如下所示：</p>
+<blockquote>
+<p>7 0.9482899 157.50272 192.24951 216.85303 248.50638<br>12 0.7890044 247.94312 211.89938 304.7307 280.8666<br>18 0.5444266 101.857285 215.64401 181.53456 261.96036</p>
+</blockquote>
+<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><p>为了直观显示每张图像包含了哪些类别，我们用python对<code>bounding box</code>进行了重绘，<strong>并将图像按类别放置于对应的文件夹中，文件夹名称为1～21，以字典形式对应于21个类别，</strong>代码如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"><span class="comment">#!/usr/bin/env Python</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> shutil</span><br><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image, ImageDraw</span><br><span class="line"></span><br><span class="line"><span class="comment">#==========================建立索引文件夹==========================</span></span><br><span class="line"></span><br><span class="line">Path1_A = <span class="string">"/home/tucoder/Desktop/demo1_result/S1/"</span> <span class="comment"># 图像按类型分配到各个文件夹</span></span><br><span class="line">Path2_A = <span class="string">"/home/tucoder/Desktop/demo1_result/S2/"</span> <span class="comment"># 存储类型文本</span></span><br><span class="line"></span><br><span class="line">dict1 = &#123;<span class="string">'1'</span>:<span class="string">'飞机'</span>,<span class="string">'2'</span>:<span class="string">'自行车'</span>,<span class="string">'3'</span>:<span class="string">'鸟'</span>,<span class="string">'4'</span>:<span class="string">'船'</span>,<span class="string">'5'</span>:<span class="string">'瓶子'</span>,<span class="string">'6'</span>:<span class="string">'公共汽车'</span>,<span class="string">'7'</span>:<span class="string">'车'</span>,<span class="string">'8'</span>:<span class="string">'猫'</span>,<span class="string">'9'</span>:<span class="string">'椅子'</span>,<span class="string">'10'</span>:<span class="string">'牛'</span>,<span class="string">'11'</span>:<span class="string">'餐桌'</span>,<span class="string">'12'</span>:<span class="string">'狗'</span>, \</span><br><span class="line">    <span class="string">'13'</span>:<span class="string">'马'</span>,<span class="string">'14'</span>:<span class="string">'摩托车'</span>,<span class="string">'15'</span>:<span class="string">'人'</span>,<span class="string">'16'</span>:<span class="string">'植物'</span>,<span class="string">'17'</span>:<span class="string">'羊'</span>,<span class="string">'18'</span>:<span class="string">'沙发'</span>,<span class="string">'19'</span>:<span class="string">'火车'</span>,<span class="string">'20'</span>:<span class="string">'电视'</span>&#125; <span class="comment"># 21类</span></span><br><span class="line">    </span><br><span class="line">os.mkdir(Path1_A)</span><br><span class="line">  </span><br><span class="line">os.mkdir(Path2_A)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, <span class="number">21</span>):</span><br><span class="line">        os.mkdir(Path1_A+str(i))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">draw</span><span class="params">(Path1, x1, y1, x2, y2, path2)</span>:</span></span><br><span class="line">    <span class="string">'''</span></span><br><span class="line"><span class="string">    绘制矩形框函数</span></span><br><span class="line"><span class="string">    原pic位置path1</span></span><br><span class="line"><span class="string">    处理后的pic被存储到path2中</span></span><br><span class="line"><span class="string">    '''</span></span><br><span class="line">    im = Image.open(Path1)</span><br><span class="line">    draw = ImageDraw.Draw(im)</span><br><span class="line">    line = <span class="number">5</span></span><br><span class="line">    x, y = x1, y1</span><br><span class="line">    x_1, y_1 = x2, y2</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, line + <span class="number">1</span>):</span><br><span class="line">        draw.rectangle((x + (line - i), y + (line - i), x_1 + i, y_1 + i), outline=<span class="string">'red'</span>)</span><br><span class="line">    im.save(path2)</span><br><span class="line"></span><br><span class="line"><span class="comment">#==========================main==========================</span></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    result = []</span><br><span class="line">    alllist=os.listdir(<span class="string">"/home/tucoder/Desktop/demo1_result"</span>)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> alllist:</span><br><span class="line">        <span class="keyword">if</span> <span class="string">"."</span> <span class="keyword">in</span> i:</span><br><span class="line">            aa, bb=i.split(<span class="string">"."</span>)</span><br><span class="line">            <span class="keyword">if</span> bb == <span class="string">"txt"</span>:</span><br><span class="line">                result.append(aa+<span class="string">"."</span>+bb)</span><br><span class="line">    A = set()</span><br><span class="line">    <span class="keyword">for</span> filename <span class="keyword">in</span> result:</span><br><span class="line">        set1 = set()</span><br><span class="line">        string = <span class="string">''</span> <span class="comment"># 每幅图片包含其class属性</span></span><br><span class="line">        str1 = filename[:filename.rindex(<span class="string">"."</span>)]</span><br><span class="line">        <span class="keyword">with</span> open(filename, <span class="string">'r'</span>) <span class="keyword">as</span> f:</span><br><span class="line">            <span class="keyword">for</span> line <span class="keyword">in</span> f.readlines():</span><br><span class="line">                list1 = line.split()</span><br><span class="line">                <span class="keyword">if</span> float(list1[<span class="number">1</span>]) &gt;= <span class="number">0.80</span>: <span class="comment"># 类别置信度&gt;=0.8，判定其为真</span></span><br><span class="line">                    A.add(list1[<span class="number">0</span>])</span><br><span class="line">                    Path_1 = str1+<span class="string">".jpg"</span></span><br><span class="line">                    Path_2 = Path1_A+<span class="string">'/'</span>+list1[<span class="number">0</span>]+<span class="string">"/"</span>+str1+<span class="string">".jpg"</span></span><br><span class="line">                    <span class="keyword">if</span> list1[<span class="number">0</span>] <span class="keyword">not</span> <span class="keyword">in</span> set1:</span><br><span class="line">                        set1.add(list1[<span class="number">0</span>]) </span><br><span class="line">                        draw(Path_1, float(list1[<span class="number">2</span>]), float(list1[<span class="number">3</span>]), float(list1[<span class="number">4</span>]), float(list1[<span class="number">5</span>]), Path_2)</span><br><span class="line">                        string = string +list1[<span class="number">0</span>]+<span class="string">"-"</span></span><br><span class="line">                    <span class="keyword">else</span>:</span><br><span class="line">                        draw(Path_2, float(list1[<span class="number">2</span>]), float(list1[<span class="number">3</span>]), float(list1[<span class="number">4</span>]), float(list1[<span class="number">5</span>]), Path_2)</span><br><span class="line">        set1.clear()</span><br><span class="line">        List = []</span><br><span class="line">    <span class="keyword">for</span> str_i <span class="keyword">in</span> list(A):</span><br><span class="line">        List.append(dict1[str_i])</span><br><span class="line">    print(List)</span><br><span class="line">    <span class="keyword">with</span> open(Path2_A+<span class="string">'text'</span>, <span class="string">'w'</span>) <span class="keyword">as</span> f:</span><br><span class="line">        f.write(str(List))</span><br></pre></td></tr></table></figure></p>
+<h3 id="最终效果如图："><a href="#最终效果如图：" class="headerlink" title="最终效果如图："></a>最终效果如图：</h3><p> <img src="/img/ren.jpg" width="600" alt="图片名称" align="center"></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/28/baiduapi/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -407,7 +689,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/02/28/baiduapi/" itemprop="url">调用百度api进行长语音识别</a></h1>
+                <a class="post-title-link" href="/2018/02/28/baiduapi/" itemprop="url">调用百度SDK进行长语音识别</a></h1>
         
 
         <div class="post-meta">
@@ -469,7 +751,15 @@
       
         
           
-            
+            <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>项目中需要用到语音识别技术，之前百度的语音识别SDK只支持时长小于1分钟的语音，所以对于十几分钟的电影，笔者需要自己先进行断句，然后一句句送入百度SDK，这样既麻烦，而且句与句之间的连贯性不够好，经常会造成一些啼笑皆非的识别。</p>
+<h3 id="长语音识别"><a href="#长语音识别" class="headerlink" title="长语音识别"></a>长语音识别</h3><p>2018年1月，百度开放了长语音识别SDK，可以进行自动断句，目测是根据短时能量法（即停顿时间）完成的，对识别后的语句还会自动修改，应该引入了语言模型进行修正。笔者今天上午又进行了一番尝试，至于识别效果嘛，是比以前好一些，但依然不敢恭维，以下：<br>首先采用<code>ffmpeg</code>模块，将视频转化为wav音频文件；接着将文件转码为采样率16K或8K的<code>PCM</code>无损格式<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ffmpeg -i <span class="variable">$audiopath</span> -f wav -vn <span class="variable">$&#123;audiobasename&#125;</span><span class="string">".wav"</span> <span class="comment"># 提取视频中的音频文件</span></span><br><span class="line">ffmpeg -y  -i <span class="variable">$audiobasename</span><span class="string">".wav"</span>  -acodec pcm_s16le -f s16le -ac 1 -ar 16000 16k-0.pcm <span class="comment"># wav音频文件转PCM</span></span><br></pre></td></tr></table></figure></p>
+<p>接着去<a href="http://ai.baidu.com/sdk" target="_blank" rel="noopener">百度Ai开放平台</a>，下载对应平台的SDK。解压后直接cd到<code>sample/asr</code>目录下， 运行<code>build.sh</code>(实际执行的是<code>/src/main.cpp</code>)，便可以识别样例中的一个<code>PCM</code>文件。<br>若要识别你自己的音频文件，需要首先接入<a href="http://ai.baidu.com/docs#/Begin/top" target="_blank" rel="noopener">百度AI服务</a>，由于Access Token的有效期为30天，我们把鉴权请求机制写入<code>build.sh</code>中，这样每次调用SDK都会首先先执行鉴权。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line">curl -i -k &apos;https://aip.baidubce.com/oauth/2.0/token?grant_type=client_credentials&amp;client_id=xxxx&amp;client_secret=xxxx&apos;</span><br><span class="line"># &apos;xxxx&apos;的部分填入你在百度自己申请的id和key</span><br><span class="line">make &amp;&amp; echo &amp;&amp; echo &quot;build success, wait 3s to run&quot;  &amp;&amp; sleep 3 &amp;&amp; ./main</span><br></pre></td></tr></table></figure></p>
+<p>之后修改main.cpp中的<code>asr_set_config_params</code>、<code>asr_set_start_params</code>两个参数，具体如下：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span> app_id = <span class="string">"xxxxx"</span>; 填入你申请的ID</span><br><span class="line"><span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span> chunk_key = <span class="string">"xxxxxxx"</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span> secret_key = <span class="string">"xxxxxxxx"</span>;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 设置启动参数</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">asr_set_start_params</span><span class="params">(bds::BDSSDKMessage&amp; start_params)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span> app = <span class="string">"xxxxx"</span>; # 填入你申请的任务名称</span><br></pre></td></tr></table></figure>
+<p>将之前转好的音频文件，命名为<code>16k-0.pcm</code>，放置于<code>/asr/pcm</code>路径下，重新执行<code>build.sh</code>，便可以在<code>Terminal</code>生成识别后的音频文件！<br><strong>PS:</strong> 建议的环境是<code>GCC、G++ 4.8.5</code>，笔者在<code>GCC 5.4.0</code>也进行了测试，无法正确运行。</p>
+<h3 id="Textrank"><a href="#Textrank" class="headerlink" title="Textrank"></a>Textrank</h3><p>Textrank是传统抽取文章摘要的方式，算法思想借鉴了网页排序的pagerank技术，这里我们采用Github中已开源的<a href="https://github.com/letiantian/TextRank4ZH" target="_blank" rel="noopener">TextRank4ZH模块</a>，安装及调用文档都比较详细，此处不再赘述。</p>
+<h3 id="Ref："><a href="#Ref：" class="headerlink" title="Ref："></a>Ref：</h3><p><a href="https://www.baidu.com/s?ie=UTF-8&amp;wd=textrank4zh" target="_blank" rel="noopener">https://www.baidu.com/s?ie=UTF-8&amp;wd=textrank4zh</a><br><a href="http://ai.baidu.com/tech/speech/lsr" target="_blank" rel="noopener">http://ai.baidu.com/tech/speech/lsr</a></p>
+
           
         
       
@@ -1300,295 +1590,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/04/pachong-1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="祥吉">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Deep Coding">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/02/04/pachong-1/" itemprop="url">爬虫入门_文本抽取</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-04T20:24:02+08:00">
-                2018-02-04
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/02/04/pachong-1/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/02/04/pachong-1/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h2><p>浏览器作为客户端，接收服务器返回的消息，进行解析后展示给我们。我们可以在本地修改html信息，对网页进行“整容”，要知道网页的任何信息都可以被修改，但是修改后的信息不影响服务器端，刷新后又会变成之前服务器端推送的格式。</p>
-<h3 id="审查元素"><a href="#审查元素" class="headerlink" title="审查元素"></a>审查元素</h3><p>有了上面的认识后，怎样修改网页的html信息呢？在你想要修改页面的某个位置右击，继续点击<code>审查</code>，即可获得该位置的html信息。Eg：在邮箱登陆输入密码的位置点击审查元素，将password属性改为text，输入密码时将不再是小圆点的形式。<br><img src="/img/pa_1.jpeg" alt=""><br>网页的全部信息都在其html语句中，接下来我们采用python中的<a href="http://docs.python-requests.org/zh_CN/latest/user/quickstart.html" target="_blank" rel="noopener">requests</a>模块，获取网页的html信息。</p>
-<h3 id="安装python-http模块requests"><a href="#安装python-http模块requests" class="headerlink" title="安装python http模块requests"></a>安装python http模块requests</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 install requests</span><br></pre></td></tr></table></figure>
-<p>这里简单的提取一个网络小说的html信息<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">target = <span class="string">'http://www.biqukan.com/1_1094/5403177.html'</span></span><br><span class="line">req = requests.get(url=target)</span><br><span class="line">html = req.text</span><br><span class="line">print(html) <span class="comment"># 网页html内容，同右键后的网页审查内容</span></span><br></pre></td></tr></table></figure></p>
-<p>requests模块获取的信息为带标签(div、br…)的html信息，还需要通过下面的beautifulsoup模块，提取中我们感兴趣的段落。</p>
-<h3 id="安装文本提取模块Beautiful-Soup"><a href="#安装文本提取模块Beautiful-Soup" class="headerlink" title="安装文本提取模块Beautiful Soup"></a>安装文本提取模块Beautiful Soup</h3><p>python的第三方库，用于从html、xml文件中提取数据，以树状结构的方式执行查询。并且支持正则表达式的模糊匹配。<br> <img src="/img/pa_2.jpeg" width="550" alt="图片名称" align="center"><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 install beautifulsoup4</span><br></pre></td></tr></table></figure></p>
-<p>这里引用<a href="http://blog.csdn.net/u012662731/article/details/78537432" target="_blank" rel="noopener">Jack-Cherish</a>对html的解释：</p>
-<blockquote>
-<p>“一个女人的包包里，会有很多东西，她们会根据自己的习惯将自己的东西进行分类放好。镜子和口红这些会经常用到的东西，会归放到容易拿到的外侧口袋里。那些不经常用到，需要注意安全存放的证件会放到不容易拿到的里侧口袋里”。而html标签就像一个个“口袋”，每个“口袋”都有自己的特定功能，负责存放不同的内容。</p>
-</blockquote>
-<p>例如：上述例子中的div标签下存放了我们关心的正文内容。这个div标签是这样的：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;div id=<span class="string">"content"</span>, class=<span class="string">"showtxt"</span>&gt;</span><br></pre></td></tr></table></figure></p>
-<p>id和class就是div标签的属性，content和showtxt是属性值，一个属性对应一个属性值。它是用来区分不同的div标签的，因为div标签可以有很多，我们怎么加以区分不同的div标签呢？就是通过不同的属性值。可以发现网络小说的正文部分正唯一的对应于class=”showtxt”的div标签下。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">bf = BeautifulSoup(html) <span class="comment"># find 一对标签：&lt;div&gt; &lt;/div&gt;之间的内容</span></span><br><span class="line">texts = bf.find_all(<span class="string">'div'</span>, class_ = <span class="string">'showtxt'</span>)  <span class="comment"># 第一个参数是获取的标签名，第二个参数class_是标签的属性</span></span><br><span class="line">print(texts[<span class="number">0</span>].text.replace(<span class="string">'\xa0'</span>*<span class="number">8</span>,<span class="string">'\n\n'</span>)) </span><br><span class="line"><span class="comment">#使用text属性，提取文本内容，滤除br标签; 之后进行换行符替换及提取文本部分内容</span></span><br></pre></td></tr></table></figure></p>
-<p>BeautifulSoup函数处理完后，可见的是提取出了该小说完整的的正文内容。</p>
-<h3 id="获取每个章节的链接"><a href="#获取每个章节的链接" class="headerlink" title="获取每个章节的链接"></a>获取每个章节的链接</h3><p>章节信息都放在了<code>class = listmain</code>的div标签下，获取方法同上。链接和章名都放在了标签<code>&lt;a&gt;、&lt;/a&gt;</code>之间，Eg：<code>&lt;a href=&quot;/1_1094/5403177.html&quot;&gt;第一章 他叫白小纯&lt;/a&gt;</code>。<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"listmain"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">dl</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dt</span>&gt;</span>《一念永恒》最新章节列表<span class="tag">&lt;/<span class="name">dt</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dd</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"/1_1094/15932394.html"</span>&gt;</span>第1027章 第十道门<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">dd</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dd</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"/1_1094/15923072.html"</span>&gt;</span>第1026章 绝伦道法！<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">dd</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dd</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"/1_1094/15921862.html"</span>&gt;</span>第1025章 长生灯！<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">dd</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">dl</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
-<p>通过两次调用BeautifulSoup，便可以获取一对标签<code>&lt;a&gt;、&lt;/a&gt;</code>之间的内容。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">req = requests.get(url = target) </span><br><span class="line">html = req.text</span><br><span class="line">div_bf = BeautifulSoup(html)</span><br><span class="line">div = div_bf.find_all(<span class="string">'div'</span>, class_ = <span class="string">'listmain'</span>)</span><br><span class="line">a_bf = BeautifulSoup(str(div[<span class="number">0</span>]))</span><br><span class="line">a = a_bf.find_all(<span class="string">'a'</span>)</span><br><span class="line"><span class="keyword">for</span> each <span class="keyword">in</span> a:</span><br><span class="line">     print(each.string, server + each.get(<span class="string">'href'</span>))</span><br></pre></td></tr></table></figure></p>
-<h2 id="完整地爬取一部小说程序整合"><a href="#完整地爬取一部小说程序整合" class="headerlink" title="完整地爬取一部小说程序整合"></a>完整地爬取一部小说程序整合</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding:UTF-8 -*-</span></span><br><span class="line"><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">downloader</span><span class="params">(object)</span>:</span></span><br><span class="line">	<span class="string">"""下载小说《一念永恒》"""</span></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">		self.server = <span class="string">"http://www.biqukan.com/"</span></span><br><span class="line">		self.target = <span class="string">"http://www.biqukan.com/1_1094/"</span></span><br><span class="line">		self.names = [] <span class="comment"># 存放章节名称</span></span><br><span class="line">		self.urls = [] <span class="comment"># 存放每章链接</span></span><br><span class="line">		self.nums = [] <span class="comment"># 章节数量</span></span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">get_download_url</span><span class="params">(self)</span>:</span></span><br><span class="line">		<span class="string">"""获取下载链接url及每章名称names，以list形式放到实例化后的class中"""</span></span><br><span class="line">		req = requests.get(url = self.target)</span><br><span class="line">		html = req.text</span><br><span class="line">		div_bf = BeautifulSoup(html)</span><br><span class="line">		div = div_bf.find_all(<span class="string">'div'</span>, class_ = <span class="string">'listmain'</span>)</span><br><span class="line">		<span class="comment"># 获取到章节名称的html信息，在class = 'listmain'中</span></span><br><span class="line">		a_bf = BeautifulSoup(str(div[<span class="number">0</span>])) </span><br><span class="line">		a = a_bf.find_all(<span class="string">'a'</span>) <span class="comment"># 返回一个list</span></span><br><span class="line">		self.nums = len(a[<span class="number">15</span>:]) <span class="comment"># 过滤了前15条噪声章节</span></span><br><span class="line">		<span class="keyword">for</span> each <span class="keyword">in</span> a[<span class="number">15</span>:]:</span><br><span class="line">			self.names.append(each.string)</span><br><span class="line">			self.urls.append(self.server + each.get(<span class="string">'href'</span>))</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">get_contents</span><span class="params">(self, target)</span>:</span></span><br><span class="line">	    <span class="string">"""</span></span><br><span class="line"><span class="string">	    函数说明：获取class_list中每一个url下的内容</span></span><br><span class="line"><span class="string">	    target：下载地址 </span></span><br><span class="line"><span class="string">	    return: texts - 内容(string类型)</span></span><br><span class="line"><span class="string">	    """</span></span><br><span class="line">	    req = requests.get(url = target)	</span><br><span class="line">	    html = req.text</span><br><span class="line">	    bf = BeautifulSoup(html)</span><br><span class="line">	    texts = bf.find_all(<span class="string">'div'</span>, class_ = <span class="string">'showtxt'</span>)</span><br><span class="line">	    texts = texts[<span class="number">0</span>].text.replace(<span class="string">'\xa0'</span>*<span class="number">8</span>, <span class="string">'\n\n'</span>)</span><br><span class="line">	    <span class="keyword">return</span> texts</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">writer</span><span class="params">(self, name, path, text)</span>:</span></span><br><span class="line">		<span class="string">"""</span></span><br><span class="line"><span class="string">		函数说明：爬取的texts写入文件</span></span><br><span class="line"><span class="string">		name：章节名称</span></span><br><span class="line"><span class="string">		path：文件路径</span></span><br><span class="line"><span class="string">		text：章节内容</span></span><br><span class="line"><span class="string">		"""</span></span><br><span class="line">		<span class="keyword">with</span> open(path, <span class="string">'a'</span>,encoding=<span class="string">'utf-8'</span>) <span class="keyword">as</span> f:</span><br><span class="line">			f.write(name + <span class="string">'\n'</span>) <span class="comment"># write只能写入str</span></span><br><span class="line">			f.writelines(text) <span class="comment"># 自动迭代写入一个字符串列表[str]</span></span><br><span class="line">			f.write(<span class="string">'\n\n'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">	dl = downloader() <span class="comment"># 类的实例化</span></span><br><span class="line">	dl.get_download_url() <span class="comment"># 获取章节名称信息，更新类中的list变量names、urls、nums</span></span><br><span class="line">	print(<span class="string">'开始下载...'</span>)</span><br><span class="line">	<span class="comment"># print(type(dl.nums)) # int型，跟最后定义nums的变量相关</span></span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> range(dl.nums):</span><br><span class="line">		dl.writer(dl.names[i], <span class="string">'一念永恒.txt'</span>, dl.get_contents(dl.urls[i]))</span><br><span class="line">		sys.stdout.write(<span class="string">" 已经下载: %.3f%%"</span> % float(i/dl.nums) + <span class="string">'\r'</span>)</span><br><span class="line">		sys.stdout.flush()</span><br><span class="line">	print(<span class="string">"Success!"</span>)</span><br></pre></td></tr></table></figure>
-<h2 id="Refer："><a href="#Refer：" class="headerlink" title="Refer："></a>Refer：</h2><p><a href="http://blog.csdn.net/u012662731/article/details/78537432" target="_blank" rel="noopener">Python3网络爬虫快速入门实战解析</a><br><a href="http://www.imooc.com/learn/563" target="_blank" rel="noopener">Python开发简单爬虫</a><br><a href="https://www.zhihu.com/question/37787176" target="_blank" rel="noopener">当一个颜值很高的程序员是怎样一番体验？</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/01/Linux/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="祥吉">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Deep Coding">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/02/01/Linux/" itemprop="url">Linux操作日更贴</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-01T16:16:28+08:00">
-                2018-02-01
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/02/01/Linux/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/02/01/Linux/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h5 id="获取-var-www-下所有文件及文件夹的操作权限"><a href="#获取-var-www-下所有文件及文件夹的操作权限" class="headerlink" title="获取/var/www/下所有文件及文件夹的操作权限"></a>获取/var/www/下所有文件及文件夹的操作权限</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod 777 -R /var/www/  <span class="comment"># 用户目录下，需要在前面再加sudo</span></span><br></pre></td></tr></table></figure>
-<h5 id="pip安装软件镜像"><a href="#pip安装软件镜像" class="headerlink" title="pip安装软件镜像"></a>pip安装软件镜像</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo pip install -i https://pypi.tuna.tsinghua.edu.cn/simple xxx</span><br></pre></td></tr></table></figure>
-<h5 id="pip安装国外软件可能超时的解决方法"><a href="#pip安装国外软件可能超时的解决方法" class="headerlink" title="pip安装国外软件可能超时的解决方法"></a>pip安装国外软件可能超时的解决方法</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip --default-timeout=100 install --upgrade gensim</span><br></pre></td></tr></table></figure>
-<h5 id="pip安装Tensorflow任意指定版本"><a href="#pip安装Tensorflow任意指定版本" class="headerlink" title="pip安装Tensorflow任意指定版本"></a>pip安装Tensorflow任意指定版本</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pip install tensorflow-gpu=1.4.1</span><br><span class="line">https://pypi.python.org/pypi/tensorflow-gpu/1.2.0 <span class="comment"># whl文件下载路径</span></span><br></pre></td></tr></table></figure>
-<h5 id="解除Ternsorboard端口占用"><a href="#解除Ternsorboard端口占用" class="headerlink" title="解除Ternsorboard端口占用"></a>解除Ternsorboard端口占用</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">lsof -i:6006  </span><br><span class="line"><span class="built_in">kill</span> -9 28508(上一个命令后弹出的实际端口号)</span><br></pre></td></tr></table></figure>
-<h5 id="没有安装tensorboard-或python版本不对从其源码打开"><a href="#没有安装tensorboard-或python版本不对从其源码打开" class="headerlink" title="没有安装tensorboard/或python版本不对从其源码打开"></a>没有安装tensorboard/或python版本不对从其源码打开</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">locate tensorboard</span><br><span class="line">python2 /usr/<span class="built_in">local</span>/lib/python2.7/dist-packages/tensorflow/tensorboard/teorboard.py --logdir=</span><br></pre></td></tr></table></figure>
-<h5 id="安装pytorch"><a href="#安装pytorch" class="headerlink" title="安装pytorch"></a>安装pytorch</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://tech.ifeng.com/a/20170921/44693375_0.shtml</span><br></pre></td></tr></table></figure>
-<h5 id="ubuntu-teamviewe-安装"><a href="#ubuntu-teamviewe-安装" class="headerlink" title="ubuntu teamviewe 安装"></a>ubuntu teamviewe 安装</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">apt-get purge teamviewer <span class="comment"># 彻底移除旧的版本</span></span><br><span class="line">sudo apt install ./teamviewerxxx.whl</span><br></pre></td></tr></table></figure>
-<h5 id="python2-7，命令行界面输出中文字符"><a href="#python2-7，命令行界面输出中文字符" class="headerlink" title="python2.7，命令行界面输出中文字符"></a>python2.7，命令行界面输出中文字符</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">import uniout</span><br><span class="line">a = [u<span class="string">'哈哈'</span>]  </span><br><span class="line"><span class="built_in">print</span> a  <span class="comment"># 哈哈，否则会有unicode编码问题[u'\u54c8\u54c8']</span></span><br></pre></td></tr></table></figure>
-<h5 id="查看硬盘容量及消耗"><a href="#查看硬盘容量及消耗" class="headerlink" title="查看硬盘容量及消耗"></a>查看硬盘容量及消耗</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo du -h --max-depth=1 .|sort -rh |head <span class="comment">#查看文件夹/程序占用，由高到低排序</span></span><br><span class="line">df -hl <span class="comment"># 查看分区容量</span></span><br></pre></td></tr></table></figure>
-<h5 id="多版本cuda安装及环境切换"><a href="#多版本cuda安装及环境切换" class="headerlink" title="多版本cuda安装及环境切换"></a>多版本cuda安装及环境切换</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">首先将~/.bashrc 下与cuda相关的路径都改为　/usr/<span class="built_in">local</span>/cuda/　</span><br><span class="line">rm -rf /usr/<span class="built_in">local</span>/cuda<span class="comment">#删除之前创建的软链接</span></span><br><span class="line">sudo ln -s /usr/<span class="built_in">local</span>/cuda-8.0/ /usr/<span class="built_in">local</span>/cuda/ <span class="comment"># 建立新连接</span></span><br><span class="line">nvcc --version <span class="comment">#查看当前 cuda 版本</span></span><br><span class="line">http://blog.csdn.net/maple2014/article/details/78574275</span><br></pre></td></tr></table></figure>
-<h5 id="多版本cudnn安装及环境切换"><a href="#多版本cudnn安装及环境切换" class="headerlink" title="多版本cudnn安装及环境切换"></a>多版本cudnn安装及环境切换</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#解压文件</span></span><br><span class="line">tar -zxvf cudnn-8.0-linux-x64-v7.tgz</span><br><span class="line"><span class="comment">#切换到刚刚解压出来的文件夹路径</span></span><br><span class="line"><span class="built_in">cd</span> cuda </span><br><span class="line"><span class="comment">#复制include里的头文件</span></span><br><span class="line">sudo cp /include/cudnn.h  /usr/<span class="built_in">local</span>/cuda/include/</span><br><span class="line"><span class="comment">#复制lib64下的lib文件到cuda安装路径下的lib64</span></span><br><span class="line">sudo cp lib*  /usr/<span class="built_in">local</span>/cuda/lib64/</span><br><span class="line"><span class="comment">#设置权限</span></span><br><span class="line">sudo chmod a+r /usr/<span class="built_in">local</span>/cuda/include/cudnn.h </span><br><span class="line">sudo chmod a+r /usr/<span class="built_in">local</span>/cuda/lib64/libcudnn* <span class="comment">#(后面不删除此软连接)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#======更新软连接======</span></span><br><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/cuda/lib64/ </span><br><span class="line">sudo rm -rf libcudnn.so libcudnn.so.7   <span class="comment"># 除了新复制的libcudnn.so.7.0.2，删除其余所有的cudnn动态文件，该文件夹下直接ls指令查看</span></span><br><span class="line">sudo ln -s libcudnn.so.7.0.2 libcudnn.so.7  <span class="comment"># 生成软衔接（注意这里要和自己下载的cudnn版本对应，可以在/usr/local/cuda/lib64下查看自己libcudnn的版本）</span></span><br><span class="line">sudo ln -s libcudnn.so.7 libcudnn.so <span class="comment"># 生成软链接</span></span><br><span class="line">sudo ldconfig -v <span class="comment"># 立刻生效</span></span><br></pre></td></tr></table></figure>
-<h5 id="ubuntu桌面死机解决"><a href="#ubuntu桌面死机解决" class="headerlink" title="ubuntu桌面死机解决"></a>ubuntu桌面死机解决</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">top 查看，记下PID后，q退出即可，输入 sudo <span class="built_in">kill</span> PID    </span><br><span class="line">sudo pkill Xorg 注销桌面重新登录</span><br></pre></td></tr></table></figure>
-<h5 id="找不到xx包相关错误…cannot-find-lxxc…"><a href="#找不到xx包相关错误…cannot-find-lxxc…" class="headerlink" title="找不到xx包相关错误…cannot find -lxxc…"></a>找不到xx包相关错误…cannot find -lxxc…</h5><p>先找下其他目录中是否存在需要的lib文件，有的话不用下载，直接指向就好了。找到缺失lib文件的物理位置，之后在需要的目录中建立软连接<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">locate libc.so</span><br><span class="line">ln -s /usr/lib/x86_64-linux-gnu/libpthread.so /home/tucodec/miniconda3/compiler_compat/</span><br><span class="line">rm -rf libc.7.gz 移除软连接</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1643,7 +1644,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-count">24</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1741,7 +1742,7 @@
  
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共14.9k字</span>
+  <span class="post-count">博客全站共17.5k字</span>
 </div>
 
 <div class="powered-by">

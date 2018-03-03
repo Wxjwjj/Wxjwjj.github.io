@@ -86,18 +86,18 @@
 
 
 
-<meta name="description" content="NLP/CV，Studying，Coding">
+<meta name="description" content="背景项目中需要用到语音识别技术，之前百度的语音识别SDK只支持时长小于1分钟的语音，所以对于十几分钟的电影，笔者需要自己先进行断句，然后一句句送入百度SDK，这样既麻烦，而且句与句之间的连贯性不够好，经常会造成一些啼笑皆非的识别。 长语音识别2018年1月，百度开放了长语音识别SDK，可以进行自动断句，目测是根据短时能量法（即停顿时间）完成的，对识别后的语句还会自动修改，应该引入了语言模型进行修正">
 <meta name="keywords" content="NLP">
 <meta property="og:type" content="article">
-<meta property="og:title" content="调用百度api进行长语音识别">
+<meta property="og:title" content="调用百度SDK进行长语音识别">
 <meta property="og:url" content="http://yoursite.com/2018/02/28/baiduapi/index.html">
 <meta property="og:site_name" content="Deep Coding">
-<meta property="og:description" content="NLP/CV，Studying，Coding">
+<meta property="og:description" content="背景项目中需要用到语音识别技术，之前百度的语音识别SDK只支持时长小于1分钟的语音，所以对于十几分钟的电影，笔者需要自己先进行断句，然后一句句送入百度SDK，这样既麻烦，而且句与句之间的连贯性不够好，经常会造成一些啼笑皆非的识别。 长语音识别2018年1月，百度开放了长语音识别SDK，可以进行自动断句，目测是根据短时能量法（即停顿时间）完成的，对识别后的语句还会自动修改，应该引入了语言模型进行修正">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-03-02T03:08:06.186Z">
+<meta property="og:updated_time" content="2018-03-03T07:47:15.621Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="调用百度api进行长语音识别">
-<meta name="twitter:description" content="NLP/CV，Studying，Coding">
+<meta name="twitter:title" content="调用百度SDK进行长语音识别">
+<meta name="twitter:description" content="背景项目中需要用到语音识别技术，之前百度的语音识别SDK只支持时长小于1分钟的语音，所以对于十几分钟的电影，笔者需要自己先进行断句，然后一句句送入百度SDK，这样既麻烦，而且句与句之间的连贯性不够好，经常会造成一些啼笑皆非的识别。 长语音识别2018年1月，百度开放了长语音识别SDK，可以进行自动断句，目测是根据短时能量法（即停顿时间）完成的，对识别后的语句还会自动修改，应该引入了语言模型进行修正">
 
 
 
@@ -133,7 +133,7 @@
 
 
 
-  <title>调用百度api进行长语音识别 | Deep Coding</title>
+  <title>调用百度SDK进行长语音识别 | Deep Coding</title>
   
 
 
@@ -277,7 +277,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">调用百度api进行长语音识别</h1>
+          <h1 class="post-title" itemprop="name headline">调用百度SDK进行长语音识别</h1>
         
 
         <div class="post-meta">
@@ -337,7 +337,15 @@
       
 
       
-        
+        <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>项目中需要用到语音识别技术，之前百度的语音识别SDK只支持时长小于1分钟的语音，所以对于十几分钟的电影，笔者需要自己先进行断句，然后一句句送入百度SDK，这样既麻烦，而且句与句之间的连贯性不够好，经常会造成一些啼笑皆非的识别。</p>
+<h3 id="长语音识别"><a href="#长语音识别" class="headerlink" title="长语音识别"></a>长语音识别</h3><p>2018年1月，百度开放了长语音识别SDK，可以进行自动断句，目测是根据短时能量法（即停顿时间）完成的，对识别后的语句还会自动修改，应该引入了语言模型进行修正。笔者今天上午又进行了一番尝试，至于识别效果嘛，是比以前好一些，但依然不敢恭维，以下：<br>首先采用<code>ffmpeg</code>模块，将视频转化为wav音频文件；接着将文件转码为采样率16K或8K的<code>PCM</code>无损格式<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ffmpeg -i <span class="variable">$audiopath</span> -f wav -vn <span class="variable">$&#123;audiobasename&#125;</span><span class="string">".wav"</span> <span class="comment"># 提取视频中的音频文件</span></span><br><span class="line">ffmpeg -y  -i <span class="variable">$audiobasename</span><span class="string">".wav"</span>  -acodec pcm_s16le -f s16le -ac 1 -ar 16000 16k-0.pcm <span class="comment"># wav音频文件转PCM</span></span><br></pre></td></tr></table></figure></p>
+<p>接着去<a href="http://ai.baidu.com/sdk" target="_blank" rel="noopener">百度Ai开放平台</a>，下载对应平台的SDK。解压后直接cd到<code>sample/asr</code>目录下， 运行<code>build.sh</code>(实际执行的是<code>/src/main.cpp</code>)，便可以识别样例中的一个<code>PCM</code>文件。<br>若要识别你自己的音频文件，需要首先接入<a href="http://ai.baidu.com/docs#/Begin/top" target="_blank" rel="noopener">百度AI服务</a>，由于Access Token的有效期为30天，我们把鉴权请求机制写入<code>build.sh</code>中，这样每次调用SDK都会首先先执行鉴权。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line">curl -i -k &apos;https://aip.baidubce.com/oauth/2.0/token?grant_type=client_credentials&amp;client_id=xxxx&amp;client_secret=xxxx&apos;</span><br><span class="line"># &apos;xxxx&apos;的部分填入你在百度自己申请的id和key</span><br><span class="line">make &amp;&amp; echo &amp;&amp; echo &quot;build success, wait 3s to run&quot;  &amp;&amp; sleep 3 &amp;&amp; ./main</span><br></pre></td></tr></table></figure></p>
+<p>之后修改main.cpp中的<code>asr_set_config_params</code>、<code>asr_set_start_params</code>两个参数，具体如下：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span> app_id = <span class="string">"xxxxx"</span>; 填入你申请的ID</span><br><span class="line"><span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span> chunk_key = <span class="string">"xxxxxxx"</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span> secret_key = <span class="string">"xxxxxxxx"</span>;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 设置启动参数</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">asr_set_start_params</span><span class="params">(bds::BDSSDKMessage&amp; start_params)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span> app = <span class="string">"xxxxx"</span>; # 填入你申请的任务名称</span><br></pre></td></tr></table></figure>
+<p>将之前转好的音频文件，命名为<code>16k-0.pcm</code>，放置于<code>/asr/pcm</code>路径下，重新执行<code>build.sh</code>，便可以在<code>Terminal</code>生成识别后的音频文件！<br><strong>PS:</strong> 建议的环境是<code>GCC、G++ 4.8.5</code>，笔者在<code>GCC 5.4.0</code>也进行了测试，无法正确运行。</p>
+<h3 id="Textrank"><a href="#Textrank" class="headerlink" title="Textrank"></a>Textrank</h3><p>Textrank是传统抽取文章摘要的方式，算法思想借鉴了网页排序的pagerank技术，这里我们采用Github中已开源的<a href="https://github.com/letiantian/TextRank4ZH" target="_blank" rel="noopener">TextRank4ZH模块</a>，安装及调用文档都比较详细，此处不再赘述。</p>
+<h3 id="Ref："><a href="#Ref：" class="headerlink" title="Ref："></a>Ref：</h3><p><a href="https://www.baidu.com/s?ie=UTF-8&amp;wd=textrank4zh" target="_blank" rel="noopener">https://www.baidu.com/s?ie=UTF-8&amp;wd=textrank4zh</a><br><a href="http://ai.baidu.com/tech/speech/lsr" target="_blank" rel="noopener">http://ai.baidu.com/tech/speech/lsr</a></p>
+
       
     </div>
     
@@ -377,8 +385,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/03/02/box/" rel="prev" title="Bounding box绘制">
-                Bounding box绘制 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/03/02/box/" rel="prev" title="目标检测任务中的Bounding box绘制">
+                目标检测任务中的Bounding box绘制 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -411,7 +419,7 @@
   
     <div class="comments" id="comments">
       <div class="ds-thread" data-thread-key="2018/02/28/baiduapi/"
-           data-title="调用百度api进行长语音识别" data-url="http://yoursite.com/2018/02/28/baiduapi/">
+           data-title="调用百度SDK进行长语音识别" data-url="http://yoursite.com/2018/02/28/baiduapi/">
       </div>
     </div>
 
@@ -438,8 +446,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -458,7 +475,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-count">24</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -517,6 +534,22 @@
       </section>
 
       
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#长语音识别"><span class="nav-number">2.</span> <span class="nav-text">长语音识别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Textrank"><span class="nav-number">3.</span> <span class="nav-text">Textrank</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Ref："><span class="nav-number">4.</span> <span class="nav-text">Ref：</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
 
       
 
@@ -556,7 +589,7 @@
  
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共14.9k字</span>
+  <span class="post-count">博客全站共17.5k字</span>
 </div>
 
 <div class="powered-by">
