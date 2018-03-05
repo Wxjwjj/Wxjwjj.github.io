@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Linux," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="获取/var/www/下所有文件及文件夹的操作权限1chmod 777 -R /var/www/  # 用户目录下，需要在前面再加sudo pip安装软件镜像1sudo pip install -i https://pypi.tuna.tsinghua.edu.cn/simple xxx pip安装国外软件可能超时的解决方法1pip --default-timeout=100 install --">
+<meta name="keywords" content="Linux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux操作日更贴">
+<meta property="og:url" content="http://yoursite.com/2018/02/01/Linux/index.html">
+<meta property="og:site_name" content="Deep Coding">
+<meta property="og:description" content="获取/var/www/下所有文件及文件夹的操作权限1chmod 777 -R /var/www/  # 用户目录下，需要在前面再加sudo pip安装软件镜像1sudo pip install -i https://pypi.tuna.tsinghua.edu.cn/simple xxx pip安装国外软件可能超时的解决方法1pip --default-timeout=100 install --">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-02-27T09:19:11.703Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux操作日更贴">
+<meta name="twitter:description" content="获取/var/www/下所有文件及文件夹的操作权限1chmod 777 -R /var/www/  # 用户目录下，需要在前面再加sudo pip安装软件镜像1sudo pip install -i https://pypi.tuna.tsinghua.edu.cn/simple xxx pip安装国外软件可能超时的解决方法1pip --default-timeout=100 install --">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"always","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/02/01/Linux/"/>
+
+
+
+
+
+  <title>Linux操作日更贴 | Deep Coding</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Deep Coding</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            日志
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/01/Linux/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="祥吉">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Deep Coding">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Linux操作日更贴</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-01T16:16:28+08:00">
+                2018-02-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/02/01/Linux/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/02/01/Linux/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h5 id="获取-var-www-下所有文件及文件夹的操作权限"><a href="#获取-var-www-下所有文件及文件夹的操作权限" class="headerlink" title="获取/var/www/下所有文件及文件夹的操作权限"></a>获取/var/www/下所有文件及文件夹的操作权限</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod 777 -R /var/www/  <span class="comment"># 用户目录下，需要在前面再加sudo</span></span><br></pre></td></tr></table></figure>
+<h5 id="pip安装软件镜像"><a href="#pip安装软件镜像" class="headerlink" title="pip安装软件镜像"></a>pip安装软件镜像</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo pip install -i https://pypi.tuna.tsinghua.edu.cn/simple xxx</span><br></pre></td></tr></table></figure>
+<h5 id="pip安装国外软件可能超时的解决方法"><a href="#pip安装国外软件可能超时的解决方法" class="headerlink" title="pip安装国外软件可能超时的解决方法"></a>pip安装国外软件可能超时的解决方法</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip --default-timeout=100 install --upgrade gensim</span><br></pre></td></tr></table></figure>
+<h5 id="pip安装Tensorflow任意指定版本"><a href="#pip安装Tensorflow任意指定版本" class="headerlink" title="pip安装Tensorflow任意指定版本"></a>pip安装Tensorflow任意指定版本</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pip install tensorflow-gpu=1.4.1</span><br><span class="line">https://pypi.python.org/pypi/tensorflow-gpu/1.2.0 <span class="comment"># whl文件下载路径</span></span><br></pre></td></tr></table></figure>
+<h5 id="解除Ternsorboard端口占用"><a href="#解除Ternsorboard端口占用" class="headerlink" title="解除Ternsorboard端口占用"></a>解除Ternsorboard端口占用</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">lsof -i:6006  </span><br><span class="line"><span class="built_in">kill</span> -9 28508(上一个命令后弹出的实际端口号)</span><br></pre></td></tr></table></figure>
+<h5 id="没有安装tensorboard-或python版本不对从其源码打开"><a href="#没有安装tensorboard-或python版本不对从其源码打开" class="headerlink" title="没有安装tensorboard/或python版本不对从其源码打开"></a>没有安装tensorboard/或python版本不对从其源码打开</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">locate tensorboard</span><br><span class="line">python2 /usr/<span class="built_in">local</span>/lib/python2.7/dist-packages/tensorflow/tensorboard/teorboard.py --logdir=</span><br></pre></td></tr></table></figure>
+<h5 id="安装pytorch"><a href="#安装pytorch" class="headerlink" title="安装pytorch"></a>安装pytorch</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://tech.ifeng.com/a/20170921/44693375_0.shtml</span><br></pre></td></tr></table></figure>
+<h5 id="ubuntu-teamviewe-安装"><a href="#ubuntu-teamviewe-安装" class="headerlink" title="ubuntu teamviewe 安装"></a>ubuntu teamviewe 安装</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">apt-get purge teamviewer <span class="comment"># 彻底移除旧的版本</span></span><br><span class="line">sudo apt install ./teamviewerxxx.whl</span><br></pre></td></tr></table></figure>
+<h5 id="python2-7，命令行界面输出中文字符"><a href="#python2-7，命令行界面输出中文字符" class="headerlink" title="python2.7，命令行界面输出中文字符"></a>python2.7，命令行界面输出中文字符</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">import uniout</span><br><span class="line">a = [u<span class="string">'哈哈'</span>]  </span><br><span class="line"><span class="built_in">print</span> a  <span class="comment"># 哈哈，否则会有unicode编码问题[u'\u54c8\u54c8']</span></span><br></pre></td></tr></table></figure>
+<h5 id="查看硬盘容量及消耗"><a href="#查看硬盘容量及消耗" class="headerlink" title="查看硬盘容量及消耗"></a>查看硬盘容量及消耗</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo du -h --max-depth=1 .|sort -rh |head <span class="comment">#查看文件夹/程序占用，由高到低排序</span></span><br><span class="line">df -hl <span class="comment"># 查看分区容量</span></span><br></pre></td></tr></table></figure>
+<h5 id="多版本cuda安装及环境切换"><a href="#多版本cuda安装及环境切换" class="headerlink" title="多版本cuda安装及环境切换"></a>多版本cuda安装及环境切换</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">首先将~/.bashrc 下与cuda相关的路径都改为　/usr/<span class="built_in">local</span>/cuda/　</span><br><span class="line">rm -rf /usr/<span class="built_in">local</span>/cuda<span class="comment">#删除之前创建的软链接</span></span><br><span class="line">sudo ln -s /usr/<span class="built_in">local</span>/cuda-8.0/ /usr/<span class="built_in">local</span>/cuda/ <span class="comment"># 建立新连接</span></span><br><span class="line">nvcc --version <span class="comment">#查看当前 cuda 版本</span></span><br><span class="line">http://blog.csdn.net/maple2014/article/details/78574275</span><br></pre></td></tr></table></figure>
+<h5 id="多版本cudnn安装及环境切换"><a href="#多版本cudnn安装及环境切换" class="headerlink" title="多版本cudnn安装及环境切换"></a>多版本cudnn安装及环境切换</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#解压文件</span></span><br><span class="line">tar -zxvf cudnn-8.0-linux-x64-v7.tgz</span><br><span class="line"><span class="comment">#切换到刚刚解压出来的文件夹路径</span></span><br><span class="line"><span class="built_in">cd</span> cuda </span><br><span class="line"><span class="comment">#复制include里的头文件</span></span><br><span class="line">sudo cp /include/cudnn.h  /usr/<span class="built_in">local</span>/cuda/include/</span><br><span class="line"><span class="comment">#复制lib64下的lib文件到cuda安装路径下的lib64</span></span><br><span class="line">sudo cp lib*  /usr/<span class="built_in">local</span>/cuda/lib64/</span><br><span class="line"><span class="comment">#设置权限</span></span><br><span class="line">sudo chmod a+r /usr/<span class="built_in">local</span>/cuda/include/cudnn.h </span><br><span class="line">sudo chmod a+r /usr/<span class="built_in">local</span>/cuda/lib64/libcudnn* <span class="comment">#(后面不删除此软连接)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#======更新软连接======</span></span><br><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/cuda/lib64/ </span><br><span class="line">sudo rm -rf libcudnn.so libcudnn.so.7   <span class="comment"># 除了新复制的libcudnn.so.7.0.2，删除其余所有的cudnn动态文件，该文件夹下直接ls指令查看</span></span><br><span class="line">sudo ln -s libcudnn.so.7.0.2 libcudnn.so.7  <span class="comment"># 生成软衔接（注意这里要和自己下载的cudnn版本对应，可以在/usr/local/cuda/lib64下查看自己libcudnn的版本）</span></span><br><span class="line">sudo ln -s libcudnn.so.7 libcudnn.so <span class="comment"># 生成软链接</span></span><br><span class="line">sudo ldconfig -v <span class="comment"># 立刻生效</span></span><br></pre></td></tr></table></figure>
+<h5 id="ubuntu桌面死机解决"><a href="#ubuntu桌面死机解决" class="headerlink" title="ubuntu桌面死机解决"></a>ubuntu桌面死机解决</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">top 查看，记下PID后，q退出即可，输入 sudo <span class="built_in">kill</span> PID    </span><br><span class="line">sudo pkill Xorg 注销桌面重新登录</span><br></pre></td></tr></table></figure>
+<h5 id="找不到xx包相关错误…cannot-find-lxxc…"><a href="#找不到xx包相关错误…cannot-find-lxxc…" class="headerlink" title="找不到xx包相关错误…cannot find -lxxc…"></a>找不到xx包相关错误…cannot find -lxxc…</h5><p>先找下其他目录中是否存在需要的lib文件，有的话不用下载，直接指向就好了。找到缺失lib文件的物理位置，之后在需要的目录中建立软连接<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">locate libc.so</span><br><span class="line">ln -s /usr/lib/x86_64-linux-gnu/libpthread.so /home/tucodec/miniconda3/compiler_compat/</span><br><span class="line">rm -rf libc.7.gz 移除软连接</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Linux/" rel="tag"><i class="fa fa-tag"></i> Linux</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/02/01/python-5/" rel="next" title="python操作(五)：函数、变量及类">
+                <i class="fa fa-chevron-left"></i> python操作(五)：函数、变量及类
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/02/04/pachong-1/" rel="prev" title="爬虫入门_文本抽取">
+                爬虫入门_文本抽取 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div class="ds-thread" data-thread-key="2018/02/01/Linux/"
+           data-title="Linux操作日更贴" data-url="http://yoursite.com/2018/02/01/Linux/">
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg"
+                alt="祥吉" />
+            
+              <p class="site-author-name" itemprop="name">祥吉</p>
+              <p class="site-description motion-element" itemprop="description">NLP/CV，Studying，Coding</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:wuxj231@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.zhihu.com/people/xj-wu-74/activities" target="_blank" title="知乎">
+                      
+                        <i class="fa fa-fw fa-rocket"></i>知乎</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://weibo.com/u/5379129372/home?wvr=5&lf=reg" target="_blank" title="微博">
+                      
+                        <i class="fa fa-fw fa-weibo"></i>微博</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#获取-var-www-下所有文件及文件夹的操作权限"><span class="nav-number">1.</span> <span class="nav-text">获取/var/www/下所有文件及文件夹的操作权限</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#pip安装软件镜像"><span class="nav-number">2.</span> <span class="nav-text">pip安装软件镜像</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#pip安装国外软件可能超时的解决方法"><span class="nav-number">3.</span> <span class="nav-text">pip安装国外软件可能超时的解决方法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#pip安装Tensorflow任意指定版本"><span class="nav-number">4.</span> <span class="nav-text">pip安装Tensorflow任意指定版本</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#解除Ternsorboard端口占用"><span class="nav-number">5.</span> <span class="nav-text">解除Ternsorboard端口占用</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#没有安装tensorboard-或python版本不对从其源码打开"><span class="nav-number">6.</span> <span class="nav-text">没有安装tensorboard/或python版本不对从其源码打开</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#安装pytorch"><span class="nav-number">7.</span> <span class="nav-text">安装pytorch</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ubuntu-teamviewe-安装"><span class="nav-number">8.</span> <span class="nav-text">ubuntu teamviewe 安装</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#python2-7，命令行界面输出中文字符"><span class="nav-number">9.</span> <span class="nav-text">python2.7，命令行界面输出中文字符</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#查看硬盘容量及消耗"><span class="nav-number">10.</span> <span class="nav-text">查看硬盘容量及消耗</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#多版本cuda安装及环境切换"><span class="nav-number">11.</span> <span class="nav-text">多版本cuda安装及环境切换</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#多版本cudnn安装及环境切换"><span class="nav-number">12.</span> <span class="nav-text">多版本cudnn安装及环境切换</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ubuntu桌面死机解决"><span class="nav-number">13.</span> <span class="nav-text">ubuntu桌面死机解决</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#找不到xx包相关错误…cannot-find-lxxc…"><span class="nav-number">14.</span> <span class="nav-text">找不到xx包相关错误…cannot find -lxxc…</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">祥吉</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+              
+ 
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共19.1k字</span>
+</div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"your-duoshuo-shortname"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+  
+</body>
+</html>
