@@ -278,7 +278,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/03/05/Rcnn/" itemprop="url">论文笔记：RCNN目标检测</a></h1>
+                <a class="post-title-link" href="/2018/03/05/Rcnn/" itemprop="url">论文笔记：《Rich feature hierarchies for accurate object detection and semantic segmentation》</a></h1>
         
 
         <div class="post-meta">
@@ -340,7 +340,21 @@
       
         
           
-            
+            <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>本篇文章要介绍的，是神经网络应用于物体检测领域的开山鼻祖R-CNN：Regions with CNN features。检测整体框架如下图所示，相信在读过<strong>Selective Search</strong>的论文后，对上图的架构并不陌生(不介意的可移步笔者对<a href="http://localhost:4000/2018/03/03/Search/" target="_blank" rel="noopener">Selective Search</a>的解读)<br><img src="/img/rcnn1.png" width="700" alt="图片名称" align="center"><br>R-CNN物体检测的步骤如下：</p>
+<blockquote>
+<ul>
+<li>输入源图，通过Selective Search算法，提取2k个左右的待选区域Regions</li>
+<li>对每个Region进行Crop/Scale，缩放到同样的尺寸(为了与CNN网络最后的全联接层对齐)</li>
+<li>之后对每个Region利用Pre-train的AlexNet，抽取特征(替代DPM、HOG等传统算子)</li>
+<li>再对每一个Region训练一个SVM分类器(二分类)，来判断候选框里的物体类别</li>
+<li>最后使用一个线性回归模型，提高bounding box精度</li>
+</ul>
+</blockquote>
+<h3 id="创新点"><a href="#创新点" class="headerlink" title="创新点"></a>创新点</h3><p>从上述流程看，<code>R-CNN</code>与<code>Selective Search</code>模型差别不大，主要就是在特征提取部分，采用了2012年<code>ILSVRC：ImageNet Large Scale Visual Recognition Chal- lenge</code>竞赛冠军网络AlexNet，其结构如图所示：<br><img src="/img/rcnn2.png" width="700" alt="图片名称" align="center"></p>
+<h4 id="创新点1-采用CNN提取图像特征"><a href="#创新点1-采用CNN提取图像特征" class="headerlink" title="创新点1:采用CNN提取图像特征"></a>创新点1:采用CNN提取图像特征</h4><p>由于Alexnet参数众多，但<code>PASCAL VOC</code>任务又不像分类任务，标注难度大，数据量较少，直接训练容易造成过拟合。所以作者是对预训练的AlexNet进行<code>fine-tuning</code>。<br>&nbsp;<br>具体做法是将<code>FC-7</code>层的1000维向量更改为21维(包括20个类及背景)，并随机初始化这一全连接层的参数。训练样本的正样本来源是<code>PASCAL VOC</code>中人工标注的bounding box区域及类别；负样本是与正样本计算的IoU值&lt;50%的Regions(这些候选Regions通过SS算法得到)。对图像进行一定程度的Crop，同时设定好batchsize、lr、SGD等超参数，进行迭代训练。<strong>需要注意这里的神经网络参数是单独训练得到的</strong><br>&nbsp;<br>提取上图中<code>Pool5</code>层的特征，作为类别的特征向量，存到硬盘中，之后再训练一个SVM二分类器，如图所示(图片来源<a href="https://www.cnblogs.com/skyfsm/p/6806246.html" target="_blank" rel="noopener">冠军的试炼</a>)。对于20类，即训练20个SVM二分类器。<br><img src="/img/rcnn3.png" width="700" alt="图片名称" align="center"></p>
+<h4 id="创新点2-分类与边界回归相结合"><a href="#创新点2-分类与边界回归相结合" class="headerlink" title="创新点2:分类与边界回归相结合"></a>创新点2:分类与边界回归相结合</h4><p>CNN的尺度不变性：并不是一定不变，而是大概率不变。比如对于两幅size不同，内容相同的图像。假设某个卷积核提取的是图像边缘信息，那么对其<code>Feature map</code>进行<code>Maxpooling</code>操作后，都会把梯度最大值提取出来，调整Pooling的size或stride，很大概率会得到相同的<code>map</code>图。</p>
+<h4 id="模型结论"><a href="#模型结论" class="headerlink" title="模型结论"></a>模型结论</h4><p><strong>精度：</strong><br><strong>训练时间：</strong></p>
+
           
         
       
@@ -1682,7 +1696,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -1767,7 +1781,7 @@
  
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共19.1k字</span>
+  <span class="post-count">博客全站共19.7k字</span>
 </div>
 
 <div class="powered-by">
