@@ -340,7 +340,7 @@
       
         
           
-            <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>本篇文章要介绍的，是神经网络应用于物体检测领域的开山鼻祖R-CNN：Regions with CNN features。检测整体框架如下图所示，相信在读过<strong>Selective Search</strong>的论文后，对上图的架构并不陌生(不介意的可移步笔者对<a href="http://localhost:4000/2018/03/03/Search/" target="_blank" rel="noopener">Selective Search</a>的解读)<br><img src="/img/rcnn1.png" width="700" alt="图片名称" align="center"><br>R-CNN物体检测的步骤如下：</p>
+            <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>本篇文章要介绍的，是神经网络应用于物体检测领域的开山鼻祖R-CNN：Regions with CNN features。检测整体框架如下图所示，相信在读过<strong>Selective Search</strong>的论文后，对上图的架构并不陌生(不介意的可移步笔者对<a href="http://localhost:4000/2018/03/03/Search/" target="_blank" rel="noopener">Selective Search</a>的解读)<br><img src="/img/rcnn1.png" width="700" alt="图片名称" align="center"><br><strong>R-CNN物体检测的步骤如下：</strong></p>
 <blockquote>
 <ul>
 <li>输入源图，通过Selective Search算法，提取2k个左右的待选区域Regions</li>
@@ -351,9 +351,10 @@
 </ul>
 </blockquote>
 <h3 id="创新点"><a href="#创新点" class="headerlink" title="创新点"></a>创新点</h3><p>从上述流程看，<code>R-CNN</code>与<code>Selective Search</code>模型差别不大，主要就是在特征提取部分，采用了2012年<code>ILSVRC：ImageNet Large Scale Visual Recognition Chal- lenge</code>竞赛冠军网络AlexNet，其结构如图所示：<br><img src="/img/rcnn2.png" width="700" alt="图片名称" align="center"></p>
-<h4 id="创新点1-采用CNN提取图像特征"><a href="#创新点1-采用CNN提取图像特征" class="headerlink" title="创新点1:采用CNN提取图像特征"></a>创新点1:采用CNN提取图像特征</h4><p>由于Alexnet参数众多，但<code>PASCAL VOC</code>任务又不像分类任务，标注难度大，数据量较少，直接训练容易造成过拟合。所以作者是对预训练的AlexNet进行<code>fine-tuning</code>。<br>&nbsp;<br>具体做法是将<code>FC-7</code>层的1000维向量更改为21维(包括20个类及背景)，并随机初始化这一全连接层的参数。训练样本的正样本来源是<code>PASCAL VOC</code>中人工标注的bounding box区域及类别；负样本是与正样本计算的IoU值&lt;50%的Regions(这些候选Regions通过SS算法得到)。对图像进行一定程度的Crop，同时设定好batchsize、lr、SGD等超参数，进行迭代训练。<strong>需要注意这里的神经网络参数是单独训练得到的</strong><br>&nbsp;<br>提取上图中<code>Pool5</code>层的特征，作为类别的特征向量，存到硬盘中，之后再训练一个SVM二分类器，如图所示(图片来源<a href="https://www.cnblogs.com/skyfsm/p/6806246.html" target="_blank" rel="noopener">冠军的试炼</a>)。对于20类，即训练20个SVM二分类器。<br><img src="/img/rcnn3.png" width="700" alt="图片名称" align="center"></p>
-<h4 id="创新点2-分类与边界回归相结合"><a href="#创新点2-分类与边界回归相结合" class="headerlink" title="创新点2:分类与边界回归相结合"></a>创新点2:分类与边界回归相结合</h4><p>CNN的尺度不变性：并不是一定不变，而是大概率不变。比如对于两幅size不同，内容相同的图像。假设某个卷积核提取的是图像边缘信息，那么对其<code>Feature map</code>进行<code>Maxpooling</code>操作后，都会把梯度最大值提取出来，调整Pooling的size或stride，很大概率会得到相同的<code>map</code>图。</p>
-<h4 id="模型结论"><a href="#模型结论" class="headerlink" title="模型结论"></a>模型结论</h4><p><strong>精度：</strong><br><strong>训练时间：</strong></p>
+<h4 id="创新点1：采用CNN提取图像特征"><a href="#创新点1：采用CNN提取图像特征" class="headerlink" title="创新点1：采用CNN提取图像特征"></a>创新点1：采用CNN提取图像特征</h4><p>由于Alexnet参数众多，但<code>PASCAL VOC</code>任务又不像分类任务，标注难度大，数据量较少，直接训练容易造成过拟合。所以作者是对预训练的AlexNet进行<code>fine-tuning</code>。<br>&nbsp;<br>具体做法是将<code>FC-7</code>层的1000维向量更改为21维(包括20个类及背景)，并随机初始化这一全连接层的参数。训练样本的正样本来源是<code>PASCAL VOC</code>中人工标注的bounding box区域及类别；负样本是与正样本计算的IoU值&lt;50%的Regions(这些候选Regions通过SS算法得到)。对图像进行一定程度的Crop，同时设定好batchsize、lr、SGD等超参数，进行迭代训练。<strong>需要注意这里的神经网络参数是单独训练得到的</strong><br>&nbsp;<br>提取上图中<code>Pool5</code>层的特征，作为类别的特征向量，存到硬盘中，之后再训练一个SVM二分类器，如图所示(图片来源<a href="https://www.cnblogs.com/skyfsm/p/6806246.html" target="_blank" rel="noopener">冠军的试炼</a>)。对于20类，即训练20个SVM二分类器。但与CNN不同的，作者通过实验，重新设置了IoU的阈值为0.3，也就是将IoU&gt;=0.3的Regions都当作正样本。<br><img src="/img/rcnn3.png" width="700" alt="图片名称" align="center"></p>
+<h4 id="创新点2：SVM分类后采用线性回归模型精绘bounding-box"><a href="#创新点2：SVM分类后采用线性回归模型精绘bounding-box" class="headerlink" title="创新点2：SVM分类后采用线性回归模型精绘bounding box"></a>创新点2：SVM分类后采用线性回归模型精绘bounding box</h4><h5 id="训练阶段"><a href="#训练阶段" class="headerlink" title="训练阶段"></a>训练阶段</h5><p>由于SS算法对某个类的bounding box框的不够完美，所以训练一个回归模型，旨在对分类目标进行更精确的定位。选取的Regions与人工标注的bounding box IoU应当&gt;=0.6，并且仅选取IoU最大的那个作为候选Region。<br>&nbsp;<br>总体目标就是对Region进行两次平移$\Delta x, \Delta y$，再进行两次缩放$S_{x}, S_{y}$。简单说就是输入<code>pool5</code>层的特征向量，经过4次运算后，得到更加精确的bounding box区域。论文公式如下，就是比较简单的线性回归，损失函数采用梯度下降进行优化。<br><img src="/img/rcnn4.png" width="350" alt="图片名称" align="center"><br><img src="/img/rcnn5.png" width="500" alt="图片名称" align="center"><br>其中$d_{x}(P)$的理论值是$t_{\ast }^{i}$，可以通过对(1)(2)(3)(4)变换得到，实际值是$w\phi $，为权重w乘以特征向量的形式，梯度下降的优化目标就是该w矩阵</p>
+<h5 id="测试阶段"><a href="#测试阶段" class="headerlink" title="测试阶段"></a>测试阶段</h5><p>训练阶段，我们可以采用IoU最大的Region进行训练，那test阶段呢？同一物体便可能包含大量重复的矩形框，这里作者采用的是<strong>非极大值抑制（non-maximum suppression）</strong>方法对这些区域进行筛选。<br>&nbsp;<br>具体思路为：</p>
+<h4 id="模型结论"><a href="#模型结论" class="headerlink" title="模型结论"></a>模型结论</h4><h5 id="RCNN存在四个明显问题："><a href="#RCNN存在四个明显问题：" class="headerlink" title="RCNN存在四个明显问题："></a>RCNN存在四个明显问题：</h5><h5 id="CNN的输入和特征提取："><a href="#CNN的输入和特征提取：" class="headerlink" title="CNN的输入和特征提取："></a>CNN的输入和特征提取：</h5><p><strong>PS：CNN的尺度不变性：</strong>并不是一定不变，而是大概率不变。比如对于两幅size不同，内容相同的图像。假设某个卷积核提取的是图像边缘信息，那么对其<code>Feature map</code>进行<code>Maxpooling</code>操作后，都会把梯度最大值提取出来，调整Pooling的size或stride，很大概率会得到相同的<code>map</code>图。</p>
 
           
         
@@ -1696,7 +1697,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-count">9</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -1781,7 +1782,7 @@
  
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共19.7k字</span>
+  <span class="post-count">博客全站共20.1k字</span>
 </div>
 
 <div class="powered-by">
