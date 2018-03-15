@@ -403,6 +403,152 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/08/rcnn-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="祥吉">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Deep Coding">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/08/rcnn-1/" itemprop="url">论文笔记：《Faster R-CNN》</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-08T20:44:25+08:00">
+                2018-03-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/03/08/rcnn-1/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/03/08/rcnn-1/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="Faster-R-CNN"><a href="#Faster-R-CNN" class="headerlink" title="Faster R-CNN"></a>Faster R-CNN</h3><p>Faster R-CNN检测速度更快，是Fast R-CNN的10倍，R-CNN的250倍，检测精度则稍好于Fast版本。主要贡献就是采用卷积网络提取Region proposal，取代了传统的Selective search算法。</p>
+<h4 id="RPN"><a href="#RPN" class="headerlink" title="RPN"></a>RPN</h4><p>Faster R-CNN提出了Region Proposal Network（RPN）思想，它与物体特征提取网络共享较低层卷积信息。具体方法：以feature map上每个特征点为中心，选取其周围$[n,n]$的窗口区域，进行滑动。再根据缩放关系换算到源图，假如某个窗口与ground truth计算的IOU值大于某个阈值，则认为该窗口内存在物体。为了增加多尺度检测能力，每个特征点换算到原图后，会将原图的窗口进行调大或调小操作。论文中作者一共设置了9种(窗口面积为 {128, 256, 512} x 长宽比为 {1:1, 1:2, 2:1})。原图中的窗口为了和feature map窗口进行区分，称为<code>anchor</code>。直观来看，如下图所示：<br><img src="/img/frcnn7.png" width="300" alt="图片名称" align="center"></p>
+<h5 id="RPN网络计算步骤"><a href="#RPN网络计算步骤" class="headerlink" title="RPN网络计算步骤"></a>RPN网络计算步骤</h5><blockquote>
+<ul>
+<li>对于[60, 40]大小的一张feature map，那么原图中可能的anchor数目约为$60\ast 40\ast 9 \approx 20000$个</li>
+<li>忽略超出边界的anchors剩下6000个(通过anchor与ground truth计算的IOU值，可以进行每个anchor为前景$or$背景的自动标注)，对这6000个进行RPN网络训练，得到每个regions的分类score及坐标。</li>
+<li>然后利用分类socre对6000个regions进行NMS非极大抑制，筛选到约为2000个anchor。</li>
+<li>接着再筛选出Top-N(论文中N=300)个区域用于Fast RCNN detect网络的训练(作者在论文中对2000、300个region proposal进行对比实验，效果差别不大，也进一步说明了RPN提取region的有效性、针对性)</li>
+</ul>
+</blockquote>
+<h5 id="RPN网络结构"><a href="#RPN网络结构" class="headerlink" title="RPN网络结构"></a>RPN网络结构</h5><p>作者在论文中给出的一张图有些误导，查阅前辈们写的博客时候才理解RPN网络具体形式。重新绘制网络结构如下：</p>
+<p><img src="/img/frcnn_1.png" width="700" alt="图片名称" align="center"></p>
+<p>论文中讲的256-d，不是整个feature map生成一个256维的向量，feature map上的每一个“点”都对应一个256维向量。同时该“点”对应了9个anchors，18个cls输出，36个reg输出。<br>&nbsp;<br><strong>小结：</strong>RPN的基本思想就是通过对feature map进行窗口滑动，再在该窗口上累加一个小网络，最终训练得到某些可能为前景的regions，以及该regions对应的bouning box。<font color="red">该网络专门判断该区域是否存在物体，而并不检测是哪种特定的物体。</font></p>
+<h4 id="RPN-Fast-RCNN"><a href="#RPN-Fast-RCNN" class="headerlink" title="RPN + Fast RCNN"></a>RPN + Fast RCNN</h4><p>有了RPN后，怎样跟Fast RCNN连接起来呢？作者采用了叫做<code>4-Step Alternating Training</code>的方式：<br><strong>step 1 :</strong>采用预训练的VGG网络，前13层用作特征提取层，后面的网络采用RPN架构，用均值为0的高斯分布随机初始化网络参数<br><strong>step 2 :</strong>同样采用预训练的VGG前13层网络，用step 1中 RPN得到的region proposal，进行Fast RCNN网络的训练。这两步还未实现共享卷积层<br><strong>step 3 :</strong>采用step 2中Fast RCNN的卷积层参数初始化RPN网络，并固定共享层网络参数，仅仅fine tune RPN网络层参数，得到新的region proposal<br><strong>step 4 :</strong>继续固定共享层网络参数，仅仅fine tune Fast RCNN，得到最终的模型。</p>
+<h4 id="Fast-RCNN-与-Faster-RCNN结果对比"><a href="#Fast-RCNN-与-Faster-RCNN结果对比" class="headerlink" title="Fast RCNN 与 Faster RCNN结果对比"></a>Fast RCNN 与 Faster RCNN结果对比</h4><p><img src="/img/frcnn_2.png" width="500" alt="图片名称" align="center"></p>
+<h3 id="Ref："><a href="#Ref：" class="headerlink" title="Ref："></a>Ref：</h3><p>📎：<a href="http://blog.csdn.net/wfei101/article/details/77150573" target="_blank" rel="noopener"> 区域推荐网络RPN
+</a><br>📎：<a href="http://blog.csdn.net/sloanqin/article/details/51545125" target="_blank" rel="noopener">faster-rcnn 之 RPN网络的结构解析</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/07/rcnn-0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -422,7 +568,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/03/07/rcnn-0/" itemprop="url">论文笔记：《Fast(er) R-CNN》</a></h1>
+                <a class="post-title-link" href="/2018/03/07/rcnn-0/" itemprop="url">论文笔记：《Fast R-CNN》</a></h1>
         
 
         <div class="post-meta">
@@ -487,9 +633,6 @@
             <h3 id="SPP-Net"><a href="#SPP-Net" class="headerlink" title="SPP Net"></a>SPP Net</h3><p>R-CNN的进阶版Fast R-CNN可以说是在RCNN的基础上采纳了<a href="https://arxiv.org/abs/1406.4729" target="_blank" rel="noopener">SPP Net</a>方法，使得性能进一步提高。所以有必要先了解下何凯明提出的SPP Net。SPP:Spatial Pyramid Pooling（空间金字塔池化）。他有两个显著的特点：<br>&nbsp;<br><strong><font color="blue"> 创新点1：实现CNN的多尺度输入，忽略图片尺寸的影响 </font></strong><br>为了实现全联接层可以正确匹配pooling层后的维度，R-CNN中笔者先对Region proposal Crop到某一固定维度，但这样会造成一定的图像失真。有没有不Crop图像从而实现维度匹配的方法呢？一是调整最后的pooling层维度，二是调节全联接层的结构，使它接受任意维度特征。后一种方法是全卷积网络(FCN)，本文是采用的是前一种，即SPP：空间金字塔pooling。<br>&nbsp;<br>SPP的具体实现方式：假设与全联接层匹配的最后一个pooling层，输出维度应当是$[2\ast 2]$。而此时<code>ROI</code>区域的大小为$[5\ast 7]$(Region proposal在该论文中又称为<code>ROI</code>区域)。那么此时pooling核的size应当为$[\frac{5}{2} \ast \frac{7}{2}]$，才能使该ROI区域pooling后，得到匹配的size。但核的size不能为小数啊，所以采用理论size做间隔，最后向下取整得到每个pooling核的size。<br><img src="/img/frcnn1.png" width="350" alt="图片名称" align="center"><br>如上图所示：H方向以2.5为间隔$[0, 2.5, 5]$，W方向以3.5取间隔$[0, 3.5, 7]$。最后每个pooling核<strong>起始点</strong>坐标为H:$[0, 2]$，W:$[0, 3]$。更广泛地，我们用$[h, w]$代表<code>ROI</code>区域的高和宽，$[H, W]$代表希望pooling后得到的高和宽。那么每个网格动态调整后的大小为$[\frac{h}{H} \ast \frac{w}{W}]$。<br><strong>小结：SPP说到底就是计算一个比例关系，以动态调整pooling核的大小，实在是非常简单</strong></p>
 <p><strong><font color="blue"> 创新点2：只对原图提取一次卷积特征 </font></strong><br>RCNN中，一张图片Region proposal的数量为2K个，其中存在大量的重复区域。而用CNN提取这些Region，显然是非常复杂的一件事儿。SPP Net中的做法是对整张图像用CNN仅提取一次特征，feature map一般计算到最后一个pooling层。接着再根据相应的缩放比例，对源图的Regions进行一一映射，找到其在feature map的位置即可。该算法看似简单，但对于regions的特征提取，速度提升约146倍。</p>
 <h3 id="Fast-R-CNN"><a href="#Fast-R-CNN" class="headerlink" title="Fast R-CNN"></a>Fast R-CNN</h3><p>Fast R-CNN是在SPP Net基础上做的进一步改进，作者把<strong>SVM分类器换成Softmax，和CNN整合成一个网络，同时把bounding box regression也整合进网络中，三层联动调节参数，从而带来了效果的进一步提升。</strong>Fast RCNN架构如图所示：<br><img src="/img/frcnn3.jpeg" width="600" alt="图片名称" align="center"><br>该网络是典型的多任务学习，低层的卷积层参数共享(采用VGG16提取特征)，高层分别训练分类及回归网络。多任务学习一般用在task具有一定相似度的情境下。网络总的损失函数是两部分相加，对于softmax采用softmax-loss损失函数，对于Bounding box regression采用特殊的一种损失函数，如下：<br>$$L_{loc}(t^{u}, v) = \sum_{i = {x,y,w,h}}smooth_{L1}(t_{i}^{u}-v_{i})$$<br>$$if \left | x \right |&lt;1 \qquad smooth_{L1}(x) =0.5x^{2}  \qquad || \qquad Otherwise \qquad smooth_{L1}(x) = \left | x \right | -1 $$<br>这部分没有深究，其中$t_{i}, v_{i}$分别代表Region proposal和ground truth的坐标。Fast R-CNN的联合损失函数可以直接进行反向传播，从而达到端到端训练的目的。</p>
-<h3 id="Faster-R-CNN"><a href="#Faster-R-CNN" class="headerlink" title="Faster R-CNN"></a>Faster R-CNN</h3><p>Faster R-CNN检测速度更快，是Fast R-CNN的10倍，R-CNN的250倍，检测精度则稍好于Fast版本。主要贡献就是采用卷积网络提取Region proposal，取代了传统的Selective search算法。<br>&nbsp;<br>Faster R-CNN提出了Region Proposal Network（RPN）思想，它与物体特征提取网络共享较低层卷积信息。具体方法：以feature map上每个特征点为中心，选取其周围$[n,n]$的窗口区域，进行滑动。再根据缩放关系换算到源图，假如某个窗口与ground truth计算的IOU值大于某个阈值，则认为该窗口内存在物体。为了增加多尺度检测能力，每个特征点换算到原图后，会将原图的窗口进行调大或调小操作。论文中作者一共设置了9种(窗口面积为 {128, 256, 512} x 长宽比为 {1:1, 1:2, 2:1})。原图中的窗口为了和feature map窗口进行区分，称为<code>anchor</code>。直观来看，如下图所示：<br><img src="/img/frcnn7.png" width="400" alt="图片名称" align="center"><br>举个例子：对于[60, 40]大小的一张feature map，那么原图中可能的anchor数目约为$60\ast 40\ast 9 \approx 20000$个，忽略超出边界的anchors剩下6000个，对其进行NMS非极大抑制，筛选到约为2000个anchor(通过anchor与ground truth计算的IOU值，可以进行每个anchor为前景$or$背景的自动标注)(同时该数量跟SS算法得到的区域相当)。接着利用这2000个标注好的anchor，训练该RPN网络，得到网络参数。测试阶段在2000个区域建议中选择Top-N(论文中N=300)个区域建议用于Fast R-CNN检测。<br>&nbsp;<br>总结下RPN的基本思想就是通过对feature map进行窗口滑动，再在该窗口上累加一个小网络，最终训练得到某些可能为前景的regions，以及该regions对应的bouning box。<font color="red">该网络专门判断该区域是否存在物体，而并不检测是哪种特定的物体。</font></p>
-<h4 id="RPN-Fast-RCNN"><a href="#RPN-Fast-RCNN" class="headerlink" title="RPN + Fast RCNN"></a>RPN + Fast RCNN</h4><p>原始图片经过一个共享的卷积层，得到一个feature map。这个map输入RPN网络，得到regions proposal，同时该map也会继续输入Fast R-CNN网络中，提取更高层的feature map。在这个高层的feature map上，根据RPN提取到的proposal，继续按照Fast RCNN 的流程判断物体类别，以及做bounding box regression。</p>
-<h5 id="用一副图小结RCNN、Fast-RCNN、Faster-RCNN之间的区别图片来源"><a href="#用一副图小结RCNN、Fast-RCNN、Faster-RCNN之间的区别图片来源" class="headerlink" title="用一副图小结RCNN、Fast RCNN、Faster RCNN之间的区别图片来源"></a>用一副图小结RCNN、Fast RCNN、Faster RCNN之间的区别<a href="http://shartoo.github.io/RCNN-series/" target="_blank" rel="noopener">图片来源</a></h5><p><img src="/img/frcnn2.png" width="700" alt="图片名称" align="center"></p>
 <h3 id="Ref："><a href="#Ref：" class="headerlink" title="Ref："></a>Ref：</h3><p>📎：<a href="https://arxiv.org/abs/1504.08083" target="_blank" rel="noopener">Fast RCNN</a><br>📎：<a href="http://jermmy.xyz/2018/01/15/2018-1-15-paper-notes-fast-er-rcnn/" target="_blank" rel="noopener">论文笔记：Fast(er) RCNN</a><br>📎：<a href="https://zhuanlan.zhihu.com/p/22190532" target="_blank" rel="noopener">一箭N雕：多任务深度学习实战</a><br>📎：<a href="http://shartoo.github.io/RCNN-series/" target="_blank" rel="noopener">RCNN,Fast RCNN,Faster RCNN 总结</a></p>
 
           
@@ -925,16 +1068,16 @@
       
         
           
-            <h3 id="傅立叶级数"><a href="#傅立叶级数" class="headerlink" title="傅立叶级数"></a>傅立叶级数</h3><p>周期为T的周期信号，若满足“狄里赫利”条件，则可以将其展开为有限或无限个离散的正余弦函数累加的形式。它的物理意义是很明显的，这就是把一个比较复杂的周期运动看成许多不同运动的叠加，如下：<br>$$f(t) = A_{0}+\sum_{n=1}^{\infty }A_{n}sin(n\omega t + \varphi )$$<br>而对于任何一个非周期信号，同样可以用傅立叶展开的形式，只不过它的频域曲线是连续的(后文有涉及)，在计算上也从累加符号变成了积分符号。两者的关系如下：<br><img src="/img/fft.jpg" width="600" alt="图片名称" align="center"><br>那傅立叶变换的用处是什么？给你一个正弦曲线，让你从中拿走某个频率的分量（即滤波），时域图中基本无法看懂，频域中只要拿走几条竖线就好了。而在反向传播算法中，FFT可以把微分、积分，在频域中变为加减乘除的简单运算。</p>
-<h3 id="时域-amp-频域"><a href="#时域-amp-频域" class="headerlink" title="时域&amp;频域"></a>时域&amp;频域</h3><p><strong>时域</strong>反应的是现实世界中我们最能感知的信号，横轴为时间，纵轴为振幅；而<strong>频域</strong>反应的是频率与振幅的关系。将一个表示波的函数从时域转化为频域的关系，便称为傅立叶变换。两个例子如下所示：<br><img src="/img/ft2.jpeg" width="800" alt="图片名称" align="center"></p>
+            <h3 id="傅立叶级数"><a href="#傅立叶级数" class="headerlink" title="傅立叶级数"></a>傅立叶级数</h3><p>周期为T的周期信号，若满足“狄里赫利”条件，则可以将其展开为有限或无限个离散的正余弦函数累加的形式。它的物理意义是很明显的，这就是把一个比较复杂的周期运动看成许多不同运动的叠加，如下：<br>$$f(t) = A_{0}+\sum_{n=1}^{\infty }A_{n}sin(n\omega t + \varphi )$$<br>而对于任何一个非周期信号，同样可以用傅立叶展开的形式，只不过它的频域曲线是连续的(后文有涉及)，在计算上也从累加符号变成了积分符号。两者的关系如下：<br><img src="/img/fft.jpg" width="500" alt="图片名称" align="center"><br>那傅立叶变换的用处是什么？给你一个正弦曲线，让你从中拿走某个频率的分量（即滤波），时域图中基本无法看懂，频域中只要拿走几条竖线就好了。而在反向传播算法中，FFT可以把微分、积分，在频域中变为加减乘除的简单运算。</p>
+<h3 id="时域-amp-频域"><a href="#时域-amp-频域" class="headerlink" title="时域&amp;频域"></a>时域&amp;频域</h3><p><strong>时域</strong>反应的是现实世界中我们最能感知的信号，横轴为时间，纵轴为振幅；而<strong>频域</strong>反应的是频率与振幅的关系。将一个表示波的函数从时域转化为频域的关系，便称为傅立叶变换。两个例子如下所示：<br><img src="/img/ft2.jpeg" width="600" alt="图片名称" align="center"></p>
 <p>PS：玄学傅立叶：</p>
 <blockquote>
 <p>我们看似不规律的事情反而是规律的正弦波在时域上的投影，而正弦波又是一个旋转的圆在直线上的投影。<br>我们眼中的世界就像皮影戏的大幕布，幕布的后面有无数的齿轮，大齿轮带动小齿轮，小齿轮再带动更小的。在最外面的小齿轮上有一个小人——那就是我们自己。我们只看到这个小人毫无规律的在幕布前表演，却无法预测他下一步会去哪。而幕布后面的齿轮却永远一直那样不停的旋转，永不停歇。</p>
 </blockquote>
-<p>如何用一幅图总结频域、时域、相位谱的关系(引自<a href="https://zhuanlan.zhihu.com/p/19763358?from=singlemessage&amp;isappinstalled=1" target="_blank" rel="noopener">知乎</a>)<br><img src="/img/ft3.jpeg" width="700" alt="图片名称" align="center"></p>
-<h3 id="采样"><a href="#采样" class="headerlink" title="采样"></a>采样</h3><p>以音频文件采样为例：同图像bmp文件一样，pcm文件保存的是未压缩的音频信息。<br>16bits 编码是指，每次采样的音频信息用2个字节保存。可以对比下bmp文件用分别用2个字节保存RGB颜色的信息。<br>16000采样率 是指 1秒钟采样 16000次。当前声卡常用的采样频率一般为44.1KHz，即一秒采样44100次，人耳最敏感的听力范围20Hz到8000Hz。显然采样频率越高声音的还原就越真实越自然。<br>即：1秒的16000采样率音频文件大小是 2*16000 = 32000字节 ，约为32K<br>采样定理：衡量的是采样频率与信号频率之间的关系。采样定理规定，采样频率必须大于等于信号频率的两倍，才能够将原始信号从采样定理中完全恢复出来，否则会造成频率曲线混叠</p>
-<h3 id="图像大小变换"><a href="#图像大小变换" class="headerlink" title="图像大小变换"></a>图像大小变换</h3><p>图像像素数量 = 图像分辨率相乘，例如：图像分辨率为1280<em>720，那么这张图片像素有100万。在同一台设备上，图片分辨率越高，这张图片1:1放大时，图片面积越大；图片分辨率越低，这张图片1:1缩放时，图片面积越小。<br>所以，将1280</em>720的图像缩小到720*540时，便需要采用下采样，这样再在同一台设备上，处理后的图片size就比较小。python代码如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line">filename = <span class="string">"/Users/wxj/Desktop/WechatIMG2.jpeg"</span></span><br><span class="line">img = Image.open(filename)</span><br><span class="line">imgSize = img.size <span class="comment">#图片的长和宽</span></span><br><span class="line"><span class="keyword">print</span> (imgSize) <span class="comment"># 1920*1080</span></span><br><span class="line">out = img.resize((<span class="number">1080</span>，<span class="number">640</span>),Image.ANTIALIAS) <span class="comment">#降低分辨率</span></span><br><span class="line">out.save(<span class="string">"1.jpg"</span>)</span><br></pre></td></tr></table></figure></p>
-<h4 id="图像尺寸怎么计算呢？"><a href="#图像尺寸怎么计算呢？" class="headerlink" title="图像尺寸怎么计算呢？"></a>图像尺寸怎么计算呢？</h4><p>pic_size = 分辨率*3字节(rgb)图像，但这样发现跟电脑中显示的大小不同，因为图像文件(.jpg、png)等，都是有损压缩，一般会压缩几十到几百倍不等这样子。</p>
+<p>如何用一幅图总结频域、时域、相位谱的关系(引自<a href="https://zhuanlan.zhihu.com/p/19763358?from=singlemessage&amp;isappinstalled=1" target="_blank" rel="noopener">知乎</a>)<br><img src="/img/ft3.jpeg" width="500" alt="图片名称" align="center"></p>
+<h3 id="采样"><a href="#采样" class="headerlink" title="采样"></a>采样</h3><p>以音频文件采样为例：同图像bmp文件一样，pcm文件保存的是未压缩的音频信息。<br>16bits 编码是指，每次采样的音频信息用2个字节保存。可以对比下bmp文件用分别用2个字节保存RGB颜色的信息。<br>16000采样率 是指 1秒钟采样 16000次。当前声卡常用的采样频率一般为44.1KHz，即一秒采样44100次，人耳最敏感的听力范围20Hz到8000Hz。显然采样频率越高声音的还原就越真实越自然。<br>即：1秒的16000采样率音频文件大小是 $2\times16000 = 32000$字节 ，约为32K<br><strong>采样定理：衡量的是采样频率与信号频率之间的关系。采样定理规定，采样频率必须大于等于信号频率的两倍，才能够将原始信号从采样定理中完全恢复出来，否则会造成频率曲线混叠</strong></p>
+<h3 id="图像大小变换"><a href="#图像大小变换" class="headerlink" title="图像大小变换"></a>图像大小变换</h3><p>图像像素数量 = 图像分辨率相乘，例如：图像分辨率为$1280\times720$，那么这张图片像素有100万。在同一台设备上，图片分辨率越高，这张图片1:1放大时，图片面积越大；图片分辨率越低，这张图片1:1缩放时，图片面积越小。<br>所以，将$1280 \times720 $的图像缩小到$720 \times 540$时，便需要采用下采样，这样再在同一台设备上，处理后的图片size就比较小。python代码如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line">filename = <span class="string">"/Users/wxj/Desktop/WechatIMG2.jpeg"</span></span><br><span class="line">img = Image.open(filename)</span><br><span class="line">imgSize = img.size <span class="comment">#图片的长和宽</span></span><br><span class="line"><span class="keyword">print</span> (imgSize) <span class="comment"># 1920*1080</span></span><br><span class="line">out = img.resize((<span class="number">1080</span>，<span class="number">640</span>),Image.ANTIALIAS) <span class="comment">#降低分辨率</span></span><br><span class="line">out.save(<span class="string">"1.jpg"</span>)</span><br></pre></td></tr></table></figure></p>
+<h4 id="图像尺寸怎么计算呢？"><a href="#图像尺寸怎么计算呢？" class="headerlink" title="图像尺寸怎么计算呢？"></a>图像尺寸怎么计算呢？</h4><p>pic_size = 分辨率$\times$3字节(rgb)图像，但这样发现跟电脑中显示的大小不同，因为图像文件(.jpg、png)等，都是有损压缩，一般会压缩几十到几百倍不等这样子。</p>
 <h4 id="图像金字塔"><a href="#图像金字塔" class="headerlink" title="图像金字塔"></a>图像金字塔</h4><p>图像金字塔算法是对图像的下采样、上采样：</p>
 <blockquote>
 <ul>
@@ -1508,154 +1651,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/25/gcc/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="祥吉">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Deep Coding">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/02/25/gcc/" itemprop="url">Ubuntu下gcc/g++多版本切换</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-25T20:10:19+08:00">
-                2018-02-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/02/25/gcc/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/02/25/gcc/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><font color="red"><strong>20180312更新，之前的操作都太复杂了，安装位置也是奇葩，简直是shit…修改<code>gcc</code>版本时候只要修改下述软连接便可以了</strong></font><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install gcc-4.9</span><br><span class="line">sudo apt-get install g++-4.9 //自动安装到/usr/bin目录下</span><br><span class="line"><span class="built_in">which</span> gcc</span><br><span class="line"><span class="built_in">cd</span> 到 gcc 目录</span><br><span class="line">ll | grep gcc 显示包含gcc的软连接</span><br><span class="line">sudo rm gcc </span><br><span class="line">sudo ln -sf gcc-4.9 gcc</span><br><span class="line">sudo ln -sf g++-4.9 g++</span><br></pre></td></tr></table></figure></p>
-<hr>
-<p>在编译不同的程序时，往往会遇到gcc、g++版本不兼容问题，那可不可以动态切换gcc&amp;g++环境，来满足编译需求呢？答案是可以的。<br>先看看系统内的<code>gcc</code>和<code>g++</code>是什么版本<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc --version</span><br></pre></td></tr></table></figure></p>
-<p>可以获得如下信息<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc version 5.4.0</span><br></pre></td></tr></table></figure></p>
-<p>查看系统内有哪些版本的gcc<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls /usr/bin/gcc*</span><br></pre></td></tr></table></figure></p>
-<p>首先安装其他版本的<code>gcc</code>、<code>g++</code><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install gcc-4.9 gcc-4.9-multilib g++-4.9 g++-4.9-multilib</span><br></pre></td></tr></table></figure></p>
-<p>安装好后输入以下指令，替换系统默认的<code>gcc</code>：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 40 </span><br><span class="line">sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-5.4 54</span><br></pre></td></tr></table></figure></p>
-<p>接着输入：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo update-alternatives --config gcc</span><br></pre></td></tr></table></figure></p>
-<p>会看到如下的选项，有3个候选项可用于替换<code>gcc</code><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">*0            /usr/bin/gcc-5  50        </span><br><span class="line"> 1            /usr/bin/gcc-5  50        </span><br><span class="line"> 2            /usr/bin/gcc-4.9  40</span><br></pre></td></tr></table></figure></p>
-<p>要维持当前值<code>*</code>请按回车键，或者键入你想切换的gcc版本编号!<br>同样也要设置一下<code>g++</code>的， 方法同上<br>如果想删除可选项的话可以键入以下指令：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo update-alternatives --remove gcc /usr/bin/gcc-4.9</span><br></pre></td></tr></table></figure></p>
-<p>再用<code>gcc -version</code> 来看一下版本是否改变了。</p>
-<p>安装<code>GCC5.4.0</code>的方式有些不同，需要下载源码编译安装(<a href="ftp://ftp.mirrorservice.org/sites/sourceware.org/pub/gcc/releases/gcc-5.4.0/" target="_blank" rel="noopener">链接</a>)<br>解压<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo tar -zxvf gcc-5.4.0.tar.gz</span><br></pre></td></tr></table></figure></p>
-<p>下载gcc 依赖文件和库<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> gcc-5.4.0 //进入解包后的gcc文件夹  </span><br><span class="line">sudo ./contrib/download_prerequisites  //下载依赖项  </span><br><span class="line"><span class="built_in">cd</span> ..  //返回上层目录</span><br></pre></td></tr></table></figure></p>
-<p>建立编译输出目录，并生成makefile文件<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mkdir gcc-build-5.4.0 //建立一个输出目录，编译时所有生成的中间文件都放到该目录下：</span><br><span class="line"><span class="built_in">cd</span> gcc-build-5.4.0  </span><br><span class="line">//执行configure配置安装文件：</span><br><span class="line">sudo ../gcc-5.4.0/configure --<span class="built_in">enable</span>-checking=release --<span class="built_in">enable</span>-languages=c,c++ --<span class="built_in">disable</span>-multilib</span><br></pre></td></tr></table></figure></p>
-<p>编译<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo make -j4  //接近20分钟等待时间</span><br></pre></td></tr></table></figure></p>
-<p>安装<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make install</span><br></pre></td></tr></table></figure></p>
-<p>安装完成后还需要替换系统默认的gcc，执行以下命令<code>ls /usr/local/bin | grep gcc</code> ，查找5.4版本的安装文件<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">gcc</span><br><span class="line">gcc-ar</span><br><span class="line">gcc-nm</span><br><span class="line">gcc-ranlib</span><br><span class="line">x86_64-unknown-linux-gnu-gcc</span><br><span class="line">x86_64-unknown-linux-gnu-gcc-5.4.0    //这个文件</span><br><span class="line">x86_64-unknown-linux-gnu-gcc-ar</span><br><span class="line">x86_64-unknown-linux-gnu-gcc-nm</span><br></pre></td></tr></table></figure></p>
-<p>安装好后输入以下选择指令：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/sbin/update-alternatives --install  /usr/bin/gcc gcc /usr/<span class="built_in">local</span>/bin/x86_64-unknown-linux-gnu-gcc-5.4.0 54</span><br></pre></td></tr></table></figure></p>
-<p>使用<code>which gcc</code>查看gcc安装目录，在安装目录下执行-v命令<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/usr/<span class="built_in">local</span>/bin/gcc -v </span><br><span class="line">gcc -v  //或者</span><br><span class="line">gcc 版本 5.4.0(GCC) //说明GCC5.4安装成功</span><br></pre></td></tr></table></figure></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1710,7 +1705,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">27</span>
+                  <span class="site-state-item-count">28</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1808,7 +1803,7 @@
  
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共23.2k字</span>
+  <span class="post-count">博客全站共23.5k字</span>
 </div>
 
 <div class="powered-by">

@@ -89,18 +89,16 @@
 <meta name="description" content="SPP NetR-CNN的进阶版Fast R-CNN可以说是在RCNN的基础上采纳了SPP Net方法，使得性能进一步提高。所以有必要先了解下何凯明提出的SPP Net。SPP:Spatial Pyramid Pooling（空间金字塔池化）。他有两个显著的特点：&amp;nbsp; 创新点1：实现CNN的多尺度输入，忽略图片尺寸的影响 为了实现全联接层可以正确匹配pooling层后的维度，R-CNN中笔">
 <meta name="keywords" content="CV">
 <meta property="og:type" content="article">
-<meta property="og:title" content="论文笔记：《Fast(er) R-CNN》">
+<meta property="og:title" content="论文笔记：《Fast R-CNN》">
 <meta property="og:url" content="http://yoursite.com/2018/03/07/rcnn-0/index.html">
 <meta property="og:site_name" content="Deep Coding">
 <meta property="og:description" content="SPP NetR-CNN的进阶版Fast R-CNN可以说是在RCNN的基础上采纳了SPP Net方法，使得性能进一步提高。所以有必要先了解下何凯明提出的SPP Net。SPP:Spatial Pyramid Pooling（空间金字塔池化）。他有两个显著的特点：&amp;nbsp; 创新点1：实现CNN的多尺度输入，忽略图片尺寸的影响 为了实现全联接层可以正确匹配pooling层后的维度，R-CNN中笔">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/img/frcnn1.png">
 <meta property="og:image" content="http://yoursite.com/img/frcnn3.jpeg">
-<meta property="og:image" content="http://yoursite.com/img/frcnn7.png">
-<meta property="og:image" content="http://yoursite.com/img/frcnn2.png">
-<meta property="og:updated_time" content="2018-03-10T09:31:53.865Z">
+<meta property="og:updated_time" content="2018-03-15T06:58:01.739Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="论文笔记：《Fast(er) R-CNN》">
+<meta name="twitter:title" content="论文笔记：《Fast R-CNN》">
 <meta name="twitter:description" content="SPP NetR-CNN的进阶版Fast R-CNN可以说是在RCNN的基础上采纳了SPP Net方法，使得性能进一步提高。所以有必要先了解下何凯明提出的SPP Net。SPP:Spatial Pyramid Pooling（空间金字塔池化）。他有两个显著的特点：&amp;nbsp; 创新点1：实现CNN的多尺度输入，忽略图片尺寸的影响 为了实现全联接层可以正确匹配pooling层后的维度，R-CNN中笔">
 <meta name="twitter:image" content="http://yoursite.com/img/frcnn1.png">
 
@@ -138,7 +136,7 @@
 
 
 
-  <title>论文笔记：《Fast(er) R-CNN》 | Deep Coding</title>
+  <title>论文笔记：《Fast R-CNN》 | Deep Coding</title>
   
 
 
@@ -282,7 +280,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">论文笔记：《Fast(er) R-CNN》</h1>
+          <h1 class="post-title" itemprop="name headline">论文笔记：《Fast R-CNN》</h1>
         
 
         <div class="post-meta">
@@ -345,9 +343,6 @@
         <h3 id="SPP-Net"><a href="#SPP-Net" class="headerlink" title="SPP Net"></a>SPP Net</h3><p>R-CNN的进阶版Fast R-CNN可以说是在RCNN的基础上采纳了<a href="https://arxiv.org/abs/1406.4729" target="_blank" rel="noopener">SPP Net</a>方法，使得性能进一步提高。所以有必要先了解下何凯明提出的SPP Net。SPP:Spatial Pyramid Pooling（空间金字塔池化）。他有两个显著的特点：<br>&nbsp;<br><strong><font color="blue"> 创新点1：实现CNN的多尺度输入，忽略图片尺寸的影响 </font></strong><br>为了实现全联接层可以正确匹配pooling层后的维度，R-CNN中笔者先对Region proposal Crop到某一固定维度，但这样会造成一定的图像失真。有没有不Crop图像从而实现维度匹配的方法呢？一是调整最后的pooling层维度，二是调节全联接层的结构，使它接受任意维度特征。后一种方法是全卷积网络(FCN)，本文是采用的是前一种，即SPP：空间金字塔pooling。<br>&nbsp;<br>SPP的具体实现方式：假设与全联接层匹配的最后一个pooling层，输出维度应当是$[2\ast 2]$。而此时<code>ROI</code>区域的大小为$[5\ast 7]$(Region proposal在该论文中又称为<code>ROI</code>区域)。那么此时pooling核的size应当为$[\frac{5}{2} \ast \frac{7}{2}]$，才能使该ROI区域pooling后，得到匹配的size。但核的size不能为小数啊，所以采用理论size做间隔，最后向下取整得到每个pooling核的size。<br><img src="/img/frcnn1.png" width="350" alt="图片名称" align="center"><br>如上图所示：H方向以2.5为间隔$[0, 2.5, 5]$，W方向以3.5取间隔$[0, 3.5, 7]$。最后每个pooling核<strong>起始点</strong>坐标为H:$[0, 2]$，W:$[0, 3]$。更广泛地，我们用$[h, w]$代表<code>ROI</code>区域的高和宽，$[H, W]$代表希望pooling后得到的高和宽。那么每个网格动态调整后的大小为$[\frac{h}{H} \ast \frac{w}{W}]$。<br><strong>小结：SPP说到底就是计算一个比例关系，以动态调整pooling核的大小，实在是非常简单</strong></p>
 <p><strong><font color="blue"> 创新点2：只对原图提取一次卷积特征 </font></strong><br>RCNN中，一张图片Region proposal的数量为2K个，其中存在大量的重复区域。而用CNN提取这些Region，显然是非常复杂的一件事儿。SPP Net中的做法是对整张图像用CNN仅提取一次特征，feature map一般计算到最后一个pooling层。接着再根据相应的缩放比例，对源图的Regions进行一一映射，找到其在feature map的位置即可。该算法看似简单，但对于regions的特征提取，速度提升约146倍。</p>
 <h3 id="Fast-R-CNN"><a href="#Fast-R-CNN" class="headerlink" title="Fast R-CNN"></a>Fast R-CNN</h3><p>Fast R-CNN是在SPP Net基础上做的进一步改进，作者把<strong>SVM分类器换成Softmax，和CNN整合成一个网络，同时把bounding box regression也整合进网络中，三层联动调节参数，从而带来了效果的进一步提升。</strong>Fast RCNN架构如图所示：<br><img src="/img/frcnn3.jpeg" width="600" alt="图片名称" align="center"><br>该网络是典型的多任务学习，低层的卷积层参数共享(采用VGG16提取特征)，高层分别训练分类及回归网络。多任务学习一般用在task具有一定相似度的情境下。网络总的损失函数是两部分相加，对于softmax采用softmax-loss损失函数，对于Bounding box regression采用特殊的一种损失函数，如下：<br>$$L_{loc}(t^{u}, v) = \sum_{i = {x,y,w,h}}smooth_{L1}(t_{i}^{u}-v_{i})$$<br>$$if \left | x \right |&lt;1 \qquad smooth_{L1}(x) =0.5x^{2}  \qquad || \qquad Otherwise \qquad smooth_{L1}(x) = \left | x \right | -1 $$<br>这部分没有深究，其中$t_{i}, v_{i}$分别代表Region proposal和ground truth的坐标。Fast R-CNN的联合损失函数可以直接进行反向传播，从而达到端到端训练的目的。</p>
-<h3 id="Faster-R-CNN"><a href="#Faster-R-CNN" class="headerlink" title="Faster R-CNN"></a>Faster R-CNN</h3><p>Faster R-CNN检测速度更快，是Fast R-CNN的10倍，R-CNN的250倍，检测精度则稍好于Fast版本。主要贡献就是采用卷积网络提取Region proposal，取代了传统的Selective search算法。<br>&nbsp;<br>Faster R-CNN提出了Region Proposal Network（RPN）思想，它与物体特征提取网络共享较低层卷积信息。具体方法：以feature map上每个特征点为中心，选取其周围$[n,n]$的窗口区域，进行滑动。再根据缩放关系换算到源图，假如某个窗口与ground truth计算的IOU值大于某个阈值，则认为该窗口内存在物体。为了增加多尺度检测能力，每个特征点换算到原图后，会将原图的窗口进行调大或调小操作。论文中作者一共设置了9种(窗口面积为 {128, 256, 512} x 长宽比为 {1:1, 1:2, 2:1})。原图中的窗口为了和feature map窗口进行区分，称为<code>anchor</code>。直观来看，如下图所示：<br><img src="/img/frcnn7.png" width="400" alt="图片名称" align="center"><br>举个例子：对于[60, 40]大小的一张feature map，那么原图中可能的anchor数目约为$60\ast 40\ast 9 \approx 20000$个，忽略超出边界的anchors剩下6000个，对其进行NMS非极大抑制，筛选到约为2000个anchor(通过anchor与ground truth计算的IOU值，可以进行每个anchor为前景$or$背景的自动标注)(同时该数量跟SS算法得到的区域相当)。接着利用这2000个标注好的anchor，训练该RPN网络，得到网络参数。测试阶段在2000个区域建议中选择Top-N(论文中N=300)个区域建议用于Fast R-CNN检测。<br>&nbsp;<br>总结下RPN的基本思想就是通过对feature map进行窗口滑动，再在该窗口上累加一个小网络，最终训练得到某些可能为前景的regions，以及该regions对应的bouning box。<font color="red">该网络专门判断该区域是否存在物体，而并不检测是哪种特定的物体。</font></p>
-<h4 id="RPN-Fast-RCNN"><a href="#RPN-Fast-RCNN" class="headerlink" title="RPN + Fast RCNN"></a>RPN + Fast RCNN</h4><p>原始图片经过一个共享的卷积层，得到一个feature map。这个map输入RPN网络，得到regions proposal，同时该map也会继续输入Fast R-CNN网络中，提取更高层的feature map。在这个高层的feature map上，根据RPN提取到的proposal，继续按照Fast RCNN 的流程判断物体类别，以及做bounding box regression。</p>
-<h5 id="用一副图小结RCNN、Fast-RCNN、Faster-RCNN之间的区别图片来源"><a href="#用一副图小结RCNN、Fast-RCNN、Faster-RCNN之间的区别图片来源" class="headerlink" title="用一副图小结RCNN、Fast RCNN、Faster RCNN之间的区别图片来源"></a>用一副图小结RCNN、Fast RCNN、Faster RCNN之间的区别<a href="http://shartoo.github.io/RCNN-series/" target="_blank" rel="noopener">图片来源</a></h5><p><img src="/img/frcnn2.png" width="700" alt="图片名称" align="center"></p>
 <h3 id="Ref："><a href="#Ref：" class="headerlink" title="Ref："></a>Ref：</h3><p>📎：<a href="https://arxiv.org/abs/1504.08083" target="_blank" rel="noopener">Fast RCNN</a><br>📎：<a href="http://jermmy.xyz/2018/01/15/2018-1-15-paper-notes-fast-er-rcnn/" target="_blank" rel="noopener">论文笔记：Fast(er) RCNN</a><br>📎：<a href="https://zhuanlan.zhihu.com/p/22190532" target="_blank" rel="noopener">一箭N雕：多任务深度学习实战</a><br>📎：<a href="http://shartoo.github.io/RCNN-series/" target="_blank" rel="noopener">RCNN,Fast RCNN,Faster RCNN 总结</a></p>
 
       
@@ -389,8 +384,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/03/14/nvidia/" rel="prev" title="ubuntu1604 + 1080Ti + 390显卡驱动安装">
-                ubuntu1604 + 1080Ti + 390显卡驱动安装 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/03/08/rcnn-1/" rel="prev" title="论文笔记：《Faster R-CNN》">
+                论文笔记：《Faster R-CNN》 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -423,7 +418,7 @@
   
     <div class="comments" id="comments">
       <div class="ds-thread" data-thread-key="2018/03/07/rcnn-0/"
-           data-title="论文笔记：《Fast(er) R-CNN》" data-url="http://yoursite.com/2018/03/07/rcnn-0/">
+           data-title="论文笔记：《Fast R-CNN》" data-url="http://yoursite.com/2018/03/07/rcnn-0/">
       </div>
     </div>
 
@@ -479,7 +474,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">27</span>
+                  <span class="site-state-item-count">28</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -547,7 +542,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#SPP-Net"><span class="nav-number">1.</span> <span class="nav-text">SPP Net</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Fast-R-CNN"><span class="nav-number">2.</span> <span class="nav-text">Fast R-CNN</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Faster-R-CNN"><span class="nav-number">3.</span> <span class="nav-text">Faster R-CNN</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#RPN-Fast-RCNN"><span class="nav-number">3.1.</span> <span class="nav-text">RPN + Fast RCNN</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#用一副图小结RCNN、Fast-RCNN、Faster-RCNN之间的区别图片来源"><span class="nav-number">3.1.1.</span> <span class="nav-text">用一副图小结RCNN、Fast RCNN、Faster RCNN之间的区别图片来源</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Ref："><span class="nav-number">4.</span> <span class="nav-text">Ref：</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#SPP-Net"><span class="nav-number">1.</span> <span class="nav-text">SPP Net</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Fast-R-CNN"><span class="nav-number">2.</span> <span class="nav-text">Fast R-CNN</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Ref："><span class="nav-number">3.</span> <span class="nav-text">Ref：</span></a></li></ol></div>
             
 
           </div>
@@ -593,7 +588,7 @@
  
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共23.2k字</span>
+  <span class="post-count">博客全站共23.5k字</span>
 </div>
 
 <div class="powered-by">
