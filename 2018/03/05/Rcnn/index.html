@@ -99,7 +99,8 @@
 <meta property="og:image" content="http://yoursite.com/img/rcnn3.png">
 <meta property="og:image" content="http://yoursite.com/img/rcnn4.png">
 <meta property="og:image" content="http://yoursite.com/img/rcnn5.png">
-<meta property="og:updated_time" content="2018-03-06T14:20:37.061Z">
+<meta property="og:image" content="http://yoursite.com/img/rcnn6.png">
+<meta property="og:updated_time" content="2018-03-09T07:38:59.459Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="论文笔记：《Rich feature hierarchies for accurate object detection and semantic segmentation》">
 <meta name="twitter:description" content="背景本篇文章要介绍的，是神经网络应用于物体检测领域的开山鼻祖R-CNN：Regions with CNN features。检测整体框架如下图所示，相信在读过Selective Search的论文后，对上图的架构并不陌生(不介意的可移步笔者对Selective Search的解读)R-CNN物体检测的步骤如下：   输入源图，通过Selective Search算法，提取2k个左右的待选区域Reg">
@@ -348,16 +349,21 @@
 <ul>
 <li>输入源图，通过Selective Search算法，提取2k个左右的待选区域Regions</li>
 <li>对每个Region进行Crop/Scale，缩放到同样的尺寸(为了与CNN网络最后的全联接层对齐)</li>
-<li>之后对每个Region利用Pre-train的AlexNet，抽取特征(替代DPM、HOG等传统算子)</li>
-<li>再对每一个Region训练一个SVM分类器(二分类)，来判断候选框里的物体类别</li>
-<li>最后使用一个线性回归模型，提高bounding box精度</li>
+<li>之后对每个Region利用Pre-train的AlexNet，抽取特征(替代DPM、HOG等传统算子)(pool5 feature)[维度：4096]</li>
+<li>将这些特征丢入SVM分类器(二分类)进行训练，得到的就是一个region-bbox以及对应的类别。SVM权值矩阵[4096, N]，N:类别数</li>
+<li>采用NMS非极大抑制算法，删除大量SS算法产生的重复区域</li>
+<li>最后利用pool5 feature，训练一个线性回归模型，提高bounding box精度</li>
 </ul>
 </blockquote>
 <h3 id="创新点"><a href="#创新点" class="headerlink" title="创新点"></a>创新点</h3><p>从上述流程看，<code>R-CNN</code>与<code>Selective Search</code>模型差别不大，主要就是在特征提取部分，采用了2012年<code>ILSVRC：ImageNet Large Scale Visual Recognition Chal- lenge</code>竞赛冠军网络AlexNet，其结构如图所示：<br><img src="/img/rcnn2.png" width="700" alt="图片名称" align="center"></p>
 <h4 id="创新点1：采用CNN提取图像特征"><a href="#创新点1：采用CNN提取图像特征" class="headerlink" title="创新点1：采用CNN提取图像特征"></a>创新点1：采用CNN提取图像特征</h4><p>由于Alexnet参数众多，但<code>PASCAL VOC</code>任务又不像分类任务，标注难度大，数据量较少，直接训练容易造成过拟合。所以作者是对预训练的AlexNet进行<code>fine-tuning</code>。<br>&nbsp;<br>具体做法是将<code>FC-7</code>层的1000维向量更改为21维(包括20个类及背景)，并随机初始化这一全连接层的参数。训练样本的正样本来源是<code>PASCAL VOC</code>中人工标注的bounding box区域及类别；负样本是与正样本计算的IoU值&lt;50%的Regions(这些候选Regions通过SS算法得到)。对图像进行一定程度的Crop，同时设定好batchsize、lr、SGD等超参数，进行迭代训练。<strong>需要注意这里的神经网络参数是单独训练得到的</strong><br>&nbsp;<br>提取上图中<code>Pool5</code>层的特征，作为类别的特征向量，存到硬盘中，之后再训练一个SVM二分类器，如图所示(图片来源<a href="https://www.cnblogs.com/skyfsm/p/6806246.html" target="_blank" rel="noopener">冠军的试炼</a>)。对于20类，即训练20个SVM二分类器。但与CNN不同的，作者通过实验，重新设置了IoU的阈值为0.3，也就是将IoU&gt;=0.3的Regions都当作正样本。<br><img src="/img/rcnn3.png" width="700" alt="图片名称" align="center"></p>
-<h4 id="创新点2：SVM分类后采用线性回归模型精绘bounding-box"><a href="#创新点2：SVM分类后采用线性回归模型精绘bounding-box" class="headerlink" title="创新点2：SVM分类后采用线性回归模型精绘bounding box"></a>创新点2：SVM分类后采用线性回归模型精绘bounding box</h4><h5 id="训练阶段"><a href="#训练阶段" class="headerlink" title="训练阶段"></a>训练阶段</h5><p>由于SS算法对某个类的bounding box框的不够完美，所以训练一个回归模型，旨在对分类目标进行更精确的定位。选取的Regions与人工标注的bounding box IoU应当&gt;=0.6，并且仅选取IoU最大的那个作为候选Region。<br>&nbsp;<br>总体目标就是对Region进行两次平移$\Delta x, \Delta y$，再进行两次缩放$S_{x}, S_{y}$。简单说就是输入<code>pool5</code>层的特征向量，经过4次运算后，得到更加精确的bounding box区域。论文公式如下，就是比较简单的线性回归，损失函数采用梯度下降进行优化。<br><img src="/img/rcnn4.png" width="350" alt="图片名称" align="center"><br><img src="/img/rcnn5.png" width="500" alt="图片名称" align="center"><br>其中$d_{x}(P)$的理论值是$t_{\ast }^{i}$，可以通过对(1)(2)(3)(4)变换得到，实际值是$w\phi $，为权重w乘以特征向量的形式，梯度下降的优化目标就是该w矩阵</p>
-<h5 id="测试阶段"><a href="#测试阶段" class="headerlink" title="测试阶段"></a>测试阶段</h5><p>训练阶段，我们可以采用IoU最大的Region进行训练，那test阶段呢？同一物体便可能包含大量重复的矩形框，这里作者采用的是<strong>非极大值抑制（non-maximum suppression）</strong>方法对这些区域进行筛选。<br>&nbsp;<br>具体思路为：</p>
-<h4 id="模型结论"><a href="#模型结论" class="headerlink" title="模型结论"></a>模型结论</h4><h5 id="RCNN存在四个明显问题："><a href="#RCNN存在四个明显问题：" class="headerlink" title="RCNN存在四个明显问题："></a>RCNN存在四个明显问题：</h5><h5 id="CNN的输入和特征提取："><a href="#CNN的输入和特征提取：" class="headerlink" title="CNN的输入和特征提取："></a>CNN的输入和特征提取：</h5><p><strong>PS：CNN的尺度不变性：</strong>并不是一定不变，而是大概率不变。比如对于两幅size不同，内容相同的图像。假设某个卷积核提取的是图像边缘信息，那么对其<code>Feature map</code>进行<code>Maxpooling</code>操作后，都会把梯度最大值提取出来，调整Pooling的size或stride，很大概率会得到相同的<code>map</code>图。</p>
+<h4 id="创新点2：SVM分类后采用线性回归模型精绘bounding-box"><a href="#创新点2：SVM分类后采用线性回归模型精绘bounding-box" class="headerlink" title="创新点2：SVM分类后采用线性回归模型精绘bounding box"></a>创新点2：SVM分类后采用线性回归模型精绘bounding box</h4><h5 id="训练阶段"><a href="#训练阶段" class="headerlink" title="训练阶段"></a>训练阶段</h5><p>由于SS算法对某个类的bounding box框的不够完美，所以训练一个回归模型，作者论文中采用<code>Bounding-box regression</code>提升了3.5个map。选取的Regions与人工标注的bounding box IoU应当&gt;=0.6，并且仅选取IoU最大的那个作为候选Region。<br>&nbsp;<br>总体目标就是对Region进行两次平移$\Delta x, \Delta y$，再进行两次缩放$S_{x}, S_{y}$。简单说就是输入<code>pool5</code>层的特征向量，经过4次运算后，得到更加精确的bounding box区域。论文公式如下，就是比较简单的线性回归，损失函数采用梯度下降进行优化。<br><img src="/img/rcnn4.png" width="350" alt="图片名称" align="center"><br><img src="/img/rcnn5.png" width="500" alt="图片名称" align="center"><br>其中$d_{x}(P)$、$d_{y}(P)$为平移算术因子，$d_{w}(P)$、$d_{h}(P)$为尺度缩放算术因子。以其中的$d_{x}(P)$来说：它的实际值就是$w\phi$，为权重w乘以特征向量的形式。而其理论值是$t_{\ast }^{i}$，可以通过对(1)、(2)、(3)、(4)变换得到。最终梯度下降的优化目标便是通过最小化均方误差函数来求解该w矩阵。</p>
+<h5 id="测试阶段"><a href="#测试阶段" class="headerlink" title="测试阶段"></a>测试阶段</h5><p>训练阶段，我们可以采用IoU最大的Region进行训练，那test阶段呢？同一物体便可能包含大量重复的矩形框，这里作者采用的是<strong>非极大值抑制（non-maximum suppression）</strong>方法对这些区域进行筛选。<strong>NMS基于一个窗口区域被认为是最有可能表示某一个物体的时候，那么和这个窗口区域交叉面积大的proposal就可以认为不是需要的窗口区域。</strong><br>&nbsp;<br>具体思路为：从所有矩形框(Regions)中(不分类别)选取SVM分类器得分最高的Region，将与该Region IoU面积超过阈值的都删除。再从剩余的矩形框中选取SVM得分最高的Region，重复上述步骤，直到没有矩形框可选为止。</p>
+<h3 id="CNN特征提取相关："><a href="#CNN特征提取相关：" class="headerlink" title="CNN特征提取相关："></a>CNN特征提取相关：</h3><h4 id="CNN为什么选取pool5层的特征？"><a href="#CNN为什么选取pool5层的特征？" class="headerlink" title="CNN为什么选取pool5层的特征？"></a>CNN为什么选取<code>pool5</code>层的特征？</h4><p>真实答案是如果不对模型进行<code>fine-tuning</code>，那么采用<code>pool5</code>、<code>fc6</code>、<code>fc7</code>特征训练的SVM分类器，性能是相似的；如果对模型用VOC数据<code>fine-tuning</code>，利用这些特征训练的分类器性能都会提升，而<code>fc6</code>、<code>fc7</code>会进一步得到更大提升，如下所示：<br><img src="/img/rcnn6.png" alt=""></p>
+<h4 id="为什么不直接采用CNN端到端训练，而要接一个SVM？"><a href="#为什么不直接采用CNN端到端训练，而要接一个SVM？" class="headerlink" title="为什么不直接采用CNN端到端训练，而要接一个SVM？"></a>为什么不直接采用CNN端到端训练，而要接一个SVM？</h4><p>VOC数据集较小，如果直接端到端训练，CNN十分容易过拟合。而SVM则适合小样本训练，所以最后采用SVM进行分类</p>
+<p><strong>PS：CNN的尺度不变性：</strong>并不是一定不变，而是大概率不变。比如对于两幅size不同，内容相同的图像。假设某个卷积核提取的是图像边缘信息，那么对其<code>Feature map</code>进行<code>Maxpooling</code>操作后，都会把梯度最大值提取出来，调整Pooling的<code>size</code>或<code>stride</code>，很大概率会得到相同的<code>map</code>图。</p>
+<h3 id="RCNN存在四个明显问题："><a href="#RCNN存在四个明显问题：" class="headerlink" title="RCNN存在四个明显问题："></a>RCNN存在四个明显问题：</h3><p>1、多个候选区域对应的图像需要预先提取，占用较大的磁盘空间；<br>2、针对传统CNN需要固定尺寸的输入图像，crop/warp（归一化）产生物体截断或拉伸，会导致输入CNN的信息丢失；<br>3、每一个ProposalRegion都需要进入CNN网络计算，上千个Region存在大量的范围重叠，重复的特征提取带来巨大的计算浪费。<br>4、CNN、SVM、回归模型需要按顺序，进行单独训练，不能端到端训练。</p>
+<h3 id="Ref："><a href="#Ref：" class="headerlink" title="Ref："></a>Ref：</h3><p>📎：<a href="http://www.rossgirshick.info/" target="_blank" rel="noopener">Rbg大神个人主页，包含论文、slides、code等</a><br>📎：<a href="https://www.cnblogs.com/skyfsm/p/6806246.html" target="_blank" rel="noopener">基于深度学习的目标检测技术演进：R-CNN、Fast R-CNN、Faster R-CNN</a><br>📎：<a href="http://blog.csdn.net/linolzhang/article/details/54344350" target="_blank" rel="noopener">目标检测-RCNN系列</a><br>📎：<a href="http://jermmy.xyz/2017/05/08/2017-5-8-paper-notes-rcnn/" target="_blank" rel="noopener">论文笔记：Rich feature hierarchies for accurate object detection and semantic segmentation</a><br>📎：<a href="http://blog.csdn.net/u011534057/article/details/51218250" target="_blank" rel="noopener">RCNN学习笔记</a></p>
 
       
     </div>
@@ -397,6 +403,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/07/rcnn-0/" rel="prev" title="论文笔记：《Fast(er) R-CNN》">
+                论文笔记：《Fast(er) R-CNN》 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -484,7 +494,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-count">27</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -552,7 +562,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创新点"><span class="nav-number">2.</span> <span class="nav-text">创新点</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#创新点1：采用CNN提取图像特征"><span class="nav-number">2.1.</span> <span class="nav-text">创新点1：采用CNN提取图像特征</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创新点2：SVM分类后采用线性回归模型精绘bounding-box"><span class="nav-number">2.2.</span> <span class="nav-text">创新点2：SVM分类后采用线性回归模型精绘bounding box</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#训练阶段"><span class="nav-number">2.2.1.</span> <span class="nav-text">训练阶段</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#测试阶段"><span class="nav-number">2.2.2.</span> <span class="nav-text">测试阶段</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#模型结论"><span class="nav-number">2.3.</span> <span class="nav-text">模型结论</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#RCNN存在四个明显问题："><span class="nav-number">2.3.1.</span> <span class="nav-text">RCNN存在四个明显问题：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#CNN的输入和特征提取："><span class="nav-number">2.3.2.</span> <span class="nav-text">CNN的输入和特征提取：</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创新点"><span class="nav-number">2.</span> <span class="nav-text">创新点</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#创新点1：采用CNN提取图像特征"><span class="nav-number">2.1.</span> <span class="nav-text">创新点1：采用CNN提取图像特征</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创新点2：SVM分类后采用线性回归模型精绘bounding-box"><span class="nav-number">2.2.</span> <span class="nav-text">创新点2：SVM分类后采用线性回归模型精绘bounding box</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#训练阶段"><span class="nav-number">2.2.1.</span> <span class="nav-text">训练阶段</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#测试阶段"><span class="nav-number">2.2.2.</span> <span class="nav-text">测试阶段</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CNN特征提取相关："><span class="nav-number">3.</span> <span class="nav-text">CNN特征提取相关：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#CNN为什么选取pool5层的特征？"><span class="nav-number">3.1.</span> <span class="nav-text">CNN为什么选取pool5层的特征？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#为什么不直接采用CNN端到端训练，而要接一个SVM？"><span class="nav-number">3.2.</span> <span class="nav-text">为什么不直接采用CNN端到端训练，而要接一个SVM？</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RCNN存在四个明显问题："><span class="nav-number">4.</span> <span class="nav-text">RCNN存在四个明显问题：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Ref："><span class="nav-number">5.</span> <span class="nav-text">Ref：</span></a></li></ol></div>
             
 
           </div>
@@ -598,7 +608,7 @@
  
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共20.1k字</span>
+  <span class="post-count">博客全站共23.2k字</span>
 </div>
 
 <div class="powered-by">

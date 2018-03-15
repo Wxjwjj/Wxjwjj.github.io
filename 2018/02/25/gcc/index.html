@@ -86,18 +86,18 @@
 
 
 
-<meta name="description" content="在编译不同的程序时，往往会遇到gcc、g++版本不兼容问题，那可不可以动态切换gcc&amp;amp;g++环境，来满足编译需求呢？答案是可以的。先看看系统内的gcc和g++是什么版本1gcc -version 可以获得如下信息1gcc version 5.4.0 查看系统内有哪些版本的gcc1ls /usr/bin/gcc* 首先安装其他版本的gcc、g++1sudo apt-get install g">
+<meta name="description" content="20180312更新，之前的操作都太复杂了，安装位置也是奇葩，简直是shit…修改gcc版本时候只要修改下述软连接便可以了12345678sudo apt-get install gcc-4.9sudo apt-get install g++-4.9 //自动安装到/usr/bin目录下which gcccd 到 gcc 目录ll | grep gcc 显示包含gcc的软连接sudo rm gcc">
 <meta name="keywords" content="Linux">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Ubuntu下gcc&#x2F;g++多版本切换">
 <meta property="og:url" content="http://yoursite.com/2018/02/25/gcc/index.html">
 <meta property="og:site_name" content="Deep Coding">
-<meta property="og:description" content="在编译不同的程序时，往往会遇到gcc、g++版本不兼容问题，那可不可以动态切换gcc&amp;amp;g++环境，来满足编译需求呢？答案是可以的。先看看系统内的gcc和g++是什么版本1gcc -version 可以获得如下信息1gcc version 5.4.0 查看系统内有哪些版本的gcc1ls /usr/bin/gcc* 首先安装其他版本的gcc、g++1sudo apt-get install g">
+<meta property="og:description" content="20180312更新，之前的操作都太复杂了，安装位置也是奇葩，简直是shit…修改gcc版本时候只要修改下述软连接便可以了12345678sudo apt-get install gcc-4.9sudo apt-get install g++-4.9 //自动安装到/usr/bin目录下which gcccd 到 gcc 目录ll | grep gcc 显示包含gcc的软连接sudo rm gcc">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-02-26T03:21:27.882Z">
+<meta property="og:updated_time" content="2018-03-14T09:51:07.786Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Ubuntu下gcc&#x2F;g++多版本切换">
-<meta name="twitter:description" content="在编译不同的程序时，往往会遇到gcc、g++版本不兼容问题，那可不可以动态切换gcc&amp;amp;g++环境，来满足编译需求呢？答案是可以的。先看看系统内的gcc和g++是什么版本1gcc -version 可以获得如下信息1gcc version 5.4.0 查看系统内有哪些版本的gcc1ls /usr/bin/gcc* 首先安装其他版本的gcc、g++1sudo apt-get install g">
+<meta name="twitter:description" content="20180312更新，之前的操作都太复杂了，安装位置也是奇葩，简直是shit…修改gcc版本时候只要修改下述软连接便可以了12345678sudo apt-get install gcc-4.9sudo apt-get install g++-4.9 //自动安装到/usr/bin目录下which gcccd 到 gcc 目录ll | grep gcc 显示包含gcc的软连接sudo rm gcc">
 
 
 
@@ -337,15 +337,25 @@
       
 
       
-        <h5 id="在编译不同的程序时，往往会遇到gcc、g-版本不兼容问题，那可不可以动态切换gcc-amp-g-环境，来满足编译需求呢？答案是可以的。"><a href="#在编译不同的程序时，往往会遇到gcc、g-版本不兼容问题，那可不可以动态切换gcc-amp-g-环境，来满足编译需求呢？答案是可以的。" class="headerlink" title="在编译不同的程序时，往往会遇到gcc、g++版本不兼容问题，那可不可以动态切换gcc&amp;g++环境，来满足编译需求呢？答案是可以的。"></a>在编译不同的程序时，往往会遇到gcc、g++版本不兼容问题，那可不可以动态切换gcc&amp;g++环境，来满足编译需求呢？答案是可以的。</h5><p>先看看系统内的<code>gcc</code>和<code>g++</code>是什么版本<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -version</span><br></pre></td></tr></table></figure></p>
+        <p><font color="red"><strong>20180312更新，之前的操作都太复杂了，安装位置也是奇葩，简直是shit…修改<code>gcc</code>版本时候只要修改下述软连接便可以了</strong></font><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install gcc-4.9</span><br><span class="line">sudo apt-get install g++-4.9 //自动安装到/usr/bin目录下</span><br><span class="line"><span class="built_in">which</span> gcc</span><br><span class="line"><span class="built_in">cd</span> 到 gcc 目录</span><br><span class="line">ll | grep gcc 显示包含gcc的软连接</span><br><span class="line">sudo rm gcc </span><br><span class="line">sudo ln -sf gcc-4.9 gcc</span><br><span class="line">sudo ln -sf g++-4.9 g++</span><br></pre></td></tr></table></figure></p>
+<hr>
+<p>在编译不同的程序时，往往会遇到gcc、g++版本不兼容问题，那可不可以动态切换gcc&amp;g++环境，来满足编译需求呢？答案是可以的。<br>先看看系统内的<code>gcc</code>和<code>g++</code>是什么版本<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc --version</span><br></pre></td></tr></table></figure></p>
 <p>可以获得如下信息<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc version 5.4.0</span><br></pre></td></tr></table></figure></p>
 <p>查看系统内有哪些版本的gcc<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls /usr/bin/gcc*</span><br></pre></td></tr></table></figure></p>
 <p>首先安装其他版本的<code>gcc</code>、<code>g++</code><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install gcc-4.9 gcc-4.9-multilib g++-4.9 g++-4.9-multilib</span><br></pre></td></tr></table></figure></p>
-<p>安装好后输入以下指令：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 40 </span><br><span class="line">sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-5 50</span><br></pre></td></tr></table></figure></p>
+<p>安装好后输入以下指令，替换系统默认的<code>gcc</code>：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 40 </span><br><span class="line">sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-5.4 54</span><br></pre></td></tr></table></figure></p>
 <p>接着输入：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo update-alternatives --config gcc</span><br></pre></td></tr></table></figure></p>
 <p>会看到如下的选项，有3个候选项可用于替换<code>gcc</code><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">*0            /usr/bin/gcc-5  50        </span><br><span class="line"> 1            /usr/bin/gcc-5  50        </span><br><span class="line"> 2            /usr/bin/gcc-4.9  40</span><br></pre></td></tr></table></figure></p>
 <p>要维持当前值<code>*</code>请按回车键，或者键入你想切换的gcc版本编号!<br>同样也要设置一下<code>g++</code>的， 方法同上<br>如果想删除可选项的话可以键入以下指令：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo update-alternatives --remove gcc /usr/bin/gcc-4.9</span><br></pre></td></tr></table></figure></p>
 <p>再用<code>gcc -version</code> 来看一下版本是否改变了。</p>
+<p>安装<code>GCC5.4.0</code>的方式有些不同，需要下载源码编译安装(<a href="ftp://ftp.mirrorservice.org/sites/sourceware.org/pub/gcc/releases/gcc-5.4.0/" target="_blank" rel="noopener">链接</a>)<br>解压<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo tar -zxvf gcc-5.4.0.tar.gz</span><br></pre></td></tr></table></figure></p>
+<p>下载gcc 依赖文件和库<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> gcc-5.4.0 //进入解包后的gcc文件夹  </span><br><span class="line">sudo ./contrib/download_prerequisites  //下载依赖项  </span><br><span class="line"><span class="built_in">cd</span> ..  //返回上层目录</span><br></pre></td></tr></table></figure></p>
+<p>建立编译输出目录，并生成makefile文件<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mkdir gcc-build-5.4.0 //建立一个输出目录，编译时所有生成的中间文件都放到该目录下：</span><br><span class="line"><span class="built_in">cd</span> gcc-build-5.4.0  </span><br><span class="line">//执行configure配置安装文件：</span><br><span class="line">sudo ../gcc-5.4.0/configure --<span class="built_in">enable</span>-checking=release --<span class="built_in">enable</span>-languages=c,c++ --<span class="built_in">disable</span>-multilib</span><br></pre></td></tr></table></figure></p>
+<p>编译<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo make -j4  //接近20分钟等待时间</span><br></pre></td></tr></table></figure></p>
+<p>安装<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make install</span><br></pre></td></tr></table></figure></p>
+<p>安装完成后还需要替换系统默认的gcc，执行以下命令<code>ls /usr/local/bin | grep gcc</code> ，查找5.4版本的安装文件<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">gcc</span><br><span class="line">gcc-ar</span><br><span class="line">gcc-nm</span><br><span class="line">gcc-ranlib</span><br><span class="line">x86_64-unknown-linux-gnu-gcc</span><br><span class="line">x86_64-unknown-linux-gnu-gcc-5.4.0    //这个文件</span><br><span class="line">x86_64-unknown-linux-gnu-gcc-ar</span><br><span class="line">x86_64-unknown-linux-gnu-gcc-nm</span><br></pre></td></tr></table></figure></p>
+<p>安装好后输入以下选择指令：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/sbin/update-alternatives --install  /usr/bin/gcc gcc /usr/<span class="built_in">local</span>/bin/x86_64-unknown-linux-gnu-gcc-5.4.0 54</span><br></pre></td></tr></table></figure></p>
+<p>使用<code>which gcc</code>查看gcc安装目录，在安装目录下执行-v命令<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/usr/<span class="built_in">local</span>/bin/gcc -v </span><br><span class="line">gcc -v  //或者</span><br><span class="line">gcc 版本 5.4.0(GCC) //说明GCC5.4安装成功</span><br></pre></td></tr></table></figure></p>
 
       
     </div>
@@ -447,17 +457,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -476,7 +477,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-count">27</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -535,22 +536,6 @@
       </section>
 
       
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#在编译不同的程序时，往往会遇到gcc、g-版本不兼容问题，那可不可以动态切换gcc-amp-g-环境，来满足编译需求呢？答案是可以的。"><span class="nav-number">1.</span> <span class="nav-text">在编译不同的程序时，往往会遇到gcc、g++版本不兼容问题，那可不可以动态切换gcc&amp;g++环境，来满足编译需求呢？答案是可以的。</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
-      
 
       
 
@@ -590,7 +575,7 @@
  
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共20.1k字</span>
+  <span class="post-count">博客全站共23.2k字</span>
 </div>
 
 <div class="powered-by">
