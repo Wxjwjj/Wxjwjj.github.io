@@ -259,6 +259,152 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/11/dlib/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="祥吉">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Deep Coding">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/11/dlib/" itemprop="url">dlib(C++)人脸关键点检测 for Linux/Mac</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-11T14:14:58+08:00">
+                2018-04-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/04/11/dlib/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/04/11/dlib/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h4><p>上一篇章讲解了Seetaface在Mac端的编译与demo，但Seetaface关键点检测(facial landmark detection)只包含5个关键点，用于人脸姿态矫正完全没问题，但用于美颜、加挂件等场合，则无法施展拳脚。<br>&nbsp;<br>笔者尝试了编译<a href="http://dlib.net/" target="_blank" rel="noopener">dlib C++ Library</a>，这是一个开源的C++图像处理、机器学习库，可以作为opencv的一个良好补充，采用Seetaface Detect模块，检测人脸区域，接着将该区域(Rect)输入dlib的关键点检测模型，可以快速实现人脸68个关键点检测。<br>硬件环境：Intel(R) Core(TM) i5 @ 2.70GHz（mac），单张图片单个人脸，检测时间如下所示：</p>
+<blockquote>
+<ul>
+<li>Seeta_人脸检测耗时：0.1840 秒</li>
+<li>dlib_关键点检测耗时：0.0023 秒</li>
+</ul>
+</blockquote>
+<p>检测效果如图（原图来源于网络，侵删）：<br><img src="/img/dlib1.jpeg" width="400" alt="图片名称" align="center"></p>
+<h4 id="dlib的依赖"><a href="#dlib的依赖" class="headerlink" title="dlib的依赖"></a>dlib的依赖</h4><p>dlib安装需要的依赖有openblas，opencv。可以直接使用brew安装。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">brew install openblas</span><br><span class="line">brew install opencv</span><br></pre></td></tr></table></figure></p>
+<p>X11是执行Unix程序的图形窗口环境。Mac OS X本身的程序是Aqua界面的，但是为了能够兼容unix和linux移植过来的程序（Mac OS X由BSD-UNIX修改而来），比如MatLab，就需要x11窗口环境。<br>&nbsp;<br>运行dlib需要X11，但Mac目前没有自带X11，需要重新下载安装，<a href="https://www.xquartz.org/" target="_blank" rel="noopener">下载地址</a><br>下载后直接安装，默认安装目录为/opt/X11，需要在/usr/loca/opt目录下创建软连接（最好使用绝对地址），创建命令如下，创建后重启Mac。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/opt</span><br><span class="line">ln -s /opt/X11 X11</span><br></pre></td></tr></table></figure></p>
+<h4 id="编译dlib"><a href="#编译dlib" class="headerlink" title="编译dlib"></a>编译dlib</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/davisking/dlib.git  <span class="comment"># 下载dlib</span></span><br><span class="line"><span class="built_in">cd</span> dlib/examples  </span><br><span class="line">mkdir build</span><br><span class="line"><span class="built_in">cd</span> build</span><br><span class="line"></span><br><span class="line">cmake .. -DUSE_SSE4_INSTRUCTIONS=ON 进行配置</span><br><span class="line">cmake --build . --config Release（此处都是demo，没必要全部进行build，需要用到那些build一下就好了)</span><br></pre></td></tr></table></figure>
+<p>运行一个<code>build</code>好的demo<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> dlib/examples/build/</span><br><span class="line">wget http://dlib.net/files/shape_predictor_68_face_landmarks.dat.bz2  <span class="comment">#下载face landmark模型，并解压文件</span></span><br><span class="line">./webcam_face_pose_ex</span><br></pre></td></tr></table></figure></p>
+<p>至此，会出现X11窗口，打开Mac摄像头自动检测人脸并标注人脸的landmar。</p>
+<h5 id="dlib-Rect-与-opencv-Rect转换"><a href="#dlib-Rect-与-opencv-Rect转换" class="headerlink" title="dlib::Rect 与 opencv::Rect转换"></a>dlib::Rect 与 opencv::Rect转换</h5><p>dlib、opencv Rect结构体参数是不同的，所以需要进行一下转换<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cv::Rect face_rect;  //假设里面已经存储了cv::rect的脚点信息</span><br><span class="line">dlib::rectangle dlibrect;</span><br><span class="line">dlibrect = dlib::rectangle((long)face_rect.tl().x, (long)face_rect.tl().y, (long)face_rect.br().x - 1, (long)face_rect.br().y - 1);</span><br><span class="line">// cv::rect 右下角坐标需要-1</span><br></pre></td></tr></table></figure></p>
+<p>同理，若要实现上一篇章Seeta::Rect与dlib::Rect转换，可转换到中间态cv::Rect后，再进行变换。</p>
+<h5 id="dlib加载图像的两种方式"><a href="#dlib加载图像的两种方式" class="headerlink" title="dlib加载图像的两种方式"></a>dlib加载图像的两种方式</h5><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">array2d&lt;rgb_pixel&gt; cimg;  <span class="comment">//dlib方式读取图像（从图像路径）</span></span><br><span class="line">load_image(cimg, srcImagePath); </span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">vector</span>&lt;full_object_detection&gt; shapes;</span><br><span class="line"></span><br><span class="line">array2d&lt;bgr_pixel&gt; cimg(gallery_img_color.rows, gallery_img_color.cols); <span class="comment">//dlib方式读取图像（从cv::MAT）</span></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i &lt; gallery_img_color.rows; i++) </span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>; j &lt; gallery_img_color.cols; j++) </span><br><span class="line">    &#123;</span><br><span class="line">        cimg[i][j].blue = gallery_img_color.at&lt; cv::Vec3b&gt;(i,j)[<span class="number">0</span>];</span><br><span class="line">        cimg[i][j].green= gallery_img_color.at&lt; cv::Vec3b&gt;(i,j)[<span class="number">1</span>];</span><br><span class="line">        cimg[i][j].red = gallery_img_color.at&lt; cv::Vec3b&gt;(i,j)[<span class="number">2</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Ref:<br><a href="http://noahsnail.com/2016/12/10/2016-12-11-Mac%E4%B8%8Bdlib%E5%AE%89%E8%A3%85/" target="_blank" rel="noopener">http://noahsnail.com/2016/12/10/2016-12-11-Mac%E4%B8%8Bdlib%E5%AE%89%E8%A3%85/</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/29/Seetaface-linux/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -627,10 +773,162 @@
         
           
             <h4 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h4><p>官网下载<code>opencv3.4.1</code>，选择source<a href="https://opencv.org/releases.html" target="_blank" rel="noopener">版本</a><br>官网下载<code>opencv3.4.1_contrib</code>，选择source<a href="https://opencv.org/releases.html" target="_blank" rel="noopener">版本</a></p>
-<h4 id="编译安装"><a href="#编译安装" class="headerlink" title="编译安装"></a>编译安装</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">cp ../opencv3.4.1_contrib ./   <span class="comment"># 复制contrib到opencv3.4.1文件夹并重命名</span></span><br><span class="line"><span class="built_in">cd</span> opencv3.4.1</span><br><span class="line">mv opencv3.4.1_contrib opencv_contrib</span><br><span class="line">mkdir build</span><br><span class="line"><span class="built_in">cd</span> build</span><br><span class="line">cmake ..</span><br><span class="line">ccmake ..</span><br><span class="line">几个要注意的修改项(cuda/python根据自己的安装路径来写)：</span><br></pre></td></tr></table></figure>
+<h4 id="首先安装必要的依赖"><a href="#首先安装必要的依赖" class="headerlink" title="首先安装必要的依赖"></a>首先安装必要的依赖</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get -qq install libopencv-dev build-essential checkinstall cmake pkg-config yasm libjpeg-dev libjasper-dev libavcodec-dev libavformat-dev libswscale-dev libdc1394-22-dev libgstreamer0.10-dev libgstreamer-plugins-base0.10-dev libv4l-dev python-dev python-numpy libtbb-dev libqt4-dev libgtk2.0-dev libfaac-dev libmp3lame-dev libopencore-amrnb-dev libopencore-amrwb-dev libtheora-dev libvorbis-dev libxvidcore-dev x264 v4l-utils</span><br></pre></td></tr></table></figure>
+<h4 id="编译安装opencv"><a href="#编译安装opencv" class="headerlink" title="编译安装opencv"></a>编译安装opencv</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">cp ../opencv3.4.1_contrib ./   <span class="comment"># 复制contrib到opencv3.4.1文件夹并重命名</span></span><br><span class="line"><span class="built_in">cd</span> opencv3.4.1</span><br><span class="line">mv opencv3.4.1_contrib opencv_contrib</span><br><span class="line">mkdir build</span><br><span class="line"><span class="built_in">cd</span> build</span><br><span class="line">cmake ..</span><br><span class="line">ccmake ..</span><br><span class="line">几个要注意的修改项(cuda/python根据自己的安装路径来写)：</span><br></pre></td></tr></table></figure>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">CUDA_TOOLKIT_ROOT_DIR:		/home/&lt;user name&gt;/wuxj/cuda-8.0</span><br><span class="line">OPENCV_EXTRA_MODULES_PATH:	/home/&lt;user name&gt;/wuxj/opencv-3.4.1/opencv_contrib </span><br><span class="line">PYTHON2_EXECUTABLE:		/usr/bin/python2.7                           </span><br><span class="line">PYTHON2_INCLUDE_DIR:		/usr/include/python2.7 </span><br><span class="line">PYTHON2_NUMPY_INCLUDE_DIRS: 	/usr/<span class="built_in">local</span>/lib/python2.7/dist-packages/dist-packages/numpy/core/include  </span><br><span class="line">PYTHON2_PACKAGES_PATH:		/lib/python2.7/dist-packages </span><br><span class="line">CMAKE_INSTALL_PREFIX:		/home/&lt;user name&gt;/wuxj   <span class="comment"># make install的安装路径</span></span><br></pre></td></tr></table></figure>
 <p><code>make -j8</code> # 等待安装成功即可 8：8核CPU，编译速度更快</p>
 <p><code>make install</code> # 复制上一步build文件夹到<code>/home/&lt;user name&gt;/wuxj</code> 中，这时候wuxj文件夹会包含bin(exe)、include(头文件)、lib(动态库)、share4个文件夹</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/27/nvidia/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="祥吉">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Deep Coding">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/27/nvidia/" itemprop="url">Ubuntu1604装机系列(一)：Mac烧系统盘及1080Ti显卡(390版本)驱动安装</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-27T09:08:34+08:00">
+                2018-03-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/03/27/nvidia/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/03/27/nvidia/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="Ubuntu1604系统安装"><a href="#Ubuntu1604系统安装" class="headerlink" title="Ubuntu1604系统安装"></a>Ubuntu1604系统安装</h4><p>笔者第一次尝试Mac烧系统盘，没想到比windows简单到爆，过程如下：<br>&nbsp;<br><a href="https://www.ubuntu.com/download" target="_blank" rel="noopener">官网</a>下载Ubuntu iso文件<br>&nbsp;<br>格式化一个U盘<br>&nbsp;<br>接着写入U盘镜像<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">df -hl       <span class="comment"># 记住磁盘名称，Eg：/dev/disk2s</span></span><br><span class="line">sudo diskutil umount /dev/disk2s  <span class="comment"># 卸载该磁盘</span></span><br><span class="line">sudo dd bs=1m <span class="keyword">if</span>=/Users/&lt;user name&gt;/Desktop/ubuntu-16.04.4-desktop-amd64.iso of=/dev/disk2s</span><br></pre></td></tr></table></figure></p>
+<p>静静等待10分钟，U盘即可写入完毕。接着就是设置电脑U盘启动，开始安装Ubuntu系统了</p>
+<h5 id="ubuntu-换源"><a href="#ubuntu-换源" class="headerlink" title="ubuntu 换源"></a>ubuntu 换源</h5><p><a href="https://mirrors.tuna.tsinghua.edu.cn/help/ubuntu/" target="_blank" rel="noopener">清华大学开源软件镜像站</a>寻找对应系统的源<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /etc/apt</span><br><span class="line">sudo cp sources.list sources.list.old <span class="comment">#先将之前的源做个备份</span></span><br><span class="line"></span><br><span class="line">vi sources.list <span class="comment"># 拷贝清华的镜像到该list</span></span><br><span class="line"></span><br><span class="line">deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial main restricted universe multiverse</span><br><span class="line">deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial-updates main restricted universe multiverse</span><br><span class="line">deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial-backports main restricted universe multiverse</span><br><span class="line">deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial-security main restricted universe multiver</span><br><span class="line"></span><br><span class="line">sudo apt-get update <span class="comment"># 更新源完成，发现网速飞快了</span></span><br></pre></td></tr></table></figure></p>
+<h5 id="apt-get相关常用指令"><a href="#apt-get相关常用指令" class="headerlink" title="apt-get相关常用指令"></a>apt-get相关常用指令</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update  更新源</span><br><span class="line">sudo apt-get install package 安装包</span><br><span class="line">sudo apt-cache search package 搜索软件包</span><br><span class="line">sudo apt-get remove package --purge 删除包，包括配置文件等</span><br></pre></td></tr></table></figure>
+<h4 id="显卡驱动安装"><a href="#显卡驱动安装" class="headerlink" title="显卡驱动安装"></a>显卡驱动安装</h4><p>Nvidia显卡驱动踩了很多坑，到网上百度了N多教程，大致尝试的如下：</p>
+<blockquote>
+<ul>
+<li>显卡线插集显上，装好驱动后把线再插回N卡</li>
+<li>BIOS设置禁用Secure boot，cpu做显卡</li>
+<li>采用PPA源，尝试各种375、381、390的安装</li>
+<li>打开ubuntu的软件更新，更新显卡驱动</li>
+</ul>
+</blockquote>
+<p>经过上述步骤，会提示显卡驱动已经安装成功，但<code>nvidia-smi</code>依然无效…该最简单但最高效的选手登场了</p>
+<h5 id="编译-NVIDIA-驱动程序"><a href="#编译-NVIDIA-驱动程序" class="headerlink" title="编译 NVIDIA 驱动程序"></a>编译 NVIDIA 驱动程序</h5><p>Nvidia官网下载最新的显卡<a href="https://www.geforce.cn/drivers" target="_blank" rel="noopener">驱动程序</a>，ubuntu的一般就几十兆左右。<br>&nbsp;<br>将<code>nouveau driver</code>加入黑名单<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">blacklist nouveau</span><br><span class="line">options modset=0</span><br></pre></td></tr></table></figure></p>
+<p>终端输入<code>lspci | grep nouveau</code>，如果没有显示证明该驱动被kill</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">reboot <span class="comment"># 一定要重启</span></span><br></pre></td></tr></table></figure>
+<p>杀掉<code>LightDM</code>或<code>GDM</code>登录显示器，进入纯文本<code>tty1</code>模式<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo service lightdm stop</span><br><span class="line">sudo dpkg-reconfigure gdm <span class="comment"># 有的人可能安装的不是LightDM界面，可先通过该命令切到LightDM，或者直接stop GDM等界面(第二种笔者未尝试)</span></span><br></pre></td></tr></table></figure></p>
+<p>编译安装NVIDIA驱动，此过程大约耗时3～5分钟<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">chmod +x NVIDIA-xxx.run</span><br><span class="line">sudo ./NVIDIA-xxx.run</span><br></pre></td></tr></table></figure></p>
+<p>需要注意的：<br>1、此处认真看提示，并不是一路选择”yes”。<br>2、假如上一步在安装时，Warning了gcc版本不对，则退出驱动安装，先安装对应版本的gcc之后再继续。笔者安装的驱动程序提示需要gcc-5.4.0，又是一番折腾，还好在冯博的指导下，找到了精干快速的方法。不介意的话可以移步笔者之前的文章<a href="http://localhost:4000/2018/02/25/gcc/" target="_blank" rel="noopener">Ubuntu下gcc/g++多版本切换</a><br>&nbsp;<br>安装成功后，重新开启桌面测试。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo service lightdm start</span><br><span class="line">nvidia-smi</span><br></pre></td></tr></table></figure></p>
+<p>成功后的截图<br> <img src="/img/nvidia.png" width="550" alt="图片名称" align="center"></p>
+<h4 id="Ref："><a href="#Ref：" class="headerlink" title="Ref："></a>Ref：</h4><p> 📎：<a href="https://www.linuxidc.com/Linux/2011-07/39491.htm" target="_blank" rel="noopener">Ubuntu下轻松切换GDM, LightDM , KDM</a></p>
 
           
         
@@ -771,157 +1069,6 @@
 <p><code>./test</code>运行代码</p>
 <h5 id="多个cpp文件工程的编译"><a href="#多个cpp文件工程的编译" class="headerlink" title="多个cpp文件工程的编译"></a>多个cpp文件工程的编译</h5><p>假如test文件下存在<code>imageRank.h</code>、<code>imageRank.cpp</code>、<code>main.cpp</code>文件<code>.h</code>文件不用管，在编译.cpp时会自动调用。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">g++ -c imageRank.cpp -o imageRank.o -I ./   <span class="comment"># 先编译函数cpp文件</span></span><br><span class="line">g++ main.cpp imageRank.o -o main `pkg-config --libs opencv` `pkg-config --cflags opencv`  <span class="comment"># 直接生成可执行文件</span></span><br><span class="line">ar -r libimageRank.a imageRank.o  <span class="comment"># 或者编译出静态库文件给第三方</span></span><br><span class="line">g++ -o main -L. -ldetection main.cpp `pkg-config --libs opencv` `pkg-config --cflags opencv`</span><br><span class="line">生成可执行文件</span><br></pre></td></tr></table></figure></p>
 <p>Ref：<br> 📎：<a href="https://www.jianshu.com/p/3d149f167b41" target="_blank" rel="noopener">Mac OS X 安装并测试 OpenCV</a><br> 📎：<a href="http://www.voidcn.com/article/p-yxftfwnu-on.html" target="_blank" rel="noopener">mac os 安装 pkg-config</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/14/nvidia/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="祥吉">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Deep Coding">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/03/14/nvidia/" itemprop="url">Ubuntu1604装机系列(一)：Mac烧系统盘及1080Ti显卡(390版本)驱动安装</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-14T12:43:14+08:00">
-                2018-03-14
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/03/14/nvidia/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/03/14/nvidia/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="Ubuntu1604系统安装"><a href="#Ubuntu1604系统安装" class="headerlink" title="Ubuntu1604系统安装"></a>Ubuntu1604系统安装</h4><p>笔者第一次尝试Mac烧系统盘，没想到比windows简单到爆，过程如下：<br>&nbsp;<br><a href="https://www.ubuntu.com/download" target="_blank" rel="noopener">官网</a>下载Ubuntu iso文件<br>&nbsp;<br>格式化一个U盘<br>&nbsp;<br>接着写入U盘镜像<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">df -hl       <span class="comment"># 记住磁盘名称，Eg：/dev/disk2s</span></span><br><span class="line">sudo diskutil umount /dev/disk2s  <span class="comment"># 卸载该磁盘</span></span><br><span class="line">sudo dd bs=1m <span class="keyword">if</span>=/Users/&lt;user name&gt;/Desktop/ubuntu-16.04.4-desktop-amd64.iso of=/dev/disk2s</span><br></pre></td></tr></table></figure></p>
-<p>静静等待10分钟，U盘即可写入完毕。接着就是设置电脑U盘启动，开始安装Ubuntu系统了</p>
-<h5 id="ubuntu-换源"><a href="#ubuntu-换源" class="headerlink" title="ubuntu 换源"></a>ubuntu 换源</h5><p><a href="https://mirrors.tuna.tsinghua.edu.cn/help/ubuntu/" target="_blank" rel="noopener">清华大学开源软件镜像站</a>寻找对应系统的源<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /etc/apt</span><br><span class="line">sudo cp sources.list sources.list.old <span class="comment">#先将之前的源做个备份</span></span><br><span class="line"></span><br><span class="line">vi sources.list <span class="comment"># 拷贝清华的镜像到该list</span></span><br><span class="line"></span><br><span class="line">deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial main restricted universe multiverse</span><br><span class="line">deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial-updates main restricted universe multiverse</span><br><span class="line">deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial-backports main restricted universe multiverse</span><br><span class="line">deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial-security main restricted universe multiver</span><br><span class="line"></span><br><span class="line">sudo apt-get update <span class="comment"># 更新源完成，发现网速飞快了</span></span><br></pre></td></tr></table></figure></p>
-<h5 id="apt-get相关常用指令"><a href="#apt-get相关常用指令" class="headerlink" title="apt-get相关常用指令"></a>apt-get相关常用指令</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update  更新源</span><br><span class="line">sudo apt-get install package 安装包</span><br><span class="line">sudo apt-cache search package 搜索软件包</span><br><span class="line">sudo apt-get remove package --purge 删除包，包括配置文件等</span><br></pre></td></tr></table></figure>
-<h4 id="显卡驱动安装"><a href="#显卡驱动安装" class="headerlink" title="显卡驱动安装"></a>显卡驱动安装</h4><p>Nvidia显卡驱动踩了很多坑，到网上百度了N多教程，大致尝试的如下：</p>
-<blockquote>
-<ul>
-<li>显卡线插集显上，装好驱动后把线再插回N卡</li>
-<li>BIOS设置禁用Secure boot，cpu做显卡</li>
-<li>采用PPA源，尝试各种375、381、390的安装</li>
-<li>打开ubuntu的软件更新，更新显卡驱动</li>
-</ul>
-</blockquote>
-<p>经过上述步骤，会提示显卡驱动已经安装成功，但<code>nvidia-smi</code>依然无效…该最简单但最高效的选手登场了</p>
-<h5 id="编译-NVIDIA-驱动程序"><a href="#编译-NVIDIA-驱动程序" class="headerlink" title="编译 NVIDIA 驱动程序"></a>编译 NVIDIA 驱动程序</h5><p>Nvidia官网下载最新的显卡<a href="https://www.geforce.cn/drivers" target="_blank" rel="noopener">驱动程序</a>，ubuntu的一般就几十兆左右。<br>&nbsp;<br>将<code>nouveau driver</code>加入黑名单<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">blacklist nouveau</span><br><span class="line">options modset=0</span><br></pre></td></tr></table></figure></p>
-<p>终端输入<code>lspci | grep nouveau</code>，如果没有显示证明该驱动被kill</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">reboot <span class="comment"># 一定要重启</span></span><br></pre></td></tr></table></figure>
-<p>杀掉<code>LightDM</code>或<code>GDM</code>登录显示器，进入纯文本<code>tty1</code>模式<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo service lightdm stop</span><br><span class="line">sudo dpkg-reconfigure gdm <span class="comment"># 有的人可能安装的不是LightDM界面，可先通过该命令切到LightDM，或者直接stop GDM等界面(第二种笔者未尝试)</span></span><br></pre></td></tr></table></figure></p>
-<p>编译安装NVIDIA驱动，此过程大约耗时3～5分钟<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">chmod +x NVIDIA-xxx.run</span><br><span class="line">sudo ./NVIDIA-xxx.run</span><br></pre></td></tr></table></figure></p>
-<p>需要注意的：<br>1、此处认真看提示，并不是一路选择”yes”。<br>2、假如上一步在安装时，Warning了gcc版本不对，则退出驱动安装，先安装对应版本的gcc之后再继续。笔者安装的驱动程序提示需要gcc-5.4.0，又是一番折腾，还好在冯博的指导下，找到了精干快速的方法。不介意的话可以移步笔者之前的文章<a href="http://localhost:4000/2018/02/25/gcc/" target="_blank" rel="noopener">Ubuntu下gcc/g++多版本切换</a><br>&nbsp;<br>安装成功后，重新开启桌面测试。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo service lightdm start</span><br><span class="line">nvidia-smi</span><br></pre></td></tr></table></figure></p>
-<p>成功后的截图<br> <img src="/img/nvidia.png" width="550" alt="图片名称" align="center"></p>
-<h4 id="Ref："><a href="#Ref：" class="headerlink" title="Ref："></a>Ref：</h4><p> 📎：<a href="https://www.linuxidc.com/Linux/2011-07/39491.htm" target="_blank" rel="noopener">Ubuntu下轻松切换GDM, LightDM , KDM</a></p>
 
           
         
@@ -1549,155 +1696,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/03/signal/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="祥吉">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Deep Coding">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/03/03/signal/" itemprop="url">信号相关知识</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-03T16:31:13+08:00">
-                2018-03-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/03/03/signal/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/03/03/signal/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="傅立叶级数"><a href="#傅立叶级数" class="headerlink" title="傅立叶级数"></a>傅立叶级数</h3><p>周期为T的周期信号，若满足“狄里赫利”条件，则可以将其展开为有限或无限个离散的正余弦函数累加的形式。它的物理意义是很明显的，这就是把一个比较复杂的周期运动看成许多不同运动的叠加，如下：<br>$$f(t) = A_{0}+\sum_{n=1}^{\infty }A_{n}sin(n\omega t + \varphi )$$<br>而对于任何一个非周期信号，同样可以用傅立叶展开的形式，只不过它的频域曲线是连续的(后文有涉及)，在计算上也从累加符号变成了积分符号。两者的关系如下：<br><img src="/img/fft.jpg" width="500" alt="图片名称" align="center"><br>那傅立叶变换的用处是什么？给你一个正弦曲线，让你从中拿走某个频率的分量（即滤波），时域图中基本无法看懂，频域中只要拿走几条竖线就好了。而在反向传播算法中，FFT可以把微分、积分，在频域中变为加减乘除的简单运算。</p>
-<h3 id="时域-amp-频域"><a href="#时域-amp-频域" class="headerlink" title="时域&amp;频域"></a>时域&amp;频域</h3><p><strong>时域</strong>反应的是现实世界中我们最能感知的信号，横轴为时间，纵轴为振幅；而<strong>频域</strong>反应的是频率与振幅的关系。将一个表示波的函数从时域转化为频域的关系，便称为傅立叶变换。两个例子如下所示：<br><img src="/img/ft2.jpeg" width="600" alt="图片名称" align="center"></p>
-<p>PS：玄学傅立叶：</p>
-<blockquote>
-<p>我们看似不规律的事情反而是规律的正弦波在时域上的投影，而正弦波又是一个旋转的圆在直线上的投影。<br>我们眼中的世界就像皮影戏的大幕布，幕布的后面有无数的齿轮，大齿轮带动小齿轮，小齿轮再带动更小的。在最外面的小齿轮上有一个小人——那就是我们自己。我们只看到这个小人毫无规律的在幕布前表演，却无法预测他下一步会去哪。而幕布后面的齿轮却永远一直那样不停的旋转，永不停歇。</p>
-</blockquote>
-<p>如何用一幅图总结频域、时域、相位谱的关系(引自<a href="https://zhuanlan.zhihu.com/p/19763358?from=singlemessage&amp;isappinstalled=1" target="_blank" rel="noopener">知乎</a>)<br><img src="/img/ft3.jpeg" width="500" alt="图片名称" align="center"></p>
-<h3 id="采样"><a href="#采样" class="headerlink" title="采样"></a>采样</h3><p>以音频文件采样为例：同图像bmp文件一样，pcm文件保存的是未压缩的音频信息。<br>16bits 编码是指，每次采样的音频信息用2个字节保存。可以对比下bmp文件用分别用2个字节保存RGB颜色的信息。<br>16000采样率 是指 1秒钟采样 16000次。当前声卡常用的采样频率一般为44.1KHz，即一秒采样44100次，人耳最敏感的听力范围20Hz到8000Hz。显然采样频率越高声音的还原就越真实越自然。<br>即：1秒的16000采样率音频文件大小是 $2\times16000 = 32000$字节 ，约为32K<br><strong>采样定理：衡量的是采样频率与信号频率之间的关系。采样定理规定，采样频率必须大于等于信号频率的两倍，才能够将原始信号从采样定理中完全恢复出来，否则会造成频率曲线混叠</strong></p>
-<h3 id="图像大小变换"><a href="#图像大小变换" class="headerlink" title="图像大小变换"></a>图像大小变换</h3><p>图像像素数量 = 图像分辨率相乘，例如：图像分辨率为$1280\times720$，那么这张图片像素有100万。在同一台设备上，图片分辨率越高，这张图片1:1放大时，图片面积越大；图片分辨率越低，这张图片1:1缩放时，图片面积越小。<br>所以，将$1280 \times720 $的图像缩小到$720 \times 540$时，便需要采用下采样，这样再在同一台设备上，处理后的图片size就比较小。python代码如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line">filename = <span class="string">"/Users/wxj/Desktop/WechatIMG2.jpeg"</span></span><br><span class="line">img = Image.open(filename)</span><br><span class="line">imgSize = img.size <span class="comment">#图片的长和宽</span></span><br><span class="line"><span class="keyword">print</span> (imgSize) <span class="comment"># 1920*1080</span></span><br><span class="line">out = img.resize((<span class="number">1080</span>，<span class="number">640</span>),Image.ANTIALIAS) <span class="comment">#降低分辨率</span></span><br><span class="line">out.save(<span class="string">"1.jpg"</span>)</span><br></pre></td></tr></table></figure></p>
-<h4 id="图像尺寸怎么计算呢？"><a href="#图像尺寸怎么计算呢？" class="headerlink" title="图像尺寸怎么计算呢？"></a>图像尺寸怎么计算呢？</h4><p>pic_size = 分辨率$\times$3字节(rgb)图像，但这样发现跟电脑中显示的大小不同，因为图像文件(.jpg、png)等，都是有损压缩，一般会压缩几十到几百倍不等这样子。</p>
-<h4 id="图像金字塔"><a href="#图像金字塔" class="headerlink" title="图像金字塔"></a>图像金字塔</h4><p>图像金字塔算法是对图像的下采样、上采样：</p>
-<blockquote>
-<ul>
-<li>其中下采样为采用高斯内核卷积；之后去除偶数行列</li>
-<li>上采样为将图像在每个方向扩大为原来的两倍，新增的行和列以0填充；再使用先前同样的内核(乘以4)与放大后的图像卷积，获得 “新增像素”的近似值<br>而resize函数改变大小与图像金字塔的不同，采用的是线性插值补全丢失的像素，但实际用下来差别不大。</li>
-</ul>
-</blockquote>
-<p>&nbsp;<br>插个话：图像金字塔在目标检测中的应用<br>滑窗的尺寸一般是固定的，而多尺度通过图像金字塔实现。这样相比不断改变滑窗大小，效率更高。至于缩小多少倍，源图缩到滑动窗口大小即可以，这样代表整张图片是某个类。</p>
-<p>假如人脸size[20,20]，滑动窗口（box）Size[40,40]那么可能检不出这张人脸（人脸占据比例太小），而随着图像金字塔变换人脸size会越来越小，那人脸占据整个box的比例也会更低，导致无法检出。<br>换句话说：MinFaceSize(40)，只能检测最小约为[40，40]的人脸。</p>
-<h3 id="Ref"><a href="#Ref" class="headerlink" title="Ref:"></a>Ref:</h3><p><a href="https://zhuanlan.zhihu.com/p/19763358?from=singlemessage&amp;isappinstalled=1" target="_blank" rel="noopener">傅里叶分析之掐死教程（完整版）更新于2014.06.06</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1752,7 +1750,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1850,7 +1848,7 @@
  
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共26.7k字</span>
+  <span class="post-count">博客全站共27.5k字</span>
 </div>
 
 <div class="powered-by">

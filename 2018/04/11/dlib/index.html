@@ -75,7 +75,7 @@
 
 
 
-  <meta name="keywords" content="NLP,Textsum," />
+  <meta name="keywords" content="CV," />
 
 
 
@@ -86,28 +86,20 @@
 
 
 
-<meta name="description" content="Tips: PPT直接转的图片，点击任意一张进入高清读图模式 🐶🐶">
-<meta name="keywords" content="NLP,Textsum">
+<meta name="description" content="背景上一篇章讲解了Seetaface在Mac端的编译与demo，但Seetaface关键点检测(facial landmark detection)只包含5个关键点，用于人脸姿态矫正完全没问题，但用于美颜、加挂件等场合，则无法施展拳脚。&amp;nbsp;笔者尝试了编译dlib C++ Library，这是一个开源的C++图像处理、机器学习库，可以作为opencv的一个良好补充，采用Seetaface D">
+<meta name="keywords" content="CV">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Textsum：深度学习应用于自动文本摘要">
-<meta property="og:url" content="http://yoursite.com/2018/02/07/textsum/index.html">
+<meta property="og:title" content="dlib(C++)人脸关键点检测 for Linux&#x2F;Mac">
+<meta property="og:url" content="http://yoursite.com/2018/04/11/dlib/index.html">
 <meta property="og:site_name" content="Deep Coding">
-<meta property="og:description" content="Tips: PPT直接转的图片，点击任意一张进入高清读图模式 🐶🐶">
+<meta property="og:description" content="背景上一篇章讲解了Seetaface在Mac端的编译与demo，但Seetaface关键点检测(facial landmark detection)只包含5个关键点，用于人脸姿态矫正完全没问题，但用于美颜、加挂件等场合，则无法施展拳脚。&amp;nbsp;笔者尝试了编译dlib C++ Library，这是一个开源的C++图像处理、机器学习库，可以作为opencv的一个良好补充，采用Seetaface D">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://yoursite.com/img/text_sum1.jpeg">
-<meta property="og:image" content="http://yoursite.com/img/text_sum2.jpeg">
-<meta property="og:image" content="http://yoursite.com/img/text_sum3.jpeg">
-<meta property="og:image" content="http://yoursite.com/img/text_sum4.jpeg">
-<meta property="og:image" content="http://yoursite.com/img/text_sum5.jpeg">
-<meta property="og:image" content="http://yoursite.com/img/text_sum6.jpeg">
-<meta property="og:image" content="http://yoursite.com/img/text_sum7.jpeg">
-<meta property="og:image" content="http://yoursite.com/img/text_sum8.jpeg">
-<meta property="og:image" content="http://yoursite.com/img/text_sum9.jpeg">
-<meta property="og:updated_time" content="2018-02-08T03:37:24.642Z">
+<meta property="og:image" content="http://yoursite.com/img/dlib1.jpeg">
+<meta property="og:updated_time" content="2018-04-11T06:54:31.541Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Textsum：深度学习应用于自动文本摘要">
-<meta name="twitter:description" content="Tips: PPT直接转的图片，点击任意一张进入高清读图模式 🐶🐶">
-<meta name="twitter:image" content="http://yoursite.com/img/text_sum1.jpeg">
+<meta name="twitter:title" content="dlib(C++)人脸关键点检测 for Linux&#x2F;Mac">
+<meta name="twitter:description" content="背景上一篇章讲解了Seetaface在Mac端的编译与demo，但Seetaface关键点检测(facial landmark detection)只包含5个关键点，用于人脸姿态矫正完全没问题，但用于美颜、加挂件等场合，则无法施展拳脚。&amp;nbsp;笔者尝试了编译dlib C++ Library，这是一个开源的C++图像处理、机器学习库，可以作为opencv的一个良好补充，采用Seetaface D">
+<meta name="twitter:image" content="http://yoursite.com/img/dlib1.jpeg">
 
 
 
@@ -137,13 +129,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/02/07/textsum/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/04/11/dlib/"/>
 
 
 
 
 
-  <title>Textsum：深度学习应用于自动文本摘要 | Deep Coding</title>
+  <title>dlib(C++)人脸关键点检测 for Linux/Mac | Deep Coding</title>
   
 
 
@@ -270,7 +262,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/07/textsum/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/11/dlib/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="祥吉">
@@ -287,7 +279,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Textsum：深度学习应用于自动文本摘要</h1>
+          <h1 class="post-title" itemprop="name headline">dlib(C++)人脸关键点检测 for Linux/Mac</h1>
         
 
         <div class="post-meta">
@@ -299,8 +291,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-07T10:42:24+08:00">
-                2018-02-07
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-11T14:14:58+08:00">
+                2018-04-11
               </time>
             
 
@@ -318,8 +310,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/02/07/textsum/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/02/07/textsum/" itemprop="commentCount"></span>
+                <a href="/2018/04/11/dlib/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/04/11/dlib/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -347,10 +339,23 @@
       
 
       
-        <blockquote>
-<p><strong>Tips: PPT直接转的图片，点击任意一张进入高清读图模式</strong> 🐶🐶</p>
+        <h4 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h4><p>上一篇章讲解了Seetaface在Mac端的编译与demo，但Seetaface关键点检测(facial landmark detection)只包含5个关键点，用于人脸姿态矫正完全没问题，但用于美颜、加挂件等场合，则无法施展拳脚。<br>&nbsp;<br>笔者尝试了编译<a href="http://dlib.net/" target="_blank" rel="noopener">dlib C++ Library</a>，这是一个开源的C++图像处理、机器学习库，可以作为opencv的一个良好补充，采用Seetaface Detect模块，检测人脸区域，接着将该区域(Rect)输入dlib的关键点检测模型，可以快速实现人脸68个关键点检测。<br>硬件环境：Intel(R) Core(TM) i5 @ 2.70GHz（mac），单张图片单个人脸，检测时间如下所示：</p>
+<blockquote>
+<ul>
+<li>Seeta_人脸检测耗时：0.1840 秒</li>
+<li>dlib_关键点检测耗时：0.0023 秒</li>
+</ul>
 </blockquote>
-<p><img src="/img/text_sum1.jpeg" width="700" alt="图片名称" align="center"><br><img src="/img/text_sum2.jpeg" width="700" alt="图片名称" align="center"><br><img src="/img/text_sum3.jpeg" width="700" alt="图片名称" align="center"><br><img src="/img/text_sum4.jpeg" width="700" alt="图片名称" align="center"><br><img src="/img/text_sum5.jpeg" width="700" alt="图片名称" align="center"><br><img src="/img/text_sum6.jpeg" width="700" alt="图片名称" align="center"><br><img src="/img/text_sum7.jpeg" width="700" alt="图片名称" align="center"><br><img src="/img/text_sum8.jpeg" width="700" alt="图片名称" align="center"><br><img src="/img/text_sum9.jpeg" width="700" alt="图片名称" align="center"></p>
+<p>检测效果如图（原图来源于网络，侵删）：<br><img src="/img/dlib1.jpeg" width="400" alt="图片名称" align="center"></p>
+<h4 id="dlib的依赖"><a href="#dlib的依赖" class="headerlink" title="dlib的依赖"></a>dlib的依赖</h4><p>dlib安装需要的依赖有openblas，opencv。可以直接使用brew安装。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">brew install openblas</span><br><span class="line">brew install opencv</span><br></pre></td></tr></table></figure></p>
+<p>X11是执行Unix程序的图形窗口环境。Mac OS X本身的程序是Aqua界面的，但是为了能够兼容unix和linux移植过来的程序（Mac OS X由BSD-UNIX修改而来），比如MatLab，就需要x11窗口环境。<br>&nbsp;<br>运行dlib需要X11，但Mac目前没有自带X11，需要重新下载安装，<a href="https://www.xquartz.org/" target="_blank" rel="noopener">下载地址</a><br>下载后直接安装，默认安装目录为/opt/X11，需要在/usr/loca/opt目录下创建软连接（最好使用绝对地址），创建命令如下，创建后重启Mac。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/opt</span><br><span class="line">ln -s /opt/X11 X11</span><br></pre></td></tr></table></figure></p>
+<h4 id="编译dlib"><a href="#编译dlib" class="headerlink" title="编译dlib"></a>编译dlib</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/davisking/dlib.git  <span class="comment"># 下载dlib</span></span><br><span class="line"><span class="built_in">cd</span> dlib/examples  </span><br><span class="line">mkdir build</span><br><span class="line"><span class="built_in">cd</span> build</span><br><span class="line"></span><br><span class="line">cmake .. -DUSE_SSE4_INSTRUCTIONS=ON 进行配置</span><br><span class="line">cmake --build . --config Release（此处都是demo，没必要全部进行build，需要用到那些build一下就好了)</span><br></pre></td></tr></table></figure>
+<p>运行一个<code>build</code>好的demo<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> dlib/examples/build/</span><br><span class="line">wget http://dlib.net/files/shape_predictor_68_face_landmarks.dat.bz2  <span class="comment">#下载face landmark模型，并解压文件</span></span><br><span class="line">./webcam_face_pose_ex</span><br></pre></td></tr></table></figure></p>
+<p>至此，会出现X11窗口，打开Mac摄像头自动检测人脸并标注人脸的landmar。</p>
+<h5 id="dlib-Rect-与-opencv-Rect转换"><a href="#dlib-Rect-与-opencv-Rect转换" class="headerlink" title="dlib::Rect 与 opencv::Rect转换"></a>dlib::Rect 与 opencv::Rect转换</h5><p>dlib、opencv Rect结构体参数是不同的，所以需要进行一下转换<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cv::Rect face_rect;  //假设里面已经存储了cv::rect的脚点信息</span><br><span class="line">dlib::rectangle dlibrect;</span><br><span class="line">dlibrect = dlib::rectangle((long)face_rect.tl().x, (long)face_rect.tl().y, (long)face_rect.br().x - 1, (long)face_rect.br().y - 1);</span><br><span class="line">// cv::rect 右下角坐标需要-1</span><br></pre></td></tr></table></figure></p>
+<p>同理，若要实现上一篇章Seeta::Rect与dlib::Rect转换，可转换到中间态cv::Rect后，再进行变换。</p>
+<h5 id="dlib加载图像的两种方式"><a href="#dlib加载图像的两种方式" class="headerlink" title="dlib加载图像的两种方式"></a>dlib加载图像的两种方式</h5><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">array2d&lt;rgb_pixel&gt; cimg;  <span class="comment">//dlib方式读取图像（从图像路径）</span></span><br><span class="line">load_image(cimg, srcImagePath); </span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">vector</span>&lt;full_object_detection&gt; shapes;</span><br><span class="line"></span><br><span class="line">array2d&lt;bgr_pixel&gt; cimg(gallery_img_color.rows, gallery_img_color.cols); <span class="comment">//dlib方式读取图像（从cv::MAT）</span></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i &lt; gallery_img_color.rows; i++) </span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>; j &lt; gallery_img_color.cols; j++) </span><br><span class="line">    &#123;</span><br><span class="line">        cimg[i][j].blue = gallery_img_color.at&lt; cv::Vec3b&gt;(i,j)[<span class="number">0</span>];</span><br><span class="line">        cimg[i][j].green= gallery_img_color.at&lt; cv::Vec3b&gt;(i,j)[<span class="number">1</span>];</span><br><span class="line">        cimg[i][j].red = gallery_img_color.at&lt; cv::Vec3b&gt;(i,j)[<span class="number">2</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Ref:<br><a href="http://noahsnail.com/2016/12/10/2016-12-11-Mac%E4%B8%8Bdlib%E5%AE%89%E8%A3%85/" target="_blank" rel="noopener">http://noahsnail.com/2016/12/10/2016-12-11-Mac%E4%B8%8Bdlib%E5%AE%89%E8%A3%85/</a></p>
 
       
     </div>
@@ -368,9 +373,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/NLP/" rel="tag"><i class="fa fa-tag"></i> NLP</a>
-          
-            <a href="/tags/Textsum/" rel="tag"><i class="fa fa-tag"></i> Textsum</a>
+            <a href="/tags/CV/" rel="tag"><i class="fa fa-tag"></i> CV</a>
           
         </div>
       
@@ -383,8 +386,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/02/05/0to1/" rel="next" title="《从0到1》读书笔记">
-                <i class="fa fa-chevron-left"></i> 《从0到1》读书笔记
+              <a href="/2018/03/29/Seetaface-linux/" rel="next" title="Seetaface 人脸识别 for Linux/Mac">
+                <i class="fa fa-chevron-left"></i> Seetaface 人脸识别 for Linux/Mac
               </a>
             
           </div>
@@ -392,10 +395,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/02/24/norm/" rel="prev" title="神经网络中的权重初始化">
-                神经网络中的权重初始化 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -426,8 +425,8 @@
 
   
     <div class="comments" id="comments">
-      <div class="ds-thread" data-thread-key="2018/02/07/textsum/"
-           data-title="Textsum：深度学习应用于自动文本摘要" data-url="http://yoursite.com/2018/02/07/textsum/">
+      <div class="ds-thread" data-thread-key="2018/04/11/dlib/"
+           data-title="dlib(C++)人脸关键点检测 for Linux/Mac" data-url="http://yoursite.com/2018/04/11/dlib/">
       </div>
     </div>
 
@@ -454,8 +453,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -532,6 +540,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#dlib的依赖"><span class="nav-number">2.</span> <span class="nav-text">dlib的依赖</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#编译dlib"><span class="nav-number">3.</span> <span class="nav-text">编译dlib</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#dlib-Rect-与-opencv-Rect转换"><span class="nav-number">3.1.</span> <span class="nav-text">dlib::Rect 与 opencv::Rect转换</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#dlib加载图像的两种方式"><span class="nav-number">3.2.</span> <span class="nav-text">dlib加载图像的两种方式</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
