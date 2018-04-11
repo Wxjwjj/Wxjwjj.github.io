@@ -259,6 +259,562 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/01/python-5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="祥吉">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Deep Coding">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/02/01/python-5/" itemprop="url">python操作(五)：函数、变量及类</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-01T11:05:03+08:00">
+                2018-02-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/02/01/python-5/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/02/01/python-5/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h3><p>在 python 中，类型属于对象，变量是没有类型的，Eg：<code>a=[1,2,3]</code>，其中[1,2,3] 是 List 类型，而变量 a 没有类型，它仅仅是一个对象的引用</p>
+<h3 id="函数的参数传递"><a href="#函数的参数传递" class="headerlink" title="函数的参数传递"></a>函数的参数传递</h3><blockquote>
+<p>不可变类型：类似 c++ 的值传递，如 整数、字符串、元组。如fun（a），传递的只是a的值，没有影响a对象本身。<br>可变类型：类似 c++ 的引用传递，如 列表，字典。如 fun（la），则是将 la 真正的传过去，修改后fun外部的la也会受影响</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">changeme</span><span class="params">( mylist )</span>:</span></span><br><span class="line">    mylist.append([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>])</span><br><span class="line">    <span class="keyword">print</span> (<span class="string">"函数内取值: "</span>, mylist)</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">mylist = [<span class="number">10</span>,<span class="number">20</span>,<span class="number">30</span>]</span><br><span class="line">changeme( mylist )</span><br><span class="line"><span class="comment">#函数内取值:  [10, 20, 30, [1, 2, 3, 4]]</span></span><br><span class="line"><span class="keyword">print</span> (<span class="string">"函数外取值: "</span>, mylist)</span><br><span class="line"><span class="comment">#函数外取值:  [10, 20, 30, [1, 2, 3, 4]]</span></span><br></pre></td></tr></table></figure>
+<h3 id="关键词参数"><a href="#关键词参数" class="headerlink" title="关键词参数"></a>关键词参数</h3><p>python中调用关键词参数，不用注意顺序，解释器会自动进行匹配<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">printinfo( age=<span class="number">50</span>, name=<span class="string">"runoob"</span> )</span><br></pre></td></tr></table></figure></p>
+<h3 id="python遍历："><a href="#python遍历：" class="headerlink" title="python遍历："></a>python遍历：</h3><p>Python3 range() 函数返回的是一个可迭代对象（类型是对象），而不是列表类型， 所以打印的时候不会打印列表<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">range(<span class="number">5</span>)</span><br><span class="line"><span class="comment">#range(0, 5)</span></span><br><span class="line">list(range(<span class="number">5</span>))</span><br><span class="line"><span class="comment">#[0, 1, 2, 3, 4]</span></span><br></pre></td></tr></table></figure></p>
+<p>在序列中遍历时，索引位置和对应值可以使用 enumerate() 函数同时得到：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i, v <span class="keyword">in</span> enumerate([<span class="string">'tic'</span>, <span class="string">'tac'</span>, <span class="string">'toe'</span>]):</span><br><span class="line">print(i, v)</span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">0 tic</span></span><br><span class="line"><span class="string">1 tac</span></span><br><span class="line"><span class="string">2 toe</span></span><br><span class="line"><span class="string">'''</span></span><br></pre></td></tr></table></figure></p>
+<p>同时遍历两个或更多的序列，可以使用 zip() 组合：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">questions = [<span class="string">'name'</span>, <span class="string">'quest'</span>, <span class="string">'favorite color'</span>]</span><br><span class="line">answers = [<span class="string">'lancelot'</span>, <span class="string">'the holy grail'</span>, <span class="string">'blue'</span>]</span><br><span class="line"><span class="keyword">for</span> q, a <span class="keyword">in</span> zip(questions, answers):</span><br><span class="line">    print(<span class="string">'What is your &#123;0&#125;?  It is &#123;1&#125;.'</span>.format(q, a))</span><br><span class="line"><span class="comment">#What is your name?  It is lancelot.</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="python类："><a href="#python类：" class="headerlink" title="python类："></a>python类：</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Complex</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, realpart, imagpart)</span>:</span></span><br><span class="line">        self.r = realpart</span><br><span class="line">        self.i = imagpart</span><br><span class="line">x = Complex(<span class="number">3.0</span>, <span class="number">-4.5</span>)</span><br><span class="line">print(x.r, x.i)   <span class="comment"># 输出结果：3.0 -4.5</span></span><br></pre></td></tr></table></figure>
+<p>self是类的实例，不是类本身，且并不是一个关键字，也可以使用 this/toor等，但是最好还是按照约定是用self</p>
+<h4 id="python类方法-函数："><a href="#python类方法-函数：" class="headerlink" title="python类方法/函数："></a>python类方法/函数：</h4><p>在类地内部，使用 def 关键字来定义一个方法，与一般函数定义不同，类方法必须包含参数 self, 且为第一个参数，self 代表的是类的实例。</p>
+<h4 id="python类属性"><a href="#python类属性" class="headerlink" title="python类属性"></a>python类属性</h4><p><code>__private_ attrs：</code>两个下划线开头，声明该属性为私有，不能在类地外部被使用或直接访问，但可以通过调用类的公有函数访问。在类内部的方法中使用时 <code>self.__private_attrs。</code></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/01/python-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="祥吉">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Deep Coding">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/02/01/python-2/" itemprop="url">python操作(四)：IO编程/调用shell语句</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-01T11:02:03+08:00">
+                2018-02-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/02/01/python-2/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/02/01/python-2/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="python调用shell语句"><a href="#python调用shell语句" class="headerlink" title="python调用shell语句"></a>python调用shell语句</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">假设已存在run.sh的shell语句，如:</span></span><br><span class="line"><span class="string">cd /home/tucodec/Desktop </span></span><br><span class="line"><span class="string">python2 run.py</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line">os.system(<span class="string">"bash run.sh"</span>) <span class="comment">#会自动到桌面执行run.py</span></span><br></pre></td></tr></table></figure>
+<p><strong>上面调用shell语句的方式，跟python语句是独立进行的，也就是说无法进行变量的交互</strong></p>
+<h4 id="采用下面的语句可以实现在python中操作文件-文件夹"><a href="#采用下面的语句可以实现在python中操作文件-文件夹" class="headerlink" title="采用下面的语句可以实现在python中操作文件/文件夹"></a>采用下面的语句可以实现在python中操作文件/文件夹</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> shutil</span><br><span class="line">file_dir = <span class="string">'/Users/wxj/Desktop'</span></span><br><span class="line"><span class="keyword">print</span> (os.getcwd())  <span class="comment"># 获取当前目录</span></span><br><span class="line">os.chdir(file_dir)   <span class="comment"># 改变工作目录</span></span><br><span class="line">os.mkdir(<span class="string">"test"</span>)  <span class="comment"># 创建文件夹</span></span><br><span class="line">os.makedirs(<span class="string">"test/pic/pic_1"</span>)<span class="comment"># 创建一系列文件夹</span></span><br><span class="line"></span><br><span class="line">os.rename(<span class="string">"test"</span>,<span class="string">"test1"</span>)   </span><br><span class="line">os.rename(<span class="string">"test.txt"</span>,<span class="string">"test1.txt"</span>)  <span class="comment"># 重命名，注意需要带扩展名</span></span><br><span class="line"></span><br><span class="line">shutil.copyfile(<span class="string">"test_org.txt"</span>,<span class="string">"test1.txt"</span>)  <span class="comment"># 存在则覆盖，用于copy文件</span></span><br><span class="line">shutil.copytree(<span class="string">"/Users/wxj/Desktop/1"</span>,<span class="string">"/Users/wxj/Desktop/2"</span>) <span class="comment"># 2文件夹不存在，用于copy文件夹</span></span><br><span class="line"></span><br><span class="line">shutil.move(<span class="string">"/Users/wxj/Desktop/1"</span>,<span class="string">"/Users/wxj/Desktop/2"</span>） <span class="comment"># 2文件夹存在，用于移动文件夹</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> os.path.exists(path_x): <span class="comment"># 判定是否存在某个文件夹</span></span><br><span class="line">    shutil.rmtree(Path_x)  <span class="comment"># 删除文件夹</span></span><br><span class="line">    </span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> os.listdir(path_1): <span class="comment">#判定某文件夹是否为空</span></span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/01/python2-3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="祥吉">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Deep Coding">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/02/01/python2-3/" itemprop="url">python操作(三)：Unicode编码</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-01T10:32:45+08:00">
+                2018-02-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/02/01/python2-3/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/02/01/python2-3/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h2><p>中文字符一般都是编码为<code>Unicode</code>存储在计算机中的，然而表现形式却大不相同，有的程序喜欢给你输出中文，有的喜欢输出乱码，Eg：<code>&#39;\xe5\xbc\xa0\xe4\xbf\x8a&#39;</code>。python2/3中的字符串编码，就有这样的问题，在此进行梳理，有备无患。</p>
+<h3 id="ASCII、Unicode和UTF-8关系"><a href="#ASCII、Unicode和UTF-8关系" class="headerlink" title="ASCII、Unicode和UTF-8关系"></a>ASCII、Unicode和UTF-8关系</h3><p>由于1个字节(byte) == 8位(bit)，所以1字节最多可以表示256个字符。美国人在发明计算机时候，英文字母(大小写共64个)，加上一些标点符号，256个字符安全够用。这个编码就被称为<code>ASCII</code>编码。比如’A’对应ASCII码表中的65，’z’对应122。<br><img src="/img/python_1.jpeg" alt=""><br>但我们的中文博大精深，256个字符显然不能覆盖全部字符，所以中国制定了2字节的GB2312编码(GBK是GB2312的扩充，包含的中文字符更多)。无独有偶，各个国家都制定了自己的规则把本国的文字编写进去。为了统一各个语言之间的编码，<code>Unicode</code>应运而生，具体来说，ASCII用1个字节表示字符，Unicode用2个字节，对于一些特殊符号，甚至使用4个字节。ASCII编码的’A’用Unicode编码，只需要在前面补0就可以了。</p>
+<blockquote>
+<p>虽然乱码消失，但却造成了新的问题：如果你写的文本基本上都是英语，那用Unicode编码比ASCII编码需要多一倍的存储空间，在存储和传输上就十分不划算。</p>
+</blockquote>
+<p><code>UTF-8</code>编码再次被发明，它是对Unicode编码的<code>再编码</code>，对于常用的英文编码为1字节，汉子通常为3字节。如果需要传输、保存的文本含有大量应为，这样的编码可以减少带宽，减少硬盘成本。如下所示：<br><img src="/img/python_2.jpeg" alt=""></p>
+<h2 id="python2"><a href="#python2" class="headerlink" title="python2"></a>python2</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Python 2.7.10 (default, Jul 15 2017, 17:16:57) </span><br><span class="line">[GCC 4.2.1 Compatible Apple LLVM 9.0.0 (clang-900.0.31)] on darwin</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; <span class="string">'中国'</span> <span class="comment"># python2中默认转换为UTF-8编码的字符串</span></span><br><span class="line"><span class="string">'\xe4\xb8\xad\xe5\x9b\xbd'</span></span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; u<span class="string">'中国'</span> <span class="comment"># 字符串前+'u'，代表指定Unicode编码</span></span><br><span class="line">u<span class="string">'\u4e2d\u56fd'</span></span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; <span class="string">'中国'</span>.decode(<span class="string">'utf-8'</span>) <span class="comment"># utf-8类型字符串解码为Unicode编码</span></span><br><span class="line">u<span class="string">'\u4e2d\u56fd'</span></span><br></pre></td></tr></table></figure>
+<h2 id="python3"><a href="#python3" class="headerlink" title="python3"></a>python3</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Python 3.5.3 (v3.5.3:1880cb95a742, Jan 16 2017, 08:49:46) </span><br><span class="line">[GCC 4.2.1 (Apple Inc. build 5666) (dot 3)] on darwin</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; <span class="string">'中国'</span> <span class="comment"># python3中默认为Unicode格式(无编码)，同u'中国'</span></span><br><span class="line"><span class="string">'中国'</span></span><br><span class="line">&lt;class <span class="string">'str'</span>&gt;</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; <span class="string">'中国'</span>.encode(<span class="string">'utf-8'</span>) <span class="comment">#转UTF-8编码</span></span><br><span class="line">b<span class="string">'\xe4\xb8\xad\xe5\x9b\xbd'</span></span><br><span class="line">&lt;class <span class="string">'bytes'</span>&gt;</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; <span class="built_in">print</span> (<span class="string">'中国'</span>.encode(<span class="string">'utf-8'</span>).decode(<span class="string">'utf-8'</span>)) </span><br><span class="line"><span class="string">'中国'</span></span><br></pre></td></tr></table></figure>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><blockquote>
+<ul>
+<li>python2中字符串有str和unicode两种类型，str有各种编码区别(UTF-8、GBK等)，unicode是没有编码的标准形式。unicode通过encode转化成str，str通过decode转化成unicode。</li>
+<li>python3中字符串有str和bytes两种类型，字符串str与python2中unicode类似是标准形式，bytes类似python2中的str有各种编码区别。所以在python3中查看某个字符串的编码序列，只能先将str编码为一定形式的bytes数据，然后再输出</li>
+</ul>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Python 3.5.3 (v3.5.3:1880cb95a742, Jan 16 2017, 08:49:46) </span><br><span class="line">[GCC 4.2.1 (Apple Inc. build 5666) (dot 3)] on darwin</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; ss = <span class="string">'北京市'</span>  </span><br><span class="line">&gt;&gt;&gt; <span class="built_in">type</span>(ss)  </span><br><span class="line">&lt;class <span class="string">'str'</span>&gt;  </span><br><span class="line">&gt;&gt;&gt; us = ss.encode(<span class="string">'gbk'</span>)  </span><br><span class="line">&gt;&gt;&gt; <span class="built_in">type</span>(us)  </span><br><span class="line">&lt;class <span class="string">'bytes'</span>&gt;  </span><br><span class="line">&gt;&gt;&gt; us  </span><br><span class="line">b<span class="string">'\xb1\xb1\xbe\xa9\xca\xd0'</span></span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/30/python-str/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="祥吉">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Deep Coding">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/30/python-str/" itemprop="url">python操作(二)：字符串</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-30T22:05:21+08:00">
+                2018-01-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/01/30/python-str/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/01/30/python-str/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="找出最后一个以’-’开始的字符串"><a href="#找出最后一个以’-’开始的字符串" class="headerlink" title="找出最后一个以’.’开始的字符串"></a>找出最后一个以’.’开始的字符串</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 第一种方法</span></span><br><span class="line">filename = <span class="string">"/home/tucodec/ZJU.mp4"</span></span><br><span class="line">str_1 = filename[filename.rindex(<span class="string">"."</span>):] <span class="comment"># rindex：返回最后一个'.'的位置信息</span></span><br><span class="line">print(str1) <span class="comment"># 输出“.mp4”</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 第二种方法</span></span><br><span class="line">str_1 = filename.split(<span class="string">'.'</span>)[<span class="number">-1</span>]</span><br></pre></td></tr></table></figure>
+<h4 id="获取某文件夹下包含文件名称的绝对路径"><a href="#获取某文件夹下包含文件名称的绝对路径" class="headerlink" title="获取某文件夹下包含文件名称的绝对路径"></a>获取某文件夹下包含文件名称的绝对路径</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">all_path</span><span class="params">(dirname)</span>:</span></span><br><span class="line">    result = []</span><br><span class="line">    <span class="keyword">for</span> maindir, subdir, file_name_list <span class="keyword">in</span> os.walk(dirname):</span><br><span class="line">        <span class="keyword">for</span> filename <span class="keyword">in</span> file_name_list:</span><br><span class="line">            apath = os.path.join(maindir, filename)</span><br><span class="line">            result.append(apath)</span><br><span class="line">    <span class="keyword">return</span> result</span><br></pre></td></tr></table></figure>
+<h4 id="获取文件下文件名称的另一种方式"><a href="#获取文件下文件名称的另一种方式" class="headerlink" title="获取文件下文件名称的另一种方式"></a>获取文件下文件名称的另一种方式</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">result = [] </span><br><span class="line">alllist=os.listdir(<span class="string">"/Users/wxj/Desktop/1"</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> alllist:</span><br><span class="line">    <span class="keyword">if</span> <span class="string">"."</span> <span class="keyword">in</span> i:</span><br><span class="line">        aa, bb=i.split(<span class="string">"."</span>)</span><br><span class="line">        <span class="keyword">if</span> bb == <span class="string">"txt"</span>:</span><br><span class="line">            result.append(aa+<span class="string">"."</span>+bb)</span><br></pre></td></tr></table></figure>
+<h4 id="还是获取文件列表到一个list，并排序"><a href="#还是获取文件列表到一个list，并排序" class="headerlink" title="还是获取文件列表到一个list，并排序"></a>还是获取文件列表到一个list，并排序</h4><p>glob模块提供了一个函数用于从目录通配符搜索中生成文件列表:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> glob</span><br><span class="line">list_1 = glob.glob(<span class="string">'*.jpg'</span>)</span><br><span class="line"><span class="comment"># ['2.jpg', '1.jpg', '5.jpg']</span></span><br><span class="line">sorted(list_1)</span><br><span class="line"><span class="comment"># ['1.jpg', '2.jpg', '5.jpg']</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="3种连接字符串方式"><a href="#3种连接字符串方式" class="headerlink" title="3种连接字符串方式"></a>3种连接字符串方式</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">seq1 = [<span class="string">'hello'</span>,<span class="string">'good'</span>,<span class="string">'boy'</span>,<span class="string">'doiido'</span>]</span><br><span class="line"><span class="keyword">print</span> <span class="string">' '</span>.join(seq1) <span class="comment"># 已空格符连接一个list中的字符串</span></span><br><span class="line">输出：hello good boy doiido</span><br><span class="line">===============================================</span><br><span class="line">os.path.join(<span class="string">'/hello/'</span>,<span class="string">'good/boy/'</span>,<span class="string">'doiido'</span>) <span class="comment"># 合并目录，注意‘/’不能多写</span></span><br><span class="line">输出：<span class="string">'/hello/good/boy/doiido'</span> <span class="comment"># 这样可以正确处理不同操作系统的路径分隔符</span></span><br><span class="line">===============================================</span><br><span class="line">a = <span class="string">'/hello/'</span></span><br><span class="line">b = <span class="string">'good/boy/'</span></span><br><span class="line">print(a+b)  </span><br><span class="line">输出：<span class="string">'/hello/good/boy/'</span></span><br></pre></td></tr></table></figure>
+<h4 id="分割字符串成list"><a href="#分割字符串成list" class="headerlink" title="分割字符串成list"></a>分割字符串成list</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">line = <span class="string">"我们 大 中国"</span></span><br><span class="line">line.split()</span><br><span class="line">[<span class="string">'我们'</span>, <span class="string">'大'</span>, <span class="string">'中国'</span>]</span><br></pre></td></tr></table></figure>
+<h4 id="删除不同位置的空格"><a href="#删除不同位置的空格" class="headerlink" title="删除不同位置的空格"></a>删除不同位置的空格</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">s.strip(rm)        <span class="comment">#删除s字符串中开头、结尾处，位于rm删除序列的字符</span></span><br><span class="line">s.lstrip(rm)       <span class="comment">#删除s字符串中开头处</span></span><br><span class="line">s.rstrip(rm)      <span class="comment">#删除s字符串中结尾处</span></span><br><span class="line"><span class="comment"># rm删除序列是只要边（开头或结尾）上的字符在删除序列内，就删除掉</span></span><br><span class="line">a = <span class="string">'123abc'</span></span><br><span class="line">a.strip(<span class="string">'21'</span>)</span><br><span class="line">a.strip(<span class="string">'12'</span>)</span><br><span class="line"><span class="comment"># 结果是一样的：'3abc'</span></span><br></pre></td></tr></table></figure>
+<h4 id="python全局变量"><a href="#python全局变量" class="headerlink" title="python全局变量"></a>python全局变量</h4><p>Python 中只有模块（module），类（class）以及函数（def、lambda）才会引入新的作用域，其它的代码块是不会引入新的作用域的。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="keyword">True</span>:</span><br><span class="line">    msg = <span class="string">'I am from Runoob'</span></span><br><span class="line">print(msg)  <span class="comment"># 'I am from Runoob'</span></span><br><span class="line"><span class="comment">#=============global=======nonlocal===================</span></span><br><span class="line"><span class="keyword">global</span> str1 <span class="comment"># 在给全局变量str1赋值时，需要先声明global，否则str1会被当作新定义的局部变量</span></span><br><span class="line">str1 = <span class="string">"new year"</span></span><br><span class="line">str2 = str1 <span class="comment"># 全局变量赋值给另一个局部变量时，不需global声明，程序会先找局部变量str1，没得话就去全局变量区域找</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">()</span>:</span></span><br><span class="line">    str1 = <span class="string">"中国"</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">func_1</span><span class="params">()</span>:</span></span><br><span class="line">        <span class="keyword">nonlocal</span> str1</span><br><span class="line">        str1 = <span class="string">"南京"</span>  <span class="comment">#修改嵌套作用域（函数A的变量作用在子函数B时）中的变量需要使用 nonlocal 关键字</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="python-list、dict、tuple、set"><a href="#python-list、dict、tuple、set" class="headerlink" title="python list、dict、tuple、set"></a>python list、dict、tuple、set</h4><p>set：通过set.add()函数添加元素，set会自动去重，且查找效率高(hash)<br>tuple是只读的list()，list可以通过下标、循环等方式访问，通过.append()来访问<br>dict是key、value一一对应的关系，常用于序号跟真值之间的查询，比如NMT任务的vocab<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">dict1 = &#123;<span class="string">'1'</span>:<span class="string">'飞机'</span>,<span class="string">'2'</span>:<span class="string">'自行车'</span>,<span class="string">'3'</span>:<span class="string">'鸟'</span>,<span class="string">'4'</span>:<span class="string">'船'</span>,<span class="string">'5'</span>:<span class="string">'瓶子'</span>,<span class="string">'6'</span>:<span class="string">'公共汽车'</span>,<span class="string">'7'</span>:<span class="string">'车'</span>,<span class="string">'8'</span>:<span class="string">'猫'</span>,<span class="string">'9'</span>:<span class="string">'椅子'</span>,<span class="string">'10'</span>:<span class="string">'牛'</span>,<span class="string">'11'</span>:<span class="string">'餐桌'</span>,<span class="string">'12'</span>:<span class="string">'狗'</span>, \</span><br><span class="line">    <span class="string">'13'</span>:<span class="string">'马'</span>,<span class="string">'14'</span>:<span class="string">'摩托车'</span>,<span class="string">'15'</span>:<span class="string">'人'</span>,<span class="string">'16'</span>:<span class="string">'植物'</span>,<span class="string">'17'</span>:<span class="string">'羊'</span>,<span class="string">'18'</span>:<span class="string">'沙发'</span>,<span class="string">'19'</span>:<span class="string">'火车'</span>,<span class="string">'20'</span>:<span class="string">'电视'</span>&#125;</span><br><span class="line">    <span class="keyword">for</span> str_i <span class="keyword">in</span> list(A):</span><br><span class="line">    List.append(dict1[str_i]) <span class="comment">#listA中是一个纯数字列表，LIST中对应其在字典中的真实类别</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="write、writelines区别"><a href="#write、writelines区别" class="headerlink" title="write、writelines区别"></a>write、writelines区别</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">f.write(name + <span class="string">'\n'</span>) <span class="comment"># write只能写入str</span></span><br><span class="line">f.writelines(text) <span class="comment"># 自动迭代写入一个字符串列表[str]</span></span><br></pre></td></tr></table></figure>
+<h4 id="文件批量命名"><a href="#文件批量命名" class="headerlink" title="文件批量命名"></a>文件批量命名</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line">f = sorted(os.listdir())</span><br><span class="line">n = <span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> f:</span><br><span class="line">    <span class="keyword">if</span> n &lt; <span class="number">9</span>:</span><br><span class="line">        oldname = f[n]</span><br><span class="line">        newname = <span class="string">"000"</span>+str(n+<span class="number">1</span>)+<span class="string">".jpg"</span></span><br><span class="line">        os.rename(oldname, newname)</span><br><span class="line">        print(oldname, <span class="string">"--------&gt;"</span>, newname)</span><br><span class="line">    <span class="keyword">elif</span> n &lt; <span class="number">99</span>:</span><br><span class="line">        oldname = f[n]</span><br><span class="line">        newname = <span class="string">"00"</span>+str(n+<span class="number">1</span>)+<span class="string">".jpg"</span></span><br><span class="line">        os.rename(oldname, newname)</span><br><span class="line">        print(oldname, <span class="string">"--------&gt;"</span>, newname)</span><br><span class="line">    <span class="keyword">elif</span> n &lt; <span class="number">999</span>:</span><br><span class="line">        oldname = f[n]</span><br><span class="line">        newname = <span class="string">"0"</span>+str(n+<span class="number">1</span>)+<span class="string">".jpg"</span></span><br><span class="line">        os.rename(oldname, newname)</span><br><span class="line">        print(oldname, <span class="string">"--------&gt;"</span>, newname)</span><br><span class="line">    n += <span class="number">1</span></span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/30/socket/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1171,307 +1727,11 @@ $ conda config --<span class="built_in">set</span> show_channel_urls yes
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/14/Knowledge/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="祥吉">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Deep Coding">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/14/Knowledge/" itemprop="url">知识图谱私见！🐶</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-14T12:52:19+08:00">
-                2018-01-14
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/01/14/Knowledge/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/01/14/Knowledge/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="背景："><a href="#背景：" class="headerlink" title="背景："></a>背景：</h3><p>2012年5月，Google推出Google知识图谱（GoogleKnowledge Graph），并利用其在搜索引擎中增强搜索结果。这是“知识图谱”名称的由来，也标志着大规模知识图谱在互联网语义搜索中的成功应用。</p>
-<p>Eg：搜索“吴彦祖的国籍是什么？”，Google/Baidu会给出与之相关的详细搜索结果（可以叫“搜索++”或者“搜索杂烩且精准”，顺带提一句，搜索本身就是AI，没必要将其神秘化，之前到现在一只都有，只是如同其他任何一个行业，发展的越来越好，2012年后随着深度学习的爆发，迎来了一波小高潮）</p>
-<p><img src="/img/wuyanzu.jpeg" alt=""></p>
-<h4 id="知识图谱概念"><a href="#知识图谱概念" class="headerlink" title="知识图谱概念"></a>知识图谱概念</h4><p><strong>定义：</strong>知识图谱旨在描述真实世界中存在的各种实体或概念及其关系，其构成一张巨大的语义网络图，节点表示实体或概念，边则由属性或关系构成。</p>
-<p><strong>节点：</strong>知识图谱包括<code>实体</code>、<code>属性/语义类</code>、<code>属性值</code>、<code>关系</code>这么4种节点。最终以三元组的形式呈现，主要包括(实体1-关系-实体2)和(实体-属性-属性值)等。</p>
-<blockquote>
-<p>中国-首都-北京是一个（实体-关系-实体）的三元组样例.<br>北京-人口-2069.3万是一个（实体-属性-属性值）的三元组样例。</p>
-</blockquote>
-<h4 id="构建："><a href="#构建：" class="headerlink" title="构建："></a>构建：</h4><p>知识图谱的构建技术包括3大方面：知识提取、知识表示、知识融合。后两方面自己目前的知识面尚未覆盖，仅就Deep Learning相关的来说，<br>知识提取部分又包括<strong>实体抽取、语义类抽取、属性和属性值抽取</strong>。</p>
-<blockquote>
-<p>实体抽取目前有用<code>BiLstm+CRF</code>算法来做；<br>语义类抽取笔者自己也尝试了用word2vec进行相似度匹配，效果还不错；<br>属性和属性值抽取，笔者尝试了用命名实体识别工具+正则匹配的方式也能完成一定程度的，像地名、场景、日期、车牌等信息的抽取。</p>
-</blockquote>
-<p>目前工业界基本也是通过从半结构化的数据中抽取信息，而不是通过<strong>“阅读”</strong>句子产生真正的理解来抽取，深层自然语言处理这块儿骨头太硬了。</p>
-<h3 id="小结："><a href="#小结：" class="headerlink" title="小结："></a>小结：</h3><p>写到这里，笔者更认为深度学习也是构建知识图谱的一种方式，深度学习能较好解决机器翻译、客服对话等小任务，也是一定程度上对知识地综合理解，比如通过机器翻译，建立英语、中文之间的联系，通过Imagenet图像分类，建立1000种Object的对应关系。但，深度学习在NLP/图像中对“语义”的理解，还是太过单薄，设计太过简陋，面对这些非结构化的大量知识体系，无从下口、束手无策。</p>
-<blockquote>
-<p>能够将知识图谱的各条“边”剥离清楚的，深度学习还需要再向前推进一大步，远不止目前的CNN、RNN…<br>而知识图谱本身的发展，应该要求更高，需要的是更加综合的知识。</p>
-</blockquote>
-<h5 id="——不能真正创造价值的概念，都是耍流氓！"><a href="#——不能真正创造价值的概念，都是耍流氓！" class="headerlink" title=" ——不能真正创造价值的概念，都是耍流氓！"></a><font color="red"> ——不能真正创造价值的概念，都是耍流氓！</font></h5><p>话说回来吧，借助某位哲人说的，希望自己摒弃热潮，以工程任务为导向。首要解决当下NLP能解决的任务，这也是本博客名称“Deep coding”的由来。</p>
-<hr>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/06/hello-world/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="祥吉">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Deep Coding">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/06/hello-world/" itemprop="url">Hexo搭建Step by step！ 👏👏👏</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-06T16:08:28+08:00">
-                2018-01-06
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/01/06/hello-world/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/01/06/hello-world/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="A、Quick-Start"><a href="#A、Quick-Start" class="headerlink" title="A、Quick Start"></a>A、Quick Start</h4><h5 id="Node-js官网下载对应的安装包："><a href="#Node-js官网下载对应的安装包：" class="headerlink" title="Node.js官网下载对应的安装包："></a>Node.js官网下载对应的安装包：</h5><p><font color="blue"> [Download] </font> (<a href="https://nodejs.org/en/" target="_blank" rel="noopener">https://nodejs.org/en/</a>)</p>
-<h5 id="安装Git：Mac用Brew安装，其他方法网上一大堆不再赘述"><a href="#安装Git：Mac用Brew安装，其他方法网上一大堆不再赘述" class="headerlink" title="安装Git：Mac用Brew安装，其他方法网上一大堆不再赘述"></a>安装Git：Mac用Brew安装，其他方法网上一大堆不再赘述</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ brew install git</span><br></pre></td></tr></table></figure>
-<h5 id="Node和Git都安装好后，可执行如下命令安装hexo："><a href="#Node和Git都安装好后，可执行如下命令安装hexo：" class="headerlink" title="Node和Git都安装好后，可执行如下命令安装hexo："></a>Node和Git都安装好后，可执行如下命令安装hexo：</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo npm install -g hexo</span><br></pre></td></tr></table></figure>
-<h5 id="Desktop-或其它文件夹-中新建一个Blog文件夹，cd到新创建的Blog："><a href="#Desktop-或其它文件夹-中新建一个Blog文件夹，cd到新创建的Blog：" class="headerlink" title="Desktop(或其它文件夹)中新建一个Blog文件夹，cd到新创建的Blog："></a>Desktop(或其它文件夹)中新建一个Blog文件夹，cd到新创建的Blog：</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo init</span><br></pre></td></tr></table></figure>
-<h5 id="至此：全部安装工作已经完成！生成静态页面："><a href="#至此：全部安装工作已经完成！生成静态页面：" class="headerlink" title="至此：全部安装工作已经完成！生成静态页面："></a>至此：全部安装工作已经完成！生成静态页面：</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo g</span><br></pre></td></tr></table></figure>
-<h5 id="启动本地服务："><a href="#启动本地服务：" class="headerlink" title="启动本地服务："></a>启动本地服务：</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<h5 id="此时浏览器输入-http-localhost-4000-即可访问原生默认网页"><a href="#此时浏览器输入-http-localhost-4000-即可访问原生默认网页" class="headerlink" title="此时浏览器输入 http://localhost:4000 即可访问原生默认网页"></a>此时浏览器输入 <a href="http://localhost:4000" target="_blank" rel="noopener">http://localhost:4000</a> 即可访问原生默认网页</h5><h4 id="B、主题下载"><a href="#B、主题下载" class="headerlink" title="B、主题下载"></a>B、主题下载</h4><p>此时如果想尝鲜，可以下载个新的主题到themes文件夹下，笔者用的主题是<a href="https://github.com/iissnan/hexo-theme-next" target="_blank" rel="noopener">Download</a></p>
-<p>修改根目录中_config.yml文件的theme项为新下载的主题的名字：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">theme: hexo-theme-next-master</span><br></pre></td></tr></table></figure>
-<p>保存文件后，执行下面的指令，重新打开浏览器即可看到新的一片天地</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo g    hexo server</span><br></pre></td></tr></table></figure>
-<h4 id="C、绑定Github，实现远程访问"><a href="#C、绑定Github，实现远程访问" class="headerlink" title="C、绑定Github，实现远程访问"></a>C、绑定Github，实现远程访问</h4><h5 id="Github上建立一个与用户名【相同】的Repository"><a href="#Github上建立一个与用户名【相同】的Repository" class="headerlink" title="Github上建立一个与用户名【相同】的Repository"></a>Github上建立一个与用户名【相同】的Repository</h5><h5 id="在建立的Repository-Setting中，最后一项Deploy添加SSH-key"><a href="#在建立的Repository-Setting中，最后一项Deploy添加SSH-key" class="headerlink" title="在建立的Repository Setting中，最后一项Deploy添加SSH key"></a>在建立的Repository Setting中，最后一项Deploy添加SSH key</h5><p>获取SSH key的方式如下：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ssh-keygen -t rsa -C “wuxj231@163.com” <span class="comment"># 这里填写你的Github地址</span></span><br></pre></td></tr></table></figure>
-<p>一路回车Ctrl，生成两个文件，用记事本打开其中的id_rsa.pub(执行上面Shell语句时会提示路径所在)，复制其内容，粘贴到上一步Github/Repository Setting页面中的key目录中，Title随便取即可</p>
-<p><img src="/img/ssh.jpeg" alt=""></p>
-<h5 id="编辑-config-yml，翻到最下面，修改相应内容如下："><a href="#编辑-config-yml，翻到最下面，修改相应内容如下：" class="headerlink" title="编辑 _config.yml，翻到最下面，修改相应内容如下："></a>编辑 _config.yml，翻到最下面，修改相应内容如下：</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  type: git</span><br><span class="line">  repository: git@github.com:Wxjwjj/Wxjwjj.github.io.git  </span><br><span class="line">  branch: master</span><br><span class="line">``` </span><br><span class="line"></span><br><span class="line"><span class="comment">##### 保存后，执行如下命令使用git部署，便会同步到Github目录</span></span><br><span class="line"></span><br><span class="line">``` bash</span><br><span class="line">$ npm install hexo-deployer-git --save</span><br><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>此时可以通过Github链接 <em><a href="https://wxjwjj.github.io" target="_blank" rel="noopener">https://wxjwjj.github.io</a></em> ，实现远程博客访问（如果本地文件更改后，均需要通过此步骤提交到Github，才能使变化生效）</p>
-<h5 id="Refer："><a href="#Refer：" class="headerlink" title="Refer："></a>Refer：</h5><p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in [troubleshooting](<a href="https://hexo.io/docs/" target="_blank" rel="noopener">https://hexo.io/docs/</a></p>
-<hr>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span>
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1521,7 +1781,7 @@ $ conda config --<span class="built_in">set</span> show_channel_urls yes
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">28</span>
+                  <span class="site-state-item-count">32</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1619,7 +1879,7 @@ $ conda config --<span class="built_in">set</span> show_channel_urls yes
  
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共23.7k字</span>
+  <span class="post-count">博客全站共26.7k字</span>
 </div>
 
 <div class="powered-by">

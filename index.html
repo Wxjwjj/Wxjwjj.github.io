@@ -259,6 +259,566 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/29/Seetaface-linux/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="祥吉">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Deep Coding">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/29/Seetaface-linux/" itemprop="url">Seetaface 人脸识别 for Linux/Mac</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-29T14:33:12+08:00">
+                2018-03-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/03/29/Seetaface-linux/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/03/29/Seetaface-linux/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>最近做人脸检测的项目，需要用到中科院山世光老师团队开源的SeetaFace，在Ubuntu、Mac端分别进行了编译，系统信息如下：</p>
+<blockquote>
+<p>Ubuntu:16.04     opencv:3.1.0    cmake:3.5.1<br>MacOS:10.13        opencv:3.4.3    cmake:3.0.2</p>
+</blockquote>
+<h4 id="FaceDetection-模块"><a href="#FaceDetection-模块" class="headerlink" title="FaceDetection 模块"></a>FaceDetection 模块</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/&lt;user name&gt;/SeetaFaceEngine/FaceDetection</span><br><span class="line">mkdir build</span><br><span class="line"><span class="built_in">cd</span> build</span><br><span class="line">cmake ..</span><br><span class="line">make -j8</span><br></pre></td></tr></table></figure>
+<p>不出意外即可在build目录下生成可执行文件<code>facedet_test</code>，调用方式<code>./facedet_test image_path ../model/seeta_fd_frontal_v1.0.bin</code>，结果如图示<br><img src="/img/seeta1.jpeg" width="400" alt="图片名称" align="center"><br><strong>PS:</strong><br>1、编译阶段若提示opencv版本问题<br>ccmake .. 修改其中OpenCV_DIR路径为自己的opencv安装目录，configuration使之生效<br>Eg：OpenCV_DIR /home/<user name="">/opencv-3.1.0/build<br>接着设置CUDA_USE_STATIC_CUDA_RUNTIME OFF<br>重新<code>cmake ..</code>，不报错再继续<code>make</code>。</user></p>
+<h4 id="FaceAlignment-模块"><a href="#FaceAlignment-模块" class="headerlink" title="FaceAlignment 模块"></a>FaceAlignment 模块</h4><p>该模块依赖FaceDetection，先检测图像中哪个区域存在人脸，之后进行关键点检测，所以先复制FaceDetection模块中的相关头文件、依赖、模型到FaceAlignment/build目录中，具体如下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/&lt;user name&gt;/SeetaFaceEngine/FaceAlignment</span><br><span class="line">mkdir build</span><br><span class="line"><span class="built_in">cd</span> build</span><br><span class="line">cp ../../FaceDetection/include/face_detection.h ../include</span><br><span class="line">cp ../../FaceDetection/build/libseeta_facedet_lib.so ./</span><br><span class="line">cp ../../FaceDetection/model/seeta_fd_frontal_v1.0.bin ./</span><br></pre></td></tr></table></figure></p>
+<p>接着修改<code>face_alignment_test.cpp</code>中，FaceDetection model路径<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// Initialize face detection model</span><br><span class="line">seeta::FaceDetection detector(&quot;./build/seeta_fd_frontal_v1.0.bin&quot;);</span><br></pre></td></tr></table></figure></p>
+<p>接着编译<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cmake ..</span><br><span class="line">make -j8</span><br></pre></td></tr></table></figure></p>
+<p>之后运行下<code>./build/fa_test</code>，生成如图示的关键点检测图片(注意.cpp文件中定义了仅能检测一张人脸)<br><img src="/img/seeta2.jpeg" width="400" alt="图片名称" align="center"><br><strong>PS:</strong><br>1、编译阶段若提示‘isnan’ was not declared in this scope，定位到源文件，修改为<code>std::isnan</code>便可以了。<br>2、运行阶段提示Segmentation fault (core dumped)，应该是模型或图片路径不对，对于Linux或mac，cpp文件中指定的路径应当是相对于<code>CMakelists.txt</code>的路径</p>
+<h4 id="FaceIdentification-模块"><a href="#FaceIdentification-模块" class="headerlink" title="FaceIdentification 模块"></a>FaceIdentification 模块</h4><p>类似的步骤如上，把FaceDetection、FaceAlignment模块的相关依赖拷贝进入build文件夹。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/&lt;user name&gt;/SeetaFaceEngine/FaceAlignment</span><br><span class="line">mkdir build</span><br><span class="line"><span class="built_in">cd</span> build</span><br><span class="line">cp ../../FaceDetection/include/face_detection.h ../include</span><br><span class="line">cp ../../FaceDetection/build/libseeta_facedet_lib.so ./</span><br><span class="line">cp ../../FaceDetection/model/seeta_fd_frontal_v1.0.bin ./</span><br><span class="line">cp ../../FaceAlignment/include/face_alignment.h ../include</span><br><span class="line">cp ../../FaceAlignment/build/libseeta_fa_lib.so ./</span><br><span class="line">cp ../../FaceAlignment/model/seeta_fa_v1.1.bin ./</span><br></pre></td></tr></table></figure></p>
+<p>解压FaceIdentification/model中的两个文件(解压part1，会自动将part2解压)，同样修改<code>./src/test</code>目录的两个CPP文件中，前两个model的路径，同上。<br>&nbsp;<br>再修改<code>/test</code>下的两个cpp文件，加上<code>opencv2</code>头文件，注意这里头文件顺序需要放在<code>cvLIB</code>宏定义之后，如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;opencv2/opencv.hpp&gt;</span><br><span class="line">#include &lt;opencv2/highgui/highgui.hpp&gt;</span><br><span class="line">#include &lt;opencv2/imgproc/imgproc.hpp&gt;</span><br></pre></td></tr></table></figure></p>
+<p>接着编译<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cmake ..</span><br><span class="line">make -j8</span><br></pre></td></tr></table></figure></p>
+<p>之后运行<code>./build/src/test/test_face_recognizer.bin</code>，测试3个模块。<code>./build/src/test/test_face_verification.bin</code>测试存取的样本中图片的相似度即可。<br><strong>PS:</strong><br>1、编译到99%时报错，提示没有相关的库，需要改写/src/test中的Cmakelists.txt，在其中添加Detect、Align模块的lib库（也就是在当前build文件夹下查找），如下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">aux_source_directory (. SRC_LIST)</span><br><span class="line">link_directories(<span class="variable">$&#123;PROJECT_BINARY_DIR&#125;</span>) <span class="comment"># 添加lib库搜索路径</span></span><br><span class="line">message(<span class="variable">$&#123;SRC_LIST&#125;</span>)</span><br><span class="line"><span class="comment"># add external libraries</span></span><br><span class="line">find_package(OpenCV REQUIRED)</span><br><span class="line">include_directories(<span class="variable">$&#123;seeta_facedet_lib_INCLUDE_DIRS&#125;</span> <span class="variable">$&#123;seeta_fa_lib_INCLUDE_DIRS&#125;</span>)</span><br><span class="line">list(APPEND seeta_fi_lib_required_libs <span class="variable">$&#123;OpenCV_LIBS&#125;</span> seeta_facedet_lib seeta_fa_lib)</span><br><span class="line">enable_testing ()</span><br><span class="line">foreach (f <span class="variable">$&#123;SRC_LIST&#125;</span>)</span><br><span class="line">  string(REGEX REPLACE <span class="string">"[.]cpp"</span> <span class="string">".bin"</span> BIN <span class="variable">$&#123;f&#125;</span>)</span><br><span class="line">  add_executable(<span class="variable">$&#123;BIN&#125;</span> <span class="variable">$&#123;f&#125;</span>)</span><br><span class="line">  <span class="comment">#target_link_libraries($&#123;BIN&#125; viplnet $&#123;OpenCV_LIBS&#125; seeta_facede_lib seeta_fa_lib)</span></span><br><span class="line">  target_link_libraries(<span class="variable">$&#123;BIN&#125;</span> viplnet <span class="variable">$&#123;seeta_fi_lib_required_libs&#125;</span>) <span class="comment"># 添加lib</span></span><br><span class="line">endforeach ()</span><br></pre></td></tr></table></figure></p>
+<h4 id="Mac编译"><a href="#Mac编译" class="headerlink" title="Mac编译"></a>Mac编译</h4><p>与Linux相比，Mac的就非常简单了，需要注意Detection模块中，CMakelists.txt要求的cmake为3.1及以上，笔者是3.0，所以在这里对CMakelists.txt做简单修改，如果是Brew安装的opencv，那其他的<code>ccmake</code>配置也不用修改<br>&nbsp;<br>之后的操作步骤与Linux描述的基本一致，编译过程中可能会有很多warning，不用管，直接<code>make</code>即可。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/27/ubuntusys-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="祥吉">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Deep Coding">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/27/ubuntusys-1/" itemprop="url">Ubuntu1604装机系列(三)：Matlab2017b安装</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-27T11:08:34+08:00">
+                2018-03-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/03/27/ubuntusys-1/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/03/27/ubuntusys-1/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h4><p>Matlab下载<a href="https://pan.baidu.com/s/14U8J9YYP6OSEhCqR1ls-Wg" target="_blank" rel="noopener">链接</a> 密码: ckw4<br>解压后得到<code>xxx_dvd1.iso</code>、<code>xxx_dvd2.iso</code>、<code>crack</code>破解文件</p>
+<h4 id="挂载镜像文件dvd1"><a href="#挂载镜像文件dvd1" class="headerlink" title="挂载镜像文件dvd1"></a>挂载镜像文件dvd1</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir /home/&lt;user name&gt;/Matlab </span><br><span class="line">sudo mount -t auto -o loop /home/&lt;user name&gt;/xxx_dvd1.iso /home/&lt;user name&gt;/Matlab</span><br></pre></td></tr></table></figure>
+<h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> </span><br><span class="line">sudo ./Matlab/install</span><br></pre></td></tr></table></figure>
+<h4 id="Tips"><a href="#Tips" class="headerlink" title="Tips"></a>Tips</h4><p>在弹出的安装对话框中，选择离线安装，并填入<code>license number</code>，复制crack解压后出现的readme.txt文件中的第一个安装密钥即可<br>&nbsp;<br>安装路径默认是系统目录，改为<code>/home/&lt;user name&gt;/matlab/r2017b</code>，这样的好处是遵循了Linux处处是文件的思想，方便每个用户的版本管理，同时若安装失败直接删除该<code>/matlab/r2017b</code>文件夹即可。<br>&nbsp;<br>安装选项中，笔者首先选择了全部安装，但symbolic_doc_en_common模块一直提示安装出错，无奈去掉了该模块的对勾，从目前跑的几个模型来看，该模块并无影响。</p>
+<h4 id="挂载镜像文件dvd2"><a href="#挂载镜像文件dvd2" class="headerlink" title="挂载镜像文件dvd2"></a>挂载镜像文件dvd2</h4><p>安装到一半多，会提示载入dvd2，这时候重启一个终端，用相同的方式载入，点击<code>ok</code>直到安装结束即可<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> </span><br><span class="line">sudo mount -t auto -o loop /home/&lt;user name&gt;/xxx_dvd2.iso /home/&lt;user name&gt;/Matlab</span><br></pre></td></tr></table></figure></p>
+<h4 id="结束安装"><a href="#结束安装" class="headerlink" title="结束安装"></a>结束安装</h4><p>删除不用的文件夹及卸载盘符<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo rm -r /home/&lt;user name&gt;/Matlab  </span><br><span class="line">sudo umount /home/&lt;user name&gt;/Matlab</span><br></pre></td></tr></table></figure></p>
+<h4 id="破解"><a href="#破解" class="headerlink" title="破解"></a>破解</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> crack绝对路径</span><br><span class="line">sudo mkdir /home/&lt;user name&gt;/matlab/r2017b/bin/licenses/  </span><br><span class="line">sudo cp license_standalone.lic /home/&lt;user name&gt;/matlab/r2017b/bin/licenses/  </span><br><span class="line">sudo cp libmwservices.so /home/&lt;user name&gt;/matlab/r2017b/bin/glnxa64/</span><br></pre></td></tr></table></figure>
+<h4 id="启动matlab"><a href="#启动matlab" class="headerlink" title="启动matlab"></a>启动matlab</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /home/&lt;user name&gt;/matlab/r2017b/bin</span><br><span class="line">sudo ./matlab</span><br></pre></td></tr></table></figure>
+<p>第一次打开matlab会再次提示输入破解密钥，在对话框窗口中填入crack目录下的license_standalone.lic绝对路径即可。</p>
+<h4 id="添加Matlab到系统路径"><a href="#添加Matlab到系统路径" class="headerlink" title="添加Matlab到系统路径"></a>添加Matlab到系统路径</h4><p>这里注意一点：路径如果写到/etc/profile，那么会影响到该服务器的所有用户。所以我们在~/.bashrc中进行配置即可<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:/home/&lt;user name&gt;/Matlab/r2017b/bin</span><br></pre></td></tr></table></figure></p>
+<p>笔者尝试第一种解决方案失败，遂采用了下一种，建立软连接到系统启动目录(注意建立软连接一定要使用绝对路径)<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ln -s /home/&lt;user name&gt;/Matlab/r2017b/bin/matlab /usr/<span class="built_in">local</span>/bin/matlab</span><br></pre></td></tr></table></figure></p>
+<h4 id="可能的问题"><a href="#可能的问题" class="headerlink" title="可能的问题"></a>可能的问题</h4><p><code>/usr/local/MATLAB/R2017b/bin/glnxa64/../../sys/os/glnxa64/libstdc++.so.6: version GLIBCXX_3.4.21 not found</code>，运行matlab时出现这样的错误提示是matlab g++版本<code>libstdc++.so.6.0.20</code>版本较低，复制高版本的lib，设置新的软连接即可<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">loacte  libstdc++.so.6.0.21 <span class="comment"># 查看高版本lib路径</span></span><br><span class="line"><span class="built_in">cd</span> ~/&lt;user name&gt;/matlab/r2017b/sys/os/glnxa64</span><br><span class="line">sudo cp /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21 ./</span><br><span class="line">sudo rm -rf libstdc++.so.6</span><br><span class="line">sudo ln -s libstdc++.so.6.0.21 libstdc++.so.6</span><br></pre></td></tr></table></figure></p>
+<h5 id="不通过sudo启动matlab"><a href="#不通过sudo启动matlab" class="headerlink" title="不通过sudo启动matlab"></a>不通过sudo启动matlab</h5><p>注意matlab是隐藏文件，前面有.<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo chmod -R a+rw ~/.matlab</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/27/ubuntusys-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="祥吉">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Deep Coding">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/27/ubuntusys-2/" itemprop="url">Ubuntu1604装机系列(二)：Opencv安装</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-27T10:08:34+08:00">
+                2018-03-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/03/27/ubuntusys-2/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/03/27/ubuntusys-2/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h4><p>官网下载<code>opencv3.4.1</code>，选择source<a href="https://opencv.org/releases.html" target="_blank" rel="noopener">版本</a><br>官网下载<code>opencv3.4.1_contrib</code>，选择source<a href="https://opencv.org/releases.html" target="_blank" rel="noopener">版本</a></p>
+<h4 id="编译安装"><a href="#编译安装" class="headerlink" title="编译安装"></a>编译安装</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">cp ../opencv3.4.1_contrib ./   <span class="comment"># 复制contrib到opencv3.4.1文件夹并重命名</span></span><br><span class="line"><span class="built_in">cd</span> opencv3.4.1</span><br><span class="line">mv opencv3.4.1_contrib opencv_contrib</span><br><span class="line">mkdir build</span><br><span class="line"><span class="built_in">cd</span> build</span><br><span class="line">cmake ..</span><br><span class="line">ccmake ..</span><br><span class="line">几个要注意的修改项(cuda/python根据自己的安装路径来写)：</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">CUDA_TOOLKIT_ROOT_DIR:		/home/&lt;user name&gt;/wuxj/cuda-8.0</span><br><span class="line">OPENCV_EXTRA_MODULES_PATH:	/home/&lt;user name&gt;/wuxj/opencv-3.4.1/opencv_contrib </span><br><span class="line">PYTHON2_EXECUTABLE:		/usr/bin/python2.7                           </span><br><span class="line">PYTHON2_INCLUDE_DIR:		/usr/include/python2.7 </span><br><span class="line">PYTHON2_NUMPY_INCLUDE_DIRS: 	/usr/<span class="built_in">local</span>/lib/python2.7/dist-packages/dist-packages/numpy/core/include  </span><br><span class="line">PYTHON2_PACKAGES_PATH:		/lib/python2.7/dist-packages </span><br><span class="line">CMAKE_INSTALL_PREFIX:		/home/&lt;user name&gt;/wuxj   <span class="comment"># make install的安装路径</span></span><br></pre></td></tr></table></figure>
+<p><code>make -j8</code> # 等待安装成功即可 8：8核CPU，编译速度更快</p>
+<p><code>make install</code> # 复制上一步build文件夹到<code>/home/&lt;user name&gt;/wuxj</code> 中，这时候wuxj文件夹会包含bin(exe)、include(头文件)、lib(动态库)、share4个文件夹</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/22/mac-opcv/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="祥吉">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Deep Coding">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/22/mac-opcv/" itemprop="url">MacOS安装OpenCV</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-22T18:58:49+08:00">
+                2018-03-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/03/22/mac-opcv/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/03/22/mac-opcv/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h5 id="更换Mac-brew-安装源，下载软件分分钟"><a href="#更换Mac-brew-安装源，下载软件分分钟" class="headerlink" title="更换Mac brew 安装源，下载软件分分钟"></a>更换Mac brew 安装源，下载软件分分钟</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> <span class="string">"<span class="variable">$(brew --repo)</span>"</span> &amp;&amp; git remote <span class="built_in">set</span>-url origin https://git.coding.net/homebrew/homebrew.git</span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> <span class="variable">$home</span> &amp;&amp; brew update</span><br></pre></td></tr></table></figure>
+<h5 id="开始安装"><a href="#开始安装" class="headerlink" title="开始安装"></a>开始安装</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo brew install opencv</span><br></pre></td></tr></table></figure>
+<h5 id="配置环境变量：安装好的opencv位于-usr-local-Cellar-下"><a href="#配置环境变量：安装好的opencv位于-usr-local-Cellar-下" class="headerlink" title="配置环境变量：安装好的opencv位于/usr/local/Cellar/下"></a>配置环境变量：安装好的opencv位于<code>/usr/local/Cellar/</code>下</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vi .bash_profile</span><br><span class="line"><span class="built_in">export</span> DYLD_LIBRARY_PATH=/usr/<span class="built_in">local</span>/Cellar/opencv/3.4.1_2/lib:<span class="variable">$DYLD_LIBRARY_PATH</span></span><br><span class="line"><span class="built_in">source</span> .bash_profile <span class="comment"># 使路径生效（下同）</span></span><br></pre></td></tr></table></figure>
+<h5 id="配置python环境变量"><a href="#配置python环境变量" class="headerlink" title="配置python环境变量"></a>配置python环境变量</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /Library/Python/2.7/site-packages/</span><br><span class="line"></span><br><span class="line">sudo ln -s /usr/<span class="built_in">local</span>/Cellar/opencv/3.4.1_2/lib/python2.7/site-packages/cv.py cv.py</span><br><span class="line">sudo ln -s /usr/<span class="built_in">local</span>/Cellar/opencv/3.4.1_2/lib/python2.7/site-packages/cv2.so cv2.so</span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> PYTHONPATH=<span class="variable">$PYTHONPATH</span>:/usr/<span class="built_in">local</span>/lib/python2.7/site-package  <span class="comment"># 将python路径写入系统目录</span></span><br></pre></td></tr></table></figure>
+<h5 id="生成SDK还需要一个pkg-config，用来find-package位置"><a href="#生成SDK还需要一个pkg-config，用来find-package位置" class="headerlink" title="生成SDK还需要一个pkg-config，用来find package位置"></a>生成SDK还需要一个<code>pkg-config</code>，用来find package位置</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">wget http://pkgconfig.freedesktop.org/releases/pkg-config-0.29.tar.gz .</span><br><span class="line">env LDFLAGS=<span class="string">"-framework CoreFoundation -framework Carbon"</span> ./configure --with-internal-glib</span><br><span class="line">make</span><br><span class="line">sudo make install</span><br></pre></td></tr></table></figure>
+<h5 id="在系统路径中把cv路径写入到pkg-config"><a href="#在系统路径中把cv路径写入到pkg-config" class="headerlink" title="在系统路径中把cv路径写入到pkg-config"></a>在系统路径中把cv路径写入到<code>pkg-config</code></h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vi .bash_profile</span><br><span class="line">PKG_CONFIG_PATH=<span class="variable">$PKG_CONFIG_PATH</span>:/usr/<span class="built_in">local</span>/Cellar/opencv/3.4.1_2/lib/pkgconfig</span><br><span class="line"><span class="built_in">export</span> PKG_CONFIG_PATH</span><br></pre></td></tr></table></figure>
+<h5 id="show-me-a-picture！"><a href="#show-me-a-picture！" class="headerlink" title="show me a picture！"></a>show me a picture！</h5><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;opencv2/opencv.hpp&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;opencv2/highgui/highgui.hpp&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> cv;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span>** argv)</span></span></span><br><span class="line"><span class="function"></span>&#123;   </span><br><span class="line">    Mat img = imread(<span class="string">"test.jpg"</span>, CV_LOAD_IMAGE_UNCHANGED);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(img.empty())</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">"failed to load input image\n"</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    imshow(<span class="string">"Display Image"</span>, img);</span><br><span class="line">    waitKey(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// no need to release anything with c++ !   </span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>上述文件命名为test.cpp，用下面的指令编译成一个超简单的Demo</strong><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">g++ -o <span class="built_in">test</span> test.cpp `pkg-config --libs opencv` `pkg-config --cflags opencv`</span><br></pre></td></tr></table></figure></p>
+<p><code>./test</code>运行代码</p>
+<h5 id="多个cpp文件工程的编译"><a href="#多个cpp文件工程的编译" class="headerlink" title="多个cpp文件工程的编译"></a>多个cpp文件工程的编译</h5><p>假如test文件下存在<code>imageRank.h</code>、<code>imageRank.cpp</code>、<code>main.cpp</code>文件<code>.h</code>文件不用管，在编译.cpp时会自动调用。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">g++ -c imageRank.cpp -o imageRank.o -I ./   <span class="comment"># 先编译函数cpp文件</span></span><br><span class="line">g++ main.cpp imageRank.o -o main `pkg-config --libs opencv` `pkg-config --cflags opencv`  <span class="comment"># 直接生成可执行文件</span></span><br><span class="line">ar -r libimageRank.a imageRank.o  <span class="comment"># 或者编译出静态库文件给第三方</span></span><br><span class="line">g++ -o main -L. -ldetection main.cpp `pkg-config --libs opencv` `pkg-config --cflags opencv`</span><br><span class="line">生成可执行文件</span><br></pre></td></tr></table></figure></p>
+<p>Ref：<br> 📎：<a href="https://www.jianshu.com/p/3d149f167b41" target="_blank" rel="noopener">Mac OS X 安装并测试 OpenCV</a><br> 📎：<a href="http://www.voidcn.com/article/p-yxftfwnu-on.html" target="_blank" rel="noopener">mac os 安装 pkg-config</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/14/nvidia/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -278,7 +838,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/03/14/nvidia/" itemprop="url">ubuntu1604 + 1080Ti + 390显卡驱动安装</a></h1>
+                <a class="post-title-link" href="/2018/03/14/nvidia/" itemprop="url">Ubuntu1604装机系列(一)：Mac烧系统盘及1080Ti显卡(390版本)驱动安装</a></h1>
         
 
         <div class="post-meta">
@@ -340,7 +900,11 @@
       
         
           
-            <h4 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h4><p>一台主机多人使用的情况下，把显卡搞崩了。到网上百度了N多教程，大致尝试的如下：</p>
+            <h4 id="Ubuntu1604系统安装"><a href="#Ubuntu1604系统安装" class="headerlink" title="Ubuntu1604系统安装"></a>Ubuntu1604系统安装</h4><p>笔者第一次尝试Mac烧系统盘，没想到比windows简单到爆，过程如下：<br>&nbsp;<br><a href="https://www.ubuntu.com/download" target="_blank" rel="noopener">官网</a>下载Ubuntu iso文件<br>&nbsp;<br>格式化一个U盘<br>&nbsp;<br>接着写入U盘镜像<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">df -hl       <span class="comment"># 记住磁盘名称，Eg：/dev/disk2s</span></span><br><span class="line">sudo diskutil umount /dev/disk2s  <span class="comment"># 卸载该磁盘</span></span><br><span class="line">sudo dd bs=1m <span class="keyword">if</span>=/Users/&lt;user name&gt;/Desktop/ubuntu-16.04.4-desktop-amd64.iso of=/dev/disk2s</span><br></pre></td></tr></table></figure></p>
+<p>静静等待10分钟，U盘即可写入完毕。接着就是设置电脑U盘启动，开始安装Ubuntu系统了</p>
+<h5 id="ubuntu-换源"><a href="#ubuntu-换源" class="headerlink" title="ubuntu 换源"></a>ubuntu 换源</h5><p><a href="https://mirrors.tuna.tsinghua.edu.cn/help/ubuntu/" target="_blank" rel="noopener">清华大学开源软件镜像站</a>寻找对应系统的源<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /etc/apt</span><br><span class="line">sudo cp sources.list sources.list.old <span class="comment">#先将之前的源做个备份</span></span><br><span class="line"></span><br><span class="line">vi sources.list <span class="comment"># 拷贝清华的镜像到该list</span></span><br><span class="line"></span><br><span class="line">deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial main restricted universe multiverse</span><br><span class="line">deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial-updates main restricted universe multiverse</span><br><span class="line">deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial-backports main restricted universe multiverse</span><br><span class="line">deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial-security main restricted universe multiver</span><br><span class="line"></span><br><span class="line">sudo apt-get update <span class="comment"># 更新源完成，发现网速飞快了</span></span><br></pre></td></tr></table></figure></p>
+<h5 id="apt-get相关常用指令"><a href="#apt-get相关常用指令" class="headerlink" title="apt-get相关常用指令"></a>apt-get相关常用指令</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update  更新源</span><br><span class="line">sudo apt-get install package 安装包</span><br><span class="line">sudo apt-cache search package 搜索软件包</span><br><span class="line">sudo apt-get remove package --purge 删除包，包括配置文件等</span><br></pre></td></tr></table></figure>
+<h4 id="显卡驱动安装"><a href="#显卡驱动安装" class="headerlink" title="显卡驱动安装"></a>显卡驱动安装</h4><p>Nvidia显卡驱动踩了很多坑，到网上百度了N多教程，大致尝试的如下：</p>
 <blockquote>
 <ul>
 <li>显卡线插集显上，装好驱动后把线再插回N卡</li>
@@ -349,8 +913,11 @@
 <li>打开ubuntu的软件更新，更新显卡驱动</li>
 </ul>
 </blockquote>
-<p>经过上述步骤，会提示显卡驱动已经安装成功，但<code>nvidia-smi</code>依然无效…</p>
-<h4 id="该最简单但最高效的选手登场了：自己编译-NVIDIA-驱动程序"><a href="#该最简单但最高效的选手登场了：自己编译-NVIDIA-驱动程序" class="headerlink" title="该最简单但最高效的选手登场了：自己编译 NVIDIA 驱动程序"></a>该最简单但最高效的选手登场了：自己编译 NVIDIA 驱动程序</h4><p>Nvidia官网下载最新的显卡<a href="https://www.geforce.cn/drivers" target="_blank" rel="noopener">驱动程序</a>，ubuntu的一般就几十兆左右。<br>&nbsp;<br>杀掉<code>LightDM</code>或<code>GDM</code>登录显示器，进入纯文本<code>tty1</code>模式<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo service lightdm stop</span><br><span class="line">sudo dpkg-reconfigure gdm <span class="comment"># 有的人可能安装的不是LightDM界面，可先通过该命令切到LightDM，或者直接stop GDM等界面(第二种笔者未尝试)</span></span><br></pre></td></tr></table></figure></p>
+<p>经过上述步骤，会提示显卡驱动已经安装成功，但<code>nvidia-smi</code>依然无效…该最简单但最高效的选手登场了</p>
+<h5 id="编译-NVIDIA-驱动程序"><a href="#编译-NVIDIA-驱动程序" class="headerlink" title="编译 NVIDIA 驱动程序"></a>编译 NVIDIA 驱动程序</h5><p>Nvidia官网下载最新的显卡<a href="https://www.geforce.cn/drivers" target="_blank" rel="noopener">驱动程序</a>，ubuntu的一般就几十兆左右。<br>&nbsp;<br>将<code>nouveau driver</code>加入黑名单<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">blacklist nouveau</span><br><span class="line">options modset=0</span><br></pre></td></tr></table></figure></p>
+<p>终端输入<code>lspci | grep nouveau</code>，如果没有显示证明该驱动被kill</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">reboot <span class="comment"># 一定要重启</span></span><br></pre></td></tr></table></figure>
+<p>杀掉<code>LightDM</code>或<code>GDM</code>登录显示器，进入纯文本<code>tty1</code>模式<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo service lightdm stop</span><br><span class="line">sudo dpkg-reconfigure gdm <span class="comment"># 有的人可能安装的不是LightDM界面，可先通过该命令切到LightDM，或者直接stop GDM等界面(第二种笔者未尝试)</span></span><br></pre></td></tr></table></figure></p>
 <p>编译安装NVIDIA驱动，此过程大约耗时3～5分钟<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">chmod +x NVIDIA-xxx.run</span><br><span class="line">sudo ./NVIDIA-xxx.run</span><br></pre></td></tr></table></figure></p>
 <p>需要注意的：<br>1、此处认真看提示，并不是一路选择”yes”。<br>2、假如上一步在安装时，Warning了gcc版本不对，则退出驱动安装，先安装对应版本的gcc之后再继续。笔者安装的驱动程序提示需要gcc-5.4.0，又是一番折腾，还好在冯博的指导下，找到了精干快速的方法。不介意的话可以移步笔者之前的文章<a href="http://localhost:4000/2018/02/25/gcc/" target="_blank" rel="noopener">Ubuntu下gcc/g++多版本切换</a><br>&nbsp;<br>安装成功后，重新开启桌面测试。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo service lightdm start</span><br><span class="line">nvidia-smi</span><br></pre></td></tr></table></figure></p>
 <p>成功后的截图<br> <img src="/img/nvidia.png" width="550" alt="图片名称" align="center"></p>
@@ -506,6 +1073,7 @@
 <p>论文中提到的256-d，不是整个feature map生成一个256维的向量，feature map上的每一个“点”都对应一个256维向量。同时该“点”对应了9个anchors，18个cls输出，36个reg输出。<br>&nbsp;<br><strong>小结：</strong>RPN的基本思想就是通过对feature map进行窗口滑动，再在该窗口上累加一个小网络，最终训练得到某些可能为前景的regions，以及该regions对应的bouning box。<font color="red">该网络专门判断该区域是否存在物体，而并不检测是哪种特定的物体。</font></p>
 <h4 id="RPN-Fast-RCNN"><a href="#RPN-Fast-RCNN" class="headerlink" title="RPN + Fast RCNN"></a>RPN + Fast RCNN</h4><p>有了RPN后，怎样跟Fast RCNN连接起来呢？作者采用了叫做<code>4-Step Alternating Training</code>的方式：<br><strong>step 1 :</strong>采用预训练的VGG网络，前13层用作特征提取层，后面的网络采用RPN架构，用均值为0的高斯分布随机初始化网络参数<br><strong>step 2 :</strong>同样采用预训练的VGG前13层网络，用step 1中 RPN得到的region proposal，进行Fast RCNN网络的训练。这两步还未实现共享卷积层<br><strong>step 3 :</strong>采用step 2中Fast RCNN的卷积层参数初始化RPN网络，并固定共享层网络参数，仅仅fine tune RPN网络层参数，得到新的region proposal<br><strong>step 4 :</strong>继续固定共享层网络参数，仅仅fine tune Fast RCNN，得到最终的模型。</p>
 <h4 id="Fast-RCNN-与-Faster-RCNN结果对比"><a href="#Fast-RCNN-与-Faster-RCNN结果对比" class="headerlink" title="Fast RCNN 与 Faster RCNN结果对比"></a>Fast RCNN 与 Faster RCNN结果对比</h4><p><img src="/img/frcnn_2.png" width="500" alt="图片名称" align="center"></p>
+<h4 id="Faster-RCNN网络结构-来源于网络"><a href="#Faster-RCNN网络结构-来源于网络" class="headerlink" title="Faster RCNN网络结构(来源于网络)"></a>Faster RCNN网络结构(来源于网络)</h4><p><img src="/img/frcnn1.jpg" width="600" alt="图片名称" align="center"></p>
 <h3 id="Ref："><a href="#Ref：" class="headerlink" title="Ref："></a>Ref：</h3><p>📎：<a href="http://blog.csdn.net/wfei101/article/details/77150573" target="_blank" rel="noopener"> 区域推荐网络RPN
 </a><br>📎：<a href="http://blog.csdn.net/sloanqin/article/details/51545125" target="_blank" rel="noopener">faster-rcnn 之 RPN网络的结构解析</a></p>
 
@@ -637,9 +1205,9 @@
       
         
           
-            <h3 id="SPP-Net"><a href="#SPP-Net" class="headerlink" title="SPP Net"></a>SPP Net</h3><p>R-CNN的进阶版Fast R-CNN可以说是在RCNN的基础上采纳了<a href="https://arxiv.org/abs/1406.4729" target="_blank" rel="noopener">SPP Net</a>方法，使得性能进一步提高。所以有必要先了解下何凯明提出的SPP Net。SPP:Spatial Pyramid Pooling（空间金字塔池化）。他有两个显著的特点：<br>&nbsp;<br><strong><font color="blue"> 创新点1：实现CNN的多尺度输入，忽略图片尺寸的影响 </font></strong><br>为了实现全联接层可以正确匹配pooling层后的维度，R-CNN中笔者先对Region proposal Crop到某一固定维度，但这样会造成一定的图像失真。有没有不Crop图像从而实现维度匹配的方法呢？一是调整最后的pooling层维度，二是调节全联接层的结构，使它接受任意维度特征。后一种方法是全卷积网络(FCN)，本文是采用的是前一种，即SPP：空间金字塔pooling。<br>&nbsp;<br>SPP的具体实现方式：假设与全联接层匹配的最后一个pooling层，输出维度应当是$[2\ast 2]$。而此时<code>ROI</code>区域的大小为$[5\ast 7]$(Region proposal在该论文中又称为<code>ROI</code>区域)。那么此时pooling核的size应当为$[\frac{5}{2} \ast \frac{7}{2}]$，才能使该ROI区域pooling后，得到匹配的size。但核的size不能为小数啊，所以采用理论size做间隔，最后向下取整得到每个pooling核的size。<br><img src="/img/frcnn1.png" width="350" alt="图片名称" align="center"><br>如上图所示：H方向以2.5为间隔$[0, 2.5, 5]$，W方向以3.5取间隔$[0, 3.5, 7]$。最后每个pooling核<strong>起始点</strong>坐标为H:$[0, 2]$，W:$[0, 3]$。更广泛地，我们用$[h, w]$代表<code>ROI</code>区域的高和宽，$[H, W]$代表希望pooling后得到的高和宽。那么每个网格动态调整后的大小为$[\frac{h}{H} \ast \frac{w}{W}]$。<br><strong>小结：SPP说到底就是计算一个比例关系，以动态调整pooling核的大小，实在是非常简单</strong></p>
+            <h3 id="SPP-Net"><a href="#SPP-Net" class="headerlink" title="SPP Net"></a>SPP Net</h3><p>R-CNN的进阶版Fast R-CNN可以说是在RCNN的基础上采纳了<a href="https://arxiv.org/abs/1406.4729" target="_blank" rel="noopener">SPP Net</a>方法，使得性能进一步提高。所以有必要先了解下何凯明提出的SPP Net。SPP:Spatial Pyramid Pooling（空间金字塔池化）。他有两个显著的特点：<br>&nbsp;<br><strong><font color="blue"> 创新点1：实现CNN的多尺度输入，忽略图片尺寸的影响 </font></strong><br>为了实现全联接层可以正确匹配pooling层后的维度，R-CNN中笔者先对Region proposal Crop到某一固定维度，但这样会造成一定的图像失真。有没有不Crop图像从而实现维度匹配的方法呢？一是调整最后的pooling层维度，二是调节全联接层的结构，使它接受任意维度特征。后一种方法是全卷积网络(FCN)，本文是采用的是前一种，即SPP：空间金字塔pooling。<br>&nbsp;<br>SPP的具体实现方式：假设与全联接层匹配的最后一个pooling层，输出维度应当是$[2\ast 2]$。而此时<code>ROI</code>区域的大小为$[5\ast 7]$(Region proposal在该论文中又称为<code>ROI</code>区域)。那么此时pooling核的size应当为$[\frac{5}{2} \ast \frac{7}{2}]$，才能使该ROI区域pooling后，得到匹配的size。但核的size不能为小数啊，所以采用理论size做间隔，最后向下取整得到每个pooling核的size。<br><img src="/img/frcnn1.png" width="350" alt="图片名称" align="center"><br>如上图所示：H方向以2.5为间隔$[0, 2.5, 5]$，W方向以3.5取间隔$[0, 3.5, 7]$。最后每个pooling核<strong>起始点</strong>坐标为H:$[2, 5]$，W:$[3, 7]$。更广泛地，我们用$[h, w]$代表<code>ROI</code>区域的高和宽，$[H, W]$代表希望pooling后得到的高和宽。那么每个网格动态调整后的大小为$[\frac{h}{H} \ast \frac{w}{W}]$。<br><strong>小结：SPP说到底就是计算一个比例关系，以动态调整pooling核的大小，实在是非常简单</strong></p>
 <p><strong><font color="blue"> 创新点2：只对原图提取一次卷积特征 </font></strong><br>RCNN中，一张图片Region proposal的数量为2K个，其中存在大量的重复区域。而用CNN提取这些Region，显然是非常复杂的一件事儿。SPP Net中的做法是对整张图像用CNN仅提取一次特征，feature map一般计算到最后一个pooling层。接着再根据相应的缩放比例，对源图的Regions进行一一映射，找到其在feature map的位置即可。该算法看似简单，但对于regions的特征提取，速度提升约146倍。</p>
-<h3 id="Fast-R-CNN"><a href="#Fast-R-CNN" class="headerlink" title="Fast R-CNN"></a>Fast R-CNN</h3><p>Fast R-CNN是在SPP Net基础上做的进一步改进，作者把<strong>SVM分类器换成Softmax，和CNN整合成一个网络，同时把bounding box regression也整合进网络中，三层联动调节参数，从而带来了效果的进一步提升。</strong>Fast RCNN架构如图所示：<br><img src="/img/frcnn3.jpeg" width="600" alt="图片名称" align="center"><br>该网络是典型的多任务学习，低层的卷积层参数共享(采用VGG16提取特征)，高层分别训练分类及回归网络。多任务学习一般用在task具有一定相似度的情境下。网络总的损失函数是两部分相加，对于softmax采用softmax-loss损失函数，对于Bounding box regression采用特殊的一种损失函数，如下：<br>$$L_{loc}(t^{u}, v) = \sum_{i = {x,y,w,h}}smooth_{L1}(t_{i}^{u}-v_{i})$$<br>$$if \left | x \right |&lt;1 \qquad smooth_{L1}(x) =0.5x^{2}  \qquad || \qquad Otherwise \qquad smooth_{L1}(x) = \left | x \right | -1 $$<br>这部分没有深究，其中$t_{i}, v_{i}$分别代表Region proposal和ground truth的坐标。Fast R-CNN的联合损失函数可以直接进行反向传播，从而达到端到端训练的目的。</p>
+<h3 id="Fast-R-CNN"><a href="#Fast-R-CNN" class="headerlink" title="Fast R-CNN"></a>Fast R-CNN</h3><p>Fast R-CNN是在SPP Net基础上做的进一步改进，作者把<strong>SVM分类器换成Softmax，和CNN整合成一个网络，同时把bounding box regression也整合进网络中，三层联动调节参数，从而带来了效果的进一步提升。</strong>Fast RCNN架构如图所示：<br><img src="/img/frcnn3.jpeg" width="600" alt="图片名称" align="center"><br>该网络是典型的多任务学习，低层的卷积层参数共享(采用VGG16提取特征)，高层分别训练分类及回归网络。多任务学习一般用在task具有一定相似度的情境下。网络总的损失函数是两部分乘系数相加$L = L_{cls} + \lambda \times L_{loc}$，对于$L_{cls} $采用softmax-loss损失函数，对于Bounding box regression采用特殊的一种损失函数，如下：<br>$$L_{loc}(t^{u}, v) = \sum_{i = {x,y,w,h}}smooth_{L1}(t_{i}^{u}-v_{i})$$<br>$$if \left | x \right |&lt;1 \qquad smooth_{L1}(x) =0.5x^{2}  \qquad || \qquad Otherwise \qquad smooth_{L1}(x) = \left | x \right | -1 $$<br>这部分没有深究，其中$t_{i}, v_{i}$分别代表Region proposal和ground truth的坐标。Fast R-CNN的联合损失函数可以直接进行反向传播，从而达到端到端训练的目的。</p>
 <h3 id="Ref："><a href="#Ref：" class="headerlink" title="Ref："></a>Ref：</h3><p>📎：<a href="https://arxiv.org/abs/1504.08083" target="_blank" rel="noopener">Fast RCNN</a><br>📎：<a href="http://jermmy.xyz/2018/01/15/2018-1-15-paper-notes-fast-er-rcnn/" target="_blank" rel="noopener">论文笔记：Fast(er) RCNN</a><br>📎：<a href="https://zhuanlan.zhihu.com/p/22190532" target="_blank" rel="noopener">一箭N雕：多任务深度学习实战</a><br>📎：<a href="http://shartoo.github.io/RCNN-series/" target="_blank" rel="noopener">RCNN,Fast RCNN,Faster RCNN 总结</a></p>
 
           
@@ -1092,538 +1660,10 @@
 <li>上采样为将图像在每个方向扩大为原来的两倍，新增的行和列以0填充；再使用先前同样的内核(乘以4)与放大后的图像卷积，获得 “新增像素”的近似值<br>而resize函数改变大小与图像金字塔的不同，采用的是线性插值补全丢失的像素，但实际用下来差别不大。</li>
 </ul>
 </blockquote>
+<p>&nbsp;<br>插个话：图像金字塔在目标检测中的应用<br>滑窗的尺寸一般是固定的，而多尺度通过图像金字塔实现。这样相比不断改变滑窗大小，效率更高。至于缩小多少倍，源图缩到滑动窗口大小即可以，这样代表整张图片是某个类。</p>
+<p>假如人脸size[20,20]，滑动窗口（box）Size[40,40]那么可能检不出这张人脸（人脸占据比例太小），而随着图像金字塔变换人脸size会越来越小，那人脸占据整个box的比例也会更低，导致无法检出。<br>换句话说：MinFaceSize(40)，只能检测最小约为[40，40]的人脸。</p>
 <h3 id="Ref"><a href="#Ref" class="headerlink" title="Ref:"></a>Ref:</h3><p><a href="https://zhuanlan.zhihu.com/p/19763358?from=singlemessage&amp;isappinstalled=1" target="_blank" rel="noopener">傅里叶分析之掐死教程（完整版）更新于2014.06.06</a></p>
 
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/02/box/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="祥吉">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Deep Coding">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/03/02/box/" itemprop="url">目标检测任务中的Bounding box绘制</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-02T11:03:57+08:00">
-                2018-03-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/03/02/box/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/03/02/box/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>计算机视觉目标检测任务中，输出的result是一系列图像及对应的txt文档，文档里面记录了检测到类别的<code>bounding box</code>信息：其中每行是一个类别，第1列代表哪一类，第2列是该类别置信度，后面4列是该<code>bounding box</code>的左上、右下的坐标信息(以图的左上方为坐标0点)，如下所示：</p>
-<blockquote>
-<p>7 0.9482899 157.50272 192.24951 216.85303 248.50638<br>12 0.7890044 247.94312 211.89938 304.7307 280.8666<br>18 0.5444266 101.857285 215.64401 181.53456 261.96036</p>
-</blockquote>
-<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><p>为了直观显示每张图像包含了哪些类别，我们用python对<code>bounding box</code>进行了重绘，<strong>并将图像按类别放置于对应的文件夹中，文件夹名称为1～21，以字典形式对应于21个类别，</strong>代码如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"><span class="comment">#!/usr/bin/env Python</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> shutil</span><br><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image, ImageDraw</span><br><span class="line"></span><br><span class="line"><span class="comment">#==========================建立索引文件夹==========================</span></span><br><span class="line"></span><br><span class="line">Path1_A = <span class="string">"/home/tucoder/Desktop/demo1_result/S1/"</span> <span class="comment"># 图像按类型分配到各个文件夹</span></span><br><span class="line">Path2_A = <span class="string">"/home/tucoder/Desktop/demo1_result/S2/"</span> <span class="comment"># 存储类型文本</span></span><br><span class="line"></span><br><span class="line">dict1 = &#123;<span class="string">'1'</span>:<span class="string">'飞机'</span>,<span class="string">'2'</span>:<span class="string">'自行车'</span>,<span class="string">'3'</span>:<span class="string">'鸟'</span>,<span class="string">'4'</span>:<span class="string">'船'</span>,<span class="string">'5'</span>:<span class="string">'瓶子'</span>,<span class="string">'6'</span>:<span class="string">'公共汽车'</span>,<span class="string">'7'</span>:<span class="string">'车'</span>,<span class="string">'8'</span>:<span class="string">'猫'</span>,<span class="string">'9'</span>:<span class="string">'椅子'</span>,<span class="string">'10'</span>:<span class="string">'牛'</span>,<span class="string">'11'</span>:<span class="string">'餐桌'</span>,<span class="string">'12'</span>:<span class="string">'狗'</span>, \</span><br><span class="line">    <span class="string">'13'</span>:<span class="string">'马'</span>,<span class="string">'14'</span>:<span class="string">'摩托车'</span>,<span class="string">'15'</span>:<span class="string">'人'</span>,<span class="string">'16'</span>:<span class="string">'植物'</span>,<span class="string">'17'</span>:<span class="string">'羊'</span>,<span class="string">'18'</span>:<span class="string">'沙发'</span>,<span class="string">'19'</span>:<span class="string">'火车'</span>,<span class="string">'20'</span>:<span class="string">'电视'</span>&#125; <span class="comment"># 21类</span></span><br><span class="line">    </span><br><span class="line">os.mkdir(Path1_A)</span><br><span class="line">  </span><br><span class="line">os.mkdir(Path2_A)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, <span class="number">21</span>):</span><br><span class="line">        os.mkdir(Path1_A+str(i))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">draw</span><span class="params">(Path1, x1, y1, x2, y2, path2)</span>:</span></span><br><span class="line">    <span class="string">'''</span></span><br><span class="line"><span class="string">    绘制矩形框函数</span></span><br><span class="line"><span class="string">    原pic位置path1</span></span><br><span class="line"><span class="string">    处理后的pic被存储到path2中</span></span><br><span class="line"><span class="string">    '''</span></span><br><span class="line">    im = Image.open(Path1)</span><br><span class="line">    draw = ImageDraw.Draw(im)</span><br><span class="line">    line = <span class="number">5</span></span><br><span class="line">    x, y = x1, y1</span><br><span class="line">    x_1, y_1 = x2, y2</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, line + <span class="number">1</span>):</span><br><span class="line">        draw.rectangle((x + (line - i), y + (line - i), x_1 + i, y_1 + i), outline=<span class="string">'red'</span>)</span><br><span class="line">    im.save(path2)</span><br><span class="line"></span><br><span class="line"><span class="comment">#==========================main==========================</span></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    result = []</span><br><span class="line">    alllist=os.listdir(<span class="string">"/home/tucoder/Desktop/demo1_result"</span>)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> alllist:</span><br><span class="line">        <span class="keyword">if</span> <span class="string">"."</span> <span class="keyword">in</span> i:</span><br><span class="line">            aa, bb=i.split(<span class="string">"."</span>)</span><br><span class="line">            <span class="keyword">if</span> bb == <span class="string">"txt"</span>:</span><br><span class="line">                result.append(aa+<span class="string">"."</span>+bb)</span><br><span class="line">    A = set()</span><br><span class="line">    <span class="keyword">for</span> filename <span class="keyword">in</span> result:</span><br><span class="line">        set1 = set()</span><br><span class="line">        string = <span class="string">''</span> <span class="comment"># 每幅图片包含其class属性</span></span><br><span class="line">        str1 = filename[:filename.rindex(<span class="string">"."</span>)]</span><br><span class="line">        <span class="keyword">with</span> open(filename, <span class="string">'r'</span>) <span class="keyword">as</span> f:</span><br><span class="line">            <span class="keyword">for</span> line <span class="keyword">in</span> f.readlines():</span><br><span class="line">                list1 = line.split()</span><br><span class="line">                <span class="keyword">if</span> float(list1[<span class="number">1</span>]) &gt;= <span class="number">0.80</span>: <span class="comment"># 类别置信度&gt;=0.8，判定其为真</span></span><br><span class="line">                    A.add(list1[<span class="number">0</span>])</span><br><span class="line">                    Path_1 = str1+<span class="string">".jpg"</span></span><br><span class="line">                    Path_2 = Path1_A+<span class="string">'/'</span>+list1[<span class="number">0</span>]+<span class="string">"/"</span>+str1+<span class="string">".jpg"</span></span><br><span class="line">                    <span class="keyword">if</span> list1[<span class="number">0</span>] <span class="keyword">not</span> <span class="keyword">in</span> set1:</span><br><span class="line">                        set1.add(list1[<span class="number">0</span>]) </span><br><span class="line">                        draw(Path_1, float(list1[<span class="number">2</span>]), float(list1[<span class="number">3</span>]), float(list1[<span class="number">4</span>]), float(list1[<span class="number">5</span>]), Path_2)</span><br><span class="line">                        string = string +list1[<span class="number">0</span>]+<span class="string">"-"</span></span><br><span class="line">                    <span class="keyword">else</span>:</span><br><span class="line">                        draw(Path_2, float(list1[<span class="number">2</span>]), float(list1[<span class="number">3</span>]), float(list1[<span class="number">4</span>]), float(list1[<span class="number">5</span>]), Path_2)</span><br><span class="line">        set1.clear()</span><br><span class="line">        List = []</span><br><span class="line">    <span class="keyword">for</span> str_i <span class="keyword">in</span> list(A):</span><br><span class="line">        List.append(dict1[str_i])</span><br><span class="line">    print(List)</span><br><span class="line">    <span class="keyword">with</span> open(Path2_A+<span class="string">'text'</span>, <span class="string">'w'</span>) <span class="keyword">as</span> f:</span><br><span class="line">        f.write(str(List))</span><br></pre></td></tr></table></figure></p>
-<h3 id="最终效果如图："><a href="#最终效果如图：" class="headerlink" title="最终效果如图："></a>最终效果如图：</h3><p><img src="/img/ren.jpg" width="600" alt="图片名称" align="center"></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/28/baiduapi/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="祥吉">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Deep Coding">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/02/28/baiduapi/" itemprop="url">调用百度SDK进行长语音识别</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-28T14:37:25+08:00">
-                2018-02-28
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/02/28/baiduapi/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/02/28/baiduapi/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>项目中需要用到语音识别技术，之前百度的语音识别SDK只支持时长小于1分钟的语音，所以对于十几分钟的电影，笔者需要自己先进行断句，然后一句句送入百度SDK，这样既麻烦，而且句与句之间的连贯性不够好，经常会造成一些啼笑皆非的识别。</p>
-<h3 id="长语音识别"><a href="#长语音识别" class="headerlink" title="长语音识别"></a>长语音识别</h3><p>2018年1月，百度开放了长语音识别SDK，可以进行自动断句，目测是根据短时能量法（即停顿时间）完成的，对识别后的语句还会自动修改，应该引入了语言模型进行修正。笔者今天上午又进行了一番尝试，至于识别效果嘛，是比以前好一些，但依然不敢恭维，以下：<br>首先采用<code>ffmpeg</code>模块，将视频转化为wav音频文件；接着将文件转码为采样率16K或8K的<code>PCM</code>无损格式<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ffmpeg -i <span class="variable">$audiopath</span> -f wav -vn <span class="variable">$&#123;audiobasename&#125;</span><span class="string">".wav"</span> <span class="comment"># 提取视频中的音频文件</span></span><br><span class="line">ffmpeg -y  -i <span class="variable">$audiobasename</span><span class="string">".wav"</span>  -acodec pcm_s16le -f s16le -ac 1 -ar 16000 16k-0.pcm <span class="comment"># wav音频文件转PCM</span></span><br></pre></td></tr></table></figure></p>
-<p>接着去<a href="http://ai.baidu.com/sdk" target="_blank" rel="noopener">百度Ai开放平台</a>，下载对应平台的SDK。解压后直接cd到<code>sample/asr</code>目录下， 运行<code>build.sh</code>(实际执行的是<code>/src/main.cpp</code>)，便可以识别样例中的一个<code>PCM</code>文件。<br>&nbsp;<br>若要识别你自己的音频文件，需要首先接入<a href="http://ai.baidu.com/docs#/Begin/top" target="_blank" rel="noopener">百度AI服务</a>，由于Access Token的有效期为30天，我们把鉴权请求机制写入<code>build.sh</code>中，这样每次调用SDK都会首先先执行鉴权。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line">curl -i -k &apos;https://aip.baidubce.com/oauth/2.0/token?grant_type=client_credentials&amp;client_id=xxxx&amp;client_secret=xxxx&apos;</span><br><span class="line"># &apos;xxxx&apos;的部分填入你在百度自己申请的id和key</span><br><span class="line">make &amp;&amp; echo &amp;&amp; echo &quot;build success, wait 3s to run&quot;  &amp;&amp; sleep 3 &amp;&amp; ./main</span><br></pre></td></tr></table></figure></p>
-<p>之后修改main.cpp中的<code>asr_set_config_params</code>、<code>asr_set_start_params</code>两个参数，具体如下：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span> app_id = <span class="string">"xxxxx"</span>; 填入你申请的ID</span><br><span class="line"><span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span> chunk_key = <span class="string">"xxxxxxx"</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span> secret_key = <span class="string">"xxxxxxxx"</span>;</span><br></pre></td></tr></table></figure></p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 设置启动参数</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">asr_set_start_params</span><span class="params">(bds::BDSSDKMessage&amp; start_params)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span> app = <span class="string">"xxxxx"</span>; # 填入你申请的任务名称</span><br></pre></td></tr></table></figure>
-<p>将之前转好的音频文件，命名为<code>16k-0.pcm</code>，放置于<code>/asr/pcm</code>路径下，重新执行<code>build.sh</code>，便可以在<code>Terminal</code>生成识别后的音频文件！<br><strong>PS:</strong> 建议的环境是<code>GCC、G++ 4.8.5</code>，笔者在<code>GCC 5.4.0</code>也进行了测试，无法正确运行。</p>
-<h3 id="Textrank"><a href="#Textrank" class="headerlink" title="Textrank"></a>Textrank</h3><p>Textrank是传统抽取文章摘要的方式，算法思想借鉴了网页排序的pagerank技术，这里我们采用Github中已开源的<a href="https://github.com/letiantian/TextRank4ZH" target="_blank" rel="noopener">TextRank4ZH模块</a>，安装及调用文档都比较详细，此处不再赘述。</p>
-<h3 id="Ref："><a href="#Ref：" class="headerlink" title="Ref："></a>Ref：</h3><p><a href="https://www.baidu.com/s?ie=UTF-8&amp;wd=textrank4zh" target="_blank" rel="noopener">https://www.baidu.com/s?ie=UTF-8&amp;wd=textrank4zh</a><br><a href="http://ai.baidu.com/tech/speech/lsr" target="_blank" rel="noopener">http://ai.baidu.com/tech/speech/lsr</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/27/BPTT/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="祥吉">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Deep Coding">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/02/27/BPTT/" itemprop="url">BPTT</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-27T22:12:53+08:00">
-                2018-02-27
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/02/27/BPTT/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/02/27/BPTT/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/27/BP/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="祥吉">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Deep Coding">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/02/27/BP/" itemprop="url">神经网络反向传播算法推导及Coding</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-27T22:12:48+08:00">
-                2018-02-27
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/02/27/BP/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/02/27/BP/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            
           
         
       
@@ -1662,7 +1702,7 @@
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1712,7 +1752,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">28</span>
+                  <span class="site-state-item-count">32</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1810,7 +1850,7 @@
  
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共23.7k字</span>
+  <span class="post-count">博客全站共26.7k字</span>
 </div>
 
 <div class="powered-by">

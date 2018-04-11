@@ -259,6 +259,536 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/02/box/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="祥吉">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Deep Coding">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/02/box/" itemprop="url">目标检测任务中的Bounding box绘制</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-02T11:03:57+08:00">
+                2018-03-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/03/02/box/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/03/02/box/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>计算机视觉目标检测任务中，输出的result是一系列图像及对应的txt文档，文档里面记录了检测到类别的<code>bounding box</code>信息：其中每行是一个类别，第1列代表哪一类，第2列是该类别置信度，后面4列是该<code>bounding box</code>的左上、右下的坐标信息(以图的左上方为坐标0点)，如下所示：</p>
+<blockquote>
+<p>7 0.9482899 157.50272 192.24951 216.85303 248.50638<br>12 0.7890044 247.94312 211.89938 304.7307 280.8666<br>18 0.5444266 101.857285 215.64401 181.53456 261.96036</p>
+</blockquote>
+<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><p>为了直观显示每张图像包含了哪些类别，我们用python对<code>bounding box</code>进行了重绘，<strong>并将图像按类别放置于对应的文件夹中，文件夹名称为1～21，以字典形式对应于21个类别，</strong>代码如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"><span class="comment">#!/usr/bin/env Python</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> shutil</span><br><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image, ImageDraw</span><br><span class="line"></span><br><span class="line"><span class="comment">#==========================建立索引文件夹==========================</span></span><br><span class="line"></span><br><span class="line">Path1_A = <span class="string">"/home/tucoder/Desktop/demo1_result/S1/"</span> <span class="comment"># 图像按类型分配到各个文件夹</span></span><br><span class="line">Path2_A = <span class="string">"/home/tucoder/Desktop/demo1_result/S2/"</span> <span class="comment"># 存储类型文本</span></span><br><span class="line"></span><br><span class="line">dict1 = &#123;<span class="string">'1'</span>:<span class="string">'飞机'</span>,<span class="string">'2'</span>:<span class="string">'自行车'</span>,<span class="string">'3'</span>:<span class="string">'鸟'</span>,<span class="string">'4'</span>:<span class="string">'船'</span>,<span class="string">'5'</span>:<span class="string">'瓶子'</span>,<span class="string">'6'</span>:<span class="string">'公共汽车'</span>,<span class="string">'7'</span>:<span class="string">'车'</span>,<span class="string">'8'</span>:<span class="string">'猫'</span>,<span class="string">'9'</span>:<span class="string">'椅子'</span>,<span class="string">'10'</span>:<span class="string">'牛'</span>,<span class="string">'11'</span>:<span class="string">'餐桌'</span>,<span class="string">'12'</span>:<span class="string">'狗'</span>, \</span><br><span class="line">    <span class="string">'13'</span>:<span class="string">'马'</span>,<span class="string">'14'</span>:<span class="string">'摩托车'</span>,<span class="string">'15'</span>:<span class="string">'人'</span>,<span class="string">'16'</span>:<span class="string">'植物'</span>,<span class="string">'17'</span>:<span class="string">'羊'</span>,<span class="string">'18'</span>:<span class="string">'沙发'</span>,<span class="string">'19'</span>:<span class="string">'火车'</span>,<span class="string">'20'</span>:<span class="string">'电视'</span>&#125; <span class="comment"># 21类</span></span><br><span class="line">    </span><br><span class="line">os.mkdir(Path1_A)</span><br><span class="line">  </span><br><span class="line">os.mkdir(Path2_A)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, <span class="number">21</span>):</span><br><span class="line">        os.mkdir(Path1_A+str(i))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">draw</span><span class="params">(Path1, x1, y1, x2, y2, path2)</span>:</span></span><br><span class="line">    <span class="string">'''</span></span><br><span class="line"><span class="string">    绘制矩形框函数</span></span><br><span class="line"><span class="string">    原pic位置path1</span></span><br><span class="line"><span class="string">    处理后的pic被存储到path2中</span></span><br><span class="line"><span class="string">    '''</span></span><br><span class="line">    im = Image.open(Path1)</span><br><span class="line">    draw = ImageDraw.Draw(im)</span><br><span class="line">    line = <span class="number">5</span></span><br><span class="line">    x, y = x1, y1</span><br><span class="line">    x_1, y_1 = x2, y2</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, line + <span class="number">1</span>):</span><br><span class="line">        draw.rectangle((x + (line - i), y + (line - i), x_1 + i, y_1 + i), outline=<span class="string">'red'</span>)</span><br><span class="line">    im.save(path2)</span><br><span class="line"></span><br><span class="line"><span class="comment">#==========================main==========================</span></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    result = []</span><br><span class="line">    alllist=os.listdir(<span class="string">"/home/tucoder/Desktop/demo1_result"</span>)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> alllist:</span><br><span class="line">        <span class="keyword">if</span> <span class="string">"."</span> <span class="keyword">in</span> i:</span><br><span class="line">            aa, bb=i.split(<span class="string">"."</span>)</span><br><span class="line">            <span class="keyword">if</span> bb == <span class="string">"txt"</span>:</span><br><span class="line">                result.append(aa+<span class="string">"."</span>+bb)</span><br><span class="line">    A = set()</span><br><span class="line">    <span class="keyword">for</span> filename <span class="keyword">in</span> result:</span><br><span class="line">        set1 = set()</span><br><span class="line">        string = <span class="string">''</span> <span class="comment"># 每幅图片包含其class属性</span></span><br><span class="line">        str1 = filename[:filename.rindex(<span class="string">"."</span>)]</span><br><span class="line">        <span class="keyword">with</span> open(filename, <span class="string">'r'</span>) <span class="keyword">as</span> f:</span><br><span class="line">            <span class="keyword">for</span> line <span class="keyword">in</span> f.readlines():</span><br><span class="line">                list1 = line.split()</span><br><span class="line">                <span class="keyword">if</span> float(list1[<span class="number">1</span>]) &gt;= <span class="number">0.80</span>: <span class="comment"># 类别置信度&gt;=0.8，判定其为真</span></span><br><span class="line">                    A.add(list1[<span class="number">0</span>])</span><br><span class="line">                    Path_1 = str1+<span class="string">".jpg"</span></span><br><span class="line">                    Path_2 = Path1_A+<span class="string">'/'</span>+list1[<span class="number">0</span>]+<span class="string">"/"</span>+str1+<span class="string">".jpg"</span></span><br><span class="line">                    <span class="keyword">if</span> list1[<span class="number">0</span>] <span class="keyword">not</span> <span class="keyword">in</span> set1:</span><br><span class="line">                        set1.add(list1[<span class="number">0</span>]) </span><br><span class="line">                        draw(Path_1, float(list1[<span class="number">2</span>]), float(list1[<span class="number">3</span>]), float(list1[<span class="number">4</span>]), float(list1[<span class="number">5</span>]), Path_2)</span><br><span class="line">                        string = string +list1[<span class="number">0</span>]+<span class="string">"-"</span></span><br><span class="line">                    <span class="keyword">else</span>:</span><br><span class="line">                        draw(Path_2, float(list1[<span class="number">2</span>]), float(list1[<span class="number">3</span>]), float(list1[<span class="number">4</span>]), float(list1[<span class="number">5</span>]), Path_2)</span><br><span class="line">        set1.clear()</span><br><span class="line">        List = []</span><br><span class="line">    <span class="keyword">for</span> str_i <span class="keyword">in</span> list(A):</span><br><span class="line">        List.append(dict1[str_i])</span><br><span class="line">    print(List)</span><br><span class="line">    <span class="keyword">with</span> open(Path2_A+<span class="string">'text'</span>, <span class="string">'w'</span>) <span class="keyword">as</span> f:</span><br><span class="line">        f.write(str(List))</span><br></pre></td></tr></table></figure></p>
+<h3 id="最终效果如图："><a href="#最终效果如图：" class="headerlink" title="最终效果如图："></a>最终效果如图：</h3><p><img src="/img/ren.jpg" width="600" alt="图片名称" align="center"></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/28/baiduapi/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="祥吉">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Deep Coding">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/02/28/baiduapi/" itemprop="url">调用百度SDK进行长语音识别</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-28T14:37:25+08:00">
+                2018-02-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/02/28/baiduapi/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/02/28/baiduapi/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>项目中需要用到语音识别技术，之前百度的语音识别SDK只支持时长小于1分钟的语音，所以对于十几分钟的电影，笔者需要自己先进行断句，然后一句句送入百度SDK，这样既麻烦，而且句与句之间的连贯性不够好，经常会造成一些啼笑皆非的识别。</p>
+<h3 id="长语音识别"><a href="#长语音识别" class="headerlink" title="长语音识别"></a>长语音识别</h3><p>2018年1月，百度开放了长语音识别SDK，可以进行自动断句，目测是根据短时能量法（即停顿时间）完成的，对识别后的语句还会自动修改，应该引入了语言模型进行修正。笔者今天上午又进行了一番尝试，至于识别效果嘛，是比以前好一些，但依然不敢恭维，以下：<br>首先采用<code>ffmpeg</code>模块，将视频转化为wav音频文件；接着将文件转码为采样率16K或8K的<code>PCM</code>无损格式<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ffmpeg -i <span class="variable">$audiopath</span> -f wav -vn <span class="variable">$&#123;audiobasename&#125;</span><span class="string">".wav"</span> <span class="comment"># 提取视频中的音频文件</span></span><br><span class="line">ffmpeg -y  -i <span class="variable">$audiobasename</span><span class="string">".wav"</span>  -acodec pcm_s16le -f s16le -ac 1 -ar 16000 16k-0.pcm <span class="comment"># wav音频文件转PCM</span></span><br></pre></td></tr></table></figure></p>
+<p>接着去<a href="http://ai.baidu.com/sdk" target="_blank" rel="noopener">百度Ai开放平台</a>，下载对应平台的SDK。解压后直接cd到<code>sample/asr</code>目录下， 运行<code>build.sh</code>(实际执行的是<code>/src/main.cpp</code>)，便可以识别样例中的一个<code>PCM</code>文件。<br>&nbsp;<br>若要识别你自己的音频文件，需要首先接入<a href="http://ai.baidu.com/docs#/Begin/top" target="_blank" rel="noopener">百度AI服务</a>，由于Access Token的有效期为30天，我们把鉴权请求机制写入<code>build.sh</code>中，这样每次调用SDK都会首先先执行鉴权。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line">curl -i -k &apos;https://aip.baidubce.com/oauth/2.0/token?grant_type=client_credentials&amp;client_id=xxxx&amp;client_secret=xxxx&apos;</span><br><span class="line"># &apos;xxxx&apos;的部分填入你在百度自己申请的id和key</span><br><span class="line">make &amp;&amp; echo &amp;&amp; echo &quot;build success, wait 3s to run&quot;  &amp;&amp; sleep 3 &amp;&amp; ./main</span><br></pre></td></tr></table></figure></p>
+<p>之后修改main.cpp中的<code>asr_set_config_params</code>、<code>asr_set_start_params</code>两个参数，具体如下：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span> app_id = <span class="string">"xxxxx"</span>; 填入你申请的ID</span><br><span class="line"><span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span> chunk_key = <span class="string">"xxxxxxx"</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span> secret_key = <span class="string">"xxxxxxxx"</span>;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 设置启动参数</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">asr_set_start_params</span><span class="params">(bds::BDSSDKMessage&amp; start_params)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span> app = <span class="string">"xxxxx"</span>; # 填入你申请的任务名称</span><br></pre></td></tr></table></figure>
+<p>将之前转好的音频文件，命名为<code>16k-0.pcm</code>，放置于<code>/asr/pcm</code>路径下，重新执行<code>build.sh</code>，便可以在<code>Terminal</code>生成识别后的音频文件！<br><strong>PS:</strong> 建议的环境是<code>GCC、G++ 4.8.5</code>，笔者在<code>GCC 5.4.0</code>也进行了测试，无法正确运行。</p>
+<h3 id="Textrank"><a href="#Textrank" class="headerlink" title="Textrank"></a>Textrank</h3><p>Textrank是传统抽取文章摘要的方式，算法思想借鉴了网页排序的pagerank技术，这里我们采用Github中已开源的<a href="https://github.com/letiantian/TextRank4ZH" target="_blank" rel="noopener">TextRank4ZH模块</a>，安装及调用文档都比较详细，此处不再赘述。</p>
+<h3 id="Ref："><a href="#Ref：" class="headerlink" title="Ref："></a>Ref：</h3><p><a href="https://www.baidu.com/s?ie=UTF-8&amp;wd=textrank4zh" target="_blank" rel="noopener">https://www.baidu.com/s?ie=UTF-8&amp;wd=textrank4zh</a><br><a href="http://ai.baidu.com/tech/speech/lsr" target="_blank" rel="noopener">http://ai.baidu.com/tech/speech/lsr</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/27/BPTT/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="祥吉">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Deep Coding">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/02/27/BPTT/" itemprop="url">BPTT</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-27T22:12:53+08:00">
+                2018-02-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/02/27/BPTT/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/02/27/BPTT/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/27/BP/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="祥吉">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Deep Coding">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/02/27/BP/" itemprop="url">神经网络反向传播算法推导及Coding</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-27T22:12:48+08:00">
+                2018-02-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/02/27/BP/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/02/27/BP/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/25/gcc/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1035,8 +1565,9 @@
         
           
             <h5 id="获取-var-www-下所有文件及文件夹的操作权限"><a href="#获取-var-www-下所有文件及文件夹的操作权限" class="headerlink" title="获取/var/www/下所有文件及文件夹的操作权限"></a>获取/var/www/下所有文件及文件夹的操作权限</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod 777 -R /var/www/  <span class="comment"># 用户目录下，需要在前面再加sudo</span></span><br></pre></td></tr></table></figure>
-<h5 id="pip安装软件镜像"><a href="#pip安装软件镜像" class="headerlink" title="pip安装软件镜像"></a>pip安装软件镜像</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo pip install -i https://pypi.tuna.tsinghua.edu.cn/simple xxx  (临时用)</span><br></pre></td></tr></table></figure>
+<h5 id="pip、pip3升级"><a href="#pip、pip3升级" class="headerlink" title="pip、pip3升级"></a>pip、pip3升级</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">pip/pip2 install --upgrade pip</span><br><span class="line">pip3 install --upgrade pip</span><br><span class="line">``` </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">##### pip安装软件镜像</span></span><br><span class="line">``` bash</span><br><span class="line">sudo pip install -i https://pypi.tuna.tsinghua.edu.cn/simple xxx  (临时用)</span><br></pre></td></tr></table></figure>
 <h5 id="pip安装国外软件可能超时的解决方法"><a href="#pip安装国外软件可能超时的解决方法" class="headerlink" title="pip安装国外软件可能超时的解决方法"></a>pip安装国外软件可能超时的解决方法</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip --default-timeout=100 install --upgrade gensim</span><br></pre></td></tr></table></figure>
+<h5 id="pip安装时不存在某个xxx包，可以用下面的尝试"><a href="#pip安装时不存在某个xxx包，可以用下面的尝试" class="headerlink" title="pip安装时不存在某个xxx包，可以用下面的尝试"></a>pip安装时不存在某个xxx包，可以用下面的尝试</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install python-xxx</span><br></pre></td></tr></table></figure>
 <h5 id="pip安装Tensorflow任意指定版本"><a href="#pip安装Tensorflow任意指定版本" class="headerlink" title="pip安装Tensorflow任意指定版本"></a>pip安装Tensorflow任意指定版本</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pip install tensorflow-gpu=1.4.1</span><br><span class="line">https://pypi.python.org/pypi/tensorflow-gpu/1.2.0 <span class="comment"># whl文件下载路径</span></span><br></pre></td></tr></table></figure>
 <h5 id="解除Ternsorboard端口占用"><a href="#解除Ternsorboard端口占用" class="headerlink" title="解除Ternsorboard端口占用"></a>解除Ternsorboard端口占用</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">lsof -i:6006  </span><br><span class="line"><span class="built_in">kill</span> -9 28508(上一个命令后弹出的实际端口号)</span><br></pre></td></tr></table></figure>
 <h5 id="没有安装tensorboard-或python版本不对从其源码打开"><a href="#没有安装tensorboard-或python版本不对从其源码打开" class="headerlink" title="没有安装tensorboard/或python版本不对从其源码打开"></a>没有安装tensorboard/或python版本不对从其源码打开</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">locate tensorboard</span><br><span class="line">python2 /usr/<span class="built_in">local</span>/lib/python2.7/dist-packages/tensorflow/tensorboard/teorboard.py --logdir=</span><br></pre></td></tr></table></figure>
@@ -1048,569 +1579,25 @@
 <h5 id="多版本cudnn安装及环境切换"><a href="#多版本cudnn安装及环境切换" class="headerlink" title="多版本cudnn安装及环境切换"></a>多版本cudnn安装及环境切换</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#解压文件</span></span><br><span class="line">tar -zxvf cudnn-8.0-linux-x64-v7.tgz</span><br><span class="line"><span class="comment">#切换到刚刚解压出来的文件夹路径</span></span><br><span class="line"><span class="built_in">cd</span> cuda </span><br><span class="line"><span class="comment">#复制include里的头文件</span></span><br><span class="line">sudo cp /include/cudnn.h  /usr/<span class="built_in">local</span>/cuda/include/</span><br><span class="line"><span class="comment">#复制lib64下的lib文件到cuda安装路径下的lib64</span></span><br><span class="line">sudo cp lib*  /usr/<span class="built_in">local</span>/cuda/lib64/</span><br><span class="line"><span class="comment">#设置权限</span></span><br><span class="line">sudo chmod a+r /usr/<span class="built_in">local</span>/cuda/include/cudnn.h </span><br><span class="line">sudo chmod a+r /usr/<span class="built_in">local</span>/cuda/lib64/libcudnn* <span class="comment">#(后面不删除此软连接)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#======更新软连接======</span></span><br><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/cuda/lib64/ </span><br><span class="line">sudo rm -rf libcudnn.so libcudnn.so.7   <span class="comment"># 除了新复制的libcudnn.so.7.0.2，删除其余所有的cudnn动态文件，该文件夹下直接ls指令查看</span></span><br><span class="line">sudo ln -s libcudnn.so.7.0.2 libcudnn.so.7  <span class="comment"># 生成软衔接（注意这里要和自己下载的cudnn版本对应，可以在/usr/local/cuda/lib64下查看自己libcudnn的版本）</span></span><br><span class="line">sudo ln -s libcudnn.so.7 libcudnn.so <span class="comment"># 生成软链接</span></span><br><span class="line">sudo ldconfig -v <span class="comment"># 立刻生效</span></span><br></pre></td></tr></table></figure>
 <h5 id="ubuntu桌面死机解决"><a href="#ubuntu桌面死机解决" class="headerlink" title="ubuntu桌面死机解决"></a>ubuntu桌面死机解决</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">top 查看，记下PID后，q退出即可，输入 sudo <span class="built_in">kill</span> PID    </span><br><span class="line">sudo pkill Xorg 注销桌面重新登录</span><br></pre></td></tr></table></figure>
 <h5 id="找不到xx包相关错误…cannot-find-lxxc…"><a href="#找不到xx包相关错误…cannot-find-lxxc…" class="headerlink" title="找不到xx包相关错误…cannot find -lxxc…"></a>找不到xx包相关错误…cannot find -lxxc…</h5><p>先找下其他目录中是否存在需要的lib文件，有的话不用下载，直接指向就好了。找到缺失lib文件的物理位置，之后在需要的目录中建立软连接<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">locate libc.so</span><br><span class="line">ln -s /usr/lib/x86_64-linux-gnu/libpthread.so /home/tucodec/miniconda3/compiler_compat/</span><br><span class="line">rm -rf libc.7.gz 移除软连接</span><br></pre></td></tr></table></figure></p>
-<h5 id="卸载、安装显卡驱动相关"><a href="#卸载、安装显卡驱动相关" class="headerlink" title="卸载、安装显卡驱动相关"></a>卸载、安装显卡驱动相关</h5><pre><code class="bash">sudo apt-get purge nvidia-*
-sudo add-apt-repository ppa:graphics-drivers/ppa
-sudo apt-get update
-sudo apt-get install nvidia-364.
-reboot    //重启
+<h5 id="ffmpeg视频处理相关"><a href="#ffmpeg视频处理相关" class="headerlink" title="ffmpeg视频处理相关"></a>ffmpeg视频处理相关</h5><pre><code class="bash"><span class="comment"># 图像合成视频    -r 20: 代表每秒20帧，注意-r需要放到-i前面，会造成时长错误</span>
+<span class="built_in">cd</span> /home/tucodec/wuxj/ECO/results
+rm test.mp4
+ffmpeg -f image2 -r 5 -i %4d.png test.mp4
+
+<span class="comment"># 视频切帧，问题是不够高清</span>
+ffmpeg -i /home/tucodec/test.mp4 -f image2 -vf fps=fps=5 /home/tucodec/results/%4d.jpg <span class="comment"># 图片命名方式 0001.jpg</span>
+
+<span class="comment"># 视频转码</span>
+ffmpeg -i  test.mp4 test.avi
+
+<span class="comment"># 合并mp4格式视频</span>
+  ffmpeg -i test.mp4 -vcodec copy -acodec copy -vbsf h264_mp4toannexb 1.ts
+  ffmpeg -i test1.mp4 -vcodec copy -acodec copy -vbsf h264_mp4toannexb 2.ts
+  ffmpeg -i test3.mp4 -vcodec copy -acodec copy -vbsf h264_mp4toannexb 3.ts
+  ffmpeg -i <span class="string">"concat:1.ts|2.ts|3.ts"</span> -acodec copy -vcodec copy -absf aac_adtstoasc output.mp4
+
 </code></pre>
 
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/01/python-5/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="祥吉">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Deep Coding">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/02/01/python-5/" itemprop="url">python操作(五)：函数、变量及类</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-01T11:05:03+08:00">
-                2018-02-01
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/02/01/python-5/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/02/01/python-5/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h3><p>在 python 中，类型属于对象，变量是没有类型的，Eg：<code>a=[1,2,3]</code>，其中[1,2,3] 是 List 类型，而变量 a 没有类型，它仅仅是一个对象的引用</p>
-<h3 id="函数的参数传递"><a href="#函数的参数传递" class="headerlink" title="函数的参数传递"></a>函数的参数传递</h3><blockquote>
-<p>不可变类型：类似 c++ 的值传递，如 整数、字符串、元组。如fun（a），传递的只是a的值，没有影响a对象本身。<br>可变类型：类似 c++ 的引用传递，如 列表，字典。如 fun（la），则是将 la 真正的传过去，修改后fun外部的la也会受影响</p>
-</blockquote>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">changeme</span><span class="params">( mylist )</span>:</span></span><br><span class="line">    mylist.append([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>])</span><br><span class="line">    <span class="keyword">print</span> (<span class="string">"函数内取值: "</span>, mylist)</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">mylist = [<span class="number">10</span>,<span class="number">20</span>,<span class="number">30</span>]</span><br><span class="line">changeme( mylist )</span><br><span class="line"><span class="comment">#函数内取值:  [10, 20, 30, [1, 2, 3, 4]]</span></span><br><span class="line"><span class="keyword">print</span> (<span class="string">"函数外取值: "</span>, mylist)</span><br><span class="line"><span class="comment">#函数外取值:  [10, 20, 30, [1, 2, 3, 4]]</span></span><br></pre></td></tr></table></figure>
-<h3 id="关键词参数"><a href="#关键词参数" class="headerlink" title="关键词参数"></a>关键词参数</h3><p>python中调用关键词参数，不用注意顺序，解释器会自动进行匹配<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">printinfo( age=<span class="number">50</span>, name=<span class="string">"runoob"</span> )</span><br></pre></td></tr></table></figure></p>
-<h3 id="python遍历："><a href="#python遍历：" class="headerlink" title="python遍历："></a>python遍历：</h3><p>Python3 range() 函数返回的是一个可迭代对象（类型是对象），而不是列表类型， 所以打印的时候不会打印列表<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">range(<span class="number">5</span>)</span><br><span class="line"><span class="comment">#range(0, 5)</span></span><br><span class="line">list(range(<span class="number">5</span>))</span><br><span class="line"><span class="comment">#[0, 1, 2, 3, 4]</span></span><br></pre></td></tr></table></figure></p>
-<p>在序列中遍历时，索引位置和对应值可以使用 enumerate() 函数同时得到：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i, v <span class="keyword">in</span> enumerate([<span class="string">'tic'</span>, <span class="string">'tac'</span>, <span class="string">'toe'</span>]):</span><br><span class="line">print(i, v)</span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">0 tic</span></span><br><span class="line"><span class="string">1 tac</span></span><br><span class="line"><span class="string">2 toe</span></span><br><span class="line"><span class="string">'''</span></span><br></pre></td></tr></table></figure></p>
-<p>同时遍历两个或更多的序列，可以使用 zip() 组合：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">questions = [<span class="string">'name'</span>, <span class="string">'quest'</span>, <span class="string">'favorite color'</span>]</span><br><span class="line">answers = [<span class="string">'lancelot'</span>, <span class="string">'the holy grail'</span>, <span class="string">'blue'</span>]</span><br><span class="line"><span class="keyword">for</span> q, a <span class="keyword">in</span> zip(questions, answers):</span><br><span class="line">    print(<span class="string">'What is your &#123;0&#125;?  It is &#123;1&#125;.'</span>.format(q, a))</span><br><span class="line"><span class="comment">#What is your name?  It is lancelot.</span></span><br></pre></td></tr></table></figure></p>
-<h3 id="python类："><a href="#python类：" class="headerlink" title="python类："></a>python类：</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Complex</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, realpart, imagpart)</span>:</span></span><br><span class="line">        self.r = realpart</span><br><span class="line">        self.i = imagpart</span><br><span class="line">x = Complex(<span class="number">3.0</span>, <span class="number">-4.5</span>)</span><br><span class="line">print(x.r, x.i)   <span class="comment"># 输出结果：3.0 -4.5</span></span><br></pre></td></tr></table></figure>
-<p>self是类的实例，不是类本身，且并不是一个关键字，也可以使用 this/toor等，但是最好还是按照约定是用self</p>
-<h4 id="python类方法-函数："><a href="#python类方法-函数：" class="headerlink" title="python类方法/函数："></a>python类方法/函数：</h4><p>在类地内部，使用 def 关键字来定义一个方法，与一般函数定义不同，类方法必须包含参数 self, 且为第一个参数，self 代表的是类的实例。</p>
-<h4 id="python类属性"><a href="#python类属性" class="headerlink" title="python类属性"></a>python类属性</h4><p><code>__private_ attrs：</code>两个下划线开头，声明该属性为私有，不能在类地外部被使用或直接访问，但可以通过调用类的公有函数访问。在类内部的方法中使用时 <code>self.__private_attrs。</code></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/01/python-2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="祥吉">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Deep Coding">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/02/01/python-2/" itemprop="url">python操作(四)：IO编程/调用shell语句</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-01T11:02:03+08:00">
-                2018-02-01
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/02/01/python-2/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/02/01/python-2/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="python调用shell语句"><a href="#python调用shell语句" class="headerlink" title="python调用shell语句"></a>python调用shell语句</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">假设已存在run.sh的shell语句，如:</span></span><br><span class="line"><span class="string">cd /home/tucodec/Desktop </span></span><br><span class="line"><span class="string">python2 run.py</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line">os.system(<span class="string">"bash run.sh"</span>) <span class="comment">#会自动到桌面执行run.py</span></span><br></pre></td></tr></table></figure>
-<p><strong>上面调用shell语句的方式，跟python语句是独立进行的，也就是说无法进行变量的交互</strong></p>
-<h4 id="采用下面的语句可以实现在python中操作文件-文件夹"><a href="#采用下面的语句可以实现在python中操作文件-文件夹" class="headerlink" title="采用下面的语句可以实现在python中操作文件/文件夹"></a>采用下面的语句可以实现在python中操作文件/文件夹</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> shutil</span><br><span class="line">file_dir = <span class="string">'/Users/wxj/Desktop'</span></span><br><span class="line"><span class="keyword">print</span> (os.getcwd())  <span class="comment"># 获取当前目录</span></span><br><span class="line">os.chdir(file_dir)   <span class="comment"># 改变工作目录</span></span><br><span class="line">os.mkdir(<span class="string">"test"</span>)  <span class="comment"># 创建文件夹</span></span><br><span class="line">os.makedirs(<span class="string">"test/pic/pic_1"</span>)<span class="comment"># 创建一系列文件夹</span></span><br><span class="line"></span><br><span class="line">os.rename(<span class="string">"test"</span>,<span class="string">"test1"</span>)   </span><br><span class="line">os.rename(<span class="string">"test.txt"</span>,<span class="string">"test1.txt"</span>)  <span class="comment"># 重命名，注意需要带扩展名</span></span><br><span class="line"></span><br><span class="line">shutil.copyfile(<span class="string">"test_org.txt"</span>,<span class="string">"test1.txt"</span>)  <span class="comment"># 存在则覆盖，用于copy文件</span></span><br><span class="line">shutil.copytree(<span class="string">"/Users/wxj/Desktop/1"</span>,<span class="string">"/Users/wxj/Desktop/2"</span>) <span class="comment"># 2文件夹不存在，用于copy文件夹</span></span><br><span class="line"></span><br><span class="line">shutil.move(<span class="string">"/Users/wxj/Desktop/1"</span>,<span class="string">"/Users/wxj/Desktop/2"</span>） <span class="comment"># 2文件夹存在，用于移动文件夹</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> os.path.exists(path_x): <span class="comment"># 判定是否存在某个文件夹</span></span><br><span class="line">    shutil.rmtree(Path_x)  <span class="comment"># 删除文件夹</span></span><br><span class="line">    </span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> os.listdir(path_1): <span class="comment">#判定某文件夹是否为空</span></span><br></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/01/python2-3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="祥吉">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Deep Coding">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/02/01/python2-3/" itemprop="url">python操作(三)：Unicode编码</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-01T10:32:45+08:00">
-                2018-02-01
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/02/01/python2-3/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/02/01/python2-3/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h2><p>中文字符一般都是编码为<code>Unicode</code>存储在计算机中的，然而表现形式却大不相同，有的程序喜欢给你输出中文，有的喜欢输出乱码，Eg：<code>&#39;\xe5\xbc\xa0\xe4\xbf\x8a&#39;</code>。python2/3中的字符串编码，就有这样的问题，在此进行梳理，有备无患。</p>
-<h3 id="ASCII、Unicode和UTF-8关系"><a href="#ASCII、Unicode和UTF-8关系" class="headerlink" title="ASCII、Unicode和UTF-8关系"></a>ASCII、Unicode和UTF-8关系</h3><p>由于1个字节(byte) == 8位(bit)，所以1字节最多可以表示256个字符。美国人在发明计算机时候，英文字母(大小写共64个)，加上一些标点符号，256个字符安全够用。这个编码就被称为<code>ASCII</code>编码。比如’A’对应ASCII码表中的65，’z’对应122。<br><img src="/img/python_1.jpeg" alt=""><br>但我们的中文博大精深，256个字符显然不能覆盖全部字符，所以中国制定了2字节的GB2312编码(GBK是GB2312的扩充，包含的中文字符更多)。无独有偶，各个国家都制定了自己的规则把本国的文字编写进去。为了统一各个语言之间的编码，<code>Unicode</code>应运而生，具体来说，ASCII用1个字节表示字符，Unicode用2个字节，对于一些特殊符号，甚至使用4个字节。ASCII编码的’A’用Unicode编码，只需要在前面补0就可以了。</p>
-<blockquote>
-<p>虽然乱码消失，但却造成了新的问题：如果你写的文本基本上都是英语，那用Unicode编码比ASCII编码需要多一倍的存储空间，在存储和传输上就十分不划算。</p>
-</blockquote>
-<p><code>UTF-8</code>编码再次被发明，它是对Unicode编码的<code>再编码</code>，对于常用的英文编码为1字节，汉子通常为3字节。如果需要传输、保存的文本含有大量应为，这样的编码可以减少带宽，减少硬盘成本。如下所示：<br><img src="/img/python_2.jpeg" alt=""></p>
-<h2 id="python2"><a href="#python2" class="headerlink" title="python2"></a>python2</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Python 2.7.10 (default, Jul 15 2017, 17:16:57) </span><br><span class="line">[GCC 4.2.1 Compatible Apple LLVM 9.0.0 (clang-900.0.31)] on darwin</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; <span class="string">'中国'</span> <span class="comment"># python2中默认转换为UTF-8编码的字符串</span></span><br><span class="line"><span class="string">'\xe4\xb8\xad\xe5\x9b\xbd'</span></span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; u<span class="string">'中国'</span> <span class="comment"># 字符串前+'u'，代表指定Unicode编码</span></span><br><span class="line">u<span class="string">'\u4e2d\u56fd'</span></span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; <span class="string">'中国'</span>.decode(<span class="string">'utf-8'</span>) <span class="comment"># utf-8类型字符串解码为Unicode编码</span></span><br><span class="line">u<span class="string">'\u4e2d\u56fd'</span></span><br></pre></td></tr></table></figure>
-<h2 id="python3"><a href="#python3" class="headerlink" title="python3"></a>python3</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Python 3.5.3 (v3.5.3:1880cb95a742, Jan 16 2017, 08:49:46) </span><br><span class="line">[GCC 4.2.1 (Apple Inc. build 5666) (dot 3)] on darwin</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; <span class="string">'中国'</span> <span class="comment"># python3中默认为Unicode格式(无编码)，同u'中国'</span></span><br><span class="line"><span class="string">'中国'</span></span><br><span class="line">&lt;class <span class="string">'str'</span>&gt;</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; <span class="string">'中国'</span>.encode(<span class="string">'utf-8'</span>) <span class="comment">#转UTF-8编码</span></span><br><span class="line">b<span class="string">'\xe4\xb8\xad\xe5\x9b\xbd'</span></span><br><span class="line">&lt;class <span class="string">'bytes'</span>&gt;</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; <span class="built_in">print</span> (<span class="string">'中国'</span>.encode(<span class="string">'utf-8'</span>).decode(<span class="string">'utf-8'</span>)) </span><br><span class="line"><span class="string">'中国'</span></span><br></pre></td></tr></table></figure>
-<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><blockquote>
-<ul>
-<li>python2中字符串有str和unicode两种类型，str有各种编码区别(UTF-8、GBK等)，unicode是没有编码的标准形式。unicode通过encode转化成str，str通过decode转化成unicode。</li>
-<li>python3中字符串有str和bytes两种类型，字符串str与python2中unicode类似是标准形式，bytes类似python2中的str有各种编码区别。所以在python3中查看某个字符串的编码序列，只能先将str编码为一定形式的bytes数据，然后再输出</li>
-</ul>
-</blockquote>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Python 3.5.3 (v3.5.3:1880cb95a742, Jan 16 2017, 08:49:46) </span><br><span class="line">[GCC 4.2.1 (Apple Inc. build 5666) (dot 3)] on darwin</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; ss = <span class="string">'北京市'</span>  </span><br><span class="line">&gt;&gt;&gt; <span class="built_in">type</span>(ss)  </span><br><span class="line">&lt;class <span class="string">'str'</span>&gt;  </span><br><span class="line">&gt;&gt;&gt; us = ss.encode(<span class="string">'gbk'</span>)  </span><br><span class="line">&gt;&gt;&gt; <span class="built_in">type</span>(us)  </span><br><span class="line">&lt;class <span class="string">'bytes'</span>&gt;  </span><br><span class="line">&gt;&gt;&gt; us  </span><br><span class="line">b<span class="string">'\xb1\xb1\xbe\xa9\xca\xd0'</span></span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/30/python-str/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="祥吉">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Deep Coding">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/30/python-str/" itemprop="url">python操作(二)：字符串</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-30T22:05:21+08:00">
-                2018-01-30
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/01/30/python-str/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/01/30/python-str/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="找出最后一个以’-’开始的字符串"><a href="#找出最后一个以’-’开始的字符串" class="headerlink" title="找出最后一个以’.’开始的字符串"></a>找出最后一个以’.’开始的字符串</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 第一种方法</span></span><br><span class="line">filename = <span class="string">"/home/tucodec/ZJU.mp4"</span></span><br><span class="line">str_1 = filename[filename.rindex(<span class="string">"."</span>):] <span class="comment"># rindex：返回最后一个'.'的位置信息</span></span><br><span class="line">print(str1) <span class="comment"># 输出“.mp4”</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 第二种方法</span></span><br><span class="line">str_1 = filename.split(<span class="string">'.'</span>)[<span class="number">-1</span>]</span><br></pre></td></tr></table></figure>
-<h4 id="获取某文件夹下包含文件名称的绝对路径"><a href="#获取某文件夹下包含文件名称的绝对路径" class="headerlink" title="获取某文件夹下包含文件名称的绝对路径"></a>获取某文件夹下包含文件名称的绝对路径</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">all_path</span><span class="params">(dirname)</span>:</span></span><br><span class="line">    result = []</span><br><span class="line">    <span class="keyword">for</span> maindir, subdir, file_name_list <span class="keyword">in</span> os.walk(dirname):</span><br><span class="line">        <span class="keyword">for</span> filename <span class="keyword">in</span> file_name_list:</span><br><span class="line">            apath = os.path.join(maindir, filename)</span><br><span class="line">            result.append(apath)</span><br><span class="line">    <span class="keyword">return</span> result</span><br></pre></td></tr></table></figure>
-<h4 id="获取文件下文件名称的另一种方式"><a href="#获取文件下文件名称的另一种方式" class="headerlink" title="获取文件下文件名称的另一种方式"></a>获取文件下文件名称的另一种方式</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">result = [] </span><br><span class="line">alllist=os.listdir(<span class="string">"/Users/wxj/Desktop/1"</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> alllist:</span><br><span class="line">    <span class="keyword">if</span> <span class="string">"."</span> <span class="keyword">in</span> i:</span><br><span class="line">        aa, bb=i.split(<span class="string">"."</span>)</span><br><span class="line">        <span class="keyword">if</span> bb == <span class="string">"txt"</span>:</span><br><span class="line">            result.append(aa+<span class="string">"."</span>+bb)</span><br></pre></td></tr></table></figure>
-<h4 id="还是获取文件列表到一个list，并排序"><a href="#还是获取文件列表到一个list，并排序" class="headerlink" title="还是获取文件列表到一个list，并排序"></a>还是获取文件列表到一个list，并排序</h4><p>glob模块提供了一个函数用于从目录通配符搜索中生成文件列表:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> glob</span><br><span class="line">list_1 = glob.glob(<span class="string">'*.jpg'</span>)</span><br><span class="line"><span class="comment"># ['2.jpg', '1.jpg', '5.jpg']</span></span><br><span class="line">sorted(list_1)</span><br><span class="line"><span class="comment"># ['1.jpg', '2.jpg', '5.jpg']</span></span><br></pre></td></tr></table></figure></p>
-<h4 id="3种连接字符串方式"><a href="#3种连接字符串方式" class="headerlink" title="3种连接字符串方式"></a>3种连接字符串方式</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">seq1 = [<span class="string">'hello'</span>,<span class="string">'good'</span>,<span class="string">'boy'</span>,<span class="string">'doiido'</span>]</span><br><span class="line"><span class="keyword">print</span> <span class="string">' '</span>.join(seq1) <span class="comment"># 已空格符连接一个list中的字符串</span></span><br><span class="line">输出：hello good boy doiido</span><br><span class="line">===============================================</span><br><span class="line">os.path.join(<span class="string">'/hello/'</span>,<span class="string">'good/boy/'</span>,<span class="string">'doiido'</span>) <span class="comment"># 合并目录，注意‘/’不能多写</span></span><br><span class="line">输出：<span class="string">'/hello/good/boy/doiido'</span> <span class="comment"># 这样可以正确处理不同操作系统的路径分隔符</span></span><br><span class="line">===============================================</span><br><span class="line">a = <span class="string">'/hello/'</span></span><br><span class="line">b = <span class="string">'good/boy/'</span></span><br><span class="line">print(a+b)  </span><br><span class="line">输出：<span class="string">'/hello/good/boy/'</span></span><br></pre></td></tr></table></figure>
-<h4 id="分割字符串成list"><a href="#分割字符串成list" class="headerlink" title="分割字符串成list"></a>分割字符串成list</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">line = <span class="string">"我们 大 中国"</span></span><br><span class="line">line.split()</span><br><span class="line">[<span class="string">'我们'</span>, <span class="string">'大'</span>, <span class="string">'中国'</span>]</span><br></pre></td></tr></table></figure>
-<h4 id="删除不同位置的空格"><a href="#删除不同位置的空格" class="headerlink" title="删除不同位置的空格"></a>删除不同位置的空格</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">s.strip(rm)        <span class="comment">#删除s字符串中开头、结尾处，位于rm删除序列的字符</span></span><br><span class="line">s.lstrip(rm)       <span class="comment">#删除s字符串中开头处</span></span><br><span class="line">s.rstrip(rm)      <span class="comment">#删除s字符串中结尾处</span></span><br><span class="line"><span class="comment"># rm删除序列是只要边（开头或结尾）上的字符在删除序列内，就删除掉</span></span><br><span class="line">a = <span class="string">'123abc'</span></span><br><span class="line">a.strip(<span class="string">'21'</span>)</span><br><span class="line">a.strip(<span class="string">'12'</span>)</span><br><span class="line"><span class="comment"># 结果是一样的：'3abc'</span></span><br></pre></td></tr></table></figure>
-<h4 id="python全局变量"><a href="#python全局变量" class="headerlink" title="python全局变量"></a>python全局变量</h4><p>Python 中只有模块（module），类（class）以及函数（def、lambda）才会引入新的作用域，其它的代码块是不会引入新的作用域的。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="keyword">True</span>:</span><br><span class="line">    msg = <span class="string">'I am from Runoob'</span></span><br><span class="line">print(msg)  <span class="comment"># 'I am from Runoob'</span></span><br><span class="line"><span class="comment">#=============global=======nonlocal===================</span></span><br><span class="line"><span class="keyword">global</span> str1 <span class="comment"># 在给全局变量str1赋值时，需要先声明global，否则str1会被当作新定义的局部变量</span></span><br><span class="line">str1 = <span class="string">"new year"</span></span><br><span class="line">str2 = str1 <span class="comment"># 全局变量赋值给另一个局部变量时，不需global声明，程序会先找局部变量str1，没得话就去全局变量区域找</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">()</span>:</span></span><br><span class="line">    str1 = <span class="string">"中国"</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">func_1</span><span class="params">()</span>:</span></span><br><span class="line">        <span class="keyword">nonlocal</span> str1</span><br><span class="line">        str1 = <span class="string">"南京"</span>  <span class="comment">#修改嵌套作用域（函数A的变量作用在子函数B时）中的变量需要使用 nonlocal 关键字</span></span><br></pre></td></tr></table></figure></p>
-<h4 id="python-list、dict、tuple、set"><a href="#python-list、dict、tuple、set" class="headerlink" title="python list、dict、tuple、set"></a>python list、dict、tuple、set</h4><p>set：通过set.add()函数添加元素，set会自动去重，且查找效率高(hash)<br>tuple是只读的list()，list可以通过下标、循环等方式访问，通过.append()来访问<br>dict是key、value一一对应的关系，常用于序号跟真值之间的查询，比如NMT任务的vocab<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">dict1 = &#123;<span class="string">'1'</span>:<span class="string">'飞机'</span>,<span class="string">'2'</span>:<span class="string">'自行车'</span>,<span class="string">'3'</span>:<span class="string">'鸟'</span>,<span class="string">'4'</span>:<span class="string">'船'</span>,<span class="string">'5'</span>:<span class="string">'瓶子'</span>,<span class="string">'6'</span>:<span class="string">'公共汽车'</span>,<span class="string">'7'</span>:<span class="string">'车'</span>,<span class="string">'8'</span>:<span class="string">'猫'</span>,<span class="string">'9'</span>:<span class="string">'椅子'</span>,<span class="string">'10'</span>:<span class="string">'牛'</span>,<span class="string">'11'</span>:<span class="string">'餐桌'</span>,<span class="string">'12'</span>:<span class="string">'狗'</span>, \</span><br><span class="line">    <span class="string">'13'</span>:<span class="string">'马'</span>,<span class="string">'14'</span>:<span class="string">'摩托车'</span>,<span class="string">'15'</span>:<span class="string">'人'</span>,<span class="string">'16'</span>:<span class="string">'植物'</span>,<span class="string">'17'</span>:<span class="string">'羊'</span>,<span class="string">'18'</span>:<span class="string">'沙发'</span>,<span class="string">'19'</span>:<span class="string">'火车'</span>,<span class="string">'20'</span>:<span class="string">'电视'</span>&#125;</span><br><span class="line">    <span class="keyword">for</span> str_i <span class="keyword">in</span> list(A):</span><br><span class="line">    List.append(dict1[str_i]) <span class="comment">#listA中是一个纯数字列表，LIST中对应其在字典中的真实类别</span></span><br></pre></td></tr></table></figure></p>
-<h4 id="write、writelines区别"><a href="#write、writelines区别" class="headerlink" title="write、writelines区别"></a>write、writelines区别</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">f.write(name + <span class="string">'\n'</span>) <span class="comment"># write只能写入str</span></span><br><span class="line">f.writelines(text) <span class="comment"># 自动迭代写入一个字符串列表[str]</span></span><br></pre></td></tr></table></figure>
-<h4 id="文件批量命名"><a href="#文件批量命名" class="headerlink" title="文件批量命名"></a>文件批量命名</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line">f = sorted(os.listdir())</span><br><span class="line">n = <span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> f:</span><br><span class="line">    <span class="keyword">if</span> n &lt; <span class="number">9</span>:</span><br><span class="line">        oldname = f[n]</span><br><span class="line">        newname = <span class="string">"000"</span>+str(n+<span class="number">1</span>)+<span class="string">".jpg"</span></span><br><span class="line">        os.rename(oldname, newname)</span><br><span class="line">        print(oldname, <span class="string">"--------&gt;"</span>, newname)</span><br><span class="line">    <span class="keyword">elif</span> n &lt; <span class="number">99</span>:</span><br><span class="line">        oldname = f[n]</span><br><span class="line">        newname = <span class="string">"00"</span>+str(n+<span class="number">1</span>)+<span class="string">".jpg"</span></span><br><span class="line">        os.rename(oldname, newname)</span><br><span class="line">        print(oldname, <span class="string">"--------&gt;"</span>, newname)</span><br><span class="line">    <span class="keyword">elif</span> n &lt; <span class="number">999</span>:</span><br><span class="line">        oldname = f[n]</span><br><span class="line">        newname = <span class="string">"0"</span>+str(n+<span class="number">1</span>)+<span class="string">".jpg"</span></span><br><span class="line">        os.rename(oldname, newname)</span><br><span class="line">        print(oldname, <span class="string">"--------&gt;"</span>, newname)</span><br><span class="line">    n += <span class="number">1</span></span><br></pre></td></tr></table></figure>
           
         
       
@@ -1649,7 +1636,7 @@ reboot    //重启
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1699,7 +1686,7 @@ reboot    //重启
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">28</span>
+                  <span class="site-state-item-count">32</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1797,7 +1784,7 @@ reboot    //重启
  
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共23.7k字</span>
+  <span class="post-count">博客全站共26.7k字</span>
 </div>
 
 <div class="powered-by">

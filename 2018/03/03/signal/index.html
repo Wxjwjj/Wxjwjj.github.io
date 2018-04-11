@@ -97,7 +97,7 @@
 <meta property="og:image" content="http://yoursite.com/img/fft.jpg">
 <meta property="og:image" content="http://yoursite.com/img/ft2.jpeg">
 <meta property="og:image" content="http://yoursite.com/img/ft3.jpeg">
-<meta property="og:updated_time" content="2018-03-15T03:04:49.138Z">
+<meta property="og:updated_time" content="2018-03-28T12:04:12.542Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="信号相关知识">
 <meta name="twitter:description" content="傅立叶级数周期为T的周期信号，若满足“狄里赫利”条件，则可以将其展开为有限或无限个离散的正余弦函数累加的形式。它的物理意义是很明显的，这就是把一个比较复杂的周期运动看成许多不同运动的叠加，如下：$$f(t) = A_{0}+\sum_{n=1}^{\infty }A_{n}sin(n\omega t + \varphi )$$而对于任何一个非周期信号，同样可以用傅立叶展开的形式，只不过它的频域曲线">
@@ -358,6 +358,8 @@
 <li>上采样为将图像在每个方向扩大为原来的两倍，新增的行和列以0填充；再使用先前同样的内核(乘以4)与放大后的图像卷积，获得 “新增像素”的近似值<br>而resize函数改变大小与图像金字塔的不同，采用的是线性插值补全丢失的像素，但实际用下来差别不大。</li>
 </ul>
 </blockquote>
+<p>&nbsp;<br>插个话：图像金字塔在目标检测中的应用<br>滑窗的尺寸一般是固定的，而多尺度通过图像金字塔实现。这样相比不断改变滑窗大小，效率更高。至于缩小多少倍，源图缩到滑动窗口大小即可以，这样代表整张图片是某个类。</p>
+<p>假如人脸size[20,20]，滑动窗口（box）Size[40,40]那么可能检不出这张人脸（人脸占据比例太小），而随着图像金字塔变换人脸size会越来越小，那人脸占据整个box的比例也会更低，导致无法检出。<br>换句话说：MinFaceSize(40)，只能检测最小约为[40，40]的人脸。</p>
 <h3 id="Ref"><a href="#Ref" class="headerlink" title="Ref:"></a>Ref:</h3><p><a href="https://zhuanlan.zhihu.com/p/19763358?from=singlemessage&amp;isappinstalled=1" target="_blank" rel="noopener">傅里叶分析之掐死教程（完整版）更新于2014.06.06</a></p>
 
       
@@ -489,7 +491,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">28</span>
+                  <span class="site-state-item-count">32</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -603,7 +605,7 @@
  
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共23.7k字</span>
+  <span class="post-count">博客全站共26.7k字</span>
 </div>
 
 <div class="powered-by">

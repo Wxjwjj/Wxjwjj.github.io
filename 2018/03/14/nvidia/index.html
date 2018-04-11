@@ -86,19 +86,19 @@
 
 
 
-<meta name="description" content="背景一台主机多人使用的情况下，把显卡搞崩了。到网上百度了N多教程，大致尝试的如下：   显卡线插集显上，装好驱动后把线再插回N卡 BIOS设置禁用Secure boot，cpu做显卡 采用PPA源，尝试各种375、381、390的安装 打开ubuntu的软件更新，更新显卡驱动   经过上述步骤，会提示显卡驱动已经安装成功，但nvidia-smi依然无效… 该最简单但最高效的选手登场了：自己编译 N">
+<meta name="description" content="Ubuntu1604系统安装笔者第一次尝试Mac烧系统盘，没想到比windows简单到爆，过程如下：&amp;nbsp;官网下载Ubuntu iso文件&amp;nbsp;格式化一个U盘&amp;nbsp;接着写入U盘镜像123df -hl       # 记住磁盘名称，Eg：/dev/disk2ssudo diskutil umount /dev/disk2s  # 卸载该磁盘sudo dd bs=1m if=/Use">
 <meta name="keywords" content="Linux">
 <meta property="og:type" content="article">
-<meta property="og:title" content="ubuntu1604 + 1080Ti + 390显卡驱动安装">
+<meta property="og:title" content="Ubuntu1604装机系列(一)：Mac烧系统盘及1080Ti显卡(390版本)驱动安装">
 <meta property="og:url" content="http://yoursite.com/2018/03/14/nvidia/index.html">
 <meta property="og:site_name" content="Deep Coding">
-<meta property="og:description" content="背景一台主机多人使用的情况下，把显卡搞崩了。到网上百度了N多教程，大致尝试的如下：   显卡线插集显上，装好驱动后把线再插回N卡 BIOS设置禁用Secure boot，cpu做显卡 采用PPA源，尝试各种375、381、390的安装 打开ubuntu的软件更新，更新显卡驱动   经过上述步骤，会提示显卡驱动已经安装成功，但nvidia-smi依然无效… 该最简单但最高效的选手登场了：自己编译 N">
+<meta property="og:description" content="Ubuntu1604系统安装笔者第一次尝试Mac烧系统盘，没想到比windows简单到爆，过程如下：&amp;nbsp;官网下载Ubuntu iso文件&amp;nbsp;格式化一个U盘&amp;nbsp;接着写入U盘镜像123df -hl       # 记住磁盘名称，Eg：/dev/disk2ssudo diskutil umount /dev/disk2s  # 卸载该磁盘sudo dd bs=1m if=/Use">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/img/nvidia.png">
-<meta property="og:updated_time" content="2018-03-14T12:39:17.239Z">
+<meta property="og:updated_time" content="2018-04-11T04:01:29.583Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="ubuntu1604 + 1080Ti + 390显卡驱动安装">
-<meta name="twitter:description" content="背景一台主机多人使用的情况下，把显卡搞崩了。到网上百度了N多教程，大致尝试的如下：   显卡线插集显上，装好驱动后把线再插回N卡 BIOS设置禁用Secure boot，cpu做显卡 采用PPA源，尝试各种375、381、390的安装 打开ubuntu的软件更新，更新显卡驱动   经过上述步骤，会提示显卡驱动已经安装成功，但nvidia-smi依然无效… 该最简单但最高效的选手登场了：自己编译 N">
+<meta name="twitter:title" content="Ubuntu1604装机系列(一)：Mac烧系统盘及1080Ti显卡(390版本)驱动安装">
+<meta name="twitter:description" content="Ubuntu1604系统安装笔者第一次尝试Mac烧系统盘，没想到比windows简单到爆，过程如下：&amp;nbsp;官网下载Ubuntu iso文件&amp;nbsp;格式化一个U盘&amp;nbsp;接着写入U盘镜像123df -hl       # 记住磁盘名称，Eg：/dev/disk2ssudo diskutil umount /dev/disk2s  # 卸载该磁盘sudo dd bs=1m if=/Use">
 <meta name="twitter:image" content="http://yoursite.com/img/nvidia.png">
 
 
@@ -135,7 +135,7 @@
 
 
 
-  <title>ubuntu1604 + 1080Ti + 390显卡驱动安装 | Deep Coding</title>
+  <title>Ubuntu1604装机系列(一)：Mac烧系统盘及1080Ti显卡(390版本)驱动安装 | Deep Coding</title>
   
 
 
@@ -279,7 +279,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">ubuntu1604 + 1080Ti + 390显卡驱动安装</h1>
+          <h1 class="post-title" itemprop="name headline">Ubuntu1604装机系列(一)：Mac烧系统盘及1080Ti显卡(390版本)驱动安装</h1>
         
 
         <div class="post-meta">
@@ -339,7 +339,11 @@
       
 
       
-        <h4 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h4><p>一台主机多人使用的情况下，把显卡搞崩了。到网上百度了N多教程，大致尝试的如下：</p>
+        <h4 id="Ubuntu1604系统安装"><a href="#Ubuntu1604系统安装" class="headerlink" title="Ubuntu1604系统安装"></a>Ubuntu1604系统安装</h4><p>笔者第一次尝试Mac烧系统盘，没想到比windows简单到爆，过程如下：<br>&nbsp;<br><a href="https://www.ubuntu.com/download" target="_blank" rel="noopener">官网</a>下载Ubuntu iso文件<br>&nbsp;<br>格式化一个U盘<br>&nbsp;<br>接着写入U盘镜像<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">df -hl       <span class="comment"># 记住磁盘名称，Eg：/dev/disk2s</span></span><br><span class="line">sudo diskutil umount /dev/disk2s  <span class="comment"># 卸载该磁盘</span></span><br><span class="line">sudo dd bs=1m <span class="keyword">if</span>=/Users/&lt;user name&gt;/Desktop/ubuntu-16.04.4-desktop-amd64.iso of=/dev/disk2s</span><br></pre></td></tr></table></figure></p>
+<p>静静等待10分钟，U盘即可写入完毕。接着就是设置电脑U盘启动，开始安装Ubuntu系统了</p>
+<h5 id="ubuntu-换源"><a href="#ubuntu-换源" class="headerlink" title="ubuntu 换源"></a>ubuntu 换源</h5><p><a href="https://mirrors.tuna.tsinghua.edu.cn/help/ubuntu/" target="_blank" rel="noopener">清华大学开源软件镜像站</a>寻找对应系统的源<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /etc/apt</span><br><span class="line">sudo cp sources.list sources.list.old <span class="comment">#先将之前的源做个备份</span></span><br><span class="line"></span><br><span class="line">vi sources.list <span class="comment"># 拷贝清华的镜像到该list</span></span><br><span class="line"></span><br><span class="line">deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial main restricted universe multiverse</span><br><span class="line">deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial-updates main restricted universe multiverse</span><br><span class="line">deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial-backports main restricted universe multiverse</span><br><span class="line">deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial-security main restricted universe multiver</span><br><span class="line"></span><br><span class="line">sudo apt-get update <span class="comment"># 更新源完成，发现网速飞快了</span></span><br></pre></td></tr></table></figure></p>
+<h5 id="apt-get相关常用指令"><a href="#apt-get相关常用指令" class="headerlink" title="apt-get相关常用指令"></a>apt-get相关常用指令</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update  更新源</span><br><span class="line">sudo apt-get install package 安装包</span><br><span class="line">sudo apt-cache search package 搜索软件包</span><br><span class="line">sudo apt-get remove package --purge 删除包，包括配置文件等</span><br></pre></td></tr></table></figure>
+<h4 id="显卡驱动安装"><a href="#显卡驱动安装" class="headerlink" title="显卡驱动安装"></a>显卡驱动安装</h4><p>Nvidia显卡驱动踩了很多坑，到网上百度了N多教程，大致尝试的如下：</p>
 <blockquote>
 <ul>
 <li>显卡线插集显上，装好驱动后把线再插回N卡</li>
@@ -348,8 +352,11 @@
 <li>打开ubuntu的软件更新，更新显卡驱动</li>
 </ul>
 </blockquote>
-<p>经过上述步骤，会提示显卡驱动已经安装成功，但<code>nvidia-smi</code>依然无效…</p>
-<h4 id="该最简单但最高效的选手登场了：自己编译-NVIDIA-驱动程序"><a href="#该最简单但最高效的选手登场了：自己编译-NVIDIA-驱动程序" class="headerlink" title="该最简单但最高效的选手登场了：自己编译 NVIDIA 驱动程序"></a>该最简单但最高效的选手登场了：自己编译 NVIDIA 驱动程序</h4><p>Nvidia官网下载最新的显卡<a href="https://www.geforce.cn/drivers" target="_blank" rel="noopener">驱动程序</a>，ubuntu的一般就几十兆左右。<br>&nbsp;<br>杀掉<code>LightDM</code>或<code>GDM</code>登录显示器，进入纯文本<code>tty1</code>模式<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo service lightdm stop</span><br><span class="line">sudo dpkg-reconfigure gdm <span class="comment"># 有的人可能安装的不是LightDM界面，可先通过该命令切到LightDM，或者直接stop GDM等界面(第二种笔者未尝试)</span></span><br></pre></td></tr></table></figure></p>
+<p>经过上述步骤，会提示显卡驱动已经安装成功，但<code>nvidia-smi</code>依然无效…该最简单但最高效的选手登场了</p>
+<h5 id="编译-NVIDIA-驱动程序"><a href="#编译-NVIDIA-驱动程序" class="headerlink" title="编译 NVIDIA 驱动程序"></a>编译 NVIDIA 驱动程序</h5><p>Nvidia官网下载最新的显卡<a href="https://www.geforce.cn/drivers" target="_blank" rel="noopener">驱动程序</a>，ubuntu的一般就几十兆左右。<br>&nbsp;<br>将<code>nouveau driver</code>加入黑名单<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">blacklist nouveau</span><br><span class="line">options modset=0</span><br></pre></td></tr></table></figure></p>
+<p>终端输入<code>lspci | grep nouveau</code>，如果没有显示证明该驱动被kill</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">reboot <span class="comment"># 一定要重启</span></span><br></pre></td></tr></table></figure>
+<p>杀掉<code>LightDM</code>或<code>GDM</code>登录显示器，进入纯文本<code>tty1</code>模式<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo service lightdm stop</span><br><span class="line">sudo dpkg-reconfigure gdm <span class="comment"># 有的人可能安装的不是LightDM界面，可先通过该命令切到LightDM，或者直接stop GDM等界面(第二种笔者未尝试)</span></span><br></pre></td></tr></table></figure></p>
 <p>编译安装NVIDIA驱动，此过程大约耗时3～5分钟<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">chmod +x NVIDIA-xxx.run</span><br><span class="line">sudo ./NVIDIA-xxx.run</span><br></pre></td></tr></table></figure></p>
 <p>需要注意的：<br>1、此处认真看提示，并不是一路选择”yes”。<br>2、假如上一步在安装时，Warning了gcc版本不对，则退出驱动安装，先安装对应版本的gcc之后再继续。笔者安装的驱动程序提示需要gcc-5.4.0，又是一番折腾，还好在冯博的指导下，找到了精干快速的方法。不介意的话可以移步笔者之前的文章<a href="http://localhost:4000/2018/02/25/gcc/" target="_blank" rel="noopener">Ubuntu下gcc/g++多版本切换</a><br>&nbsp;<br>安装成功后，重新开启桌面测试。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo service lightdm start</span><br><span class="line">nvidia-smi</span><br></pre></td></tr></table></figure></p>
 <p>成功后的截图<br> <img src="/img/nvidia.png" width="550" alt="图片名称" align="center"></p>
@@ -394,6 +401,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2018/03/22/mac-opcv/" rel="prev" title="MacOS安装OpenCV">
+                MacOS安装OpenCV <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -424,7 +435,7 @@
   
     <div class="comments" id="comments">
       <div class="ds-thread" data-thread-key="2018/03/14/nvidia/"
-           data-title="ubuntu1604 + 1080Ti + 390显卡驱动安装" data-url="http://yoursite.com/2018/03/14/nvidia/">
+           data-title="Ubuntu1604装机系列(一)：Mac烧系统盘及1080Ti显卡(390版本)驱动安装" data-url="http://yoursite.com/2018/03/14/nvidia/">
       </div>
     </div>
 
@@ -480,7 +491,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">28</span>
+                  <span class="site-state-item-count">32</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -548,7 +559,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#该最简单但最高效的选手登场了：自己编译-NVIDIA-驱动程序"><span class="nav-number">2.</span> <span class="nav-text">该最简单但最高效的选手登场了：自己编译 NVIDIA 驱动程序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Ref："><span class="nav-number">3.</span> <span class="nav-text">Ref：</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Ubuntu1604系统安装"><span class="nav-number">1.</span> <span class="nav-text">Ubuntu1604系统安装</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#ubuntu-换源"><span class="nav-number">1.1.</span> <span class="nav-text">ubuntu 换源</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#apt-get相关常用指令"><span class="nav-number">1.2.</span> <span class="nav-text">apt-get相关常用指令</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#显卡驱动安装"><span class="nav-number">2.</span> <span class="nav-text">显卡驱动安装</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#编译-NVIDIA-驱动程序"><span class="nav-number">2.1.</span> <span class="nav-text">编译 NVIDIA 驱动程序</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Ref："><span class="nav-number">3.</span> <span class="nav-text">Ref：</span></a></li></ol></div>
             
 
           </div>
@@ -594,7 +605,7 @@
  
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共23.7k字</span>
+  <span class="post-count">博客全站共26.7k字</span>
 </div>
 
 <div class="powered-by">
