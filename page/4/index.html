@@ -259,6 +259,148 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/17/tmux/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="祥吉">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Deep Coding">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/17/tmux/" itemprop="url">tmux——轻松实现进程后台托管!</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-17T23:04:15+08:00">
+                2018-01-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/01/17/tmux/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/01/17/tmux/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h4><p>远程连接服务器跑模型时，经常由于客户端IP地址发生变化，或者关闭Terminal窗口，而导致服务器Session终端，这里介绍一种<strong>可随时从Session中抽离，又能在需要时候重新回到该Session的方法</strong></p>
+<p><font color="blue"> 以下程序均为在服务器端操作，或者SSH远程服务器操作 </font></p>
+<h5 id="1、服务器端安装tmux"><a href="#1、服务器端安装tmux" class="headerlink" title="1、服务器端安装tmux"></a>1、服务器端安装tmux</h5><pre><code class="bash">$ apt-get install tmux
+</code></pre>
+<h5 id="2、Terminal窗口直接键入tmux，进入一个session，左下角显示该session进程号"><a href="#2、Terminal窗口直接键入tmux，进入一个session，左下角显示该session进程号" class="headerlink" title="2、Terminal窗口直接键入tmux，进入一个session，左下角显示该session进程号"></a>2、Terminal窗口直接键入tmux，进入一个session，左下角显示该session进程号</h5><pre><code class="bash">$ tmux
+</code></pre>
+<p>现在便可随时关闭Terminal，Session便可以在后台安静稳定地运行！需要恢复该Session时：</p>
+<pre><code class="bash">$ tmux attach -t 0
+</code></pre>
+<h5 id="3、杀掉该session"><a href="#3、杀掉该session" class="headerlink" title="3、杀掉该session"></a>3、杀掉该session</h5><p>在某个tmux窗口内，输入exit便可以kill并退出</p>
+<pre><code class="bash">$ <span class="built_in">exit</span>
+</code></pre>
+<hr>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/16/Conda-md/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -759,7 +901,7 @@ $ conda config --<span class="built_in">set</span> show_channel_urls yes
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-count">34</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -772,7 +914,7 @@ $ conda config --<span class="built_in">set</span> show_channel_urls yes
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -857,7 +999,7 @@ $ conda config --<span class="built_in">set</span> show_channel_urls yes
  
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共27.5k字</span>
+  <span class="post-count">博客全站共28.6k字</span>
 </div>
 
 <div class="powered-by">

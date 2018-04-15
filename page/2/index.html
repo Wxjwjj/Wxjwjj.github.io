@@ -259,6 +259,311 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/05/Rcnn/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="祥吉">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Deep Coding">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/05/Rcnn/" itemprop="url">论文笔记：《R-CNN》</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-05T20:20:45+08:00">
+                2018-03-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/03/05/Rcnn/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/03/05/Rcnn/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>本篇文章要介绍的，是神经网络应用于物体检测领域的开山鼻祖R-CNN：Regions with CNN features。检测整体框架如下图所示，相信在读过<strong>Selective Search</strong>的论文后，对上图的架构并不陌生(不介意的可移步笔者对<a href="http://localhost:4000/2018/03/03/Search/" target="_blank" rel="noopener">Selective Search</a>的解读)<br><img src="/img/rcnn1.png" width="700" alt="图片名称" align="center"><br><strong>R-CNN物体检测的步骤如下：</strong></p>
+<blockquote>
+<ul>
+<li>输入源图，通过Selective Search算法，提取2k个左右的待选区域Regions</li>
+<li>对每个Region进行Crop/Scale，缩放到同样的尺寸(为了与CNN网络最后的全联接层对齐)</li>
+<li>之后对每个Region利用Pre-train的AlexNet，抽取特征(替代DPM、HOG等传统算子)(pool5 feature)[维度：4096]</li>
+<li>将这些特征丢入SVM分类器(二分类)进行训练，得到的就是一个region-bbox以及对应的类别。SVM权值矩阵[4096, N]，N:类别数</li>
+<li>采用NMS非极大抑制算法，删除大量SS算法产生的重复区域</li>
+<li>最后利用pool5 feature，训练一个线性回归模型，提高bounding box精度</li>
+</ul>
+</blockquote>
+<h3 id="创新点"><a href="#创新点" class="headerlink" title="创新点"></a>创新点</h3><p>从上述流程看，<code>R-CNN</code>与<code>Selective Search</code>模型差别不大，主要就是在特征提取部分，采用了2012年<code>ILSVRC：ImageNet Large Scale Visual Recognition Chal- lenge</code>竞赛冠军网络AlexNet，其结构如图所示：<br><img src="/img/rcnn2.png" width="700" alt="图片名称" align="center"></p>
+<h4 id="创新点1：采用CNN提取图像特征"><a href="#创新点1：采用CNN提取图像特征" class="headerlink" title="创新点1：采用CNN提取图像特征"></a>创新点1：采用CNN提取图像特征</h4><p>由于Alexnet参数众多，但<code>PASCAL VOC</code>任务又不像分类任务，标注难度大，数据量较少，直接训练容易造成过拟合。所以作者是对预训练的AlexNet进行<code>fine-tuning</code>。<br>&nbsp;<br>具体做法是将<code>FC-7</code>层的1000维向量更改为21维(包括20个类及背景)，并随机初始化这一全连接层的参数。训练样本的正样本来源是<code>PASCAL VOC</code>中人工标注的bounding box区域及类别；正样本是与<code>bounding box</code>计算的IoU值&gt;=50%的Regions(这些候选Regions通过SS算法得到)。对图像进行一定程度的Crop，同时设定好batchsize、lr、SGD等超参数，进行迭代训练。<strong>需要注意这里的神经网络参数是单独训练得到的</strong><br>&nbsp;<br>提取上图中<code>Pool5</code>层的特征，作为类别的特征向量，存到硬盘中，之后再训练一个SVM二分类器，如图所示(图片来源<a href="https://www.cnblogs.com/skyfsm/p/6806246.html" target="_blank" rel="noopener">冠军的试炼</a>)。对于20类，即训练20个SVM二分类器。但与CNN不同的，作者通过实验，重新设置了IoU的阈值为0.3，也就是将IoU&gt;=30%的Regions都当作正样本。<br><img src="/img/rcnn3.png" width="700" alt="图片名称" align="center"></p>
+<h4 id="创新点2：SVM分类后采用线性回归模型精绘bounding-box"><a href="#创新点2：SVM分类后采用线性回归模型精绘bounding-box" class="headerlink" title="创新点2：SVM分类后采用线性回归模型精绘bounding box"></a>创新点2：SVM分类后采用线性回归模型精绘bounding box</h4><h5 id="训练阶段"><a href="#训练阶段" class="headerlink" title="训练阶段"></a>训练阶段</h5><p>由于SS算法对某个类的bounding box框的不够完美，所以训练一个回归模型，作者论文中采用<code>Bounding-box regression</code>提升了3.5个map。选取的Regions与人工标注的bounding box IoU应当&gt;=0.6，并且仅选取IoU最大的那个作为候选Region。（此处IoU设置比较严格，作者发现如果假设函数与<code>bounding box</code>差距太大话，是学不到东西的）<br>&nbsp;<br>总体目标就是对Region进行两次平移$\Delta x, \Delta y$，再进行两次缩放$S_{x}, S_{y}$。简单说就是输入<code>pool5</code>层的特征向量，经过4次运算后，得到更加精确的bounding box区域。论文公式如下，就是比较简单的线性回归，损失函数采用梯度下降进行优化。<br><img src="/img/rcnn4.png" width="350" alt="图片名称" align="center"><br><img src="/img/rcnn5.png" width="500" alt="图片名称" align="center"><br>其中$d_{x}(P)$、$d_{y}(P)$为平移算术因子，$d_{w}(P)$、$d_{h}(P)$为尺度缩放算术因子。以其中的$d_{x}(P)$来说：它的实际值就是$w\phi$，为权重w乘以特征向量的形式。而其理论值是$t_{\ast }^{i}$，可以通过对(1)、(2)、(3)、(4)变换得到。最终梯度下降的优化目标便是通过最小化均方误差函数来求解该w矩阵。</p>
+<h5 id="测试阶段"><a href="#测试阶段" class="headerlink" title="测试阶段"></a>测试阶段</h5><p>训练阶段，我们可以采用IoU最大的Region进行训练，那test阶段呢？同一物体便可能包含大量重复的矩形框，这里作者采用的是<strong>非极大值抑制（non-maximum suppression）</strong>方法对这些区域进行筛选。<strong>NMS基于一个窗口区域被认为是最有可能表示某一个物体的时候，那么和这个窗口区域交叉面积大的proposal就可以认为不是需要的窗口区域。</strong><br>&nbsp;<br>具体思路为：从所有矩形框(Regions)中(不分类别)选取SVM分类器得分最高的Region，将与该Region IoU面积超过阈值的都删除。再从剩余的矩形框中选取SVM得分最高的Region，重复上述步骤，直到没有矩形框可选为止。</p>
+<h3 id="CNN特征提取相关："><a href="#CNN特征提取相关：" class="headerlink" title="CNN特征提取相关："></a>CNN特征提取相关：</h3><h4 id="CNN为什么选取pool5层的特征？"><a href="#CNN为什么选取pool5层的特征？" class="headerlink" title="CNN为什么选取pool5层的特征？"></a>CNN为什么选取<code>pool5</code>层的特征？</h4><p>真实答案是如果不对模型进行<code>fine-tuning</code>，那么采用<code>pool5</code>、<code>fc6</code>、<code>fc7</code>特征训练的SVM分类器，性能是相似的；如果对模型用VOC数据<code>fine-tuning</code>，利用这些特征训练的分类器性能都会提升，而<code>fc6</code>、<code>fc7</code>会进一步得到更大提升，如下所示：<br><img src="/img/rcnn6.png" alt=""></p>
+<h4 id="为什么不直接采用CNN端到端训练，而要接一个SVM？"><a href="#为什么不直接采用CNN端到端训练，而要接一个SVM？" class="headerlink" title="为什么不直接采用CNN端到端训练，而要接一个SVM？"></a>为什么不直接采用CNN端到端训练，而要接一个SVM？</h4><p>VOC数据集较小，如果直接端到端训练，CNN十分容易过拟合。而SVM则适合小样本训练，所以最后采用SVM进行分类</p>
+<p><strong>PS：CNN的尺度不变性：</strong>并不是一定不变，而是大概率不变。比如对于两幅size不同，内容相同的图像。假设某个卷积核提取的是图像边缘信息，那么对其<code>Feature map</code>进行<code>Maxpooling</code>操作后，都会把梯度最大值提取出来，调整Pooling的<code>size</code>或<code>stride</code>，很大概率会得到相同的<code>map</code>图。</p>
+<h3 id="RCNN存在四个明显问题："><a href="#RCNN存在四个明显问题：" class="headerlink" title="RCNN存在四个明显问题："></a>RCNN存在四个明显问题：</h3><p>1、多个候选区域对应的图像需要预先提取，占用较大的磁盘空间；<br>2、针对传统CNN需要固定尺寸的输入图像，crop/warp（归一化）产生物体截断或拉伸，会导致输入CNN的信息丢失；<br>3、每一个ProposalRegion都需要进入CNN网络计算，上千个Region存在大量的范围重叠，重复的特征提取带来巨大的计算浪费。<br>4、CNN、SVM、回归模型需要按顺序，进行单独训练，不能端到端训练。</p>
+<h3 id="Ref："><a href="#Ref：" class="headerlink" title="Ref："></a>Ref：</h3><p>📎：<a href="http://www.rossgirshick.info/" target="_blank" rel="noopener">Rbg大神个人主页，包含论文、slides、code等</a><br>📎：<a href="https://www.cnblogs.com/skyfsm/p/6806246.html" target="_blank" rel="noopener">基于深度学习的目标检测技术演进：R-CNN、Fast R-CNN、Faster R-CNN</a><br>📎：<a href="http://blog.csdn.net/linolzhang/article/details/54344350" target="_blank" rel="noopener">目标检测-RCNN系列</a><br>📎：<a href="http://jermmy.xyz/2017/05/08/2017-5-8-paper-notes-rcnn/" target="_blank" rel="noopener">论文笔记：Rich feature hierarchies for accurate object detection and semantic segmentation</a><br>📎：<a href="http://blog.csdn.net/u011534057/article/details/51218250" target="_blank" rel="noopener">RCNN学习笔记</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/03/Search/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="祥吉">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Deep Coding">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/03/Search/" itemprop="url">论文笔记：《Selective Search for Object Recognition》</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-03T16:31:39+08:00">
+                2018-03-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/03/03/Search/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/03/03/Search/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>即将学习基于R-CNN的图像目标检测(Object Recognition)，不得不提的一篇论文是《Selective Search for Object Recognition》，虽然仅用了传统的机器学习算法<code>Selective Search + DPM/Hog特征 + SVM分类器</code>，但其结构简单，可解释性强，对后面的Deep Learning物体检测模型，都有很大的借鉴意义。<br>&nbsp;<br>本篇论文的创新点在于选择性搜索算法(Selective Search)。不同于传统的蛮力搜索(Exhaustive Search)：需要不断改变窗口大小，遍历整张图像。Selective Search可以选择性地找出物体可能的存在区域，节省了大量不必要的特征提取开销。<br>&nbsp;<br><strong>结论先行：</strong>如图红色的区域便是<code>Selective Search算法</code>提取的可能存在物体的窗口：<br><img src="/img/ss.png" width="400" alt="图片名称" align="center"></p>
+<h3 id="Selective-Search算法描述"><a href="#Selective-Search算法描述" class="headerlink" title="Selective Search算法描述"></a>Selective Search算法描述</h3><p>文章一开始便用这4幅图，说明了同一物体组成成分多样性的问题。图1显示了区分桌子和它上面的餐具需要利用一定的层次关系；图2的猫需要通过颜色来区分；图3的变色龙颜色不行，需要通过纹理特征(texture)来区分；图4中的车和车轮看似粘连在一起，但我们可以通过颜色、纹理两种特征加以区分。<br><img src="/img/ss1.png" width="400" alt="图片名称" align="center"><br><strong>小结：</strong>这样的特性说明了两个问题，物体识别时候，需要充分考虑图像物体的多样性（diversity），单一特征可能分得乱七八糟；另外，图像中物体布局有一定的层次（hierarchical）关系，在算法中的体现就是从小区域开始，一步步分层而上进行合并。</p>
+<h3 id="Selective-Search算法详解"><a href="#Selective-Search算法详解" class="headerlink" title="Selective Search算法详解"></a>Selective Search算法详解</h3><p>Selective Search算法对传统的exhaustive search从以下两方面进行了改进：</p>
+<blockquote>
+<ul>
+<li>采用多种先验知识对各个区域进行判别，避免一些无用的搜索，提高速度和精度</li>
+<li>Selective Search只负责快速生成可能存在物体的窗口，并不做具体的特征检测</li>
+</ul>
+</blockquote>
+<h4 id="执行流程图"><a href="#执行流程图" class="headerlink" title="执行流程图"></a>执行流程图</h4><p><img src="/img/ss2.png" width="500" alt="图片名称" align="center"><br><strong>重点翻译：</strong></p>
+<blockquote>
+<ul>
+<li>input:彩色图像</li>
+<li>output:物体可能的位置（很多个矩形坐标）</li>
+<li>首先借助这篇<a href="http://cs.brown.edu/~pff/segment/" target="_blank" rel="noopener">论文</a>的方法，对图像实现一个粗略的分割：R = r1, r2…rn。调用方式比较简单，不再赘述，但要注意源图需是.ppm格式</li>
+<li>初始化一个空集S</li>
+<li>计算所有相邻区域之间的<strong>相似度</strong>，并放入S中(实质存放的是一个区域对，及其相似度信息)</li>
+<li>找出S中相似度最高的两个区域进行合并，Eg：r1, r2，进行合并为r_t1。删除S中所有与r1, r2相邻的元素，并重新计算r_t1与周围相邻区域的相似度，放入集合S中，并将r_t1放入另一个集合R中。重复这个步骤，直到S为空。此时所有小区域被合并成为原图的大小，但每次的合并信息，都被存放在了集合R中，最后的<code>Combining Locations</code>便是对R中的区域进行标号排序。</li>
+<li>从R中找出所有被标号的区域，计算其bounding box，便得到output。</li>
+</ul>
+</blockquote>
+<p>PS：以上第三步的图像分割方法中考虑场景以及光照条件等影响，采用了RGB、灰度、HSV等8种颜色空间进行分割计算</p>
+<h4 id="相似度计算方式"><a href="#相似度计算方式" class="headerlink" title="相似度计算方式"></a>相似度计算方式</h4><p>相似度计算直接影响合并区域顺序，对最终的检测结果，有至关重要的影响。此处同样综合了多种维度的相似度信息，分别是颜色（color）相似度、纹理（texture）相似度、大小（size）相似度和吻合（fit）相似度，最终将4种相似度计算结果，用如下公式合并：<br>$${s(r_{i}, r_{j})= a_{1}s_{colour}(r_{i}, r_{j}) + a_{2}s_{texture}(r_{i}, r_{j})<br>+a_{3}s_{size}(r_{i}, r_{j}) +a_{4}s_{fill}(r_{i}, r_{j})}$$</p>
+<h5 id="这里仅就图像的颜色空间相似度进行介绍"><a href="#这里仅就图像的颜色空间相似度进行介绍" class="headerlink" title="这里仅就图像的颜色空间相似度进行介绍"></a>这里仅就图像的颜色空间相似度进行介绍</h5><p>颜色是区分不同物体的一个重要因素，文中将每个Region的颜色信息统计成一个75维的直方图，即每一个颜色通道为25bins的直方图(255/25 == 9，25bins的意思就是每隔9个数值统计像素数量)，之后用<strong>L1范数</strong>进行归一化(除以各维度绝对值之和)。相似度计算方式如下：<br>$$s_{colour}(r_{i}, r_{j}) = \sum_{k=1}^{n}min(c\tfrac{k}{i},c\tfrac{j}{k})$$<br>其实质就是计算两个直方图的交集，而新的区域特征向量采用如下与区域面积加权的方式实现。<br>$$C_{t} = \frac{size(r_{i})\ast C_{i}+size(r_{j})\ast C_{j}}{size(r_{i})+size(r_{j})}$$<br>而新区域面积就是两个源区域面积的简单相加$size(r_{i})+size(r_{j})$</p>
+<h4 id="Combining-Locations"><a href="#Combining-Locations" class="headerlink" title="Combining Locations"></a>Combining Locations</h4><p>完成上述步骤，提取出了图像中大量的bounding box区域，而实际存在物体的区域可能只有其中的几个，这时候便需要对备选的bounding box赋予一定的优先级，从而进一步缩小后文特征提取的范围，文中称这一步处理为<code>Combining Locations</code>。<br>&nbsp;<br>具体方法为：因为Selective Search是一个逐步合并的层级结构，所以最大的一张图标为’1’，合并成’1’的子图标为’2’、’3’，以此类推。但这样的话会造成越大的bounding box排序越靠前。所以作者又加入了一定的shuffle机制，即在每个序号前，乘上一个随机数$RAND\in (0,1)$。通过新计算出的数值，按从小到大排序，得出Region最终的排序结果。一般candidates数量为2K个</p>
+<h3 id="Object-Recognition目标识别"><a href="#Object-Recognition目标识别" class="headerlink" title="Object Recognition目标识别"></a>Object Recognition目标识别</h3><p>接下来采用HOG/DPM等算子分别提取正负样本特征，加入SVM分类器进行训练，整个架构如图所示：<br><img src="/img/ss3.png" width="800" alt="图片名称" align="center"><br>其中正样本为人工标注的bounding box，负样本为与正样本重叠程度20%~50%的Regions。特别地，删去负样本中，彼此重叠程度&gt;70%的Regions。重复迭代过程中再加入hard negative example进行训练。<br>PS：重叠程度即IoU(intersection-over-union，是一个定位精度的评价标准)参数，计算图示如下所示：<br><img src="/img/ss4.png" width="300" alt="图片名称" align="center"></p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p>📎：《Selective Search for Object Recognition》<br>📎：<a href="https://github.com/AlpacaDB/selectivesearch" target="_blank" rel="noopener">Selective Search算法的python实现</a><br>📎：<a href="http://cs.brown.edu/~pff/segment/" target="_blank" rel="noopener">Graph Based Image Segmentation</a><br>📎：<a href="http://blog.csdn.net/niaolianjiulin/article/details/52950797#t2" target="_blank" rel="noopener">http://blog.csdn.net/niaolianjiulin/article/details/52950797#t2</a><br>📎：<a href="http://jermmy.xyz/2017/05/04/2017-5-4-paper-notes-selective-search/" target="_blank" rel="noopener">http://jermmy.xyz/2017/05/04/2017-5-4-paper-notes-selective-search/</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/03/signal/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1019,7 +1324,7 @@
       
         
           
-            <p><font color="red"><strong>20180312更新，之前的操作都太复杂了，安装位置也是奇葩，简直是shit…修改<code>gcc</code>版本时候只要修改下述软连接便可以了</strong></font><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install gcc-4.9</span><br><span class="line">sudo apt-get install g++-4.9 //自动安装到/usr/bin目录下</span><br><span class="line"><span class="built_in">which</span> gcc</span><br><span class="line"><span class="built_in">cd</span> 到 gcc 目录</span><br><span class="line">ll | grep gcc 显示包含gcc的软连接</span><br><span class="line">sudo rm gcc </span><br><span class="line">sudo ln -sf gcc-4.9 gcc</span><br><span class="line">sudo ln -sf g++-4.9 g++</span><br></pre></td></tr></table></figure></p>
+            <p><font color="red"><strong>20180312更新，之前的操作太复杂了，安装位置也不易管理。在冯博的帮助下，使用下面的方法，修改<code>gcc</code>版本时候只要修改下述软连接便可以了</strong></font><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install gcc-4.9</span><br><span class="line">sudo apt-get install g++-4.9 //自动安装到/usr/bin目录下</span><br><span class="line"><span class="built_in">which</span> gcc</span><br><span class="line"><span class="built_in">cd</span> 到 gcc 目录</span><br><span class="line">ll | grep gcc 显示包含gcc的软连接</span><br><span class="line">sudo rm gcc </span><br><span class="line">sudo ln -sf gcc-4.9 gcc</span><br><span class="line">sudo ln -sf g++-4.9 g++</span><br></pre></td></tr></table></figure></p>
 <hr>
 <p>在编译不同的程序时，往往会遇到gcc、g++版本不兼容问题，那可不可以动态切换gcc&amp;g++环境，来满足编译需求呢？答案是可以的。<br>先看看系统内的<code>gcc</code>和<code>g++</code>是什么版本<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc --version</span><br></pre></td></tr></table></figure></p>
 <p>可以获得如下信息<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc version 5.4.0</span><br></pre></td></tr></table></figure></p>
@@ -1030,14 +1335,6 @@
 <p>会看到如下的选项，有3个候选项可用于替换<code>gcc</code><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">*0            /usr/bin/gcc-5  50        </span><br><span class="line"> 1            /usr/bin/gcc-5  50        </span><br><span class="line"> 2            /usr/bin/gcc-4.9  40</span><br></pre></td></tr></table></figure></p>
 <p>要维持当前值<code>*</code>请按回车键，或者键入你想切换的gcc版本编号!<br>同样也要设置一下<code>g++</code>的， 方法同上<br>如果想删除可选项的话可以键入以下指令：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo update-alternatives --remove gcc /usr/bin/gcc-4.9</span><br></pre></td></tr></table></figure></p>
 <p>再用<code>gcc -version</code> 来看一下版本是否改变了。</p>
-<p>安装<code>GCC5.4.0</code>的方式有些不同，需要下载源码编译安装(<a href="ftp://ftp.mirrorservice.org/sites/sourceware.org/pub/gcc/releases/gcc-5.4.0/" target="_blank" rel="noopener">链接</a>)<br>解压<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo tar -zxvf gcc-5.4.0.tar.gz</span><br></pre></td></tr></table></figure></p>
-<p>下载gcc 依赖文件和库<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> gcc-5.4.0 //进入解包后的gcc文件夹  </span><br><span class="line">sudo ./contrib/download_prerequisites  //下载依赖项  </span><br><span class="line"><span class="built_in">cd</span> ..  //返回上层目录</span><br></pre></td></tr></table></figure></p>
-<p>建立编译输出目录，并生成makefile文件<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mkdir gcc-build-5.4.0 //建立一个输出目录，编译时所有生成的中间文件都放到该目录下：</span><br><span class="line"><span class="built_in">cd</span> gcc-build-5.4.0  </span><br><span class="line">//执行configure配置安装文件：</span><br><span class="line">sudo ../gcc-5.4.0/configure --<span class="built_in">enable</span>-checking=release --<span class="built_in">enable</span>-languages=c,c++ --<span class="built_in">disable</span>-multilib</span><br></pre></td></tr></table></figure></p>
-<p>编译<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo make -j4  //接近20分钟等待时间</span><br></pre></td></tr></table></figure></p>
-<p>安装<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make install</span><br></pre></td></tr></table></figure></p>
-<p>安装完成后还需要替换系统默认的gcc，执行以下命令<code>ls /usr/local/bin | grep gcc</code> ，查找5.4版本的安装文件<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">gcc</span><br><span class="line">gcc-ar</span><br><span class="line">gcc-nm</span><br><span class="line">gcc-ranlib</span><br><span class="line">x86_64-unknown-linux-gnu-gcc</span><br><span class="line">x86_64-unknown-linux-gnu-gcc-5.4.0    //这个文件</span><br><span class="line">x86_64-unknown-linux-gnu-gcc-ar</span><br><span class="line">x86_64-unknown-linux-gnu-gcc-nm</span><br></pre></td></tr></table></figure></p>
-<p>安装好后输入以下选择指令：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/sbin/update-alternatives --install  /usr/bin/gcc gcc /usr/<span class="built_in">local</span>/bin/x86_64-unknown-linux-gnu-gcc-5.4.0 54</span><br></pre></td></tr></table></figure></p>
-<p>使用<code>which gcc</code>查看gcc安装目录，在安装目录下执行-v命令<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/usr/<span class="built_in">local</span>/bin/gcc -v </span><br><span class="line">gcc -v  //或者</span><br><span class="line">gcc 版本 5.4.0(GCC) //说明GCC5.4安装成功</span><br></pre></td></tr></table></figure></p>
 
           
         
@@ -1342,283 +1639,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/05/0to1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="祥吉">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Deep Coding">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/02/05/0to1/" itemprop="url">《从0到1》读书笔记</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-05T23:12:35+08:00">
-                2018-02-05
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/02/05/0to1/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/02/05/0to1/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>2017.09～2018.02，加入创业公司工作已近半年。再读《从0到1》，对作者要表达的思想才开始有了一些了解。合上书本，按自己对书中内容的印象，由深及浅，希望能够带来一些实打实地解读。</p>
-<p>#### </p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/04/pachong-1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="祥吉">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Deep Coding">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/02/04/pachong-1/" itemprop="url">爬虫入门_文本抽取</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-04T20:24:02+08:00">
-                2018-02-04
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/02/04/pachong-1/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/02/04/pachong-1/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h2><p>浏览器作为客户端，接收服务器返回的消息，进行解析后展示给我们。我们可以在本地修改html信息，对网页进行“整容”，要知道网页的任何信息都可以被修改，但是修改后的信息不影响服务器端，刷新后又会变成之前服务器端推送的格式。</p>
-<h3 id="审查元素"><a href="#审查元素" class="headerlink" title="审查元素"></a>审查元素</h3><p>有了上面的认识后，怎样修改网页的html信息呢？在你想要修改页面的某个位置右击，继续点击<code>审查</code>，即可获得该位置的html信息。Eg：在邮箱登陆输入密码的位置点击审查元素，将password属性改为text，输入密码时将不再是小圆点的形式。<br><img src="/img/pa_1.jpeg" alt=""><br>网页的全部信息都在其html语句中，接下来我们采用python中的<a href="http://docs.python-requests.org/zh_CN/latest/user/quickstart.html" target="_blank" rel="noopener">requests</a>模块，获取网页的html信息。</p>
-<h3 id="安装python-http模块requests"><a href="#安装python-http模块requests" class="headerlink" title="安装python http模块requests"></a>安装python http模块requests</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 install requests</span><br></pre></td></tr></table></figure>
-<p>这里简单的提取一个网络小说的html信息<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">target = <span class="string">'http://www.biqukan.com/1_1094/5403177.html'</span></span><br><span class="line">req = requests.get(url=target)</span><br><span class="line">html = req.text</span><br><span class="line">print(html) <span class="comment"># 网页html内容，同右键后的网页审查内容</span></span><br></pre></td></tr></table></figure></p>
-<p>requests模块获取的信息为带标签(div、br…)的html信息，还需要通过下面的beautifulsoup模块，提取中我们感兴趣的段落。</p>
-<h3 id="安装文本提取模块Beautiful-Soup"><a href="#安装文本提取模块Beautiful-Soup" class="headerlink" title="安装文本提取模块Beautiful Soup"></a>安装文本提取模块Beautiful Soup</h3><p>python的第三方库，用于从html、xml文件中提取数据，以树状结构的方式执行查询。并且支持正则表达式的模糊匹配。<br> <img src="/img/pa_2.jpeg" width="550" alt="图片名称" align="center"><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 install beautifulsoup4</span><br></pre></td></tr></table></figure></p>
-<p>这里引用<a href="http://blog.csdn.net/u012662731/article/details/78537432" target="_blank" rel="noopener">Jack-Cherish</a>对html的解释：</p>
-<blockquote>
-<p>“一个女人的包包里，会有很多东西，她们会根据自己的习惯将自己的东西进行分类放好。镜子和口红这些会经常用到的东西，会归放到容易拿到的外侧口袋里。那些不经常用到，需要注意安全存放的证件会放到不容易拿到的里侧口袋里”。而html标签就像一个个“口袋”，每个“口袋”都有自己的特定功能，负责存放不同的内容。</p>
-</blockquote>
-<p>例如：上述例子中的div标签下存放了我们关心的正文内容。这个div标签是这样的：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;div id=<span class="string">"content"</span>, class=<span class="string">"showtxt"</span>&gt;</span><br></pre></td></tr></table></figure></p>
-<p>id和class就是div标签的属性，content和showtxt是属性值，一个属性对应一个属性值。它是用来区分不同的div标签的，因为div标签可以有很多，我们怎么加以区分不同的div标签呢？就是通过不同的属性值。可以发现网络小说的正文部分正唯一的对应于class=”showtxt”的div标签下。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">bf = BeautifulSoup(html) <span class="comment"># find 一对标签：&lt;div&gt; &lt;/div&gt;之间的内容</span></span><br><span class="line">texts = bf.find_all(<span class="string">'div'</span>, class_ = <span class="string">'showtxt'</span>)  <span class="comment"># 第一个参数是获取的标签名，第二个参数class_是标签的属性</span></span><br><span class="line">print(texts[<span class="number">0</span>].text.replace(<span class="string">'\xa0'</span>*<span class="number">8</span>,<span class="string">'\n\n'</span>)) </span><br><span class="line"><span class="comment">#使用text属性，提取文本内容，滤除br标签; 之后进行换行符替换及提取文本部分内容</span></span><br></pre></td></tr></table></figure></p>
-<p>BeautifulSoup函数处理完后，可见的是提取出了该小说完整的的正文内容。</p>
-<h3 id="获取每个章节的链接"><a href="#获取每个章节的链接" class="headerlink" title="获取每个章节的链接"></a>获取每个章节的链接</h3><p>章节信息都放在了<code>class = listmain</code>的div标签下，获取方法同上。链接和章名都放在了标签<code>&lt;a&gt;、&lt;/a&gt;</code>之间，Eg：<code>&lt;a href=&quot;/1_1094/5403177.html&quot;&gt;第一章 他叫白小纯&lt;/a&gt;</code>。<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"listmain"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">dl</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dt</span>&gt;</span>《一念永恒》最新章节列表<span class="tag">&lt;/<span class="name">dt</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dd</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"/1_1094/15932394.html"</span>&gt;</span>第1027章 第十道门<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">dd</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dd</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"/1_1094/15923072.html"</span>&gt;</span>第1026章 绝伦道法！<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">dd</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dd</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"/1_1094/15921862.html"</span>&gt;</span>第1025章 长生灯！<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">dd</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">dl</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
-<p>通过两次调用BeautifulSoup，便可以获取一对标签<code>&lt;a&gt;、&lt;/a&gt;</code>之间的内容。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">req = requests.get(url = target) </span><br><span class="line">html = req.text</span><br><span class="line">div_bf = BeautifulSoup(html)</span><br><span class="line">div = div_bf.find_all(<span class="string">'div'</span>, class_ = <span class="string">'listmain'</span>)</span><br><span class="line">a_bf = BeautifulSoup(str(div[<span class="number">0</span>]))</span><br><span class="line">a = a_bf.find_all(<span class="string">'a'</span>)</span><br><span class="line"><span class="keyword">for</span> each <span class="keyword">in</span> a:</span><br><span class="line">     print(each.string, server + each.get(<span class="string">'href'</span>))</span><br></pre></td></tr></table></figure></p>
-<h2 id="完整地爬取一部小说程序整合"><a href="#完整地爬取一部小说程序整合" class="headerlink" title="完整地爬取一部小说程序整合"></a>完整地爬取一部小说程序整合</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding:UTF-8 -*-</span></span><br><span class="line"><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">downloader</span><span class="params">(object)</span>:</span></span><br><span class="line">	<span class="string">"""下载小说《一念永恒》"""</span></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">		self.server = <span class="string">"http://www.biqukan.com/"</span></span><br><span class="line">		self.target = <span class="string">"http://www.biqukan.com/1_1094/"</span></span><br><span class="line">		self.names = [] <span class="comment"># 存放章节名称</span></span><br><span class="line">		self.urls = [] <span class="comment"># 存放每章链接</span></span><br><span class="line">		self.nums = [] <span class="comment"># 章节数量</span></span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">get_download_url</span><span class="params">(self)</span>:</span></span><br><span class="line">		<span class="string">"""获取下载链接url及每章名称names，以list形式放到实例化后的class中"""</span></span><br><span class="line">		req = requests.get(url = self.target)</span><br><span class="line">		html = req.text</span><br><span class="line">		div_bf = BeautifulSoup(html)</span><br><span class="line">		div = div_bf.find_all(<span class="string">'div'</span>, class_ = <span class="string">'listmain'</span>)</span><br><span class="line">		<span class="comment"># 获取到章节名称的html信息，在class = 'listmain'中</span></span><br><span class="line">		a_bf = BeautifulSoup(str(div[<span class="number">0</span>])) </span><br><span class="line">		a = a_bf.find_all(<span class="string">'a'</span>) <span class="comment"># 返回一个list</span></span><br><span class="line">		self.nums = len(a[<span class="number">15</span>:]) <span class="comment"># 过滤了前15条噪声章节</span></span><br><span class="line">		<span class="keyword">for</span> each <span class="keyword">in</span> a[<span class="number">15</span>:]:</span><br><span class="line">			self.names.append(each.string)</span><br><span class="line">			self.urls.append(self.server + each.get(<span class="string">'href'</span>))</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">get_contents</span><span class="params">(self, target)</span>:</span></span><br><span class="line">	    <span class="string">"""</span></span><br><span class="line"><span class="string">	    函数说明：获取class_list中每一个url下的内容</span></span><br><span class="line"><span class="string">	    target：下载地址 </span></span><br><span class="line"><span class="string">	    return: texts - 内容(string类型)</span></span><br><span class="line"><span class="string">	    """</span></span><br><span class="line">	    req = requests.get(url = target)	</span><br><span class="line">	    html = req.text</span><br><span class="line">	    bf = BeautifulSoup(html)</span><br><span class="line">	    texts = bf.find_all(<span class="string">'div'</span>, class_ = <span class="string">'showtxt'</span>)</span><br><span class="line">	    texts = texts[<span class="number">0</span>].text.replace(<span class="string">'\xa0'</span>*<span class="number">8</span>, <span class="string">'\n\n'</span>)</span><br><span class="line">	    <span class="keyword">return</span> texts</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">writer</span><span class="params">(self, name, path, text)</span>:</span></span><br><span class="line">		<span class="string">"""</span></span><br><span class="line"><span class="string">		函数说明：爬取的texts写入文件</span></span><br><span class="line"><span class="string">		name：章节名称</span></span><br><span class="line"><span class="string">		path：文件路径</span></span><br><span class="line"><span class="string">		text：章节内容</span></span><br><span class="line"><span class="string">		"""</span></span><br><span class="line">		<span class="keyword">with</span> open(path, <span class="string">'a'</span>,encoding=<span class="string">'utf-8'</span>) <span class="keyword">as</span> f:</span><br><span class="line">			f.write(name + <span class="string">'\n'</span>) <span class="comment"># write只能写入str</span></span><br><span class="line">			f.writelines(text) <span class="comment"># 自动迭代写入一个字符串列表[str]</span></span><br><span class="line">			f.write(<span class="string">'\n\n'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">	dl = downloader() <span class="comment"># 类的实例化</span></span><br><span class="line">	dl.get_download_url() <span class="comment"># 获取章节名称信息，更新类中的list变量names、urls、nums</span></span><br><span class="line">	print(<span class="string">'开始下载...'</span>)</span><br><span class="line">	<span class="comment"># print(type(dl.nums)) # int型，跟最后定义nums的变量相关</span></span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> range(dl.nums):</span><br><span class="line">		dl.writer(dl.names[i], <span class="string">'一念永恒.txt'</span>, dl.get_contents(dl.urls[i]))</span><br><span class="line">		sys.stdout.write(<span class="string">" 已经下载: %.3f%%"</span> % float(i/dl.nums) + <span class="string">'\r'</span>)</span><br><span class="line">		sys.stdout.flush()</span><br><span class="line">	print(<span class="string">"Success!"</span>)</span><br></pre></td></tr></table></figure>
-<h2 id="Refer："><a href="#Refer：" class="headerlink" title="Refer："></a>Refer：</h2><p><a href="http://blog.csdn.net/u012662731/article/details/78537432" target="_blank" rel="noopener">Python3网络爬虫快速入门实战解析</a><br><a href="http://www.imooc.com/learn/563" target="_blank" rel="noopener">Python开发简单爬虫</a><br><a href="https://www.zhihu.com/question/37787176" target="_blank" rel="noopener">当一个颜值很高的程序员是怎样一番体验？</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1673,7 +1693,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">33</span>
+                  <span class="site-state-item-count">34</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1686,7 +1706,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -1771,7 +1791,7 @@
  
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共27.5k字</span>
+  <span class="post-count">博客全站共28.6k字</span>
 </div>
 
 <div class="powered-by">
