@@ -97,7 +97,8 @@
 <meta property="og:image" content="http://yoursite.com/img/NN1.jpeg">
 <meta property="og:image" content="http://yoursite.com/img/NN2.jpeg">
 <meta property="og:image" content="http://yoursite.com/img/NN3.jpeg">
-<meta property="og:updated_time" content="2018-04-15T15:26:40.063Z">
+<meta property="og:image" content="http://yoursite.com/img/NN4.png">
+<meta property="og:updated_time" content="2018-04-19T13:58:26.342Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Deeplearning.ai课程备忘录(一)">
 <meta name="twitter:description" content="背景工作后很少有时间进行理论知识的充电，抽出晚上的时间，再把吴恩达前辈的Deeplearning.ai课程过一遍，重在记录之前掌握不牢靠及容易忽视的知识点。 神经网络和深度学习课程的第一讲，从经典的线性回归、逻辑回归、激活函数、损失函数、梯度下降几个方面，引出了神经网络知识，以下： 浅层神经网络1、NN(neural networks)类似于多层逻辑回归网络，不断执行wx+b、激活、wa+b、激活">
@@ -343,8 +344,10 @@
       
         <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>工作后很少有时间进行理论知识的充电，抽出晚上的时间，再把吴恩达前辈的Deeplearning.ai课程过一遍，重在记录之前掌握不牢靠及容易忽视的知识点。</p>
 <h3 id="神经网络和深度学习"><a href="#神经网络和深度学习" class="headerlink" title="神经网络和深度学习"></a>神经网络和深度学习</h3><p>课程的第一讲，从经典的线性回归、逻辑回归、激活函数、损失函数、梯度下降几个方面，引出了神经网络知识，以下：</p>
-<h4 id="浅层神经网络"><a href="#浅层神经网络" class="headerlink" title="浅层神经网络"></a>浅层神经网络</h4><p>1、NN(neural networks)类似于多层逻辑回归网络，不断执行wx+b、激活、wa+b、激活….到loss function的计算<br>一张图代表逻辑回归和神经元<br><img src="/img/NN1.jpeg" width="300" alt="图片名称" align="center"><br>2、论文中一般说的两层神经网络，为input、hidden、output形式，默认input为0层。<br>3、对于一个样本：wx+b的循环转矩阵的快速运算，[4,3]乘[3,1]加[4,1] 等于<a href="output">4,1</a>。<br><img src="/img/NN2.jpeg" width="300" alt="图片名称" align="center"><br>而对于batch个样本(此处假设有3个样本)，即是把样本特征横向堆叠即可，即：[4,3]乘[3,3]加[4,3] 等于[4,3]，如图示：<br><img src="/img/NN3.jpeg" width="500" alt="图片名称" align="center"><br>4、激活函数<br><strong>sigmoid：</strong>最常用的二分类函数，表达式如下，导数为$g(z)*(1-g(z))$，所以最大值为0.25<br>$$g(z)=\frac{1}{1+e^{-z}}$$<br><strong>tanh：</strong>表达式如下，相当于将sigmoid函数平移，然后进行纵向拉伸(-1,1)，除 了最后一层二分类使用sigmoid，中间的hidden layer极力推荐tanh取代它。但这两个函数在Z很大或者很小时，都会发生梯度消失，导数趋近于0。tanh的导数为$(1-g(z)^{2})$<br>$$g(z)=\frac{e^{z}-e^{-z}}{e^{z}+e^{-z}}$$<br><strong>Relu：</strong>表达式为：$a = max(0,z)$，相对来说不容易梯度消失，Z&gt;0时，导数为1，Z&lt;0时，导数为0。Z=0时不可导，我们指定它为0或1就好了(实际Z=0的概率非常低)。三者中目前较常用的函数是Relu，对于拥有大量节点的神经网络来说，总会有很多Z&gt;0的神经元，梯度下降速度还是比较可观的。<br>&nbsp;<br><strong>leaker Relu：</strong>表达式为：$a = max(0.01\ast z,z)$，此处的0.01是个参数，你可以改成其它值进行尝试，说到底就是梯度下降速度的问题（太大了可能扯着蛋…）</p>
-
+<h4 id="浅层神经网络"><a href="#浅层神经网络" class="headerlink" title="浅层神经网络"></a>浅层神经网络</h4><p>1、NN(neural networks)类似于多层逻辑回归网络，不断执行wx+b、激活、wa+b、激活….到loss function的计算<br>一张图代表逻辑回归和神经元<br><img src="/img/NN1.jpeg" width="300" alt="图片名称" align="center"><br>2、论文中一般说的两层神经网络，为input、hidden、output形式，默认input为0层。<br>3、对于一个样本：wx+b的循环转矩阵的快速运算，[4,3]乘[3,1]加[4,1] 等于<a href="output">4,1</a>。<br><img src="/img/NN2.jpeg" width="300" alt="图片名称" align="center"><br>而对于batch个样本(此处假设有3个样本)，即是把样本特征横向堆叠即可，即：[4,3]乘[3,3]加[4,3] 等于[4,3]，如图示：<br><img src="/img/NN3.jpeg" width="500" alt="图片名称" align="center"><br>4、激活函数<br><strong>sigmoid：</strong>最常用的二分类函数，表达式如下，导数为$g(z)<em>(1-g(z))$，所以最大值为0.25<br>$$g(z)=\frac{1}{1+e^{-z}}$$<br><strong>tanh：</strong>表达式如下，相当于将sigmoid函数平移，然后进行纵向拉伸(-1,1)，除 了最后一层二分类使用sigmoid，中间的hidden layer极力推荐tanh取代它。但这两个函数在Z很大或者很小时，都会发生梯度消失，导数趋近于0。tanh的导数为$(1-g(z)^{2})$<br>$$g(z)=\frac{e^{z}-e^{-z}}{e^{z}+e^{-z}}$$<br><strong>Relu：</strong>表达式为：$a = max(0,z)$，相对来说不容易梯度消失，Z&gt;0时，导数为1，Z&lt;0时，导数为0。Z=0时不可导，我们指定它为0或1就好了(实际Z=0的概率非常低)。三者中目前较常用的函数是Relu，对于拥有大量节点的神经网络来说，总会有很多Z&gt;0的神经元，梯度下降速度还是比较可观的。<br>&nbsp;<br><strong>leaker Relu：</strong>表达式为：$a = max(0.01\ast z,z)$，此处的0.01是个参数，你可以改成其它值进行尝试，说到底就是梯度下降速度的问题（太大了可能扯着蛋…）<br>5、神经网络权重(w)不能初始化为全0，因为这样导致每个神经元对输出的贡献是一样的，所以反向传播后神经元修正也一样。换句话说每个隐藏单元都在计算一样的函数，没有什么意义。<br>&nbsp;<br>$w = np.random.randn((2,2))</em>0.01$，如前所示，浅层神经网络用接近0的一个高斯分布随机值初始化。深层NN吴恩达老师卖了个关子，且听下次分解吧 </p>
+<h3 id="改善深层神经网络"><a href="#改善深层神经网络" class="headerlink" title="改善深层神经网络"></a>改善深层神经网络</h3><p>主要解决神经网络超参数优化原因及方法</p>
+<h4 id="正则化缓解过拟合"><a href="#正则化缓解过拟合" class="headerlink" title="正则化缓解过拟合"></a>正则化缓解过拟合</h4><p>L2正则化（有时也称weight decay）：$J_{new} = J + \frac{\lambda}{2m}\left | w \right |^{2}$，其中$\left | w\right |^{2}  = \sum_{j=1}^{n}w_{j}^{2} = w^{T}w$。或者如下图所示，可以看到lambda足够大时，会使得权重矩阵w很小，大致想象，再深的网络都可以化为逻辑回归的样式。<br><img src="/img/NN4.png" width="500" alt="图片名称" align="center"><br>换种较理性的方式来解说是：假如激活函数采用tanh，lambda越大，w越小，$g(z)=wx+b$越小，激活函数此时位于斜率$k=1$的线性段(相对来说比较线性的区间)，线性激活函数是拟合不出复杂的边界的。</p>
+<h4 id="Dropout正则化"><a href="#Dropout正则化" class="headerlink" title="Dropout正则化"></a>Dropout正则化</h4>
       
     </div>
     
@@ -538,7 +541,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#神经网络和深度学习"><span class="nav-number">2.</span> <span class="nav-text">神经网络和深度学习</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#浅层神经网络"><span class="nav-number">2.1.</span> <span class="nav-text">浅层神经网络</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#神经网络和深度学习"><span class="nav-number">2.</span> <span class="nav-text">神经网络和深度学习</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#浅层神经网络"><span class="nav-number">2.1.</span> <span class="nav-text">浅层神经网络</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#改善深层神经网络"><span class="nav-number">3.</span> <span class="nav-text">改善深层神经网络</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#正则化缓解过拟合"><span class="nav-number">3.1.</span> <span class="nav-text">正则化缓解过拟合</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Dropout正则化"><span class="nav-number">3.2.</span> <span class="nav-text">Dropout正则化</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -584,7 +587,7 @@
  
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共28.9k字</span>
+  <span class="post-count">博客全站共29.2k字</span>
 </div>
 
 <div class="powered-by">
