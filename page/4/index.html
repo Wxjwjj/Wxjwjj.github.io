@@ -259,6 +259,339 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/25/word2vec-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="祥吉">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Deep Coding">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/25/word2vec-1/" itemprop="url">中文维基百科词向量Word2vec实战！</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-25T23:11:28+08:00">
+                2018-01-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/01/25/word2vec-1/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/01/25/word2vec-1/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>上一篇文章详细学习了Word2vec的含义及实现原理，包含两大语言模型：Cbow、Skip-Gram，以及两大快速训练技巧：Negative sampling、哈夫曼树形式查找Target word。这一篇主要讲基于中文维基百科语料库的Word2vec训练，采用了开源的python gensim包</p>
+<h2 id="安装gensim包"><a href="#安装gensim包" class="headerlink" title="安装gensim包"></a>安装gensim包</h2><p>Google最初开源的Word2vec是用C++写的，后来陆续出现了很多版本，我们采用的是<a href="https://radimrehurek.com/gensim/models/word2vec.html" target="_blank" rel="noopener"><font color="blue"><strong>gensim</strong></font></a> ，gensim已经被集成在了conda中，所以我们可以方便地利用miniconda进行安装。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span> activate py2k  <span class="comment"># 激活python2环境，当然python3也可以的，只不过笔者此处用的python2版本</span></span><br><span class="line">conda install gensim</span><br></pre></td></tr></table></figure></p>
+<h2 id="获取维基百科语料库"><a href="#获取维基百科语料库" class="headerlink" title="获取维基百科语料库"></a>获取维基百科语料库</h2><h3 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h3><p>2017版百科语料下载地址为：<a href="https://dumps.wikimedia.org/zhwiki/latest/zhwiki-latest-pages-articles.xml.bz2。" target="_blank" rel="noopener">https://dumps.wikimedia.org/zhwiki/latest/zhwiki-latest-pages-articles.xml.bz2。</a> 下载后是一个压缩包，里面的内容是从网上爬取的“标题–摘要–正文”对，以及其他的html、json标志符等。</p>
+<h3 id="语料抽取"><a href="#语料抽取" class="headerlink" title="语料抽取"></a>语料抽取</h3><p><a href="https://github.com/attardi/wikiextractor" target="_blank" rel="noopener">Wikipedia Extractor</a>是一个开源的语料抽取工具，语料库压缩包不用在本地解压，直接用Wikipedia Extractor脚本执行：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ git <span class="built_in">clone</span> https://github.com/attardi/wikiextractor.git wikiextractor</span><br><span class="line">$ <span class="built_in">cd</span> wikiextractor</span><br><span class="line">$ sudo python setup.py install</span><br><span class="line">$ ./WikiExtractor.py -b 1024M -o extracted zhwiki-latest-pages-articles.xml.bz2 <span class="comment">#</span></span><br></pre></td></tr></table></figure></p>
+<p>其中<code>2000M</code>代表抽取后的预料库最大允许size，因为原始语料库size约1.3G，这里用2000M的话相当于把语料全部抽取到一个文本文件“wiki_00”中。<code>extracted</code>代表抽取后语料存放路径。<br>最终控制台log输出：INFO: Finished 7-process extraction of 986891 articles in 1393.9s (708.0 art/s)，代表全部抽取完成共986891篇文章。<br>抽取后的内容格式为：每篇文章被一对<code>&lt;doc&gt;</code>、<code>&lt;/doc&gt;</code>包起来，而<code>&lt;doc&gt;</code>中的包含的属性有文章id、url和title属性，如<code>&lt;doc id=&quot;xxx&quot; url=&quot;https://zh.wikipedia.org/xxx&quot; title=&quot;xxx&quot;&gt;</code>。</p>
+<h3 id="繁体字转简体"><a href="#繁体字转简体" class="headerlink" title="繁体字转简体"></a>繁体字转简体</h3><p>上一步抽取的中文维基百科语料库比较杂乱，既有繁体字也有简体字，这里需要将其统一变为简体字，采用开源的 <a href="https://github.com/BYVoid/OpenCC" target="_blank" rel="noopener">OpenCC</a>转换器。ubuntu下使用方法如下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt-get install opencc</span><br><span class="line">$ opencc -i wiki_00 -o zh_wiki_00 -c zht2zhs.ini</span><br></pre></td></tr></table></figure></p>
+<h3 id="去除标点"><a href="#去除标点" class="headerlink" title="去除标点"></a>去除标点</h3><p>去除标点是因为：训练标点符号意义不大，且标点符号出现次数过多，影响一定训练效率。可以通过正则表达式去除。感谢<a href="http://wulc.me" target="_blank" rel="noopener">吴良超的学习笔记</a>提供的去标点程序，使用格式为：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python script.py input_file output_file</span><br></pre></td></tr></table></figure></p>
+<p>pre1.py源码如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*- </span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> io</span><br><span class="line"></span><br><span class="line">reload(sys)</span><br><span class="line">sys.setdefaultencoding(<span class="string">'utf-8'</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">pre_process</span><span class="params">(input_file, output_file)</span>:</span></span><br><span class="line">    multi_version = re.compile(<span class="string">ur'-\&#123;.*?(zh-hans|zh-cn):([^;]*?)(;.*?)?\&#125;-'</span>)</span><br><span class="line">    punctuation = re.compile(<span class="string">u"[-~!@#$%^&amp;*()_+`=\[\]\\\&#123;\&#125;\"|;':,./&lt;&gt;?·！@#￥%……&amp;*（）——+【】、；‘：“”，。、《》？「『」』]"</span>)</span><br><span class="line">    <span class="keyword">with</span> io.open(output_file, mode = <span class="string">'w'</span>, encoding = <span class="string">'utf-8'</span>) <span class="keyword">as</span> outfile:</span><br><span class="line">        <span class="keyword">with</span> io.open(input_file, mode = <span class="string">'r'</span>, encoding =<span class="string">'utf-8'</span>) <span class="keyword">as</span> infile:</span><br><span class="line">            <span class="keyword">for</span> line <span class="keyword">in</span> infile:</span><br><span class="line">                line = multi_version.sub(<span class="string">ur'\2'</span>, line)</span><br><span class="line">                line = punctuation.sub(<span class="string">''</span>, line.decode(<span class="string">'utf8'</span>))</span><br><span class="line">                outfile.write(line)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    <span class="keyword">if</span> len(sys.argv) != <span class="number">3</span>:</span><br><span class="line">        <span class="keyword">print</span> <span class="string">"Usage: python pre1.py input_file output_file"</span></span><br><span class="line">        sys.exit()</span><br><span class="line">    input_file, output_file = sys.argv[<span class="number">1</span>], sys.argv[<span class="number">2</span>]</span><br><span class="line">    pre_process(input_file, output_file)</span><br></pre></td></tr></table></figure></p>
+<h3 id="去除标识符及分词"><a href="#去除标识符及分词" class="headerlink" title="去除标识符及分词"></a>去除标识符及分词</h3><p>经过上一步处理，每一篇文章被存放在了<code>doc</code>/doc<code>标签。同时肉眼对比抽取后的句子，每一段落的开头跟标题都是重复的，也需要去除。还有前辈们建议把一篇段落的文章放到一行，但词向量关注的</code>window size`一般大小为3、5，感觉也没这个必要。安装<a href="https://github.com/fxsjy/jieba" target="_blank" rel="noopener">jieba分词</a>，pre2.py代码如下:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> io</span><br><span class="line"><span class="keyword">import</span> jieba</span><br><span class="line"></span><br><span class="line">reload(sys)</span><br><span class="line">sys.setdefaultencoding(<span class="string">'utf-8'</span>)</span><br><span class="line"></span><br><span class="line">jieba.load_userdict(<span class="string">"dict.txt"</span>) <span class="comment"># 如果有的话加载用户自定义词典</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">cut_words</span><span class="params">(input_file, output_file)</span>:</span></span><br><span class="line">    count = <span class="number">0</span></span><br><span class="line">    a = <span class="number">1</span> <span class="comment"># 标识符</span></span><br><span class="line">    <span class="keyword">with</span> io.open(output_file, mode = <span class="string">'w'</span>, encoding = <span class="string">'utf-8'</span>) <span class="keyword">as</span> outfile:</span><br><span class="line">        <span class="keyword">with</span> io.open(input_file, mode = <span class="string">'r'</span>, encoding = <span class="string">'utf-8'</span>) <span class="keyword">as</span> infile:</span><br><span class="line">            <span class="keyword">for</span> line <span class="keyword">in</span> infile:</span><br><span class="line">                <span class="keyword">if</span> a == <span class="number">-1</span>:</span><br><span class="line">                    a = a*(<span class="number">-1</span>)</span><br><span class="line">                    <span class="keyword">continue</span></span><br><span class="line">                line = line.strip() </span><br><span class="line">                <span class="keyword">if</span> len(line) &lt; <span class="number">1</span>: </span><br><span class="line">                    <span class="keyword">continue</span></span><br><span class="line">                <span class="comment"># 移除字符串首尾的\r \n 空格等字符，此处希望一篇文章的所有内容位于一行，使得训练预料更规整</span></span><br><span class="line">                <span class="keyword">if</span> line.startswith(<span class="string">'doc'</span>):</span><br><span class="line">                    <span class="keyword">if</span> line == <span class="string">'doc'</span>: </span><br><span class="line">                        outfile.write(<span class="string">u'\n'</span>) </span><br><span class="line">                        count += <span class="number">1</span></span><br><span class="line">                        str = <span class="string">"已完成 %d 篇百科文章转换"</span> % (count)</span><br><span class="line">                        <span class="keyword">print</span> str </span><br><span class="line">                    <span class="keyword">else</span>:</span><br><span class="line">                        a = <span class="number">-1</span></span><br><span class="line">                        <span class="keyword">continue</span></span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    <span class="keyword">for</span> word <span class="keyword">in</span> jieba.cut(line):</span><br><span class="line">                        outfile.write(word + <span class="string">' '</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    <span class="keyword">if</span> len(sys.argv) &lt; <span class="number">3</span>:</span><br><span class="line">        <span class="keyword">print</span> <span class="string">"Terminal Format: python script.py input_file output_file"</span></span><br><span class="line">        sys.exit()</span><br><span class="line">    input_file, output_file = sys.argv[<span class="number">1</span>], sys.argv[<span class="number">2</span>]</span><br><span class="line">    cut_words(input_file, output_file)</span><br></pre></td></tr></table></figure></p>
+<p>最终log输出：<code>已完成 986891 篇百科文章转换</code>，代表全部文章转换完毕。</p>
+<h3 id="文本去重"><a href="#文本去重" class="headerlink" title="文本去重"></a>文本去重</h3><p>NLP常规操作，这么大的数据量，采用利用哈希表检测重复并去除，pre3.py代码如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*- </span></span><br><span class="line"><span class="comment">#程序功能是为了完成判断文件中是否有重复句子</span></span><br><span class="line"><span class="comment">#并将重复句子打印出来</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> shutil</span><br><span class="line">res_list = set()</span><br><span class="line">f = open(<span class="string">'pre2'</span>,<span class="string">'r'</span>)</span><br><span class="line">w = open(<span class="string">'pre3'</span>, <span class="string">'w'</span>)</span><br><span class="line">k = <span class="number">1</span></span><br><span class="line">index = <span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> f.readlines():</span><br><span class="line">    index = index + <span class="number">1</span></span><br><span class="line">    <span class="keyword">if</span> line <span class="keyword">in</span> res_list:</span><br><span class="line">        k = k + <span class="number">1</span></span><br><span class="line">        print(<span class="string">"Repeat"</span>, k, <span class="string">"All:"</span>, index, <span class="string">"Percent: %.5f%%"</span> % (<span class="number">100</span>*k/index))</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        res_list.add(line)</span><br><span class="line">        w.write(line)</span><br></pre></td></tr></table></figure></p>
+<p>最终log输出:<code>Repeat&#39;, 18649, &#39;All:&#39;, 986884, &#39;Percent: 1.00000%&#39;</code>，重复了1%的语料。</p>
+<h2 id="用gensim训练词向量"><a href="#用gensim训练词向量" class="headerlink" title="用gensim训练词向量"></a>用gensim训练词向量</h2><h3 id="初始训练"><a href="#初始训练" class="headerlink" title="初始训练"></a>初始训练</h3><p>解释下参数含义：<br><code>multiprocessing</code>:python中的多线程模块，这里这里采用的是8核CPU进行训练，网络比较简单的情况下速度要比GPU快。<br><code>LineSentence</code>：将输入文件转为 gensim 内部的 LineSentence 对象，要求输入的文件的格式为<strong>每行一篇文章，对于中文每篇文章经过分词处理。</strong><br><code>min_count</code>：低于min_count的词频的词不参与训练；<code>sg</code>:0表示CBOW语言模型，1表示Skip-gram模型；<code>size</code>：词向量维度<br><code>iter</code>:迭代的epoch次数，这里着重讲下<strong>#此处的iter值会被直接设置到百分比进度条中，而不是日常训练神经网络一样epoch1、epoch2…epoch100</strong></p>
+<p>train.py代码如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> os, sys</span><br><span class="line"><span class="keyword">import</span> multiprocessing</span><br><span class="line"><span class="keyword">import</span> gensim  </span><br><span class="line"><span class="keyword">import</span> logging</span><br><span class="line"></span><br><span class="line">reload(sys)</span><br><span class="line">sys.setdefaultencoding(<span class="string">'utf-8'</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">word2vec_train</span><span class="params">(input_file, output_file)</span>:</span></span><br><span class="line">    logging.basicConfig(format=<span class="string">'%(asctime)s : %(levelname)s : %(message)s'</span>, level=logging.INFO)</span><br><span class="line">    sentences = gensim.models.word2vec.LineSentence(input_file)</span><br><span class="line">    model = gensim.models.Word2Vec(sentences, size=<span class="number">800</span>, window=<span class="number">5</span>, min_count=<span class="number">3</span>, iter=<span class="number">100</span>,sg=<span class="number">0</span>, workers=multiprocessing.cpu_count())</span><br><span class="line">    <span class="comment"># model.train(sentences, total_examples=model.corpus_count, epochs = 100) 默认参数，也可以指定</span></span><br><span class="line">    model.save(output_file)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    <span class="keyword">if</span> len(sys.argv) &lt; <span class="number">3</span>:</span><br><span class="line">        <span class="keyword">print</span> <span class="string">"Terminal Format: python script.py infile outfile"</span></span><br><span class="line">        sys.exit()</span><br><span class="line">    input_file, output_file = sys.argv[<span class="number">1</span>], sys.argv[<span class="number">2</span>]</span><br><span class="line">    word2vec_train(input_file, output_file)</span><br></pre></td></tr></table></figure></p>
+<p>最终log输出：<code>2018-01-22 19:37:52,179 : INFO : PROGRESS: at 100.00% examples, 122591 words/s, in_qsize 16, out_qsize 0</code><br>代表完成训练。</p>
+<blockquote>
+<ul>
+<li>实验环境：ubuntu16.04、 CPU：8核</li>
+</ul>
+<ol>
+<li>迭代5次epoch，耗时1.5小时</li>
+<li>相同参数下，迭代100次epcoh，耗时40小时</li>
+</ol>
+</blockquote>
+<h3 id="增量训练"><a href="#增量训练" class="headerlink" title="增量训练"></a>增量训练</h3><p>增量训练可以在新的语料库上，基于原有模型进行叠加训练，而不用从头开始。<br>train_add.py关键部分代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">def word2vec_train(input_file, output_file):</span><br><span class="line">    logging.basicConfig(format=&apos;%(asctime)s : %(levelname)s : %(message)s&apos;, level=logging.INFO)</span><br><span class="line">    model = gensim.models.Word2Vec.load(&apos;word2vec&apos;)</span><br><span class="line">    more_sentences = gensim.models.word2vec.LineSentence(input_file)</span><br><span class="line">    model.build_vocab(more_sentences, update=True)</span><br><span class="line">    model.train(more_sentences, total_examples=model.corpus_count, epochs=model.iter)</span><br></pre></td></tr></table></figure></p>
+<p>上面的代码先加载了一个已经训练好的词向量模型，然后再添加新的文章进行训练，同样新增的文章的格式也要满足每行一篇文章，每篇文章的词语通过空格分开的格式。由于前段时间参加Ai Challenge比赛，正好有1000W行处理后的中文数据可以加入训练。</p>
+<h2 id="使用词向量模型"><a href="#使用词向量模型" class="headerlink" title="使用词向量模型"></a>使用词向量模型</h2><p>直接上代码了，infer.py如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#encoding=utf-8</span></span><br><span class="line"><span class="keyword">import</span> gensim</span><br><span class="line"><span class="keyword">from</span> gensim.models <span class="keyword">import</span> word2vec</span><br><span class="line">model=gensim.models.Word2Vec.load(<span class="string">'word2vec'</span>)</span><br><span class="line"><span class="keyword">print</span> <span class="string">"模型加载成功！"</span></span><br><span class="line"><span class="keyword">print</span> <span class="string">"----词向量维度------"</span></span><br><span class="line"><span class="keyword">print</span> len(model[<span class="string">u'男人'</span>])</span><br><span class="line"><span class="keyword">print</span> <span class="string">"----跟“滋润”相近的词------"</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> model.most_similar(<span class="string">u"滋润"</span>):</span><br><span class="line">    <span class="keyword">print</span> i[<span class="number">0</span>],i[<span class="number">1</span>]</span><br></pre></td></tr></table></figure></p>
+<p>Refer：<br><a href="http://blog.csdn.net/qq_32166627/article/details/68942216" target="_blank" rel="noopener">word2vec实战：获取和预处理中文维基百科(Wikipedia)语料库，并训练成word2vec模型</a><br><a href="http://wulc.me" target="_blank" rel="noopener">中文维基百科语料库词向量的训练</a><br><a href="http://kexue.fm/archives/4304/" target="_blank" rel="noopener">不可思议的Word2Vec</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/21/word2vec/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="祥吉">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Deep Coding">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/21/word2vec/" itemprop="url">Word2vec词向量原理解析！</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-21T15:46:11+08:00">
+                2018-01-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/01/21/word2vec/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/01/21/word2vec/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="1-词汇表示Background"><a href="#1-词汇表示Background" class="headerlink" title="1. 词汇表示Background"></a>1. 词汇表示Background</h2><h3 id="one-hot编码"><a href="#one-hot编码" class="headerlink" title="one-hot编码"></a>one-hot编码</h3><p>文本、字符串看似简单，其实是经过几千万年的演化，人类抽象出的非常高维、稀疏的特征。拿汉语来说，词汇数量约为几十万。如果采用ont-hot形式编码，一个词语的维度就将占据几十万维。训练时候往往是上亿个词，这便会造成巨大的维数灾难。</p>
+<h3 id="Word2vec"><a href="#Word2vec" class="headerlink" title="Word2vec"></a>Word2vec</h3><p>而<strong>Word2vec</strong>(中文名：词向量/词嵌入)，可以自由控制词汇的维度，常用的维度数一般为256、512…1024维。相对于one-hot编码词汇的离散表示，Word2vec是一种词汇的分布式表示(distribution representation)。比如某个词汇被以维度为[1,256]的一维向量表示，如果是一个包含100个词的句子，那么这句话被表示为[100,256]。写到这里，其实便可以意识到这跟图像用像素矩阵来表示是非常类似的。<br> <img src="/img/wpic2.jpeg" width="400" alt="图片名称" align="center"></p>
+<h3 id="Word2vec特点"><a href="#Word2vec特点" class="headerlink" title="Word2vec特点"></a>Word2vec特点</h3><p>因为Deep learning的优势是从低维特征中自动学习、提取高维特征，词的分布式表示便可以充当词汇的低维特征表示，所以目前像文本分类、机器翻译、摘要等NLP任务，都使用Word2vec表示的词汇来作为模型的input。使得NLP领域也因为Deep learning 取得了不错的进步。如下是搜索“爱因斯坦”的相近词汇</p>
+<pre><code class="bash">----跟“爱因斯坦”相近的词------
+宇宙学 0.808888375759
+牛顿 0.800362348557
+相对论 0.791419327259
+定律 0.76971578598
+拓扑 0.764759659767
+</code></pre>
+<p>但因为Word2vec衡量的是文本共现程度，只能反映两者经常在相近的上下文环境中出现。所以它并不是真正意义上的语义表示，只能说一种近似，或者说其中存在很多的语义误差，并不像像素可以精确表示一副图像的底层信息。笔者认为这也是造成NLP领域并没有像图像、语音识别领域取得非常长足进步的重要原因。</p>
+<blockquote>
+<p>由于词汇背后丰富的语义信息，并不能通过Word2vec完全表示，最近也有学者尝试用更细的粒度来表示词汇。清华大学的刘知远老师利用HowNet：一种用最基本的、不宜再被分割的最小语义单位来表示的语义体系，跟Word2vec相结合，也获得了一些可以展望的成果<a href="https://www.zybuluo.com/cmd/" target="_blank" rel="noopener"><font color="#9999FF">《在深度学习时代用HowNet搞事情》</font></a></p>
+</blockquote>
+<hr>
+<h3 id="Word2vec重要组件"><a href="#Word2vec重要组件" class="headerlink" title="Word2vec重要组件"></a>Word2vec重要组件</h3><p>Word2vec(以下简称词向量)，虽然作为概率语言模型的input，但其实是训练语言模型产生的中间结果。</p>
+<blockquote>
+<ul>
+<li><strong>两个语言模型：</strong><ul>
+<li>Skip-gram：根据当前词语w<sub>t</sub>，预测上下文的词语(w<sub>t-1</sub>、w<sub>t+1</sub>)的模型。</li>
+<li>CBOW：Continuous Bag-of-Words Model的缩写，与Skip-gram正好相反</li>
+</ul>
+</li>
+<li><strong>优化Softmax归一化：</strong><ul>
+<li>Hierarchical Softmax：采用哈夫曼树思想分层求取Target概率</li>
+<li>Negative sampling：softmax时仅采样少量词汇作映射</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<hr>
+<h2 id="2-Word2vec重要组件详解"><a href="#2-Word2vec重要组件详解" class="headerlink" title="2. Word2vec重要组件详解"></a>2. Word2vec重要组件详解</h2><h3 id="神经网络语言模型简化"><a href="#神经网络语言模型简化" class="headerlink" title="神经网络语言模型简化"></a>神经网络语言模型简化</h3><p>简化后训练Language model的神经网络如图所示，甚至都没有Hidden Layer层，是一个直接从input到output的映射。<br> <img src="/img/wpic5.jpeg" width="400" alt="图片名称" align="center"><br>图中的三层含义：</p>
+<blockquote>
+<p>input：上下文的词向量(注意我们训练的是CBOW语言模型，词向量只是模型的一个参数，起始时是个随机值)<br>  projection：上下文词向量simply add(若是Skip-gram为input本身)<br>  output：按理说此处应当是在词表维度C上的概率分布</p>
+</blockquote>
+<p>参数化表示上面的CBOW语言模型后，如下图所示：(看这里更清楚了，这不就是纯粹的softmax公式么…)<br> <img src="/img/wpic7.jpeg" width="350" alt="图片名称" align="center"><br>简单计算下这个网络从projection Layer到Output Layer 全连接网络层之间的参数：projection Layer即词向量维度在10<sup>2</sup>量级；词表(Vocab)数量在10<sup>5</sup>量级；语料库中需要训练的词汇数量一般在10<sup>7</sup>量级以上。这样的运算次数是十分吓人的！</p>
+<h3 id="Hierarchical-Softmax"><a href="#Hierarchical-Softmax" class="headerlink" title="Hierarchical Softmax"></a>Hierarchical Softmax</h3><p><strong><code>重点：</code></strong>作者此处便采用了哈夫曼树的思想：具体做法是将语料库中的词按先词频排序，然后不断合并最小的两个节点成为一棵哈夫曼树，最终合并效果如下所示，词表中的所有词汇均为于树的叶节点上(详见：<a href="http://www.icourse163.org/learn/ZJU-93001?tid=1002019005#/learn/content?type=detail&amp;id=1002635018&amp;cid=1002891113" target="_blank" rel="noopener"><font color="blue">10分钟便能懂的公开课</font></a>)<br> <img src="/img/wpic8.jpeg" width="450" alt="图片名称" align="center"><br><strong>生成Target词汇的概率为从跟节点到叶子节点路径的概率连乘</strong>(见下图)。而哈夫曼树相比于其他形式的二叉树，将高频词赋予更短的编码，可以进一步减少概率P相乘次数。下面用图解的方式说明为什么采用哈夫曼树可以加快计算速度。</p>
+<blockquote>
+<p>极限假设词向量维度为3，词表大小为20。那么全连接网络1次迭代需要训练的参数数量为60个，接着再进行softmax归一化。<br>哈夫曼树的形式，假设目标词汇是图中的节点8，根结点到8节点一共经过5个节点(哈夫曼树编码知识，8节点的编码表示为:11110，那么计算Target词汇概率，仅涉及3*5=15个参数的计算。</p>
+</blockquote>
+<p><img src="/img/wpic9.jpeg" width="450" alt="图片名称" align="center"><br>基于二叉树的这种性质，计算复杂度从之前的O(N)变为O(logN)，运算速度指数级提升。<br>而<strong>Cost函数为对概率连乘取log对数</strong>，如下：<br> <img src="/img/wpic12.jpeg" width="250" alt="图片名称" align="center"><br> <img src="/img/wpic13.jpeg" width="250" alt="图片名称" align="center"></p>
+<p>训练目标是最大化Cost函数，采用的算法是梯度上升。其实跟梯度下降非常类似，cost对参数向量取偏导数得到梯度，参数更新时候再加上该梯度乘learning rate就可以了，不过此处涉及两个参数向量，一个是权重theta，另一个就是词向量。此处直接复制Hankcs.com中的推导结果，两个参数更新方式如下：<br> <img src="/img/wpic10.jpeg" width="300" alt="图片名称" align="center"><br> <img src="/img/wpic11.jpeg" width="300" alt="图片名称" align="center"><br>如此便完成了一次完整的训练周期！<br> <font color="red"><strong>更简单直白的总结是：扁平的softmax在计算P(y=j)，需要计算整个词表每个词的概率，而现在分层的softmax只需要计算一条路径上节点的概率值，便可以得到P(y=j)，接着进行梯度上升，不断使概率P变大</strong></font></p>
+<hr>
+<h3 id="Negative-sampling"><a href="#Negative-sampling" class="headerlink" title="Negative sampling"></a>Negative sampling</h3><h4 id="定义："><a href="#定义：" class="headerlink" title="定义："></a>定义：</h4><p>由于Hierarchical Softmax对于频率较低的词汇，依然需要花费较长的步骤才能找到该词。所以作者引入了另一种算法：<strong>Negative sampling</strong>(sampled softmax)，即：为了加快训练速度，在loss计算时，采用负采样方式，并不是求整个vocab的softmax概率，而是随机采样的W个。这样每次训练中就可以更新这少量的W个参数，其他参数被冻结(需要注意总的参数数量不变，只是每次参与迭代计算的数量锐减)。<br><strong><code>需要注意：</code></strong>在Test阶段，要到整个词表中softmax(此时词向量本身及其权重已经被计算了出来)，来确定下一次选中的是哪些词汇(可接beam search)。若是哈夫曼树，Test时会找出一个确定的词<br>我们原来模型每次运行，假设词向量维度：300；vocab大小：1W，之前每次迭代需要跟新300W参数。现在负采样个数N=5。只要跟新300×(1+5)=1800，参数减少了非常多，训练速度大幅加快。</p>
+<h4 id="采样方法："><a href="#采样方法：" class="headerlink" title="采样方法："></a>采样方法：</h4><p>那怎样确定负采样个数N呢？其实就是随机抽取，但要考虑词频的影响，词频越高，越容易被抽出来。具体到word2vec中，作者是这样实现的：采用一个大小为M的table(M&gt;&gt;vocab size，一般取10^8)。分为M份，每份代表一个词，如图所示；<br> <img src="/img/wpic14.jpeg" width="450" alt="图片名称" align="center"><br>但具体怎么确定哪一份对应什么词呢？作者采用了如下的公示计算每个词的份额(对应在tabel上占据的长度)<br> <img src="/img/wpic15.jpeg" width="270" alt="图片名称" align="center"><br>在paper中提到0.75这个超参是试出来的，实现的话就是直接1～M取一个随机数，从中提取对应的项便可以了。</p>
+<hr>
+<h2 id="Ref："><a href="#Ref：" class="headerlink" title="Ref："></a>Ref：</h2><p><a href="http://www.hankcs.com/nlp/word2vec.html" target="_blank" rel="noopener"><font color="#9999FF">Blog：Word2vec原理推导与代码分析</font></a><br><a href="https://www.zybuluo.com/Dounm/note/591752#71-paragraph2vec" target="_blank" rel="noopener"><font color="#9999FF">Blog：Word2vec-知其然知其所以然</font></a><br><a href="http://wulc.me/" target="_blank" rel="noopener"><font color="#9999FF">Blog：中文维基百科语料库词向量的训练</font></a><br><a href="http://blog.csdn.net/layumi1993/article/details/72868399#t1" target="_blank" rel="noopener"><font color="#9999FF">Blog：Word2vec教程-Negative Sampling</font></a><br>《word2vec中的数学原理详解》<br>《Tensorflow实战》</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/17/tmux/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -901,7 +1234,7 @@ $ conda config --<span class="built_in">set</span> show_channel_urls yes
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">34</span>
+                  <span class="site-state-item-count">36</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -999,7 +1332,7 @@ $ conda config --<span class="built_in">set</span> show_channel_urls yes
  
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共29.2k字</span>
+  <span class="post-count">博客全站共30.1k字</span>
 </div>
 
 <div class="powered-by">

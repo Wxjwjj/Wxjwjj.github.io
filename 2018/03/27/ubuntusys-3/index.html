@@ -75,7 +75,7 @@
 
 
 
-  <meta name="keywords" content="NLP," />
+  <meta name="keywords" content="Linux," />
 
 
 
@@ -86,20 +86,18 @@
 
 
 
-<meta name="description" content="背景：2012年5月，Google推出Google知识图谱（GoogleKnowledge Graph），并利用其在搜索引擎中增强搜索结果。这是“知识图谱”名称的由来，也标志着大规模知识图谱在互联网语义搜索中的成功应用。 Eg：搜索“吴彦祖的国籍是什么？”，Google/Baidu会给出与之相关的详细搜索结果（可以叫“搜索++”或者“搜索杂烩且精准”，顺带提一句，搜索本身就是AI，没必要将其神秘化">
-<meta name="keywords" content="NLP">
+<meta name="description" content="背景笔者事先在ubuntu上安装了cuda9.0，然而在编译opencv3.1时候，发生了版本不匹配的冲突。遂又安装了cuda8.0，但二者极其cudnn的安装，如出一辙，在这里记录下安装过程。 cuda下载及安装NVIDIA官网下载cuda8.0的安装run文件注意安装时候不要sudo安装，同样的原因，若安装出错，可能难以卸载干净。1./cuda_8.0.61_375.26_linux-run">
+<meta name="keywords" content="Linux">
 <meta property="og:type" content="article">
-<meta property="og:title" content="知识图谱私见！🐶">
-<meta property="og:url" content="http://yoursite.com/2018/01/14/Knowledge/index.html">
+<meta property="og:title" content="Ubuntu1604装机系列(四)：cuda8&#x2F;cuda9及对应版本的cudnn安装">
+<meta property="og:url" content="http://yoursite.com/2018/03/27/ubuntusys-3/index.html">
 <meta property="og:site_name" content="Deep Coding">
-<meta property="og:description" content="背景：2012年5月，Google推出Google知识图谱（GoogleKnowledge Graph），并利用其在搜索引擎中增强搜索结果。这是“知识图谱”名称的由来，也标志着大规模知识图谱在互联网语义搜索中的成功应用。 Eg：搜索“吴彦祖的国籍是什么？”，Google/Baidu会给出与之相关的详细搜索结果（可以叫“搜索++”或者“搜索杂烩且精准”，顺带提一句，搜索本身就是AI，没必要将其神秘化">
+<meta property="og:description" content="背景笔者事先在ubuntu上安装了cuda9.0，然而在编译opencv3.1时候，发生了版本不匹配的冲突。遂又安装了cuda8.0，但二者极其cudnn的安装，如出一辙，在这里记录下安装过程。 cuda下载及安装NVIDIA官网下载cuda8.0的安装run文件注意安装时候不要sudo安装，同样的原因，若安装出错，可能难以卸载干净。1./cuda_8.0.61_375.26_linux-run">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://yoursite.com/img/wuyanzu.jpeg">
-<meta property="og:updated_time" content="2018-02-05T02:45:50.595Z">
+<meta property="og:updated_time" content="2018-04-20T02:14:02.665Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="知识图谱私见！🐶">
-<meta name="twitter:description" content="背景：2012年5月，Google推出Google知识图谱（GoogleKnowledge Graph），并利用其在搜索引擎中增强搜索结果。这是“知识图谱”名称的由来，也标志着大规模知识图谱在互联网语义搜索中的成功应用。 Eg：搜索“吴彦祖的国籍是什么？”，Google/Baidu会给出与之相关的详细搜索结果（可以叫“搜索++”或者“搜索杂烩且精准”，顺带提一句，搜索本身就是AI，没必要将其神秘化">
-<meta name="twitter:image" content="http://yoursite.com/img/wuyanzu.jpeg">
+<meta name="twitter:title" content="Ubuntu1604装机系列(四)：cuda8&#x2F;cuda9及对应版本的cudnn安装">
+<meta name="twitter:description" content="背景笔者事先在ubuntu上安装了cuda9.0，然而在编译opencv3.1时候，发生了版本不匹配的冲突。遂又安装了cuda8.0，但二者极其cudnn的安装，如出一辙，在这里记录下安装过程。 cuda下载及安装NVIDIA官网下载cuda8.0的安装run文件注意安装时候不要sudo安装，同样的原因，若安装出错，可能难以卸载干净。1./cuda_8.0.61_375.26_linux-run">
 
 
 
@@ -129,13 +127,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/01/14/Knowledge/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/03/27/ubuntusys-3/"/>
 
 
 
 
 
-  <title>知识图谱私见！🐶 | Deep Coding</title>
+  <title>Ubuntu1604装机系列(四)：cuda8/cuda9及对应版本的cudnn安装 | Deep Coding</title>
   
 
 
@@ -262,7 +260,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/14/Knowledge/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/27/ubuntusys-3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="祥吉">
@@ -279,7 +277,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">知识图谱私见！🐶</h1>
+          <h1 class="post-title" itemprop="name headline">Ubuntu1604装机系列(四)：cuda8/cuda9及对应版本的cudnn安装</h1>
         
 
         <div class="post-meta">
@@ -291,8 +289,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-14T12:52:19+08:00">
-                2018-01-14
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-27T12:08:34+08:00">
+                2018-03-27
               </time>
             
 
@@ -310,8 +308,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/01/14/Knowledge/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/01/14/Knowledge/" itemprop="commentCount"></span>
+                <a href="/2018/03/27/ubuntusys-3/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/03/27/ubuntusys-3/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -339,25 +337,12 @@
       
 
       
-        <h3 id="背景："><a href="#背景：" class="headerlink" title="背景："></a>背景：</h3><p>2012年5月，Google推出Google知识图谱（GoogleKnowledge Graph），并利用其在搜索引擎中增强搜索结果。这是“知识图谱”名称的由来，也标志着大规模知识图谱在互联网语义搜索中的成功应用。</p>
-<p>Eg：搜索“吴彦祖的国籍是什么？”，Google/Baidu会给出与之相关的详细搜索结果（可以叫“搜索++”或者“搜索杂烩且精准”，顺带提一句，搜索本身就是AI，没必要将其神秘化，之前到现在一只都有，只是如同其他任何一个行业，发展的越来越好，2012年后随着深度学习的爆发，迎来了一波小高潮）</p>
-<p><img src="/img/wuyanzu.jpeg" alt=""></p>
-<h4 id="知识图谱概念"><a href="#知识图谱概念" class="headerlink" title="知识图谱概念"></a>知识图谱概念</h4><p><strong>定义：</strong>知识图谱旨在描述真实世界中存在的各种实体或概念及其关系，其构成一张巨大的语义网络图，节点表示实体或概念，边则由属性或关系构成。</p>
-<p><strong>节点：</strong>知识图谱包括<code>实体</code>、<code>属性/语义类</code>、<code>属性值</code>、<code>关系</code>这么4种节点。最终以三元组的形式呈现，主要包括(实体1-关系-实体2)和(实体-属性-属性值)等。</p>
-<blockquote>
-<p>中国-首都-北京是一个（实体-关系-实体）的三元组样例.<br>北京-人口-2069.3万是一个（实体-属性-属性值）的三元组样例。</p>
-</blockquote>
-<h4 id="构建："><a href="#构建：" class="headerlink" title="构建："></a>构建：</h4><p>知识图谱的构建技术包括3大方面：知识提取、知识表示、知识融合。后两方面自己目前的知识面尚未覆盖，仅就Deep Learning相关的来说，<br>知识提取部分又包括<strong>实体抽取、语义类抽取、属性和属性值抽取</strong>。</p>
-<blockquote>
-<p>实体抽取目前有用<code>BiLstm+CRF</code>算法来做；<br>语义类抽取笔者自己也尝试了用word2vec进行相似度匹配，效果还不错；<br>属性和属性值抽取，笔者尝试了用命名实体识别工具+正则匹配的方式也能完成一定程度的，像地名、场景、日期、车牌等信息的抽取。</p>
-</blockquote>
-<p>目前工业界基本也是通过从半结构化的数据中抽取信息，而不是通过<strong>“阅读”</strong>句子产生真正的理解来抽取，深层自然语言处理这块儿骨头太硬了。</p>
-<h3 id="小结："><a href="#小结：" class="headerlink" title="小结："></a>小结：</h3><p>写到这里，笔者更认为深度学习也是构建知识图谱的一种方式，深度学习能较好解决机器翻译、客服对话等小任务，也是一定程度上对知识地综合理解，比如通过机器翻译，建立英语、中文之间的联系，通过Imagenet图像分类，建立1000种Object的对应关系。但，深度学习在NLP/图像中对“语义”的理解，还是太过单薄，设计太过简陋，面对这些非结构化的大量知识体系，无从下口、束手无策。</p>
-<blockquote>
-<p>能够将知识图谱的各条“边”剥离清楚的，深度学习还需要再向前推进一大步，远不止目前的CNN、RNN…<br>而知识图谱本身的发展，应该要求更高，需要的是更加综合的知识。</p>
-</blockquote>
-<h5 id="——不能真正创造价值的概念，都是耍流氓！"><a href="#——不能真正创造价值的概念，都是耍流氓！" class="headerlink" title=" ——不能真正创造价值的概念，都是耍流氓！"></a><font color="red"> ——不能真正创造价值的概念，都是耍流氓！</font></h5><p>话说回来吧，借助某位哲人说的，希望自己摒弃热潮，以工程任务为导向。首要解决当下NLP能解决的任务，这也是本博客名称“Deep coding”的由来。</p>
-<hr>
+        <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>笔者事先在ubuntu上安装了cuda9.0，然而在编译opencv3.1时候，发生了版本不匹配的冲突。遂又安装了cuda8.0，但二者极其cudnn的安装，如出一辙，在这里记录下安装过程。</p>
+<h3 id="cuda下载及安装"><a href="#cuda下载及安装" class="headerlink" title="cuda下载及安装"></a>cuda下载及安装</h3><p>NVIDIA官网下载cuda8.0的安装<a href="https://developer.nvidia.com/cuda-80-download-archive" target="_blank" rel="noopener">run文件</a><br>注意安装时候不要<code>sudo</code>安装，同样的原因，若安装出错，可能难以卸载干净。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./cuda_8.0.61_375.26_linux-run 注意不要更新显卡驱动，更改安装及链接库路径到个人指定目录下</span><br></pre></td></tr></table></figure></p>
+<p>安装完成后需要在系统内写入<code>bin</code>及<code>lib</code>搜索路径，以笔者的安装路径为例<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vi ~/.bashrc</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:/home/&lt;user name&gt;/wuxj/cuda-8.0/bin:/home/&lt;user name&gt;/wuxj/cuda-9.0/bin</span><br><span class="line"><span class="built_in">export</span> LD_LIBRARY_PATH=<span class="variable">$LD_LIBRARY_PATH</span>:/home/&lt;user name&gt;/wuxj/cuda-8.0/lib64:/home/&lt;user name&gt;/wuxj/cuda-9.0/lib64</span><br></pre></td></tr></table></figure></p>
+<p>其中PATH为<code>bin</code>可执行程序路径，一般添加安装软件的terminal快速启动，<code>LD_LIBRARY_PATH</code>为依赖库的路径。<br>另外笔者同时安装了cuda8.0/cuda9.0，系统路径中哪个在前即可先被访问调用。而在cmake中会更加灵活，直接指定cuda安装目录便可以正确调用。</p>
+<h3 id="cudnn下载及安装"><a href="#cudnn下载及安装" class="headerlink" title="cudnn下载及安装"></a>cudnn下载及安装</h3><p>NVIDIA官网下载cudnn压缩<a href="https://developer.nvidia.com/rdp/cudnn-download" target="_blank" rel="noopener">文件</a>(需先注册)。cudnn其实无需安装， 解压后即可看到里面是<code>include</code>头文件夹，及NVIDIA事先编译好的<code>lib</code>库。所以我们只需要将其复制到cuda对应目录即可。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> cudnn6</span><br><span class="line"></span><br><span class="line">cp include/* ../../cuda-8.0/include/ <span class="comment"># 复制到你cuda安装目录的对应文件夹</span></span><br><span class="line"></span><br><span class="line">cp lib64/* ../../cuda-8.0/lib64/</span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> ../../cuda-8.0/lib64/ </span><br><span class="line"></span><br><span class="line">sudo rm libcudnn.so</span><br><span class="line"></span><br><span class="line">sudo rm libcudnn.so.6</span><br><span class="line"></span><br><span class="line">sudo ln -sf libcudnn.so.6.0.21 libcudnn.so.6</span><br><span class="line"></span><br><span class="line">sudo ln -sf libcudnn.so.6 libcudnn.so</span><br></pre></td></tr></table></figure></p>
+<h3 id="安装成功"><a href="#安装成功" class="headerlink" title="安装成功"></a>安装成功</h3><p><strong>一些体会：</strong>Linux系统完美诠释了文件即一切，所有安装内容都暴露在外部，所有想删除的东西一键删除安装文件夹即可，强烈不推荐sudo安装。<br>pip可以用sudo安装，因为pip安装的软件很容易卸载<br>pip的安装目录：<code>/usr/local/lib/python3.5/dist-packages/ /usr/local/lib/python3.5/dist-packages/</code>，pip安的软件可以到该目录查看是否被安装好</p>
 
       
     </div>
@@ -375,7 +360,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/NLP/" rel="tag"><i class="fa fa-tag"></i> NLP</a>
+            <a href="/tags/Linux/" rel="tag"><i class="fa fa-tag"></i> Linux</a>
           
         </div>
       
@@ -388,8 +373,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/01/06/hello-world/" rel="next" title="Hexo搭建Step by step！ 👏👏👏">
-                <i class="fa fa-chevron-left"></i> Hexo搭建Step by step！ 👏👏👏
+              <a href="/2018/03/27/ubuntusys-1/" rel="next" title="Ubuntu1604装机系列(三)：Matlab2017b安装">
+                <i class="fa fa-chevron-left"></i> Ubuntu1604装机系列(三)：Matlab2017b安装
               </a>
             
           </div>
@@ -398,8 +383,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/01/16/Conda-md/" rel="prev" title="Conda切换python2/3环境！🐶">
-                Conda切换python2/3环境！🐶 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/03/27/ubtuntusys-4/" rel="prev" title="Ubuntu1604装机系列(五)：认识Ubuntu系统目录">
+                Ubuntu1604装机系列(五)：认识Ubuntu系统目录 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -431,8 +416,8 @@
 
   
     <div class="comments" id="comments">
-      <div class="ds-thread" data-thread-key="2018/01/14/Knowledge/"
-           data-title="知识图谱私见！🐶" data-url="http://yoursite.com/2018/01/14/Knowledge/">
+      <div class="ds-thread" data-thread-key="2018/03/27/ubuntusys-3/"
+           data-title="Ubuntu1604装机系列(四)：cuda8/cuda9及对应版本的cudnn安装" data-url="http://yoursite.com/2018/03/27/ubuntusys-3/">
       </div>
     </div>
 
@@ -556,7 +541,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#背景："><span class="nav-number">1.</span> <span class="nav-text">背景：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#知识图谱概念"><span class="nav-number">1.1.</span> <span class="nav-text">知识图谱概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#构建："><span class="nav-number">1.2.</span> <span class="nav-text">构建：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#小结："><span class="nav-number">2.</span> <span class="nav-text">小结：</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#——不能真正创造价值的概念，都是耍流氓！"><span class="nav-number">2.0.1.</span> <span class="nav-text"> ——不能真正创造价值的概念，都是耍流氓！</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cuda下载及安装"><span class="nav-number">2.</span> <span class="nav-text">cuda下载及安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cudnn下载及安装"><span class="nav-number">3.</span> <span class="nav-text">cudnn下载及安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装成功"><span class="nav-number">4.</span> <span class="nav-text">安装成功</span></a></li></ol></div>
             
 
           </div>

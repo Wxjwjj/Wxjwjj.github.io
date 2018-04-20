@@ -342,7 +342,7 @@
           
             <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>工作后很少有时间进行理论知识的充电，抽出晚上的时间，再把吴恩达前辈的Deeplearning.ai课程过一遍，重在记录之前掌握不牢靠及容易忽视的知识点。</p>
 <h3 id="神经网络和深度学习"><a href="#神经网络和深度学习" class="headerlink" title="神经网络和深度学习"></a>神经网络和深度学习</h3><p>课程的第一讲，从经典的线性回归、逻辑回归、激活函数、损失函数、梯度下降几个方面，引出了神经网络知识，以下：</p>
-<h4 id="浅层神经网络"><a href="#浅层神经网络" class="headerlink" title="浅层神经网络"></a>浅层神经网络</h4><p>1、NN(neural networks)类似于多层逻辑回归网络，不断执行wx+b、激活、wa+b、激活….到loss function的计算<br>一张图代表逻辑回归和神经元<br><img src="/img/NN1.jpeg" width="300" alt="图片名称" align="center"><br>2、论文中一般说的两层神经网络，为input、hidden、output形式，默认input为0层。<br>3、对于一个样本：wx+b的循环转矩阵的快速运算，[4,3]乘[3,1]加[4,1] 等于<a href="output">4,1</a>。<br><img src="/img/NN2.jpeg" width="300" alt="图片名称" align="center"><br>而对于batch个样本(此处假设有3个样本)，即是把样本特征横向堆叠即可，即：[4,3]乘[3,3]加[4,3] 等于[4,3]，如图示：<br><img src="/img/NN3.jpeg" width="500" alt="图片名称" align="center"><br>4、激活函数<br><strong>sigmoid：</strong>最常用的二分类函数，表达式如下，导数为$g(z)<em>(1-g(z))$，所以最大值为0.25<br>$$g(z)=\frac{1}{1+e^{-z}}$$<br><strong>tanh：</strong>表达式如下，相当于将sigmoid函数平移，然后进行纵向拉伸(-1,1)，除 了最后一层二分类使用sigmoid，中间的hidden layer极力推荐tanh取代它。但这两个函数在Z很大或者很小时，都会发生梯度消失，导数趋近于0。tanh的导数为$(1-g(z)^{2})$<br>$$g(z)=\frac{e^{z}-e^{-z}}{e^{z}+e^{-z}}$$<br><strong>Relu：</strong>表达式为：$a = max(0,z)$，相对来说不容易梯度消失，Z&gt;0时，导数为1，Z&lt;0时，导数为0。Z=0时不可导，我们指定它为0或1就好了(实际Z=0的概率非常低)。三者中目前较常用的函数是Relu，对于拥有大量节点的神经网络来说，总会有很多Z&gt;0的神经元，梯度下降速度还是比较可观的。<br>&nbsp;<br><strong>leaker Relu：</strong>表达式为：$a = max(0.01\ast z,z)$，此处的0.01是个参数，你可以改成其它值进行尝试，说到底就是梯度下降速度的问题（太大了可能扯着蛋…）<br>5、神经网络权重(w)不能初始化为全0，因为这样导致每个神经元对输出的贡献是一样的，所以反向传播后神经元修正也一样。换句话说每个隐藏单元都在计算一样的函数，没有什么意义。<br>&nbsp;<br>$w = np.random.randn((2,2))</em>0.01$，如前所示，浅层神经网络用接近0的一个高斯分布随机值初始化。深层NN吴恩达老师卖了个关子，且听下次分解吧 </p>
+<h4 id="浅层神经网络"><a href="#浅层神经网络" class="headerlink" title="浅层神经网络"></a>浅层神经网络</h4><p>1、NN(neural networks)类似于多层逻辑回归网络，不断执行wx+b、激活、wa+b、激活….到loss function的计算<br>一张图代表逻辑回归和神经元<br><img src="/img/NN1.jpeg" width="300" alt="图片名称" align="center"><br>2、论文中一般说的两层神经网络，为input、hidden、output形式，默认input为0层。<br>3、对于一个样本：wx+b的循环转矩阵的快速运算，[4,3]乘[3,1]加[4,1] 等于<a href="output">4,1</a>。<br><img src="/img/NN2.jpeg" width="300" alt="图片名称" align="center"><br>而对于batch个样本(此处假设有3个样本)，即是把样本特征横向堆叠即可，即：[4,3]乘[3,3]加[4,3] 等于[4,3]，如图示：<br><img src="/img/NN3.jpeg" width="500" alt="图片名称" align="center"><br>4、激活函数<br><strong>sigmoid：</strong>最常用的二分类函数，表达式如下，导数为$g(z)(1-g(z))$，所以最大值为0.25<br>$$g(z)=\frac{1}{1+e^{-z}}$$<br><strong>tanh：</strong>表达式如下，相当于将sigmoid函数平移，然后进行纵向拉伸(-1,1)，除 了最后一层二分类使用sigmoid，中间的hidden layer极力推荐tanh取代它。但这两个函数在Z很大或者很小时，都会发生梯度消失，导数趋近于0。tanh的导数为$(1-g(z)^{2})$<br>$$g(z)=\frac{e^{z}-e^{-z}}{e^{z}+e^{-z}}$$<br><strong>Relu：</strong>表达式为：$a = max(0,z)$，相对来说不容易梯度消失，Z&gt;0时，导数为1，Z&lt;0时，导数为0。Z=0时不可导，我们指定它为0或1就好了(实际Z=0的概率非常低)。三者中目前较常用的函数是Relu，对于拥有大量节点的神经网络来说，总会有很多Z&gt;0的神经元，梯度下降速度还是比较可观的。<br>&nbsp;<br><strong>leaker Relu：</strong>表达式为：$a = max(0.01\ast z,z)$，此处的0.01是个参数，你可以改成其它值进行尝试，说到底就是梯度下降速度的问题（太大了可能扯着蛋…）<br>5、神经网络权重(w)不能初始化为全0，因为这样导致每个神经元对输出的贡献是一样的，所以反向传播后神经元修正也一样。换句话说每个隐藏单元都在计算一样的函数，没有什么意义。<br><code>python:$ w = np.random.randn((2,2))0.01</code>，如前所示，浅层神经网络用接近0的一个高斯分布随机值初始化。深层NN吴恩达老师卖了个关子，且听下次分解吧 </p>
 <h3 id="改善深层神经网络"><a href="#改善深层神经网络" class="headerlink" title="改善深层神经网络"></a>改善深层神经网络</h3><p>主要解决神经网络超参数优化原因及方法</p>
 <h4 id="正则化缓解过拟合"><a href="#正则化缓解过拟合" class="headerlink" title="正则化缓解过拟合"></a>正则化缓解过拟合</h4><p>L2正则化（有时也称weight decay）：$J_{new} = J + \frac{\lambda}{2m}\left | w \right |^{2}$，其中$\left | w\right |^{2}  = \sum_{j=1}^{n}w_{j}^{2} = w^{T}w$。或者如下图所示，可以看到lambda足够大时，会使得权重矩阵w很小，大致想象，再深的网络都可以化为逻辑回归的样式。<br><img src="/img/NN4.png" width="500" alt="图片名称" align="center"><br>换种较理性的方式来解说是：假如激活函数采用tanh，lambda越大，w越小，$g(z)=wx+b$越小，激活函数此时位于斜率$k=1$的线性段(相对来说比较线性的区间)，线性激活函数是拟合不出复杂的边界的。</p>
 <h4 id="Dropout正则化"><a href="#Dropout正则化" class="headerlink" title="Dropout正则化"></a>Dropout正则化</h4>
@@ -776,6 +776,275 @@
 <p>接着编译<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cmake ..</span><br><span class="line">make -j8</span><br></pre></td></tr></table></figure></p>
 <p>之后运行<code>./build/src/test/test_face_recognizer.bin</code>，测试3个模块。<code>./build/src/test/test_face_verification.bin</code>测试存取的样本中图片的相似度即可。<br><strong>PS:</strong><br>1、编译到99%时报错，提示没有相关的库，需要改写/src/test中的Cmakelists.txt，在其中添加Detect、Align模块的lib库（也就是在当前build文件夹下查找），如下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">aux_source_directory (. SRC_LIST)</span><br><span class="line">link_directories(<span class="variable">$&#123;PROJECT_BINARY_DIR&#125;</span>) <span class="comment"># 添加lib库搜索路径</span></span><br><span class="line">message(<span class="variable">$&#123;SRC_LIST&#125;</span>)</span><br><span class="line"><span class="comment"># add external libraries</span></span><br><span class="line">find_package(OpenCV REQUIRED)</span><br><span class="line">include_directories(<span class="variable">$&#123;seeta_facedet_lib_INCLUDE_DIRS&#125;</span> <span class="variable">$&#123;seeta_fa_lib_INCLUDE_DIRS&#125;</span>)</span><br><span class="line">list(APPEND seeta_fi_lib_required_libs <span class="variable">$&#123;OpenCV_LIBS&#125;</span> seeta_facedet_lib seeta_fa_lib)</span><br><span class="line">enable_testing ()</span><br><span class="line">foreach (f <span class="variable">$&#123;SRC_LIST&#125;</span>)</span><br><span class="line">  string(REGEX REPLACE <span class="string">"[.]cpp"</span> <span class="string">".bin"</span> BIN <span class="variable">$&#123;f&#125;</span>)</span><br><span class="line">  add_executable(<span class="variable">$&#123;BIN&#125;</span> <span class="variable">$&#123;f&#125;</span>)</span><br><span class="line">  <span class="comment">#target_link_libraries($&#123;BIN&#125; viplnet $&#123;OpenCV_LIBS&#125; seeta_facede_lib seeta_fa_lib)</span></span><br><span class="line">  target_link_libraries(<span class="variable">$&#123;BIN&#125;</span> viplnet <span class="variable">$&#123;seeta_fi_lib_required_libs&#125;</span>) <span class="comment"># 添加lib</span></span><br><span class="line">endforeach ()</span><br></pre></td></tr></table></figure></p>
 <h4 id="Mac编译"><a href="#Mac编译" class="headerlink" title="Mac编译"></a>Mac编译</h4><p>与Linux相比，Mac的就非常简单了，需要注意Detection模块中，CMakelists.txt要求的cmake为3.1及以上，笔者是3.0，所以在这里对CMakelists.txt做简单修改，如果是Brew安装的opencv，那其他的<code>ccmake</code>配置也不用修改<br>&nbsp;<br>之后的操作步骤与Linux描述的基本一致，编译过程中可能会有很多warning，不用管，直接<code>make</code>即可。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/27/ubtuntusys-4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="祥吉">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Deep Coding">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/27/ubtuntusys-4/" itemprop="url">Ubuntu1604装机系列(五)：认识Ubuntu系统目录</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-27T14:08:34+08:00">
+                2018-03-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/03/27/ubtuntusys-4/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/03/27/ubtuntusys-4/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h4><p>装拆了十几遍ubuntu1604系统、opencv3.1/3.4、cuda8/9后，开始慢慢领悟到ubuntu系统文件即一切的魅力。<br>&nbsp;<br><strong>usr：</strong> 并不是user的意思，而是unix system resrouces，所以上述文件夹都是系统目录，跟服务器中的某个单独用户没什么”私人关系”，直白点说，所有用户都可以访问。<br><strong>bin：</strong> 指代binary，二进制/可执行程序的存储目录，直白点说，这里的文件都可以在terminal中直接输入进行访问</p>
+<hr>
+<p><strong>/bin:</strong> 存储ubuntu很底层的可执行文件，你用到的<code>cp</code>, <code>ls</code>, <code>mv</code>等基本指令都在这里。<br><strong>/usr/bin：</strong>存储系统级的可执行文件，以及apt-get安装的文件。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/bin</span><br><span class="line">ls | grep python     <span class="comment"># 系统自带python</span></span><br><span class="line">python </span><br><span class="line">python3</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">ls | grep ssh       <span class="comment"># 笔者apt-get安装的ssh、tmux软件</span></span><br><span class="line">ssh</span><br><span class="line"></span><br><span class="line">ls | grep tmux</span><br><span class="line">tmux</span><br></pre></td></tr></table></figure></p>
+<p><strong>/usr/local/：</strong>很多人都说用户自己编译的安装目录就在这里，比如opencv、比如cuda。这种方式一般是通过sudo安装。但刚刚说了这些系统目录所有用户都可以访问，所以当A用户装了cuda8，B用户装了cuda9，A用户装了opencv2，B用户装了opencv3…这样就会造成local目录极其混乱。<br>&nbsp;<br>所以建议在安装<code>cuda</code>、<code>opencv</code>时，在安装选项/cmake中指定安装目录到一可见文件夹，比如<code>/home/cuda/</code>，<code>/home/Matlab</code>，这样即使安装出错，删除整个<code>cuda</code>或<code>Matlab</code>文件夹就行了。就没必要非得安装在<code>/usr/local</code>目录。<br>&nbsp;<br><strong>/usr/local/bin：</strong>存储用户级的可执行文件。还是拿matlab来说，可以将/home/Matlab下的bin文件建立软连接到这里，这样系统就可以搜索到了，在终端直接开启matlab。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ln -s /home/Matlab/r2017b/bin/matlab /usr/<span class="built_in">local</span>/bin/matlab</span><br></pre></td></tr></table></figure></p>
+<p><strong>小结：</strong><br><code>/usr/...</code>下的文件，所有用户都可以访问<br><code>bin/</code>、<code>/usr/bin</code>、<code>/usr/local/bin</code>，只要在bin目录下的，都可以在terminal中直接访问。关系为层层递进，以上面的matlab来说，你确实也可以将软连接放到前面两个目录。但它没有cp、mv这些指令底层，也没有python这些工具，是每个用户的通用工具。所以放到最上层的local 目录即可。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/27/ubuntusys-3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="祥吉">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Deep Coding">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/27/ubuntusys-3/" itemprop="url">Ubuntu1604装机系列(四)：cuda8/cuda9及对应版本的cudnn安装</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-27T12:08:34+08:00">
+                2018-03-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/03/27/ubuntusys-3/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/03/27/ubuntusys-3/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>笔者事先在ubuntu上安装了cuda9.0，然而在编译opencv3.1时候，发生了版本不匹配的冲突。遂又安装了cuda8.0，但二者极其cudnn的安装，如出一辙，在这里记录下安装过程。</p>
+<h3 id="cuda下载及安装"><a href="#cuda下载及安装" class="headerlink" title="cuda下载及安装"></a>cuda下载及安装</h3><p>NVIDIA官网下载cuda8.0的安装<a href="https://developer.nvidia.com/cuda-80-download-archive" target="_blank" rel="noopener">run文件</a><br>注意安装时候不要<code>sudo</code>安装，同样的原因，若安装出错，可能难以卸载干净。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./cuda_8.0.61_375.26_linux-run 注意不要更新显卡驱动，更改安装及链接库路径到个人指定目录下</span><br></pre></td></tr></table></figure></p>
+<p>安装完成后需要在系统内写入<code>bin</code>及<code>lib</code>搜索路径，以笔者的安装路径为例<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vi ~/.bashrc</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:/home/&lt;user name&gt;/wuxj/cuda-8.0/bin:/home/&lt;user name&gt;/wuxj/cuda-9.0/bin</span><br><span class="line"><span class="built_in">export</span> LD_LIBRARY_PATH=<span class="variable">$LD_LIBRARY_PATH</span>:/home/&lt;user name&gt;/wuxj/cuda-8.0/lib64:/home/&lt;user name&gt;/wuxj/cuda-9.0/lib64</span><br></pre></td></tr></table></figure></p>
+<p>其中PATH为<code>bin</code>可执行程序路径，一般添加安装软件的terminal快速启动，<code>LD_LIBRARY_PATH</code>为依赖库的路径。<br>另外笔者同时安装了cuda8.0/cuda9.0，系统路径中哪个在前即可先被访问调用。而在cmake中会更加灵活，直接指定cuda安装目录便可以正确调用。</p>
+<h3 id="cudnn下载及安装"><a href="#cudnn下载及安装" class="headerlink" title="cudnn下载及安装"></a>cudnn下载及安装</h3><p>NVIDIA官网下载cudnn压缩<a href="https://developer.nvidia.com/rdp/cudnn-download" target="_blank" rel="noopener">文件</a>(需先注册)。cudnn其实无需安装， 解压后即可看到里面是<code>include</code>头文件夹，及NVIDIA事先编译好的<code>lib</code>库。所以我们只需要将其复制到cuda对应目录即可。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> cudnn6</span><br><span class="line"></span><br><span class="line">cp include/* ../../cuda-8.0/include/ <span class="comment"># 复制到你cuda安装目录的对应文件夹</span></span><br><span class="line"></span><br><span class="line">cp lib64/* ../../cuda-8.0/lib64/</span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> ../../cuda-8.0/lib64/ </span><br><span class="line"></span><br><span class="line">sudo rm libcudnn.so</span><br><span class="line"></span><br><span class="line">sudo rm libcudnn.so.6</span><br><span class="line"></span><br><span class="line">sudo ln -sf libcudnn.so.6.0.21 libcudnn.so.6</span><br><span class="line"></span><br><span class="line">sudo ln -sf libcudnn.so.6 libcudnn.so</span><br></pre></td></tr></table></figure></p>
+<h3 id="安装成功"><a href="#安装成功" class="headerlink" title="安装成功"></a>安装成功</h3><p><strong>一些体会：</strong>Linux系统完美诠释了文件即一切，所有安装内容都暴露在外部，所有想删除的东西一键删除安装文件夹即可，强烈不推荐sudo安装。<br>pip可以用sudo安装，因为pip安装的软件很容易卸载<br>pip的安装目录：<code>/usr/local/lib/python3.5/dist-packages/ /usr/local/lib/python3.5/dist-packages/</code>，pip安的软件可以到该目录查看是否被安装好</p>
 
           
         
@@ -1380,293 +1649,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/08/rcnn-1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="祥吉">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Deep Coding">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/03/08/rcnn-1/" itemprop="url">论文笔记：《Faster R-CNN》</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-08T20:44:25+08:00">
-                2018-03-08
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/03/08/rcnn-1/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/03/08/rcnn-1/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="Faster-R-CNN"><a href="#Faster-R-CNN" class="headerlink" title="Faster R-CNN"></a>Faster R-CNN</h3><p>Faster R-CNN检测速度更快(5fps/s)，是Fast R-CNN的10倍，R-CNN的250倍，检测精度则稍好于Fast版本。主要贡献就是采用卷积网络提取Region proposal，取代了传统的Selective search算法。</p>
-<h4 id="RPN网络概述"><a href="#RPN网络概述" class="headerlink" title="RPN网络概述"></a>RPN网络概述</h4><p>Faster R-CNN提出了Region Proposal Network（RPN）思想，它与物体特征提取网络共享较低层卷积信息。具体方法：以feature map上每个特征点为中心，选取其周围$[n,n]$的窗口区域，进行滑动。再根据缩放关系换算到源图，假如某个窗口与ground truth计算的IOU值大于某个阈值，则认为该窗口内存在物体。<br>&nbsp;<br>为了增加多尺度检测能力，每个特征点换算到原图后，会将原图的窗口进行调大或调小操作。论文中作者一共设置了9种(窗口面积为 {128, 256, 512} x 长宽比为 {1:1, 1:2, 2:1})。原图中的窗口为了和feature map窗口进行区分，称为<code>anchor</code>。直观来看，如下图所示：<br><img src="/img/frcnn7.png" width="300" alt="图片名称" align="center"></p>
-<h5 id="RPN训练阶段"><a href="#RPN训练阶段" class="headerlink" title="RPN训练阶段"></a>RPN训练阶段</h5><blockquote>
-<ul>
-<li>对于[60, 40]大小的一张feature map，那么原图中可能的anchor数目约为$60\ast 40\ast 9 \approx 20000$个</li>
-<li>忽略超出边界的anchors剩下6000个</li>
-<li>通过anchor与ground truth计算的IOU值，可以进行每个anchor为前景$or$背景的自动标注，即：输入RPN网络的训练样本为box坐标 + box内是否有物体。</li>
-<li>同样采用多任务训练，完成前、背景分类及bounding box的粗回归。</li>
-</ul>
-</blockquote>
-<h5 id="RPN测试阶段"><a href="#RPN测试阶段" class="headerlink" title="RPN测试阶段"></a>RPN测试阶段</h5><blockquote>
-<ul>
-<li>RPN网络对每幅图的6000个region均映射为一个概率值score和对应的四个坐标值。</li>
-<li>然后利用该score对6000个regions进行NMS非极大抑制，筛选到约为2000个anchor。</li>
-<li>接着再筛选出Top-N(论文中N=300)个区域用于Fast RCNN detect网络的训练(作者在论文中对2000、300个region proposal进行对比实验，效果差别不大，也进一步说明了RPN提取region的有效性、针对性)</li>
-</ul>
-</blockquote>
-<h5 id="RPN网络结构"><a href="#RPN网络结构" class="headerlink" title="RPN网络结构"></a>RPN网络结构</h5><p>作者在论文中给出的一张图有些误导，查阅前辈们写的博客时候才理解RPN网络具体形式。重新绘制网络结构如下：</p>
-<p><img src="/img/frcnn_1.png" width="600" alt="图片名称" align="center"></p>
-<p>论文中提到的256-d，不是整个feature map生成一个256维的向量，feature map上的每一个“点”都对应一个256维向量。同时该“点”对应了9个anchors，18个cls输出，36个reg输出。<br>&nbsp;<br><strong>小结：</strong>RPN的基本思想就是通过对feature map进行窗口滑动，再在该窗口上累加一个小网络，最终训练得到某些可能为前景的regions，以及该regions对应的bouning box。<font color="red">该网络专门判断该区域是否存在物体，而并不检测是哪种特定的物体。</font></p>
-<h4 id="RPN-Fast-RCNN"><a href="#RPN-Fast-RCNN" class="headerlink" title="RPN + Fast RCNN"></a>RPN + Fast RCNN</h4><p>有了RPN后，怎样跟Fast RCNN连接起来呢？作者采用了叫做<code>4-Step Alternating Training</code>的方式：<br><strong>step 1 :</strong>采用预训练的VGG网络，前13层用作特征提取层，后面的网络采用RPN架构，用均值为0的高斯分布随机初始化网络参数<br><strong>step 2 :</strong>同样采用预训练的VGG前13层网络，用step 1中 RPN得到的region proposal，进行Fast RCNN网络的训练。这两步还未实现共享卷积层<br><strong>step 3 :</strong>采用step 2中Fast RCNN的卷积层参数初始化RPN网络，并固定共享层网络参数，仅仅fine tune RPN网络层参数，得到新的region proposal<br><strong>step 4 :</strong>继续固定共享层网络参数，仅仅fine tune Fast RCNN，得到最终的模型。</p>
-<h4 id="Fast-RCNN-与-Faster-RCNN结果对比"><a href="#Fast-RCNN-与-Faster-RCNN结果对比" class="headerlink" title="Fast RCNN 与 Faster RCNN结果对比"></a>Fast RCNN 与 Faster RCNN结果对比</h4><p><img src="/img/frcnn_2.png" width="500" alt="图片名称" align="center"></p>
-<h4 id="Faster-RCNN网络结构-来源于网络"><a href="#Faster-RCNN网络结构-来源于网络" class="headerlink" title="Faster RCNN网络结构(来源于网络)"></a>Faster RCNN网络结构(来源于网络)</h4><p><img src="/img/frcnn1.jpg" width="600" alt="图片名称" align="center"></p>
-<h3 id="Ref："><a href="#Ref：" class="headerlink" title="Ref："></a>Ref：</h3><p>📎：<a href="http://blog.csdn.net/wfei101/article/details/77150573" target="_blank" rel="noopener"> 区域推荐网络RPN
-</a><br>📎：<a href="http://blog.csdn.net/sloanqin/article/details/51545125" target="_blank" rel="noopener">faster-rcnn 之 RPN网络的结构解析</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/07/rcnn-0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="祥吉">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Deep Coding">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/03/07/rcnn-0/" itemprop="url">论文笔记：《Fast R-CNN》</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-07T20:44:25+08:00">
-                2018-03-07
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/03/07/rcnn-0/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/03/07/rcnn-0/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="SPP-Net"><a href="#SPP-Net" class="headerlink" title="SPP Net"></a>SPP Net</h3><p>R-CNN的进阶版Fast R-CNN可以说是在RCNN的基础上采纳了<a href="https://arxiv.org/abs/1406.4729" target="_blank" rel="noopener">SPP Net</a>方法，使得性能进一步提高。所以有必要先了解下何凯明提出的SPP Net。SPP:Spatial Pyramid Pooling（空间金字塔池化）。他有两个显著的特点：<br>&nbsp;<br><strong><font color="blue"> 创新点1：实现CNN的多尺度输入，忽略图片尺寸的影响 </font></strong><br>为了实现全联接层可以正确匹配pooling层后的维度，R-CNN中笔者先对Region proposal Crop到某一固定维度，但这样会造成一定的图像失真。有没有不Crop图像从而实现维度匹配的方法呢？一是调整最后的pooling层维度，二是调节全联接层的结构，使它接受任意维度特征。后一种方法是全卷积网络(FCN)，本文是采用的是前一种，即SPP：空间金字塔pooling。<br>&nbsp;<br>SPP的具体实现方式：假设与全联接层匹配的最后一个pooling层，输出维度应当是$[2\ast 2]$。而此时<code>ROI</code>区域的大小为$[5\ast 7]$(Region proposal在该论文中又称为<code>ROI</code>区域)。那么此时pooling核的size应当为$[\frac{5}{2} \ast \frac{7}{2}]$，才能使该ROI区域pooling后，得到匹配的size。但核的size不能为小数啊，所以采用理论size做间隔，最后向下取整得到每个pooling核的size。<br><img src="/img/frcnn1.png" width="350" alt="图片名称" align="center"><br>如上图所示：H方向以2.5为间隔$[0, 2.5, 5]$，W方向以3.5取间隔$[0, 3.5, 7]$。最后每个pooling核<strong>起始点</strong>坐标为H:$[2, 5]$，W:$[3, 7]$。更广泛地，我们用$[h, w]$代表<code>ROI</code>区域的高和宽，$[H, W]$代表希望pooling后得到的高和宽。那么每个网格动态调整后的大小为$[\frac{h}{H} \ast \frac{w}{W}]$。<br><strong>小结：SPP说到底就是计算一个比例关系，以动态调整pooling核的大小，实在是非常简单</strong></p>
-<p><strong><font color="blue"> 创新点2：只对原图提取一次卷积特征 </font></strong><br>RCNN中，一张图片Region proposal的数量为2K个，其中存在大量的重复区域。而用CNN提取这些Region，显然是非常复杂的一件事儿。SPP Net中的做法是对整张图像用CNN仅提取一次特征，feature map一般计算到最后一个pooling层。接着再根据相应的缩放比例，对源图的Regions进行一一映射，找到其在feature map的位置即可。该算法看似简单，但对于regions的特征提取，速度提升约146倍。</p>
-<h3 id="Fast-R-CNN"><a href="#Fast-R-CNN" class="headerlink" title="Fast R-CNN"></a>Fast R-CNN</h3><p>Fast R-CNN是在SPP Net基础上做的进一步改进，作者把<strong>SVM分类器换成Softmax，和CNN整合成一个网络，同时把bounding box regression也整合进网络中，三层联动调节参数，从而带来了效果的进一步提升。</strong>Fast RCNN架构如图所示：<br><img src="/img/frcnn3.jpeg" width="600" alt="图片名称" align="center"><br>该网络是典型的多任务学习，低层的卷积层参数共享(采用VGG16提取特征)，高层分别训练分类及回归网络。多任务学习一般用在task具有一定相似度的情境下。网络总的损失函数是两部分乘系数相加$L = L_{cls} + \lambda \times L_{loc}$，对于$L_{cls} $采用softmax-loss损失函数，对于Bounding box regression采用特殊的一种损失函数，如下：<br>$$L_{loc}(t^{u}, v) = \sum_{i = {x,y,w,h}}smooth_{L1}(t_{i}^{u}-v_{i})$$<br>$$if \left | x \right |&lt;1 \qquad smooth_{L1}(x) =0.5x^{2}  \qquad || \qquad Otherwise \qquad smooth_{L1}(x) = \left | x \right | -1 $$<br>这部分没有深究，其中$t_{i}, v_{i}$分别代表Region proposal和ground truth的坐标。Fast R-CNN的联合损失函数可以直接进行反向传播，从而达到端到端训练的目的。</p>
-<h3 id="Ref："><a href="#Ref：" class="headerlink" title="Ref："></a>Ref：</h3><p>📎：<a href="https://arxiv.org/abs/1504.08083" target="_blank" rel="noopener">Fast RCNN</a><br>📎：<a href="http://jermmy.xyz/2018/01/15/2018-1-15-paper-notes-fast-er-rcnn/" target="_blank" rel="noopener">论文笔记：Fast(er) RCNN</a><br>📎：<a href="https://zhuanlan.zhihu.com/p/22190532" target="_blank" rel="noopener">一箭N雕：多任务深度学习实战</a><br>📎：<a href="http://shartoo.github.io/RCNN-series/" target="_blank" rel="noopener">RCNN,Fast RCNN,Faster RCNN 总结</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1721,7 +1703,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">34</span>
+                  <span class="site-state-item-count">36</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1819,7 +1801,7 @@
  
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共29.2k字</span>
+  <span class="post-count">博客全站共30.1k字</span>
 </div>
 
 <div class="powered-by">
