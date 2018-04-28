@@ -95,7 +95,7 @@
 <meta property="og:description" content="Ubuntu1604系统安装笔者第一次尝试Mac烧系统盘，没想到比windows简单到爆，过程如下：&amp;nbsp;官网下载Ubuntu iso文件&amp;nbsp;格式化一个U盘&amp;nbsp;接着写入U盘镜像123df -hl       # 记住磁盘名称，Eg：/dev/disk2ssudo diskutil umount /dev/disk2s  # 卸载该磁盘sudo dd bs=1m if=/Use">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/img/nvidia.png">
-<meta property="og:updated_time" content="2018-04-11T06:09:20.484Z">
+<meta property="og:updated_time" content="2018-04-23T02:13:06.751Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Ubuntu1604装机系列(一)：Mac烧系统盘及1080Ti显卡(390版本)驱动安装">
 <meta name="twitter:description" content="Ubuntu1604系统安装笔者第一次尝试Mac烧系统盘，没想到比windows简单到爆，过程如下：&amp;nbsp;官网下载Ubuntu iso文件&amp;nbsp;格式化一个U盘&amp;nbsp;接着写入U盘镜像123df -hl       # 记住磁盘名称，Eg：/dev/disk2ssudo diskutil umount /dev/disk2s  # 卸载该磁盘sudo dd bs=1m if=/Use">
@@ -360,7 +360,7 @@
 <p>编译安装NVIDIA驱动，此过程大约耗时3～5分钟<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">chmod +x NVIDIA-xxx.run</span><br><span class="line">sudo ./NVIDIA-xxx.run</span><br></pre></td></tr></table></figure></p>
 <p>需要注意的：<br>1、此处认真看提示，并不是一路选择”yes”。<br>2、假如上一步在安装时，Warning了gcc版本不对，则退出驱动安装，先安装对应版本的gcc之后再继续。笔者安装的驱动程序提示需要gcc-5.4.0，又是一番折腾，还好在冯博的指导下，找到了精干快速的方法。不介意的话可以移步笔者之前的文章<a href="http://localhost:4000/2018/02/25/gcc/" target="_blank" rel="noopener">Ubuntu下gcc/g++多版本切换</a><br>&nbsp;<br>安装成功后，重新开启桌面测试。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo service lightdm start</span><br><span class="line">nvidia-smi</span><br></pre></td></tr></table></figure></p>
 <p>成功后的截图<br> <img src="/img/nvidia.png" width="550" alt="图片名称" align="center"></p>
-<h4 id="Ref："><a href="#Ref：" class="headerlink" title="Ref："></a>Ref：</h4><p> 📎：<a href="https://www.linuxidc.com/Linux/2011-07/39491.htm" target="_blank" rel="noopener">Ubuntu下轻松切换GDM, LightDM , KDM</a></p>
+<h4 id="Ref："><a href="#Ref：" class="headerlink" title="Ref："></a>Ref：</h4><p> 📎：<a href="https://www.linuxidc.com/Linux/2011-07/39491.htm" target="_blank" rel="noopener">Ubuntu下轻松切换GDM, LightDM , KDM</a><br> 📎：<a href="https://blog.csdn.net/ljheee/article/details/52966048" target="_blank" rel="noopener">Ubuntu 16.04安装安装iBus中文输入法</a></p>
 
       
     </div>
@@ -491,7 +491,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">36</span>
+                  <span class="site-state-item-count">37</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -504,7 +504,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">9</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -605,7 +605,7 @@
  
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共30.1k字</span>
+  <span class="post-count">博客全站共31.4k字</span>
 </div>
 
 <div class="powered-by">

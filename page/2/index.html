@@ -259,6 +259,147 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/22/mac-opcv/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="祥吉">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Deep Coding">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/22/mac-opcv/" itemprop="url">MacOS安装OpenCV</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-22T18:58:49+08:00">
+                2018-03-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/03/22/mac-opcv/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/03/22/mac-opcv/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="brew安装"><a href="#brew安装" class="headerlink" title="brew安装"></a>brew安装</h4><p>首先更换Mac brew 安装源，下载软件分分钟<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> <span class="string">"<span class="variable">$(brew --repo)</span>"</span> &amp;&amp; git remote <span class="built_in">set</span>-url origin https://git.coding.net/homebrew/homebrew.git</span><br><span class="line"><span class="built_in">cd</span> <span class="variable">$home</span> &amp;&amp; brew update</span><br></pre></td></tr></table></figure></p>
+<h5 id="开始安装"><a href="#开始安装" class="headerlink" title="开始安装"></a>开始安装</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo brew install opencv</span><br></pre></td></tr></table></figure>
+<h5 id="配置环境变量：安装好的opencv位于-usr-local-Cellar-下"><a href="#配置环境变量：安装好的opencv位于-usr-local-Cellar-下" class="headerlink" title="配置环境变量：安装好的opencv位于/usr/local/Cellar/下"></a>配置环境变量：安装好的opencv位于<code>/usr/local/Cellar/</code>下</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vi .bash_profile</span><br><span class="line"><span class="built_in">export</span> DYLD_LIBRARY_PATH=/usr/<span class="built_in">local</span>/Cellar/opencv/3.4.1_2/lib:<span class="variable">$DYLD_LIBRARY_PATH</span></span><br><span class="line"><span class="built_in">source</span> .bash_profile <span class="comment"># 使路径生效（下同）</span></span><br></pre></td></tr></table></figure>
+<h5 id="配置python环境变量"><a href="#配置python环境变量" class="headerlink" title="配置python环境变量"></a>配置python环境变量</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /Library/Python/2.7/site-packages/</span><br><span class="line"></span><br><span class="line">sudo ln -s /usr/<span class="built_in">local</span>/Cellar/opencv/3.4.1_2/lib/python2.7/site-packages/cv.py cv.py</span><br><span class="line">sudo ln -s /usr/<span class="built_in">local</span>/Cellar/opencv/3.4.1_2/lib/python2.7/site-packages/cv2.so cv2.so</span><br><span class="line"></span><br><span class="line"><span class="built_in">export</span> PYTHONPATH=<span class="variable">$PYTHONPATH</span>:/usr/<span class="built_in">local</span>/lib/python2.7/site-package  <span class="comment"># 将python路径写入系统目录</span></span><br></pre></td></tr></table></figure>
+<h5 id="生成SDK还需要一个pkg-config，用来find-package位置"><a href="#生成SDK还需要一个pkg-config，用来find-package位置" class="headerlink" title="生成SDK还需要一个pkg-config，用来find package位置"></a>生成SDK还需要一个<code>pkg-config</code>，用来find package位置</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">wget http://pkgconfig.freedesktop.org/releases/pkg-config-0.29.tar.gz .</span><br><span class="line">env LDFLAGS=<span class="string">"-framework CoreFoundation -framework Carbon"</span> ./configure --with-internal-glib</span><br><span class="line">make</span><br><span class="line">sudo make install</span><br></pre></td></tr></table></figure>
+<h5 id="在系统路径中把cv路径写入到pkg-config"><a href="#在系统路径中把cv路径写入到pkg-config" class="headerlink" title="在系统路径中把cv路径写入到pkg-config"></a>在系统路径中把cv路径写入到<code>pkg-config</code></h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vi .bash_profile</span><br><span class="line">PKG_CONFIG_PATH=<span class="variable">$PKG_CONFIG_PATH</span>:/usr/<span class="built_in">local</span>/Cellar/opencv/3.4.1_2/lib/pkgconfig</span><br><span class="line"><span class="built_in">export</span> PKG_CONFIG_PATH</span><br></pre></td></tr></table></figure>
+<h5 id="show-me-a-picture！"><a href="#show-me-a-picture！" class="headerlink" title="show me a picture！"></a>show me a picture！</h5><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;opencv2/opencv.hpp&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;opencv2/highgui/highgui.hpp&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> cv;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span>** argv)</span></span></span><br><span class="line"><span class="function"></span>&#123;   </span><br><span class="line">    Mat img = imread(<span class="string">"test.jpg"</span>, CV_LOAD_IMAGE_UNCHANGED);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(img.empty())</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">"failed to load input image\n"</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    imshow(<span class="string">"Display Image"</span>, img);</span><br><span class="line">    waitKey(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// no need to release anything with c++ !   </span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>上述文件命名为test.cpp，用下面的指令编译成一个超简单的Demo</strong><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">g++ -o <span class="built_in">test</span> test.cpp `pkg-config --libs opencv` `pkg-config --cflags opencv`</span><br></pre></td></tr></table></figure></p>
+<p><code>./test</code>运行代码</p>
+<h5 id="多个cpp文件工程的编译"><a href="#多个cpp文件工程的编译" class="headerlink" title="多个cpp文件工程的编译"></a>多个cpp文件工程的编译</h5><p>假如test文件下存在<code>imageRank.h</code>、<code>imageRank.cpp</code>、<code>main.cpp</code>文件<code>.h</code>文件不用管，在编译.cpp时会自动调用。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">g++ -c imageRank.cpp -o imageRank.o -I ./   <span class="comment"># 先编译函数cpp文件</span></span><br><span class="line">g++ main.cpp imageRank.o -o main `pkg-config --libs opencv` `pkg-config --cflags opencv`  <span class="comment"># 直接生成可执行文件</span></span><br><span class="line">ar -r libimageRank.a imageRank.o  <span class="comment"># 或者编译出静态库文件给第三方</span></span><br><span class="line">g++ -o main -L. -ldetection main.cpp `pkg-config --libs opencv` `pkg-config --cflags opencv`</span><br><span class="line">生成可执行文件</span><br></pre></td></tr></table></figure></p>
+<h4 id="源码编译安装"><a href="#源码编译安装" class="headerlink" title="源码编译安装"></a>源码编译安装</h4><p>源码编译安装跟Ubuntu opencv的安装非常类似，注意修改ccmake中各个项目路径即可，楼主在编译安装时仅下面一点需要注意：<br>安装过程中，提示缺少boostdesc_bgm.i库，下载链接: <a href="https://pan.baidu.com/s/1XbCdDoAvwvF_fiWvSYJTxQ" target="_blank" rel="noopener">https://pan.baidu.com/s/1XbCdDoAvwvF_fiWvSYJTxQ</a> 密码: 7hpm<br>解压后复制到contrib/modules/xfeatures2d/src目录即可。</p>
+<p>Ref：<br> 📎：<a href="https://www.jianshu.com/p/3d149f167b41" target="_blank" rel="noopener">Mac OS X 安装并测试 OpenCV</a><br> 📎：<a href="http://www.voidcn.com/article/p-yxftfwnu-on.html" target="_blank" rel="noopener">mac os 安装 pkg-config</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/08/rcnn-1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -951,6 +1092,16 @@
 </blockquote>
 <p>&nbsp;<br>插个话：图像金字塔在目标检测中的应用<br>滑窗的尺寸一般是固定的，而多尺度通过图像金字塔实现。这样相比不断改变滑窗大小，效率更高。至于缩小多少倍，源图缩到滑动窗口大小即可以，这样代表整张图片是某个类。</p>
 <p>假如人脸size[20,20]，滑动窗口（box）Size[40,40]那么可能检不出这张人脸（人脸占据比例太小），而随着图像金字塔变换人脸size会越来越小，那人脸占据整个box的比例也会更低，导致无法检出。<br>换句话说：MinFaceSize(40)，只能检测最小约为[40，40]的人脸。</p>
+<h3 id="算法时间复杂度相关"><a href="#算法时间复杂度相关" class="headerlink" title="算法时间复杂度相关"></a>算法时间复杂度相关</h3><p><strong>1、归并排序，分而治之，O(NlogN)</strong><br><img src="/img/sort.jpeg" width="350" alt="图片名称" align="center"></p>
+<p><strong>2、二叉搜索树，左子树&lt;根节点&lt;右子树，O(logN)</strong></p>
+<p><strong>3、B+树</strong><br>查找一个特定值这个树挺好用，但是当你需要查找两个值之间的多个元素时，就会有大麻烦了。你的成本将是 O(N)。例如：查找B、C之间的值，需要中序遍历后(DBEAFC)再进行筛选。<br>这就需要用到B+tree：搜索复杂度还是在 O(log(N))（只多了一层）；另外，最底层的节点是跟后续节点相连接的<br><img src="/img/tree.png" width="350" alt="图片名称" align="center"></p>
+<p><strong>4、哈希表</strong><br>哈希表这种数据结构可以用关键字来快速找到一个元素。为了构建一个哈希表，你需要定义下面两个参数：</p>
+<blockquote>
+<ul>
+<li>关键字的哈希函数。关键字计算出来的哈希值给出了元素的位置（叫做哈希桶）（哈希函数设计极大影响算法复杂度）</li>
+<li>关键字比较函数。一旦你找到正确的哈希桶，你必须用比较函数在桶内找到你要的元素。</li>
+</ul>
+</blockquote>
 <h3 id="Ref"><a href="#Ref" class="headerlink" title="Ref:"></a>Ref:</h3><p><a href="https://zhuanlan.zhihu.com/p/19763358?from=singlemessage&amp;isappinstalled=1" target="_blank" rel="noopener">傅里叶分析之掐死教程（完整版）更新于2014.06.06</a></p>
 
           
@@ -1517,146 +1668,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/25/gcc/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="祥吉">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Deep Coding">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/02/25/gcc/" itemprop="url">Ubuntu下gcc/g++多版本切换</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-25T20:10:19+08:00">
-                2018-02-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/02/25/gcc/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/02/25/gcc/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p><font color="red"><strong>20180312更新，之前的操作太复杂了，安装位置也不易管理。在冯博的帮助下，使用下面的方法，修改<code>gcc</code>版本时候只要修改下述软连接便可以了</strong></font><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install gcc-4.9</span><br><span class="line">sudo apt-get install g++-4.9 //自动安装到/usr/bin目录下</span><br><span class="line"><span class="built_in">which</span> gcc</span><br><span class="line"><span class="built_in">cd</span> 到 gcc 目录</span><br><span class="line">ll | grep gcc 显示包含gcc的软连接</span><br><span class="line">sudo rm gcc </span><br><span class="line">sudo ln -sf gcc-4.9 gcc</span><br><span class="line">sudo ln -sf g++-4.9 g++</span><br></pre></td></tr></table></figure></p>
-<hr>
-<p>在编译不同的程序时，往往会遇到gcc、g++版本不兼容问题，那可不可以动态切换gcc&amp;g++环境，来满足编译需求呢？答案是可以的。<br>先看看系统内的<code>gcc</code>和<code>g++</code>是什么版本<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc --version</span><br></pre></td></tr></table></figure></p>
-<p>可以获得如下信息<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc version 5.4.0</span><br></pre></td></tr></table></figure></p>
-<p>查看系统内有哪些版本的gcc<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls /usr/bin/gcc*</span><br></pre></td></tr></table></figure></p>
-<p>首先安装其他版本的<code>gcc</code>、<code>g++</code><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install gcc-4.9 gcc-4.9-multilib g++-4.9 g++-4.9-multilib</span><br></pre></td></tr></table></figure></p>
-<p>安装好后输入以下指令，替换系统默认的<code>gcc</code>：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 40 </span><br><span class="line">sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-5.4 54</span><br></pre></td></tr></table></figure></p>
-<p>接着输入：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo update-alternatives --config gcc</span><br></pre></td></tr></table></figure></p>
-<p>会看到如下的选项，有3个候选项可用于替换<code>gcc</code><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">*0            /usr/bin/gcc-5  50        </span><br><span class="line"> 1            /usr/bin/gcc-5  50        </span><br><span class="line"> 2            /usr/bin/gcc-4.9  40</span><br></pre></td></tr></table></figure></p>
-<p>要维持当前值<code>*</code>请按回车键，或者键入你想切换的gcc版本编号!<br>同样也要设置一下<code>g++</code>的， 方法同上<br>如果想删除可选项的话可以键入以下指令：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo update-alternatives --remove gcc /usr/bin/gcc-4.9</span><br></pre></td></tr></table></figure></p>
-<p>再用<code>gcc -version</code> 来看一下版本是否改变了。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1711,7 +1722,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">36</span>
+                  <span class="site-state-item-count">37</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1724,7 +1735,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">9</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -1809,7 +1820,7 @@
  
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共30.1k字</span>
+  <span class="post-count">博客全站共31.4k字</span>
 </div>
 
 <div class="powered-by">

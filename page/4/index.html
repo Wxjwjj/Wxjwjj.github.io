@@ -259,6 +259,143 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/30/doc2vec/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="祥吉">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Deep Coding">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/30/doc2vec/" itemprop="url">文本语义匹配/相似度度量</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-30T10:03:31+08:00">
+                2018-01-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/01/30/doc2vec/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/01/30/doc2vec/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="Word2vec语义相似度计算"><a href="#Word2vec语义相似度计算" class="headerlink" title="Word2vec语义相似度计算"></a>Word2vec语义相似度计算</h3><p>上一章节，我们用1.1G的中文维基百科语料训练了词向量。而短文本的语义相似度度量，最简单的方法便是把每个句子的词向量相加，然后计算其余弦相似度。gensim包中同样用函数实现了这一算法，如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">n_similarity</span><span class="params">(self, ws1, ws2)</span>:</span></span><br><span class="line">    v1 = [self[word] <span class="keyword">for</span> word <span class="keyword">in</span> ws1]</span><br><span class="line">    v2 = [self[word] <span class="keyword">for</span> word <span class="keyword">in</span> ws2]</span><br><span class="line">    <span class="keyword">return</span> dot(matutils.unitvec(array(v1).mean(axis=<span class="number">0</span>)), matutils.unitvec(array(v2).mean(axis=<span class="number">0</span>)))</span><br></pre></td></tr></table></figure></p>
+<p>建立一个<code>target.txt</code>文件存放待匹配的问题，代码比较简单如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"><span class="comment">#!/usr/bin/env Python</span></span><br><span class="line"><span class="keyword">from</span> gensim.models <span class="keyword">import</span> Word2Vec</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> jieba</span><br><span class="line">jieba.load_userdict(<span class="string">"dict.txt"</span>)</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ResultInfo</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, index, score, text)</span>:</span></span><br><span class="line">        self.id = index</span><br><span class="line">        self.score = score</span><br><span class="line">        self.text = text</span><br><span class="line"></span><br><span class="line">target = <span class="string">"target.txt"</span> <span class="comment"># 问题集合</span></span><br><span class="line">model = <span class="string">"./model/word2vec"</span></span><br><span class="line"></span><br><span class="line">model_w2v = Word2Vec.load(model) <span class="comment">#加载模型 文字摘要</span></span><br><span class="line"><span class="keyword">print</span> (<span class="string">"模型加载成功！"</span>)</span><br><span class="line">candidates = []</span><br><span class="line"><span class="keyword">with</span> open(target) <span class="keyword">as</span> f:</span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> f:</span><br><span class="line">        candidates.append(line.strip().split()) <span class="comment"># candidates列表中加载所有问题，</span></span><br><span class="line">并用空格分割</span><br><span class="line"><span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">    text = input(<span class="string">"请输入查询指令： "</span>)</span><br><span class="line">    words = list(jieba.cut(text.strip()))</span><br><span class="line">    <span class="keyword">if</span> len(words) == <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">continue</span></span><br><span class="line">    flag = <span class="keyword">False</span></span><br><span class="line">    <span class="keyword">for</span> w <span class="keyword">in</span> words:</span><br><span class="line">        <span class="keyword">if</span> w <span class="keyword">not</span> <span class="keyword">in</span> model_w2v.wv.vocab:</span><br><span class="line">            <span class="keyword">print</span> (<span class="string">"输入指令中词汇“%s”不在字典中"</span> % w)</span><br><span class="line">            flag = <span class="keyword">True</span></span><br><span class="line">    <span class="keyword">if</span> flag:</span><br><span class="line">        <span class="keyword">continue</span></span><br><span class="line">    res = []</span><br><span class="line">    index = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> candidate <span class="keyword">in</span> candidates:</span><br><span class="line">        score = model_w2v.n_similarity(words, candidate)</span><br><span class="line">        res.append(ResultInfo(index, score, <span class="string">" "</span>.join(candidate)))</span><br><span class="line">        index += <span class="number">1</span></span><br><span class="line">    res.sort(key=<span class="keyword">lambda</span> x:x.score, reverse=<span class="keyword">True</span>)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> res:</span><br><span class="line">        <span class="keyword">print</span> i.text <span class="comment"># 输出相似度最高的语句</span></span><br></pre></td></tr></table></figure></p>
+<p>最后测试结果如下，在短文本的相似度测量上，基于词向量相似度度量的算法在计算速度和质量上均是比较满意的。</p>
+<blockquote>
+<p>  ============<strong>体育</strong>=============<br>    3 世界 锦标赛 中国队 胜出 0.42<br>    4 中国 足球 失败 0.41<br>    2 奥运会 中国 女排 夺冠 0.40<br>    ============<strong>农业</strong>=============<br>    1 农民 在 江苏 种 水稻 0.55<br>    0 人工智能 和 农业 怎么 结合 0.45<br>    5 山东 苹果 丰收 0.42  </p>
+</blockquote>
+<h3 id="Doc2vec语义相似度计算"><a href="#Doc2vec语义相似度计算" class="headerlink" title="Doc2vec语义相似度计算"></a>Doc2vec语义相似度计算</h3><p>Doc2vec的原理暂未深入研究，参照网上各路教程跑通后的代码如下。笔者用该doc2vec进行了语义相似度检测，但效果差强人意（具体来说，能捕捉到一定程度句子结构信息，但对语义很模糊）。可能跟语料库选取关系较大，此处用的不是一行行的短句，而是训练word2vec的语料，一行一段话…接下来若有文本分类等任务，再补上详细研究路线<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> gensim</span><br><span class="line"><span class="keyword">import</span> smart_open</span><br><span class="line"><span class="keyword">import</span> multiprocessing</span><br><span class="line"><span class="keyword">import</span> logging</span><br><span class="line"><span class="keyword">from</span> gensim.models.doc2vec <span class="keyword">import</span> TaggedDocument, Doc2Vec</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line">reload(sys)</span><br><span class="line">sys.setdefaultencoding(<span class="string">'utf-8'</span>)</span><br><span class="line"></span><br><span class="line">data_set = <span class="string">"pre0"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">read_corpus</span><span class="params">(fname, tokens_only=False)</span>:</span></span><br><span class="line">    <span class="keyword">with</span> smart_open.smart_open(fname, encoding=<span class="string">"utf-8"</span>) <span class="keyword">as</span> f:</span><br><span class="line">        <span class="keyword">for</span> i, line <span class="keyword">in</span> enumerate(f):</span><br><span class="line">            <span class="keyword">if</span> tokens_only:</span><br><span class="line">                <span class="keyword">yield</span> gensim.utils.simple_preprocess(line)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                text = line.split()</span><br><span class="line">                <span class="keyword">yield</span> TaggedDocument(text[:], [i])</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">train_data = list(read_corpus(data_set))</span><br><span class="line"><span class="keyword">print</span> len(train_data)</span><br><span class="line"></span><br><span class="line">logging.basicConfig(format=<span class="string">'%(asctime)s : %(levelname)s : %(message)s'</span>, level=logging.INFO)</span><br><span class="line">model = Doc2Vec(size=<span class="number">100</span>, min_count=<span class="number">1</span>, iter=<span class="number">10</span>, workers=multiprocessing.cpu_count())</span><br><span class="line">model.build_vocab(train_data)</span><br><span class="line">model.train(train_data, total_examples=model.corpus_count, epochs=<span class="number">100</span>)</span><br><span class="line">model.save(<span class="string">'./model/model_new.doc2vec'</span>)</span><br></pre></td></tr></table></figure></p>
+<h3 id="Ref："><a href="#Ref：" class="headerlink" title="Ref："></a>Ref：</h3><p><a href="http://someth.duapp.com/2017/08/10/LSTM-%E5%8F%A5%E5%AD%90%E7%9B%B8%E4%BC%BC%E5%BA%A6%E5%88%86%E6%9E%90/" target="_blank" rel="noopener">LSTM 句子相似度分析</a><br><a href="http://blog.csdn.net/lenbow/article/details/52120230" target="_blank" rel="noopener">基于gensim的Doc2Vec简析</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/25/word2vec-1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1234,7 +1371,7 @@ $ conda config --<span class="built_in">set</span> show_channel_urls yes
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">36</span>
+                  <span class="site-state-item-count">37</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1247,7 +1384,7 @@ $ conda config --<span class="built_in">set</span> show_channel_urls yes
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">9</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -1332,7 +1469,7 @@ $ conda config --<span class="built_in">set</span> show_channel_urls yes
  
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共30.1k字</span>
+  <span class="post-count">博客全站共31.4k字</span>
 </div>
 
 <div class="powered-by">
