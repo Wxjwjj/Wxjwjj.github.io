@@ -259,6 +259,292 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/27/ubuntusys-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="祥吉">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Deep Coding">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/27/ubuntusys-2/" itemprop="url">Ubuntu1604装机系列(二)：Opencv安装</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-27T10:08:34+08:00">
+                2018-03-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/03/27/ubuntusys-2/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/03/27/ubuntusys-2/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h4><p>官网下载<code>opencv3.4.1</code>，选择source<a href="https://opencv.org/releases.html" target="_blank" rel="noopener">版本</a><br>官网下载<code>opencv3.4.1_contrib</code>，选择source<a href="https://opencv.org/releases.html" target="_blank" rel="noopener">版本</a></p>
+<h4 id="首先安装必要的依赖"><a href="#首先安装必要的依赖" class="headerlink" title="首先安装必要的依赖"></a>首先安装必要的依赖</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get -qq install libopencv-dev build-essential checkinstall cmake pkg-config yasm libjpeg-dev libjasper-dev libavcodec-dev libavformat-dev libswscale-dev libdc1394-22-dev libgstreamer0.10-dev libgstreamer-plugins-base0.10-dev libv4l-dev python-dev python-numpy libtbb-dev libqt4-dev libgtk2.0-dev libfaac-dev libmp3lame-dev libopencore-amrnb-dev libopencore-amrwb-dev libtheora-dev libvorbis-dev libxvidcore-dev x264 v4l-utils</span><br></pre></td></tr></table></figure>
+<h4 id="编译安装opencv"><a href="#编译安装opencv" class="headerlink" title="编译安装opencv"></a>编译安装opencv</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">cp ../opencv3.4.1_contrib ./   <span class="comment"># 复制contrib到opencv3.4.1文件夹并重命名</span></span><br><span class="line"><span class="built_in">cd</span> opencv3.4.1</span><br><span class="line">mv opencv3.4.1_contrib opencv_contrib</span><br><span class="line">mkdir build</span><br><span class="line"><span class="built_in">cd</span> build</span><br><span class="line">cmake ..</span><br><span class="line">ccmake ..</span><br><span class="line">几个要注意的修改项(cuda/python根据自己的安装路径来写)：</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">CUDA_TOOLKIT_ROOT_DIR:		/home/&lt;user name&gt;/wuxj/cuda-8.0</span><br><span class="line">OPENCV_EXTRA_MODULES_PATH:	/home/&lt;user name&gt;/wuxj/opencv-3.4.1/opencv_contrib/modules </span><br><span class="line">PYTHON2_EXECUTABLE:			/usr/bin/python2.7                           </span><br><span class="line">PYTHON2_INCLUDE_DIR:		/usr/include/python2.7 </span><br><span class="line">PYTHON2_LIBRARY:			/usr/lib/x86_64-linux-gnu/libpython2.7.so</span><br><span class="line">PYTHON2_NUMPY_INCLUDE_DIRS: /usr/<span class="built_in">local</span>/lib/python2.7/dist-packages/dist-packages/numpy/core/include  </span><br><span class="line">PYTHON2_PACKAGES_PATH:		/lib/python2.7/dist-packages </span><br><span class="line">CMAKE_INSTALL_PREFIX:		/home/&lt;user name&gt;/wuxj   <span class="comment"># make install的安装路径</span></span><br></pre></td></tr></table></figure>
+<p><code>make -j8</code> # 等待安装成功即可 8：8核CPU，编译速度更快</p>
+<p><code>make install</code> # 复制上一步build文件夹到<code>/home/&lt;user name&gt;/wuxj</code> 中，这时候wuxj文件夹会包含bin(exe)、include(头文件)、lib(动态库)、share4个文件夹</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/27/nvidia/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="祥吉">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Deep Coding">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/27/nvidia/" itemprop="url">Ubuntu1604装机系列(一)：Mac烧系统盘及1080Ti显卡(390版本)驱动安装</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-27T09:08:34+08:00">
+                2018-03-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/03/27/nvidia/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/03/27/nvidia/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="Ubuntu1604系统安装"><a href="#Ubuntu1604系统安装" class="headerlink" title="Ubuntu1604系统安装"></a>Ubuntu1604系统安装</h4><p>笔者第一次尝试Mac烧系统盘，没想到比windows简单到爆，过程如下：<br>&nbsp;<br><a href="https://www.ubuntu.com/download" target="_blank" rel="noopener">官网</a>下载Ubuntu iso文件<br>&nbsp;<br>格式化一个U盘<br>&nbsp;<br>接着写入U盘镜像<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">df -hl       <span class="comment"># 记住磁盘名称，Eg：/dev/disk2s</span></span><br><span class="line">sudo diskutil umount /dev/disk2s  <span class="comment"># 卸载该磁盘</span></span><br><span class="line">sudo dd bs=1m <span class="keyword">if</span>=/Users/&lt;user name&gt;/Desktop/ubuntu-16.04.4-desktop-amd64.iso of=/dev/disk2s</span><br></pre></td></tr></table></figure></p>
+<p>静静等待10分钟，U盘即可写入完毕。接着就是设置电脑U盘启动，开始安装Ubuntu系统了</p>
+<h5 id="ubuntu-换源"><a href="#ubuntu-换源" class="headerlink" title="ubuntu 换源"></a>ubuntu 换源</h5><p><a href="https://mirrors.tuna.tsinghua.edu.cn/help/ubuntu/" target="_blank" rel="noopener">清华大学开源软件镜像站</a>寻找对应系统的源<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /etc/apt</span><br><span class="line">sudo cp sources.list sources.list.old <span class="comment">#先将之前的源做个备份</span></span><br><span class="line"></span><br><span class="line">vi sources.list <span class="comment"># 拷贝清华的镜像到该list</span></span><br><span class="line"></span><br><span class="line">deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial main restricted universe multiverse</span><br><span class="line">deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial-updates main restricted universe multiverse</span><br><span class="line">deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial-backports main restricted universe multiverse</span><br><span class="line">deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ xenial-security main restricted universe multiver</span><br><span class="line"></span><br><span class="line">sudo apt-get update <span class="comment"># 更新源完成，发现网速飞快了</span></span><br></pre></td></tr></table></figure></p>
+<h5 id="apt-get相关常用指令"><a href="#apt-get相关常用指令" class="headerlink" title="apt-get相关常用指令"></a>apt-get相关常用指令</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update  更新源</span><br><span class="line">sudo apt-get install package 安装包</span><br><span class="line">sudo apt-cache search package 搜索软件包</span><br><span class="line">sudo apt-get remove package --purge 删除包，包括配置文件等</span><br></pre></td></tr></table></figure>
+<h4 id="显卡驱动安装"><a href="#显卡驱动安装" class="headerlink" title="显卡驱动安装"></a>显卡驱动安装</h4><p>Nvidia显卡驱动踩了很多坑，到网上百度了N多教程，大致尝试的如下：</p>
+<blockquote>
+<ul>
+<li>显卡线插集显上，装好驱动后把线再插回N卡</li>
+<li>BIOS设置禁用Secure boot，cpu做显卡</li>
+<li>采用PPA源，尝试各种375、381、390的安装</li>
+<li>打开ubuntu的软件更新，更新显卡驱动</li>
+</ul>
+</blockquote>
+<p>经过上述步骤，会提示显卡驱动已经安装成功，但<code>nvidia-smi</code>依然无效…该最简单但最高效的选手登场了</p>
+<h5 id="编译-NVIDIA-驱动程序"><a href="#编译-NVIDIA-驱动程序" class="headerlink" title="编译 NVIDIA 驱动程序"></a>编译 NVIDIA 驱动程序</h5><p>Nvidia官网下载最新的显卡<a href="https://www.geforce.cn/drivers" target="_blank" rel="noopener">驱动程序</a>，ubuntu的一般就几十兆左右。<br>&nbsp;<br>将<code>nouveau driver</code>加入黑名单<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">blacklist nouveau</span><br><span class="line">options modset=0</span><br></pre></td></tr></table></figure></p>
+<p>终端输入<code>lspci | grep nouveau</code>，如果没有显示证明该驱动被kill</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">reboot <span class="comment"># 一定要重启</span></span><br></pre></td></tr></table></figure>
+<p>杀掉<code>LightDM</code>或<code>GDM</code>登录显示器，进入纯文本<code>tty1</code>模式<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo service lightdm stop</span><br><span class="line">sudo dpkg-reconfigure gdm <span class="comment"># 有的人可能安装的不是LightDM界面，可先通过该命令切到LightDM，或者直接stop GDM等界面(第二种笔者未尝试)</span></span><br></pre></td></tr></table></figure></p>
+<p>编译安装NVIDIA驱动，此过程大约耗时3～5分钟<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">chmod +x NVIDIA-xxx.run</span><br><span class="line">sudo ./NVIDIA-xxx.run</span><br></pre></td></tr></table></figure></p>
+<p>需要注意的：<br>1、此处认真看提示，并不是一路选择”yes”。<br>2、假如上一步在安装时，Warning了gcc版本不对，则退出驱动安装，先安装对应版本的gcc之后再继续。笔者安装的驱动程序提示需要gcc-5.4.0，又是一番折腾，还好在冯博的指导下，找到了精干快速的方法。不介意的话可以移步笔者之前的文章<a href="http://localhost:4000/2018/02/25/gcc/" target="_blank" rel="noopener">Ubuntu下gcc/g++多版本切换</a><br>&nbsp;<br>安装成功后，重新开启桌面测试。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo service lightdm start</span><br><span class="line">nvidia-smi</span><br></pre></td></tr></table></figure></p>
+<p>成功后的截图<br> <img src="/img/nvidia.png" width="550" alt="图片名称" align="center"></p>
+<h4 id="Ref："><a href="#Ref：" class="headerlink" title="Ref："></a>Ref：</h4><p> 📎：<a href="https://www.linuxidc.com/Linux/2011-07/39491.htm" target="_blank" rel="noopener">Ubuntu下轻松切换GDM, LightDM , KDM</a><br> 📎：<a href="https://blog.csdn.net/ljheee/article/details/52966048" target="_blank" rel="noopener">Ubuntu 16.04安装安装iBus中文输入法</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/22/mac-opcv/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -635,7 +921,7 @@
       
         
           
-            <h3 id="SPP-Net"><a href="#SPP-Net" class="headerlink" title="SPP Net"></a>SPP Net</h3><p>R-CNN的进阶版Fast R-CNN可以说是在RCNN的基础上采纳了<a href="https://arxiv.org/abs/1406.4729" target="_blank" rel="noopener">SPP Net</a>方法，使得性能进一步提高。所以有必要先了解下何凯明提出的SPP Net。SPP:Spatial Pyramid Pooling（空间金字塔池化）。他有两个显著的特点：<br>&nbsp;<br><strong><font color="blue"> 创新点1：实现CNN的多尺度输入，忽略图片尺寸的影响 </font></strong><br>为了实现全联接层可以正确匹配pooling层后的维度，R-CNN中笔者先对Region proposal Crop到某一固定维度，但这样会造成一定的图像失真。有没有不Crop图像从而实现维度匹配的方法呢？一是调整最后的pooling层维度，二是调节全联接层的结构，使它接受任意维度特征。后一种方法是全卷积网络(FCN)，本文是采用的是前一种，即SPP：空间金字塔pooling。<br>&nbsp;<br>SPP的具体实现方式：假设与全联接层匹配的最后一个pooling层，输出维度应当是$[2\ast 2]$。而此时<code>ROI</code>区域的大小为$[5\ast 7]$(Region proposal在该论文中又称为<code>ROI</code>区域)。那么此时pooling核的size应当为$[\frac{5}{2} \ast \frac{7}{2}]$，才能使该ROI区域pooling后，得到匹配的size。但核的size不能为小数啊，所以采用理论size做间隔，最后向下取整得到每个pooling核的size。<br><img src="/img/frcnn1.png" width="350" alt="图片名称" align="center"><br>如上图所示：H方向以2.5为间隔$[0, 2.5, 5]$，W方向以3.5取间隔$[0, 3.5, 7]$。最后每个pooling核<strong>起始点</strong>坐标为H:$[2, 5]$，W:$[3, 7]$。更广泛地，我们用$[h, w]$代表<code>ROI</code>区域的高和宽，$[H, W]$代表希望pooling后得到的高和宽。那么每个网格动态调整后的大小为$[\frac{h}{H} \ast \frac{w}{W}]$。<br><strong>小结：SPP说到底就是计算一个比例关系，以动态调整pooling核的大小，实在是非常简单</strong></p>
+            <h3 id="SPP-Net"><a href="#SPP-Net" class="headerlink" title="SPP Net"></a>SPP Net</h3><p>R-CNN的进阶版Fast R-CNN可以说是在RCNN的基础上采纳了<a href="https://arxiv.org/abs/1406.4729" target="_blank" rel="noopener">SPP Net</a>方法，使得性能进一步提高。所以有必要先了解下何凯明提出的SPP Net。SPP:Spatial Pyramid Pooling（空间金字塔池化）。他有两个显著的特点：<br>&nbsp;<br><strong><font color="blue"> 创新点1：实现CNN的多尺度输入，忽略图片尺寸的影响 </font></strong><br>为了实现全联接层可以正确匹配pooling层后的维度，R-CNN中笔者先对Region proposal Crop到某一固定维度，但这样会造成一定的图像失真。有没有不Crop图像从而实现维度匹配的方法呢？一是调整最后的pooling层维度，二是调节全联接层的结构，使它接受任意维度特征。后一种方法是全卷积网络(FCN)，本文是采用的是前一种，即SPP：空间金字塔pooling。<br>&nbsp;<br>SPP的具体实现方式：假设与全联接层匹配的最后一个pooling层，输出维度应当是$[2\ast 2]$。而此时<code>ROI</code>区域的大小为$[5\ast 7]$(Region proposal在该论文中又称为<code>ROI</code>区域)。那么此时pooling核的size应当为$[\frac{5}{2} \ast \frac{7}{2}]$，才能使该ROI区域pooling后，得到匹配的size。但核的size不能为小数啊，所以采用理论size做间隔，最后向下取整得到每个pooling核的size。<br><img src="/img/frcnn1.png" width="350" alt="图片名称" align="center"><br>如上图所示：H方向以2.5为间隔$[0, 2.5, 5]$，W方向以3.5取间隔$[0, 3.5, 7]$。最后每个pooling核<strong>起始点</strong>坐标为H:$[2, 5]$，W:$[3, 7]$。更广泛地，我们用$[h, w]$代表<code>ROI</code>区域的高和宽，$[H, W]$代表希望pooling后得到的高和宽。那么每个网格动态调整后的大小为$[\frac{h}{H} \ast \frac{w}{W}]$。<br>ps：假如ROI区域$[2,2]$小于pooling后目标维度$[3,3]$怎么办？一样的处理方式，每个pooling核<strong>起始点</strong>坐标为H:$[1,1,2]$，W:$[[1,1,2]$，类似于图像的最近邻法上采样（其实这样取整的方式引入了很多误差，后面的Mask RCNN中将ROI pooling层修改为ROI Align）<br><strong>小结：SPP说到底就是计算一个比例关系，以动态调整pooling核的大小，实在是非常简单</strong></p>
 <p><strong><font color="blue"> 创新点2：只对原图提取一次卷积特征 </font></strong><br>RCNN中，一张图片Region proposal的数量为2K个，其中存在大量的重复区域。而用CNN提取这些Region，显然是非常复杂的一件事儿。SPP Net中的做法是对整张图像用CNN仅提取一次特征，feature map一般计算到最后一个pooling层。接着再根据相应的缩放比例，对源图的Regions进行一一映射，找到其在feature map的位置即可。该算法看似简单，但对于regions的特征提取，速度提升约146倍。</p>
 <h3 id="Fast-R-CNN"><a href="#Fast-R-CNN" class="headerlink" title="Fast R-CNN"></a>Fast R-CNN</h3><p>Fast R-CNN是在SPP Net基础上做的进一步改进，作者把<strong>SVM分类器换成Softmax，和CNN整合成一个网络，同时把bounding box regression也整合进网络中，三层联动调节参数，从而带来了效果的进一步提升。</strong>Fast RCNN架构如图所示：<br><img src="/img/frcnn3.jpeg" width="600" alt="图片名称" align="center"><br>该网络是典型的多任务学习，低层的卷积层参数共享(采用VGG16提取特征)，高层分别训练分类及回归网络。多任务学习一般用在task具有一定相似度的情境下。网络总的损失函数是两部分乘系数相加$L = L_{cls} + \lambda \times L_{loc}$，对于$L_{cls} $采用softmax-loss损失函数，对于Bounding box regression采用特殊的一种损失函数，如下：<br>$$L_{loc}(t^{u}, v) = \sum_{i = {x,y,w,h}}smooth_{L1}(t_{i}^{u}-v_{i})$$<br>$$if \left | x \right |&lt;1 \qquad smooth_{L1}(x) =0.5x^{2}  \qquad || \qquad Otherwise \qquad smooth_{L1}(x) = \left | x \right | -1 $$<br>这部分没有深究，其中$t_{i}, v_{i}$分别代表Region proposal和ground truth的坐标。Fast R-CNN的联合损失函数可以直接进行反向传播，从而达到端到端训练的目的。</p>
 <h3 id="Ref："><a href="#Ref：" class="headerlink" title="Ref："></a>Ref：</h3><p>📎：<a href="https://arxiv.org/abs/1504.08083" target="_blank" rel="noopener">Fast RCNN</a><br>📎：<a href="http://jermmy.xyz/2018/01/15/2018-1-15-paper-notes-fast-er-rcnn/" target="_blank" rel="noopener">论文笔记：Fast(er) RCNN</a><br>📎：<a href="https://zhuanlan.zhihu.com/p/22190532" target="_blank" rel="noopener">一箭N雕：多任务深度学习实战</a><br>📎：<a href="http://shartoo.github.io/RCNN-series/" target="_blank" rel="noopener">RCNN,Fast RCNN,Faster RCNN 总结</a></p>
@@ -918,7 +1204,7 @@
         
           
             <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>即将学习基于R-CNN的图像目标检测(Object Recognition)，不得不提的一篇论文是《Selective Search for Object Recognition》，虽然仅用了传统的机器学习算法<code>Selective Search + DPM/Hog特征 + SVM分类器</code>，但其结构简单，可解释性强，对后面的Deep Learning物体检测模型，都有很大的借鉴意义。<br>&nbsp;<br>本篇论文的创新点在于选择性搜索算法(Selective Search)。不同于传统的蛮力搜索(Exhaustive Search)：需要不断改变窗口大小，遍历整张图像。Selective Search可以选择性地找出物体可能的存在区域，节省了大量不必要的特征提取开销。<br>&nbsp;<br><strong>结论先行：</strong>如图红色的区域便是<code>Selective Search算法</code>提取的可能存在物体的窗口：<br><img src="/img/ss.png" width="400" alt="图片名称" align="center"></p>
-<h3 id="Selective-Search算法描述"><a href="#Selective-Search算法描述" class="headerlink" title="Selective Search算法描述"></a>Selective Search算法描述</h3><p>文章一开始便用这4幅图，说明了同一物体组成成分多样性的问题。图1显示了区分桌子和它上面的餐具需要利用一定的层次关系；图2的猫需要通过颜色来区分；图3的变色龙颜色不行，需要通过纹理特征(texture)来区分；图4中的车和车轮看似粘连在一起，但我们可以通过颜色、纹理两种特征加以区分。<br><img src="/img/ss1.png" width="400" alt="图片名称" align="center"><br><strong>小结：</strong>这样的特性说明了两个问题，物体识别时候，需要充分考虑图像物体的多样性（diversity），单一特征可能分得乱七八糟；另外，图像中物体布局有一定的层次（hierarchical）关系，在算法中的体现就是从小区域开始，一步步分层而上进行合并。</p>
+<h3 id="Selective-Search算法描述"><a href="#Selective-Search算法描述" class="headerlink" title="Selective Search算法描述"></a>Selective Search算法描述</h3><p>文章一开始便用这4幅图，说明了同一物体组成成分多样性的问题。图1显示了区分桌子和它上面的餐具需要利用一定的层次关系；图2的猫需要通过颜色来区分；图3的变色龙颜色不行，需要通过纹理特征(texture)来区分；图4中的车和车轮看似粘连在一起，但我们可以通过颜色、纹理两种特征加以区分。<br><img src="/img/ss1.png" width="400" alt="图片名称" align="center"><strong>小结：</strong>这样的特性说明了两个问题，物体识别时候，需要充分考虑图像物体的多样性（diversity），单一特征可能分得乱七八糟；另外，图像中物体布局有一定的层次（hierarchical）关系，在算法中的体现就是从小区域开始，一步步分层而上进行合并。</p>
 <h3 id="Selective-Search算法详解"><a href="#Selective-Search算法详解" class="headerlink" title="Selective Search算法详解"></a>Selective Search算法详解</h3><p>Selective Search算法对传统的exhaustive search从以下两方面进行了改进：</p>
 <blockquote>
 <ul>
@@ -926,7 +1212,7 @@
 <li>Selective Search只负责快速生成可能存在物体的窗口，并不做具体的特征检测</li>
 </ul>
 </blockquote>
-<h4 id="执行流程图"><a href="#执行流程图" class="headerlink" title="执行流程图"></a>执行流程图</h4><p><img src="/img/ss2.png" width="500" alt="图片名称" align="center"><br><strong>重点翻译：</strong></p>
+<h4 id="执行流程图"><a href="#执行流程图" class="headerlink" title="执行流程图"></a>执行流程图</h4><p><img src="/img/ss2.png" width="500" alt="图片名称" align="center"><strong>重点翻译：</strong></p>
 <blockquote>
 <ul>
 <li>input:彩色图像</li>
@@ -939,10 +1225,10 @@
 </ul>
 </blockquote>
 <p>PS：以上第三步的图像分割方法中考虑场景以及光照条件等影响，采用了RGB、灰度、HSV等8种颜色空间进行分割计算</p>
-<h4 id="相似度计算方式"><a href="#相似度计算方式" class="headerlink" title="相似度计算方式"></a>相似度计算方式</h4><p>相似度计算直接影响合并区域顺序，对最终的检测结果，有至关重要的影响。此处同样综合了多种维度的相似度信息，分别是颜色（color）相似度、纹理（texture）相似度、大小（size）相似度和吻合（fit）相似度，最终将4种相似度计算结果，用如下公式合并：<br>$${s(r_{i}, r_{j})= a_{1}s_{colour}(r_{i}, r_{j}) + a_{2}s_{texture}(r_{i}, r_{j})<br>+a_{3}s_{size}(r_{i}, r_{j}) +a_{4}s_{fill}(r_{i}, r_{j})}$$</p>
-<h5 id="这里仅就图像的颜色空间相似度进行介绍"><a href="#这里仅就图像的颜色空间相似度进行介绍" class="headerlink" title="这里仅就图像的颜色空间相似度进行介绍"></a>这里仅就图像的颜色空间相似度进行介绍</h5><p>颜色是区分不同物体的一个重要因素，文中将每个Region的颜色信息统计成一个75维的直方图，即每一个颜色通道为25bins的直方图(255/25 == 9，25bins的意思就是每隔9个数值统计像素数量)，之后用<strong>L1范数</strong>进行归一化(除以各维度绝对值之和)。相似度计算方式如下：<br>$$s_{colour}(r_{i}, r_{j}) = \sum_{k=1}^{n}min(c\tfrac{k}{i},c\tfrac{j}{k})$$<br>其实质就是计算两个直方图的交集，而新的区域特征向量采用如下与区域面积加权的方式实现。<br>$$C_{t} = \frac{size(r_{i})\ast C_{i}+size(r_{j})\ast C_{j}}{size(r_{i})+size(r_{j})}$$<br>而新区域面积就是两个源区域面积的简单相加$size(r_{i})+size(r_{j})$</p>
+<h4 id="相似度计算方式"><a href="#相似度计算方式" class="headerlink" title="相似度计算方式"></a>相似度计算方式</h4><p>相似度计算直接影响合并区域顺序，对最终的检测结果，有至关重要的影响。此处同样综合了多种维度的相似度信息，分别是颜色（color）相似度、纹理（texture）相似度、大小（size）相似度和吻合（fit）相似度，最终将4种相似度计算结果，用如下公式合并：$${s(r_{i}, r_{j})= a_{1}s_{colour}(r_{i}, r_{j}) + a_{2}s_{texture}(r_{i}, r_{j})<br>+a_{3}s_{size}(r_{i}, r_{j}) +a_{4}s_{fill}(r_{i}, r_{j})}$$</p>
+<h5 id="这里仅就图像的颜色空间相似度进行介绍"><a href="#这里仅就图像的颜色空间相似度进行介绍" class="headerlink" title="这里仅就图像的颜色空间相似度进行介绍"></a>这里仅就图像的颜色空间相似度进行介绍</h5><p>颜色是区分不同物体的一个重要因素，文中将每个Region的颜色信息统计成一个75维的直方图，即每一个颜色通道为25bins的直方图(255/25 == 9，25bins的意思就是每隔9个数值统计像素数量)，之后用<strong>L1范数</strong>进行归一化(除以各维度绝对值之和)。相似度计算方式如下：$$s_{colour}(r_{i}, r_{j}) = \sum_{k=1}^{n}min(c\tfrac{k}{i},c\tfrac{j}{k})$$其实质就是计算两个直方图的交集，而新的区域特征向量采用如下与区域面积加权的方式实现。$$C_{t} = \frac{size(r_{i})\ast C_{i}+size(r_{j})\ast C_{j}}{size(r_{i})+size(r_{j})}$$而新区域面积就是两个源区域面积的简单相加$size(r_{i})+size(r_{j})$</p>
 <h4 id="Combining-Locations"><a href="#Combining-Locations" class="headerlink" title="Combining Locations"></a>Combining Locations</h4><p>完成上述步骤，提取出了图像中大量的bounding box区域，而实际存在物体的区域可能只有其中的几个，这时候便需要对备选的bounding box赋予一定的优先级，从而进一步缩小后文特征提取的范围，文中称这一步处理为<code>Combining Locations</code>。<br>&nbsp;<br>具体方法为：因为Selective Search是一个逐步合并的层级结构，所以最大的一张图标为’1’，合并成’1’的子图标为’2’、’3’，以此类推。但这样的话会造成越大的bounding box排序越靠前。所以作者又加入了一定的shuffle机制，即在每个序号前，乘上一个随机数$RAND\in (0,1)$。通过新计算出的数值，按从小到大排序，得出Region最终的排序结果。一般candidates数量为2K个</p>
-<h3 id="Object-Recognition目标识别"><a href="#Object-Recognition目标识别" class="headerlink" title="Object Recognition目标识别"></a>Object Recognition目标识别</h3><p>接下来采用HOG/DPM等算子分别提取正负样本特征，加入SVM分类器进行训练，整个架构如图所示：<br><img src="/img/ss3.png" width="800" alt="图片名称" align="center"><br>其中正样本为人工标注的bounding box，负样本为与正样本重叠程度20%~50%的Regions。特别地，删去负样本中，彼此重叠程度&gt;70%的Regions。重复迭代过程中再加入hard negative example进行训练。<br>PS：重叠程度即IoU(intersection-over-union，是一个定位精度的评价标准)参数，计算图示如下所示：<br><img src="/img/ss4.png" width="300" alt="图片名称" align="center"></p>
+<h3 id="Object-Recognition目标识别"><a href="#Object-Recognition目标识别" class="headerlink" title="Object Recognition目标识别"></a>Object Recognition目标识别</h3><p>接下来采用HOG/DPM等算子分别提取正负样本特征，加入SVM分类器进行训练，整个架构如图所示：<br><img src="/img/ss3.png" width="800" alt="图片名称" align="center">其中正样本为人工标注的bounding box，负样本为与正样本重叠程度20%~50%的Regions。特别地，删去负样本中，彼此重叠程度&gt;70%的Regions。重复迭代过程中再加入hard negative example进行训练。<br>PS：重叠程度即IoU(intersection-over-union，是一个定位精度的评价标准)参数，计算图示如下所示：<br><img src="/img/ss4.png" width="300" alt="图片名称" align="center"></p>
 <h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p>📎：《Selective Search for Object Recognition》<br>📎：<a href="https://github.com/AlpacaDB/selectivesearch" target="_blank" rel="noopener">Selective Search算法的python实现</a><br>📎：<a href="http://cs.brown.edu/~pff/segment/" target="_blank" rel="noopener">Graph Based Image Segmentation</a><br>📎：<a href="http://blog.csdn.net/niaolianjiulin/article/details/52950797#t2" target="_blank" rel="noopener">http://blog.csdn.net/niaolianjiulin/article/details/52950797#t2</a><br>📎：<a href="http://jermmy.xyz/2017/05/04/2017-5-4-paper-notes-selective-search/" target="_blank" rel="noopener">http://jermmy.xyz/2017/05/04/2017-5-4-paper-notes-selective-search/</a></p>
 
           
@@ -1081,7 +1367,7 @@
 </blockquote>
 <p>如何用一幅图总结频域、时域、相位谱的关系(引自<a href="https://zhuanlan.zhihu.com/p/19763358?from=singlemessage&amp;isappinstalled=1" target="_blank" rel="noopener">知乎</a>)<br><img src="/img/ft3.jpeg" width="500" alt="图片名称" align="center"></p>
 <h3 id="采样"><a href="#采样" class="headerlink" title="采样"></a>采样</h3><p>以音频文件采样为例：同图像bmp文件一样，pcm文件保存的是未压缩的音频信息。<br>16bits 编码是指，每次采样的音频信息用2个字节保存。可以对比下bmp文件用分别用2个字节保存RGB颜色的信息。<br>16000采样率 是指 1秒钟采样 16000次。当前声卡常用的采样频率一般为44.1KHz，即一秒采样44100次，人耳最敏感的听力范围20Hz到8000Hz。显然采样频率越高声音的还原就越真实越自然。<br>即：1秒的16000采样率音频文件大小是 $2\times16000 = 32000$字节 ，约为32K<br><strong>采样定理：衡量的是采样频率与信号频率之间的关系。采样定理规定，采样频率必须大于等于信号频率的两倍，才能够将原始信号从采样定理中完全恢复出来，否则会造成频率曲线混叠</strong></p>
-<h3 id="图像大小变换"><a href="#图像大小变换" class="headerlink" title="图像大小变换"></a>图像大小变换</h3><p>图像像素数量 = 图像分辨率相乘，例如：图像分辨率为$1280\times720$，那么这张图片像素有100万。在同一台设备上，图片分辨率越高，这张图片1:1放大时，图片面积越大；图片分辨率越低，这张图片1:1缩放时，图片面积越小。<br>所以，将$1280 \times720 $的图像缩小到$720 \times 540$时，便需要采用下采样，这样再在同一台设备上，处理后的图片size就比较小。python代码如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line">filename = <span class="string">"/Users/wxj/Desktop/WechatIMG2.jpeg"</span></span><br><span class="line">img = Image.open(filename)</span><br><span class="line">imgSize = img.size <span class="comment">#图片的长和宽</span></span><br><span class="line"><span class="keyword">print</span> (imgSize) <span class="comment"># 1920*1080</span></span><br><span class="line">out = img.resize((<span class="number">1080</span>，<span class="number">640</span>),Image.ANTIALIAS) <span class="comment">#降低分辨率</span></span><br><span class="line">out.save(<span class="string">"1.jpg"</span>)</span><br></pre></td></tr></table></figure></p>
+<h3 id="图像大小变换"><a href="#图像大小变换" class="headerlink" title="图像大小变换"></a>图像大小变换</h3><p>图像像素数量 = 图像分辨率相乘，例如：图像分辨率为$1280\times720$，那么这张图片像素有100万。在同一台设备上，图片分辨率越高，这张图片1:1放大时，图片面积越大；图片分辨率越低，这张图片1:1缩放时，图片面积越小。<br>所以，将$1280 \times720 $的图像缩小到$720 \times 540$时，便需要采用下采样（如果采用简单的丢弃或者最近邻插值，将会导致图像较大程度地失真，推荐参考双线性插值算法），这样再在同一台设备上，处理后的图片size就比较小。python代码如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line">filename = <span class="string">"/Users/wxj/Desktop/WechatIMG2.jpeg"</span></span><br><span class="line">img = Image.open(filename)</span><br><span class="line">imgSize = img.size <span class="comment">#图片的长和宽</span></span><br><span class="line"><span class="keyword">print</span> (imgSize) <span class="comment"># 1920*1080</span></span><br><span class="line">out = img.resize((<span class="number">1080</span>，<span class="number">640</span>),Image.ANTIALIAS) <span class="comment">#降低分辨率</span></span><br><span class="line">out.save(<span class="string">"1.jpg"</span>)</span><br></pre></td></tr></table></figure></p>
 <h4 id="图像尺寸怎么计算呢？"><a href="#图像尺寸怎么计算呢？" class="headerlink" title="图像尺寸怎么计算呢？"></a>图像尺寸怎么计算呢？</h4><p>pic_size = 分辨率$\times$3字节(rgb)图像，但这样发现跟电脑中显示的大小不同，因为图像文件(.jpg、png)等，都是有损压缩，一般会压缩几十到几百倍不等这样子。</p>
 <h4 id="图像金字塔"><a href="#图像金字塔" class="headerlink" title="图像金字塔"></a>图像金字塔</h4><p>图像金字塔算法是对图像的下采样、上采样：</p>
 <blockquote>
@@ -1410,264 +1696,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/27/BPTT/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="祥吉">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Deep Coding">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/02/27/BPTT/" itemprop="url">BPTT</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-27T22:12:53+08:00">
-                2018-02-27
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/02/27/BPTT/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/02/27/BPTT/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/27/BP/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="祥吉">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Deep Coding">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/02/27/BP/" itemprop="url">神经网络反向传播算法推导及Coding</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-27T22:12:48+08:00">
-                2018-02-27
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/02/27/BP/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/02/27/BP/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1722,7 +1750,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">37</span>
+                  <span class="site-state-item-count">39</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1820,7 +1848,7 @@
  
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共31.4k字</span>
+  <span class="post-count">博客全站共32.7k字</span>
 </div>
 
 <div class="powered-by">

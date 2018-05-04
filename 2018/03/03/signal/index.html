@@ -99,7 +99,7 @@
 <meta property="og:image" content="http://yoursite.com/img/ft3.jpeg">
 <meta property="og:image" content="http://yoursite.com/img/sort.jpeg">
 <meta property="og:image" content="http://yoursite.com/img/tree.png">
-<meta property="og:updated_time" content="2018-04-28T07:35:14.974Z">
+<meta property="og:updated_time" content="2018-05-02T07:36:23.245Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="信号相关知识">
 <meta name="twitter:description" content="傅立叶级数周期为T的周期信号，若满足“狄里赫利”条件，则可以将其展开为有限或无限个离散的正余弦函数累加的形式。它的物理意义是很明显的，这就是把一个比较复杂的周期运动看成许多不同运动的叠加，如下：$$f(t) = A_{0}+\sum_{n=1}^{\infty }A_{n}sin(n\omega t + \varphi )$$而对于任何一个非周期信号，同样可以用傅立叶展开的形式，只不过它的频域曲线">
@@ -351,7 +351,7 @@
 </blockquote>
 <p>如何用一幅图总结频域、时域、相位谱的关系(引自<a href="https://zhuanlan.zhihu.com/p/19763358?from=singlemessage&amp;isappinstalled=1" target="_blank" rel="noopener">知乎</a>)<br><img src="/img/ft3.jpeg" width="500" alt="图片名称" align="center"></p>
 <h3 id="采样"><a href="#采样" class="headerlink" title="采样"></a>采样</h3><p>以音频文件采样为例：同图像bmp文件一样，pcm文件保存的是未压缩的音频信息。<br>16bits 编码是指，每次采样的音频信息用2个字节保存。可以对比下bmp文件用分别用2个字节保存RGB颜色的信息。<br>16000采样率 是指 1秒钟采样 16000次。当前声卡常用的采样频率一般为44.1KHz，即一秒采样44100次，人耳最敏感的听力范围20Hz到8000Hz。显然采样频率越高声音的还原就越真实越自然。<br>即：1秒的16000采样率音频文件大小是 $2\times16000 = 32000$字节 ，约为32K<br><strong>采样定理：衡量的是采样频率与信号频率之间的关系。采样定理规定，采样频率必须大于等于信号频率的两倍，才能够将原始信号从采样定理中完全恢复出来，否则会造成频率曲线混叠</strong></p>
-<h3 id="图像大小变换"><a href="#图像大小变换" class="headerlink" title="图像大小变换"></a>图像大小变换</h3><p>图像像素数量 = 图像分辨率相乘，例如：图像分辨率为$1280\times720$，那么这张图片像素有100万。在同一台设备上，图片分辨率越高，这张图片1:1放大时，图片面积越大；图片分辨率越低，这张图片1:1缩放时，图片面积越小。<br>所以，将$1280 \times720 $的图像缩小到$720 \times 540$时，便需要采用下采样，这样再在同一台设备上，处理后的图片size就比较小。python代码如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line">filename = <span class="string">"/Users/wxj/Desktop/WechatIMG2.jpeg"</span></span><br><span class="line">img = Image.open(filename)</span><br><span class="line">imgSize = img.size <span class="comment">#图片的长和宽</span></span><br><span class="line"><span class="keyword">print</span> (imgSize) <span class="comment"># 1920*1080</span></span><br><span class="line">out = img.resize((<span class="number">1080</span>，<span class="number">640</span>),Image.ANTIALIAS) <span class="comment">#降低分辨率</span></span><br><span class="line">out.save(<span class="string">"1.jpg"</span>)</span><br></pre></td></tr></table></figure></p>
+<h3 id="图像大小变换"><a href="#图像大小变换" class="headerlink" title="图像大小变换"></a>图像大小变换</h3><p>图像像素数量 = 图像分辨率相乘，例如：图像分辨率为$1280\times720$，那么这张图片像素有100万。在同一台设备上，图片分辨率越高，这张图片1:1放大时，图片面积越大；图片分辨率越低，这张图片1:1缩放时，图片面积越小。<br>所以，将$1280 \times720 $的图像缩小到$720 \times 540$时，便需要采用下采样（如果采用简单的丢弃或者最近邻插值，将会导致图像较大程度地失真，推荐参考双线性插值算法），这样再在同一台设备上，处理后的图片size就比较小。python代码如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line">filename = <span class="string">"/Users/wxj/Desktop/WechatIMG2.jpeg"</span></span><br><span class="line">img = Image.open(filename)</span><br><span class="line">imgSize = img.size <span class="comment">#图片的长和宽</span></span><br><span class="line"><span class="keyword">print</span> (imgSize) <span class="comment"># 1920*1080</span></span><br><span class="line">out = img.resize((<span class="number">1080</span>，<span class="number">640</span>),Image.ANTIALIAS) <span class="comment">#降低分辨率</span></span><br><span class="line">out.save(<span class="string">"1.jpg"</span>)</span><br></pre></td></tr></table></figure></p>
 <h4 id="图像尺寸怎么计算呢？"><a href="#图像尺寸怎么计算呢？" class="headerlink" title="图像尺寸怎么计算呢？"></a>图像尺寸怎么计算呢？</h4><p>pic_size = 分辨率$\times$3字节(rgb)图像，但这样发现跟电脑中显示的大小不同，因为图像文件(.jpg、png)等，都是有损压缩，一般会压缩几十到几百倍不等这样子。</p>
 <h4 id="图像金字塔"><a href="#图像金字塔" class="headerlink" title="图像金字塔"></a>图像金字塔</h4><p>图像金字塔算法是对图像的下采样、上采样：</p>
 <blockquote>
@@ -503,7 +503,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">37</span>
+                  <span class="site-state-item-count">39</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -617,7 +617,7 @@
  
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共31.4k字</span>
+  <span class="post-count">博客全站共32.7k字</span>
 </div>
 
 <div class="powered-by">

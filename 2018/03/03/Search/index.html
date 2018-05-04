@@ -99,7 +99,7 @@
 <meta property="og:image" content="http://yoursite.com/img/ss2.png">
 <meta property="og:image" content="http://yoursite.com/img/ss3.png">
 <meta property="og:image" content="http://yoursite.com/img/ss4.png">
-<meta property="og:updated_time" content="2018-03-05T16:18:06.902Z">
+<meta property="og:updated_time" content="2018-05-04T02:27:26.962Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="论文笔记：《Selective Search for Object Recognition》">
 <meta name="twitter:description" content="背景即将学习基于R-CNN的图像目标检测(Object Recognition)，不得不提的一篇论文是《Selective Search for Object Recognition》，虽然仅用了传统的机器学习算法Selective Search + DPM/Hog特征 + SVM分类器，但其结构简单，可解释性强，对后面的Deep Learning物体检测模型，都有很大的借鉴意义。&amp;nbsp;本篇">
@@ -344,7 +344,7 @@
 
       
         <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>即将学习基于R-CNN的图像目标检测(Object Recognition)，不得不提的一篇论文是《Selective Search for Object Recognition》，虽然仅用了传统的机器学习算法<code>Selective Search + DPM/Hog特征 + SVM分类器</code>，但其结构简单，可解释性强，对后面的Deep Learning物体检测模型，都有很大的借鉴意义。<br>&nbsp;<br>本篇论文的创新点在于选择性搜索算法(Selective Search)。不同于传统的蛮力搜索(Exhaustive Search)：需要不断改变窗口大小，遍历整张图像。Selective Search可以选择性地找出物体可能的存在区域，节省了大量不必要的特征提取开销。<br>&nbsp;<br><strong>结论先行：</strong>如图红色的区域便是<code>Selective Search算法</code>提取的可能存在物体的窗口：<br><img src="/img/ss.png" width="400" alt="图片名称" align="center"></p>
-<h3 id="Selective-Search算法描述"><a href="#Selective-Search算法描述" class="headerlink" title="Selective Search算法描述"></a>Selective Search算法描述</h3><p>文章一开始便用这4幅图，说明了同一物体组成成分多样性的问题。图1显示了区分桌子和它上面的餐具需要利用一定的层次关系；图2的猫需要通过颜色来区分；图3的变色龙颜色不行，需要通过纹理特征(texture)来区分；图4中的车和车轮看似粘连在一起，但我们可以通过颜色、纹理两种特征加以区分。<br><img src="/img/ss1.png" width="400" alt="图片名称" align="center"><br><strong>小结：</strong>这样的特性说明了两个问题，物体识别时候，需要充分考虑图像物体的多样性（diversity），单一特征可能分得乱七八糟；另外，图像中物体布局有一定的层次（hierarchical）关系，在算法中的体现就是从小区域开始，一步步分层而上进行合并。</p>
+<h3 id="Selective-Search算法描述"><a href="#Selective-Search算法描述" class="headerlink" title="Selective Search算法描述"></a>Selective Search算法描述</h3><p>文章一开始便用这4幅图，说明了同一物体组成成分多样性的问题。图1显示了区分桌子和它上面的餐具需要利用一定的层次关系；图2的猫需要通过颜色来区分；图3的变色龙颜色不行，需要通过纹理特征(texture)来区分；图4中的车和车轮看似粘连在一起，但我们可以通过颜色、纹理两种特征加以区分。<br><img src="/img/ss1.png" width="400" alt="图片名称" align="center"><strong>小结：</strong>这样的特性说明了两个问题，物体识别时候，需要充分考虑图像物体的多样性（diversity），单一特征可能分得乱七八糟；另外，图像中物体布局有一定的层次（hierarchical）关系，在算法中的体现就是从小区域开始，一步步分层而上进行合并。</p>
 <h3 id="Selective-Search算法详解"><a href="#Selective-Search算法详解" class="headerlink" title="Selective Search算法详解"></a>Selective Search算法详解</h3><p>Selective Search算法对传统的exhaustive search从以下两方面进行了改进：</p>
 <blockquote>
 <ul>
@@ -352,7 +352,7 @@
 <li>Selective Search只负责快速生成可能存在物体的窗口，并不做具体的特征检测</li>
 </ul>
 </blockquote>
-<h4 id="执行流程图"><a href="#执行流程图" class="headerlink" title="执行流程图"></a>执行流程图</h4><p><img src="/img/ss2.png" width="500" alt="图片名称" align="center"><br><strong>重点翻译：</strong></p>
+<h4 id="执行流程图"><a href="#执行流程图" class="headerlink" title="执行流程图"></a>执行流程图</h4><p><img src="/img/ss2.png" width="500" alt="图片名称" align="center"><strong>重点翻译：</strong></p>
 <blockquote>
 <ul>
 <li>input:彩色图像</li>
@@ -365,10 +365,10 @@
 </ul>
 </blockquote>
 <p>PS：以上第三步的图像分割方法中考虑场景以及光照条件等影响，采用了RGB、灰度、HSV等8种颜色空间进行分割计算</p>
-<h4 id="相似度计算方式"><a href="#相似度计算方式" class="headerlink" title="相似度计算方式"></a>相似度计算方式</h4><p>相似度计算直接影响合并区域顺序，对最终的检测结果，有至关重要的影响。此处同样综合了多种维度的相似度信息，分别是颜色（color）相似度、纹理（texture）相似度、大小（size）相似度和吻合（fit）相似度，最终将4种相似度计算结果，用如下公式合并：<br>$${s(r_{i}, r_{j})= a_{1}s_{colour}(r_{i}, r_{j}) + a_{2}s_{texture}(r_{i}, r_{j})<br>+a_{3}s_{size}(r_{i}, r_{j}) +a_{4}s_{fill}(r_{i}, r_{j})}$$</p>
-<h5 id="这里仅就图像的颜色空间相似度进行介绍"><a href="#这里仅就图像的颜色空间相似度进行介绍" class="headerlink" title="这里仅就图像的颜色空间相似度进行介绍"></a>这里仅就图像的颜色空间相似度进行介绍</h5><p>颜色是区分不同物体的一个重要因素，文中将每个Region的颜色信息统计成一个75维的直方图，即每一个颜色通道为25bins的直方图(255/25 == 9，25bins的意思就是每隔9个数值统计像素数量)，之后用<strong>L1范数</strong>进行归一化(除以各维度绝对值之和)。相似度计算方式如下：<br>$$s_{colour}(r_{i}, r_{j}) = \sum_{k=1}^{n}min(c\tfrac{k}{i},c\tfrac{j}{k})$$<br>其实质就是计算两个直方图的交集，而新的区域特征向量采用如下与区域面积加权的方式实现。<br>$$C_{t} = \frac{size(r_{i})\ast C_{i}+size(r_{j})\ast C_{j}}{size(r_{i})+size(r_{j})}$$<br>而新区域面积就是两个源区域面积的简单相加$size(r_{i})+size(r_{j})$</p>
+<h4 id="相似度计算方式"><a href="#相似度计算方式" class="headerlink" title="相似度计算方式"></a>相似度计算方式</h4><p>相似度计算直接影响合并区域顺序，对最终的检测结果，有至关重要的影响。此处同样综合了多种维度的相似度信息，分别是颜色（color）相似度、纹理（texture）相似度、大小（size）相似度和吻合（fit）相似度，最终将4种相似度计算结果，用如下公式合并：$${s(r_{i}, r_{j})= a_{1}s_{colour}(r_{i}, r_{j}) + a_{2}s_{texture}(r_{i}, r_{j})<br>+a_{3}s_{size}(r_{i}, r_{j}) +a_{4}s_{fill}(r_{i}, r_{j})}$$</p>
+<h5 id="这里仅就图像的颜色空间相似度进行介绍"><a href="#这里仅就图像的颜色空间相似度进行介绍" class="headerlink" title="这里仅就图像的颜色空间相似度进行介绍"></a>这里仅就图像的颜色空间相似度进行介绍</h5><p>颜色是区分不同物体的一个重要因素，文中将每个Region的颜色信息统计成一个75维的直方图，即每一个颜色通道为25bins的直方图(255/25 == 9，25bins的意思就是每隔9个数值统计像素数量)，之后用<strong>L1范数</strong>进行归一化(除以各维度绝对值之和)。相似度计算方式如下：$$s_{colour}(r_{i}, r_{j}) = \sum_{k=1}^{n}min(c\tfrac{k}{i},c\tfrac{j}{k})$$其实质就是计算两个直方图的交集，而新的区域特征向量采用如下与区域面积加权的方式实现。$$C_{t} = \frac{size(r_{i})\ast C_{i}+size(r_{j})\ast C_{j}}{size(r_{i})+size(r_{j})}$$而新区域面积就是两个源区域面积的简单相加$size(r_{i})+size(r_{j})$</p>
 <h4 id="Combining-Locations"><a href="#Combining-Locations" class="headerlink" title="Combining Locations"></a>Combining Locations</h4><p>完成上述步骤，提取出了图像中大量的bounding box区域，而实际存在物体的区域可能只有其中的几个，这时候便需要对备选的bounding box赋予一定的优先级，从而进一步缩小后文特征提取的范围，文中称这一步处理为<code>Combining Locations</code>。<br>&nbsp;<br>具体方法为：因为Selective Search是一个逐步合并的层级结构，所以最大的一张图标为’1’，合并成’1’的子图标为’2’、’3’，以此类推。但这样的话会造成越大的bounding box排序越靠前。所以作者又加入了一定的shuffle机制，即在每个序号前，乘上一个随机数$RAND\in (0,1)$。通过新计算出的数值，按从小到大排序，得出Region最终的排序结果。一般candidates数量为2K个</p>
-<h3 id="Object-Recognition目标识别"><a href="#Object-Recognition目标识别" class="headerlink" title="Object Recognition目标识别"></a>Object Recognition目标识别</h3><p>接下来采用HOG/DPM等算子分别提取正负样本特征，加入SVM分类器进行训练，整个架构如图所示：<br><img src="/img/ss3.png" width="800" alt="图片名称" align="center"><br>其中正样本为人工标注的bounding box，负样本为与正样本重叠程度20%~50%的Regions。特别地，删去负样本中，彼此重叠程度&gt;70%的Regions。重复迭代过程中再加入hard negative example进行训练。<br>PS：重叠程度即IoU(intersection-over-union，是一个定位精度的评价标准)参数，计算图示如下所示：<br><img src="/img/ss4.png" width="300" alt="图片名称" align="center"></p>
+<h3 id="Object-Recognition目标识别"><a href="#Object-Recognition目标识别" class="headerlink" title="Object Recognition目标识别"></a>Object Recognition目标识别</h3><p>接下来采用HOG/DPM等算子分别提取正负样本特征，加入SVM分类器进行训练，整个架构如图所示：<br><img src="/img/ss3.png" width="800" alt="图片名称" align="center">其中正样本为人工标注的bounding box，负样本为与正样本重叠程度20%~50%的Regions。特别地，删去负样本中，彼此重叠程度&gt;70%的Regions。重复迭代过程中再加入hard negative example进行训练。<br>PS：重叠程度即IoU(intersection-over-union，是一个定位精度的评价标准)参数，计算图示如下所示：<br><img src="/img/ss4.png" width="300" alt="图片名称" align="center"></p>
 <h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p>📎：《Selective Search for Object Recognition》<br>📎：<a href="https://github.com/AlpacaDB/selectivesearch" target="_blank" rel="noopener">Selective Search算法的python实现</a><br>📎：<a href="http://cs.brown.edu/~pff/segment/" target="_blank" rel="noopener">Graph Based Image Segmentation</a><br>📎：<a href="http://blog.csdn.net/niaolianjiulin/article/details/52950797#t2" target="_blank" rel="noopener">http://blog.csdn.net/niaolianjiulin/article/details/52950797#t2</a><br>📎：<a href="http://jermmy.xyz/2017/05/04/2017-5-4-paper-notes-selective-search/" target="_blank" rel="noopener">http://jermmy.xyz/2017/05/04/2017-5-4-paper-notes-selective-search/</a></p>
 
       
@@ -500,7 +500,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">37</span>
+                  <span class="site-state-item-count">39</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -614,7 +614,7 @@
  
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共31.4k字</span>
+  <span class="post-count">博客全站共32.7k字</span>
 </div>
 
 <div class="powered-by">

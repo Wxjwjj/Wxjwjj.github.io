@@ -75,7 +75,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="CV," />
 
 
 
@@ -86,16 +86,18 @@
 
 
 
-<meta name="description" content="CV/NLP，Studying，Coding">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Deep Coding">
-<meta property="og:url" content="http://yoursite.com/archives/2018/page/2/index.html">
+<meta name="description" content="得到4个采样点后，分别采用双线性插值$$f(i+u,j+v) = (1-u)(1-v)f(i,j)+(1-u)(v)f(i,j+1)+(1-v)(u)f(i+1,j)+uvf(i+1,j+1)$$本质就是在X/Y两个方向做线性插值（算法解析），来计算4个虚拟点的像素值。之后再进行max/average pooling，得到池化后的结果 Ref:📎：详解 ROI Align 的基本原理和实现细节�">
+<meta name="keywords" content="CV">
+<meta property="og:type" content="article">
+<meta property="og:title" content="论文笔记：《Mask R-CNN》">
+<meta property="og:url" content="http://yoursite.com/2018/05/02/mask/index.html">
 <meta property="og:site_name" content="Deep Coding">
-<meta property="og:description" content="CV/NLP，Studying，Coding">
+<meta property="og:description" content="得到4个采样点后，分别采用双线性插值$$f(i+u,j+v) = (1-u)(1-v)f(i,j)+(1-u)(v)f(i,j+1)+(1-v)(u)f(i+1,j)+uvf(i+1,j+1)$$本质就是在X/Y两个方向做线性插值（算法解析），来计算4个虚拟点的像素值。之后再进行max/average pooling，得到池化后的结果 Ref:📎：详解 ROI Align 的基本原理和实现细节�">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-05-04T01:21:10.072Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Deep Coding">
-<meta name="twitter:description" content="CV/NLP，Studying，Coding">
+<meta name="twitter:title" content="论文笔记：《Mask R-CNN》">
+<meta name="twitter:description" content="得到4个采样点后，分别采用双线性插值$$f(i+u,j+v) = (1-u)(1-v)f(i,j)+(1-u)(v)f(i,j+1)+(1-v)(u)f(i+1,j)+uvf(i+1,j+1)$$本质就是在X/Y两个方向做线性插值（算法解析），来计算4个虚拟点的像素值。之后再进行max/average pooling，得到池化后的结果 Ref:📎：详解 ROI Align 的基本原理和实现细节�">
 
 
 
@@ -125,13 +127,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/archives/2018/page/2/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/05/02/mask/"/>
 
 
 
 
 
-  <title>日志 | Deep Coding</title>
+  <title>论文笔记：《Mask R-CNN》 | Deep Coding</title>
   
 
 
@@ -150,7 +152,7 @@
     
   
 
-  <div class="container sidebar-position-right page-archive">
+  <div class="container sidebar-position-right page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -244,410 +246,162 @@
           <div id="content" class="content">
             
 
+  <div id="posts" class="posts-expand">
+    
+
+  
+
   
   
   
-  <div class="post-block archive">
-    <div id="posts" class="posts-collapse">
-      <span class="archive-move-on"></span>
 
-      <span class="archive-page-counter">
-        
-        
-         
-        
-        OK! 目前共计 39 篇日志。 继续努力。
-      </span>
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/02/mask/">
 
-      
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="祥吉">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Deep Coding">
+    </span>
+
+    
+      <header class="post-header">
 
         
         
+          <h1 class="post-title" itemprop="name headline">论文笔记：《Mask R-CNN》</h1>
         
 
-        
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-02T14:33:35+08:00">
+                2018-05-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
           
-          <div class="collection-title">
-            <h1 class="archive-year" id="archive-year-2018">2018</h1>
-          </div>
-        
-        
 
-        
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/05/02/mask/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/05/02/mask/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+          
+          
 
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/03/27/ubuntusys-2/" itemprop="url">
-              
-                <span itemprop="name">Ubuntu1604装机系列(二)：Opencv安装</span>
-              
-            </a>
-        
-      </h2>
+          
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-03-27T10:08:34+08:00"
-              content="2018-03-27" >
-          03-27
-        </time>
-      </div>
+          
 
-    </header>
-  </article>
+          
 
+        </div>
+      </header>
+    
 
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/03/27/nvidia/" itemprop="url">
-              
-                <span itemprop="name">Ubuntu1604装机系列(一)：Mac烧系统盘及1080Ti显卡(390版本)驱动安装</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-03-27T09:08:34+08:00"
-              content="2018-03-27" >
-          03-27
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/03/22/mac-opcv/" itemprop="url">
-              
-                <span itemprop="name">MacOS安装OpenCV</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-03-22T18:58:49+08:00"
-              content="2018-03-22" >
-          03-22
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
       
 
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/03/08/rcnn-1/" itemprop="url">
-              
-                <span itemprop="name">论文笔记：《Faster R-CNN》</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-03-08T20:44:25+08:00"
-              content="2018-03-08" >
-          03-08
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
+      
+        <p>得到4个采样点后，分别采用双线性插值$$f(i+u,j+v) = (1-u)(1-v)f(i,j)+(1-u)(v)f(i,j+1)+(1-v)(u)f(i+1,j)+uvf(i+1,j+1)$$本质就是在X/Y两个方向做线性插值（<a href="https://blog.csdn.net/xiaqunfeng123/article/details/17362881" target="_blank" rel="noopener">算法解析</a>），来计算4个虚拟点的像素值。之后再进行max/average pooling，得到池化后的结果</p>
+<h3 id="Ref"><a href="#Ref" class="headerlink" title="Ref:"></a>Ref:</h3><p>📎：<a href="http://blog.leanote.com/post/afanti/b5f4f526490b" target="_blank" rel="noopener">详解 ROI Align 的基本原理和实现细节</a><br>📎：<a href="https://www.davex.pw/2018/02/14/paper-reading-of-mask-rcnn/" target="_blank" rel="noopener">目标检测：Mask R-CNN 论文阅读</a><br>📎：<a href="http://lanbing510.info/2017/12/08/Mask-RCNN.html" target="_blank" rel="noopener">Mask RCNN-论文简记</a></p>
 
       
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/03/07/rcnn-0/" itemprop="url">
-              
-                <span itemprop="name">论文笔记：《Fast R-CNN》</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-03-07T20:44:25+08:00"
-              content="2018-03-07" >
-          03-07
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/03/05/Rcnn/" itemprop="url">
-              
-                <span itemprop="name">论文笔记：《R-CNN》</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-03-05T20:20:45+08:00"
-              content="2018-03-05" >
-          03-05
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/03/03/Search/" itemprop="url">
-              
-                <span itemprop="name">论文笔记：《Selective Search for Object Recognition》</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-03-03T16:31:39+08:00"
-              content="2018-03-03" >
-          03-03
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/03/03/signal/" itemprop="url">
-              
-                <span itemprop="name">信号相关知识</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-03-03T16:31:13+08:00"
-              content="2018-03-03" >
-          03-03
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/03/02/box/" itemprop="url">
-              
-                <span itemprop="name">目标检测任务中的Bounding box绘制</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-03-02T11:03:57+08:00"
-              content="2018-03-02" >
-          03-02
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/02/28/baiduapi/" itemprop="url">
-              
-                <span itemprop="name">调用百度SDK进行长语音识别</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-02-28T14:37:25+08:00"
-              content="2018-02-28" >
-          02-28
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
     </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/CV/" rel="tag"><i class="fa fa-tag"></i> CV</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/28/data/" rel="next" title="C++连接SQL Server数据库入门">
+                <i class="fa fa-chevron-left"></i> C++连接SQL Server数据库入门
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/05/04/reallandmark/" rel="prev" title="实时人脸68关键点检测 for Mac/iOS">
+                实时人脸68关键点检测 for Mac/iOS <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
-
-  
-  <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/archives/2018/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/archives/2018/">1</a><span class="page-number current">2</span><a class="page-number" href="/archives/2018/page/3/">3</a><a class="page-number" href="/archives/2018/page/4/">4</a><a class="extend next" rel="next" href="/archives/2018/page/3/"><i class="fa fa-angle-right"></i></a>
-  </nav>
+  </article>
 
 
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -655,6 +409,17 @@
 
 
           
+
+  
+    <div class="comments" id="comments">
+      <div class="ds-thread" data-thread-key="2018/05/02/mask/"
+           data-title="论文笔记：《Mask R-CNN》" data-url="http://yoursite.com/2018/05/02/mask/">
+      </div>
+    </div>
+
+  
+
+
 
         </div>
         
@@ -675,8 +440,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -753,6 +527,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Ref"><span class="nav-number">1.</span> <span class="nav-text">Ref:</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -897,6 +687,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
