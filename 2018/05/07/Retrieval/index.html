@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="CV," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="背景知识Mat类型数据结构一个图像的通道数是N，就表明每个像素点处有N个数，一个a×b的N通道图像，其图像矩阵实际上是b行N×a列的数字矩阵。p = img.ptr&amp;lt;uchar&amp;gt;(i); 图像第i行的头指针，通过这个指针结合列的位置（就是你代码中的j）可以很轻松操作图像改行的每一列，即p[j]samples.at&amp;lt;Vec3f&amp;gt;(k,0)[0] = float(p[j*3])">
+<meta name="keywords" content="CV">
+<meta property="og:type" content="article">
+<meta property="og:title" content="两种常用的图像检索算法">
+<meta property="og:url" content="http://yoursite.com/2018/05/07/Retrieval/index.html">
+<meta property="og:site_name" content="Deep Coding">
+<meta property="og:description" content="背景知识Mat类型数据结构一个图像的通道数是N，就表明每个像素点处有N个数，一个a×b的N通道图像，其图像矩阵实际上是b行N×a列的数字矩阵。p = img.ptr&amp;lt;uchar&amp;gt;(i); 图像第i行的头指针，通过这个指针结合列的位置（就是你代码中的j）可以很轻松操作图像改行的每一列，即p[j]samples.at&amp;lt;Vec3f&amp;gt;(k,0)[0] = float(p[j*3])">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-05-07T09:33:58.133Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="两种常用的图像检索算法">
+<meta name="twitter:description" content="背景知识Mat类型数据结构一个图像的通道数是N，就表明每个像素点处有N个数，一个a×b的N通道图像，其图像矩阵实际上是b行N×a列的数字矩阵。p = img.ptr&amp;lt;uchar&amp;gt;(i); 图像第i行的头指针，通过这个指针结合列的位置（就是你代码中的j）可以很轻松操作图像改行的每一列，即p[j]samples.at&amp;lt;Vec3f&amp;gt;(k,0)[0] = float(p[j*3])">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"always","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/05/07/Retrieval/"/>
+
+
+
+
+
+  <title>两种常用的图像检索算法 | Deep Coding</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Deep Coding</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            日志
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/07/Retrieval/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="祥吉">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Deep Coding">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">两种常用的图像检索算法</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-07T17:13:30+08:00">
+                2018-05-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/05/07/Retrieval/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/05/07/Retrieval/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="背景知识"><a href="#背景知识" class="headerlink" title="背景知识"></a>背景知识</h3><h4 id="Mat类型数据结构"><a href="#Mat类型数据结构" class="headerlink" title="Mat类型数据结构"></a>Mat类型数据结构</h4><p>一个图像的通道数是N，就表明每个像素点处有N个数，一个a×b的N通道图像，其图像矩阵实际上是b行N×a列的数字矩阵。<br><code>p = img.ptr&lt;uchar&gt;(i);</code> 图像第i行的头指针，通过这个指针结合列的位置（就是你代码中的j）可以很轻松操作图像改行的每一列，即p[j]<br><code>samples.at&lt;Vec3f&gt;(k,0)[0] = float(p[j*3]);</code> at &lt;类型&gt; (行,列) [通道(如果有通道的话)]，获取某点像素值</p>
+<h4 id="kmeans"><a href="#kmeans" class="headerlink" title="kmeans"></a>kmeans</h4><p>总体目标是最小化聚类中心与每个样本的欧式距离，先随机初始化K个聚类中心，根据欧式距离进行划分，更新聚类中心，不断重复，直到达到指定的聚类次数或者收敛为止。缺点是需要指定K类，以及初始点对划分结果影响很大</p>
+<h4 id="kNN"><a href="#kNN" class="headerlink" title="kNN"></a>kNN</h4><p>有监督的分类算法，K个最相似（欧式距离）的样本中的大多数属于某个类别，则该样本也属于该类</p>
+<h4 id="欧式距离"><a href="#欧式距离" class="headerlink" title="欧式距离"></a>欧式距离</h4><p>指的是两个向量的距离相似度，欧式距离越小代表向量越趋于相似（二、三维空间中就是点的实际距离），公式如下$$\rho = \sqrt{\sum_{i=1}^{n}(x_{i}-y_{i})^{2}}$$ </p>
+<h4 id="余弦距离"><a href="#余弦距离" class="headerlink" title="余弦距离"></a>余弦距离</h4><p>指的是两个向量的方向相似度，余弦值越大（归一化后点乘），代表向量越相似。</p>
+<h3 id="图像相似度匹配算法"><a href="#图像相似度匹配算法" class="headerlink" title="图像相似度匹配算法"></a>图像相似度匹配算法</h3><h4 id="BOF（Bag-of-Features）算法"><a href="#BOF（Bag-of-Features）算法" class="headerlink" title="BOF（Bag of Features）算法"></a>BOF（Bag of Features）算法</h4><blockquote>
+<ul>
+<li>视觉单词提取：提取所有图片的ORB特征并concat到一起[M, N, D]</li>
+<li>视觉词典构建：采用K-Means算法，聚成K个类，每个聚类有一个类心，那么这K个类心就相当于词袋中的K个基本词汇。</li>
+<li>图像表示：统计每张图片在每个聚类中的特征个数，这样每个图片就可以由一个分布直方图表示，或者说用一个K维的向量表示，向量第i维的值为该图片在第i个聚类中的特征个数。那么每个图像都可以由基本词汇表示。</li>
+<li>图像检索：对于一个待检索的图像，我们先提取该图像的图像特征，并产生该图像的分布直方图(K维向量)。然后进行图像向量的余弦相似度度量便可以了</li>
+</ul>
+</blockquote>
+<h4 id="VALD算法："><a href="#VALD算法：" class="headerlink" title="VALD算法："></a>VALD算法：</h4><blockquote>
+<ul>
+<li>ORB对每张图像提取特征[N, D]</li>
+<li>聚类[K,D]</li>
+<li>以每个center为中心，进行残差计算并累加(每个N和其对应的center(label))[K, D]</li>
+<li>将矩阵拉成一个[K, D]的长向量，对该向量的每一个分量进行幂律归一化（需保持符号不变），公式如下：$$v_{j} := \left | v_{j} \right |^{\alpha } \times sign(v_{j}), j = 1,2, … D$$幂律归一化的目的是主要为了减少某些特征出现次数特别多带来的影响，这是因为出现次数特别多时聚类中心就在它附近，相应的残差就很小，这样便可以抑制数值大的数同时提升数值小的数</li>
+<li>对每个分量进行L2范数归一化 <code>normalize(Vlad,Vlad,-1.0,1.0,NORM_L2)</code></li>
+<li>采用PCA进行降维，得到该图像的VALD特征向量，之后进行图像向量的余弦相似度度量便可以了</li>
+</ul>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/CV/" rel="tag"><i class="fa fa-tag"></i> CV</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/05/04/git/" rel="next" title="git">
+                <i class="fa fa-chevron-left"></i> git
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div class="ds-thread" data-thread-key="2018/05/07/Retrieval/"
+           data-title="两种常用的图像检索算法" data-url="http://yoursite.com/2018/05/07/Retrieval/">
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg"
+                alt="祥吉" />
+            
+              <p class="site-author-name" itemprop="name">祥吉</p>
+              <p class="site-description motion-element" itemprop="description">CV/NLP，Studying，Coding</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">41</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:wuxj231@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.zhihu.com/people/xj-wu-74/activities" target="_blank" title="知乎">
+                      
+                        <i class="fa fa-fw fa-rocket"></i>知乎</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://weibo.com/u/5379129372/home?wvr=5&lf=reg" target="_blank" title="微博">
+                      
+                        <i class="fa fa-fw fa-weibo"></i>微博</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#背景知识"><span class="nav-number">1.</span> <span class="nav-text">背景知识</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Mat类型数据结构"><span class="nav-number">1.1.</span> <span class="nav-text">Mat类型数据结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#kmeans"><span class="nav-number">1.2.</span> <span class="nav-text">kmeans</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#kNN"><span class="nav-number">1.3.</span> <span class="nav-text">kNN</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#欧式距离"><span class="nav-number">1.4.</span> <span class="nav-text">欧式距离</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#余弦距离"><span class="nav-number">1.5.</span> <span class="nav-text">余弦距离</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#图像相似度匹配算法"><span class="nav-number">2.</span> <span class="nav-text">图像相似度匹配算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#BOF（Bag-of-Features）算法"><span class="nav-number">2.1.</span> <span class="nav-text">BOF（Bag of Features）算法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#VALD算法："><span class="nav-number">2.2.</span> <span class="nav-text">VALD算法：</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">祥吉</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+              
+ 
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共34.0k字</span>
+</div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"your-duoshuo-shortname"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+  
+</body>
+</html>

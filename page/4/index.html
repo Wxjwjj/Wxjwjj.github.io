@@ -259,6 +259,281 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/01/python-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="祥吉">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Deep Coding">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/02/01/python-2/" itemprop="url">python操作(四)：IO编程/调用shell语句</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-01T11:02:03+08:00">
+                2018-02-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/02/01/python-2/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/02/01/python-2/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="python调用shell语句"><a href="#python调用shell语句" class="headerlink" title="python调用shell语句"></a>python调用shell语句</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">假设已存在run.sh的shell语句，如:</span></span><br><span class="line"><span class="string">cd /home/tucodec/Desktop </span></span><br><span class="line"><span class="string">python2 run.py</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line">os.system(<span class="string">"bash run.sh"</span>) <span class="comment">#会自动到桌面执行run.py</span></span><br></pre></td></tr></table></figure>
+<p><strong>上面调用shell语句的方式，跟python语句是独立进行的，也就是说无法进行变量的交互</strong></p>
+<h4 id="采用下面的语句可以实现在python中操作文件-文件夹"><a href="#采用下面的语句可以实现在python中操作文件-文件夹" class="headerlink" title="采用下面的语句可以实现在python中操作文件/文件夹"></a>采用下面的语句可以实现在python中操作文件/文件夹</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> shutil</span><br><span class="line">file_dir = <span class="string">'/Users/wxj/Desktop'</span></span><br><span class="line"><span class="keyword">print</span> (os.getcwd())  <span class="comment"># 获取当前目录</span></span><br><span class="line">os.chdir(file_dir)   <span class="comment"># 改变工作目录</span></span><br><span class="line">os.mkdir(<span class="string">"test"</span>)  <span class="comment"># 创建文件夹</span></span><br><span class="line">os.makedirs(<span class="string">"test/pic/pic_1"</span>)<span class="comment"># 创建一系列文件夹</span></span><br><span class="line"></span><br><span class="line">os.rename(<span class="string">"test"</span>,<span class="string">"test1"</span>)   </span><br><span class="line">os.rename(<span class="string">"test.txt"</span>,<span class="string">"test1.txt"</span>)  <span class="comment"># 重命名，注意需要带扩展名</span></span><br><span class="line"></span><br><span class="line">shutil.copyfile(<span class="string">"test_org.txt"</span>,<span class="string">"test1.txt"</span>)  <span class="comment"># 存在则覆盖，用于copy文件</span></span><br><span class="line">shutil.copytree(<span class="string">"/Users/wxj/Desktop/1"</span>,<span class="string">"/Users/wxj/Desktop/2"</span>) <span class="comment"># 2文件夹不存在，用于copy文件夹</span></span><br><span class="line"></span><br><span class="line">shutil.move(<span class="string">"/Users/wxj/Desktop/1"</span>,<span class="string">"/Users/wxj/Desktop/2"</span>） <span class="comment"># 2文件夹存在，用于移动文件夹</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> os.path.exists(path_x): <span class="comment"># 判定是否存在某个文件夹</span></span><br><span class="line">    shutil.rmtree(Path_x)  <span class="comment"># 删除文件夹</span></span><br><span class="line">    </span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> os.listdir(path_1): <span class="comment">#判定某文件夹是否为空</span></span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/01/python2-3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="祥吉">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Deep Coding">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/02/01/python2-3/" itemprop="url">python操作(三)：Unicode编码</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-01T10:32:45+08:00">
+                2018-02-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/02/01/python2-3/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/02/01/python2-3/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h2><p>中文字符一般都是编码为<code>Unicode</code>存储在计算机中的，然而表现形式却大不相同，有的程序喜欢给你输出中文，有的喜欢输出乱码，Eg：<code>&#39;\xe5\xbc\xa0\xe4\xbf\x8a&#39;</code>。python2/3中的字符串编码，就有这样的问题，在此进行梳理，有备无患。</p>
+<h3 id="ASCII、Unicode和UTF-8关系"><a href="#ASCII、Unicode和UTF-8关系" class="headerlink" title="ASCII、Unicode和UTF-8关系"></a>ASCII、Unicode和UTF-8关系</h3><p>由于1个字节(byte) == 8位(bit)，所以1字节最多可以表示256个字符。美国人在发明计算机时候，英文字母(大小写共64个)，加上一些标点符号，256个字符安全够用。这个编码就被称为<code>ASCII</code>编码。比如’A’对应ASCII码表中的65，’z’对应122。<br><img src="/img/python_1.jpeg" alt=""><br>但我们的中文博大精深，256个字符显然不能覆盖全部字符，所以中国制定了2字节的GB2312编码(GBK是GB2312的扩充，包含的中文字符更多)。无独有偶，各个国家都制定了自己的规则把本国的文字编写进去。为了统一各个语言之间的编码，<code>Unicode</code>应运而生，具体来说，ASCII用1个字节表示字符，Unicode用2个字节，对于一些特殊符号，甚至使用4个字节。ASCII编码的’A’用Unicode编码，只需要在前面补0就可以了。</p>
+<blockquote>
+<p>虽然乱码消失，但却造成了新的问题：如果你写的文本基本上都是英语，那用Unicode编码比ASCII编码需要多一倍的存储空间，在存储和传输上就十分不划算。</p>
+</blockquote>
+<p><code>UTF-8</code>编码再次被发明，它是对Unicode编码的<code>再编码</code>，对于常用的英文编码为1字节，汉子通常为3字节。如果需要传输、保存的文本含有大量应为，这样的编码可以减少带宽，减少硬盘成本。如下所示：<br><img src="/img/python_2.jpeg" alt=""></p>
+<h2 id="python2"><a href="#python2" class="headerlink" title="python2"></a>python2</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Python 2.7.10 (default, Jul 15 2017, 17:16:57) </span><br><span class="line">[GCC 4.2.1 Compatible Apple LLVM 9.0.0 (clang-900.0.31)] on darwin</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; <span class="string">'中国'</span> <span class="comment"># python2中默认转换为UTF-8编码的字符串</span></span><br><span class="line"><span class="string">'\xe4\xb8\xad\xe5\x9b\xbd'</span></span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; u<span class="string">'中国'</span> <span class="comment"># 字符串前+'u'，代表指定Unicode编码</span></span><br><span class="line">u<span class="string">'\u4e2d\u56fd'</span></span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; <span class="string">'中国'</span>.decode(<span class="string">'utf-8'</span>) <span class="comment"># utf-8类型字符串解码为Unicode编码</span></span><br><span class="line">u<span class="string">'\u4e2d\u56fd'</span></span><br></pre></td></tr></table></figure>
+<h2 id="python3"><a href="#python3" class="headerlink" title="python3"></a>python3</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Python 3.5.3 (v3.5.3:1880cb95a742, Jan 16 2017, 08:49:46) </span><br><span class="line">[GCC 4.2.1 (Apple Inc. build 5666) (dot 3)] on darwin</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; <span class="string">'中国'</span> <span class="comment"># python3中默认为Unicode格式(无编码)，同u'中国'</span></span><br><span class="line"><span class="string">'中国'</span></span><br><span class="line">&lt;class <span class="string">'str'</span>&gt;</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; <span class="string">'中国'</span>.encode(<span class="string">'utf-8'</span>) <span class="comment">#转UTF-8编码</span></span><br><span class="line">b<span class="string">'\xe4\xb8\xad\xe5\x9b\xbd'</span></span><br><span class="line">&lt;class <span class="string">'bytes'</span>&gt;</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; <span class="built_in">print</span> (<span class="string">'中国'</span>.encode(<span class="string">'utf-8'</span>).decode(<span class="string">'utf-8'</span>)) </span><br><span class="line"><span class="string">'中国'</span></span><br></pre></td></tr></table></figure>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><blockquote>
+<ul>
+<li>python2中字符串有str和unicode两种类型，str有各种编码区别(UTF-8、GBK等)，unicode是没有编码的标准形式。unicode通过encode转化成str，str通过decode转化成unicode。</li>
+<li>python3中字符串有str和bytes两种类型，字符串str与python2中unicode类似是标准形式，bytes类似python2中的str有各种编码区别。所以在python3中查看某个字符串的编码序列，只能先将str编码为一定形式的bytes数据，然后再输出</li>
+</ul>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Python 3.5.3 (v3.5.3:1880cb95a742, Jan 16 2017, 08:49:46) </span><br><span class="line">[GCC 4.2.1 (Apple Inc. build 5666) (dot 3)] on darwin</span><br><span class="line"></span><br><span class="line">&gt;&gt;&gt; ss = <span class="string">'北京市'</span>  </span><br><span class="line">&gt;&gt;&gt; <span class="built_in">type</span>(ss)  </span><br><span class="line">&lt;class <span class="string">'str'</span>&gt;  </span><br><span class="line">&gt;&gt;&gt; us = ss.encode(<span class="string">'gbk'</span>)  </span><br><span class="line">&gt;&gt;&gt; <span class="built_in">type</span>(us)  </span><br><span class="line">&lt;class <span class="string">'bytes'</span>&gt;  </span><br><span class="line">&gt;&gt;&gt; us  </span><br><span class="line">b<span class="string">'\xb1\xb1\xbe\xa9\xca\xd0'</span></span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/30/python-str/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -482,9 +757,9 @@
             <h3 id="背景简介"><a href="#背景简介" class="headerlink" title="背景简介"></a>背景简介</h3><p>最近做的文本相似度匹配任务，需要部署到web端，毫无网络背景知识的笔者在老板的“压榨”下，3天速成了python websocket通信，并于公司<code>json</code>小哥合作，实现了图片、文本的server-client端通信。<br><img src="/img/Http.jpg" alt=""><br>整个要完成的架构如上图所示：Client send一个“字符串/图片”给Server，Server进行一系列运算后，send“字符串/图片”给Client，完成一次通信。在这里我们只记录<code>红块</code>、<code>黄块</code>内的工作内容。</p>
 <h4 id="网络进程之间如何通信？"><a href="#网络进程之间如何通信？" class="headerlink" title="网络进程之间如何通信？"></a>网络进程之间如何通信？</h4><p>TCP/IP协议可以唯一的标识网络中的主机，即“网络层的IP地址”；主机中的应用程序（进程），通过“协议+端口”的形式指定；利用这样的“IP地址+协议+端口”的三元组，就可以标识网络中的唯一一个进程了<br>而编写/操作TCP/IP协议的应用程序接口，通常采用socket套接字。有一些前辈的直观解释是：socket类似于文件操作的“open—write/read—close”模式，只是将其应用在了TCP/IP协议上</p>
 <h3 id="socket的基本操作函数："><a href="#socket的基本操作函数：" class="headerlink" title="socket的基本操作函数："></a>socket的基本操作函数：</h3><h4 id="socket-函数"><a href="#socket-函数" class="headerlink" title="socket()函数"></a>socket()函数</h4><p>int socket(int domain, int type, int protocol)<br>socket函数对应于一个普通的文件打开操作，返回一个socket描述字，后续的操作都有用到它，把它作为参数，通过它来进行一些读写操作。通过调用bind()函数给该描述字分配一个端口(PORT)，如果不指定会随机分配<br>domain:地址类型，如：AF_INET决定了要用ipv4地址<br>type：socket类型<br>protocol：TCP/IP等传输协议，默认选择跟type类型对应的协议</p>
-<h4 id="bind-函数"><a href="#bind-函数" class="headerlink" title="bind()函数"></a>bind()函数</h4><p>int bind(int sockfd, const struct sockaddr *addr, socklen_t addrlen);<br>通常服务器在启动的时候都会绑定一个众所周知的地址（如ip地址+端口号），用于提供服务，客户就可以通过它来接连服务器，所以通常服务器端在listen之前会调用bind()</p>
-<h4 id="listen-函数"><a href="#listen-函数" class="headerlink" title="listen()函数"></a>listen()函数</h4><p>int listen(int sockfd, int backlog);<br>作为一个服务器，在调用socket()、bind()之后就会调用listen()来监听这个socket，如果客户端这时调用connect()发出连接请求，服务器端就会接收到这个请求。<br>第一个参数是socket描述字，第二个参数是socket可以排队的最大连接个数</p>
-<h4 id="accept-函数"><a href="#accept-函数" class="headerlink" title="accept()函数"></a>accept()函数</h4><p>int accept(int sockfd, struct sockaddr <em>addr, socklen_t </em>addrlen)<br>Server端通过socket(),bind(),listen()操作，就可以监听指定的socket地址了。Client端通过requests.get(url)函数建立连接请求，Server端监听到后调用accept()接收这个请求，之后就可以进行两端的I/O操作了。</p>
+<h4 id="bind-函数"><a href="#bind-函数" class="headerlink" title="bind()函数"></a>bind()函数</h4><p><code>int bind(int sockfd, const struct sockaddr *addr, socklen_t addrlen)</code><br>通常服务器在启动的时候都会绑定一个众所周知的地址（如ip地址+端口号），用于提供服务，客户就可以通过它来接连服务器，所以通常服务器端在listen之前会调用bind()</p>
+<h4 id="listen-函数"><a href="#listen-函数" class="headerlink" title="listen()函数"></a>listen()函数</h4><p><code>int listen(int sockfd, int backlog);</code><br>作为一个服务器，在调用socket()、bind()之后就会调用listen()来监听这个socket，如果客户端这时调用connect()发出连接请求，服务器端就会接收到这个请求。<br>第一个参数是socket描述字，第二个参数是socket可以排队的最大连接个数</p>
+<h4 id="accept-函数"><a href="#accept-函数" class="headerlink" title="accept()函数"></a>accept()函数</h4><p><code>int accept(int sockfd, struct sockaddr *addr, socklen_t *addrlen)</code><br>Server端通过socket(),bind(),listen()操作，就可以监听指定的socket地址了。Client端通过requests.get(url)函数建立连接请求，Server端监听到后调用accept()接收这个请求，之后就可以进行两端的I/O操作了。</p>
 <h4 id="close-函数"><a href="#close-函数" class="headerlink" title="close()函数"></a>close()函数</h4><p>传输完成需要关闭连接。以上是socket的C代码解读，python中的非常类似，如下是用python写的socket传输字符串，基本都可以看懂。<br><code>Server</code><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> socket</span><br><span class="line">HOST, PORT = <span class="string">''</span>, <span class="number">8888</span> <span class="comment"># Server端网络IP及端口</span></span><br><span class="line">listen_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)</span><br><span class="line">listen_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, <span class="number">1</span>)</span><br><span class="line">listen_socket.bind((HOST, PORT))</span><br><span class="line">listen_socket.listen(<span class="number">1</span>)  <span class="comment">#设置监听，最多有5个端排队等侯</span></span><br><span class="line"><span class="keyword">print</span> <span class="string">'Serving HTTP on port %s ...'</span> % PORT  <span class="comment"># 开启了一个侦听socket</span></span><br><span class="line"><span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">  coon, addr = listen_socket.accept()  <span class="comment"># 开启一个永续循环，被动等待客户端连接</span></span><br><span class="line">  request = coon.recv(<span class="number">1024</span>) <span class="comment"># 接收bytes类型数据，每次接收1024b</span></span><br><span class="line">  accept_data = str(request, encoding=<span class="string">"utf8"</span>) </span><br><span class="line">  <span class="comment">#print(request)</span></span><br><span class="line">  print(<span class="string">""</span>.join((<span class="string">"接收内容："</span>, accept_data, <span class="string">"    客户端口："</span>, str(addr[<span class="number">1</span>]))))</span><br><span class="line"> </span><br><span class="line">  http_response = <span class="string">"Hello World!"</span></span><br><span class="line"> </span><br><span class="line">  conn.sendall(bytes(http_response, encoding=<span class="string">"utf8"</span>))  <span class="comment"># 重新建立连接后，返回一个服务器中预定义的字符串</span></span><br><span class="line">  coon.close()</span><br></pre></td></tr></table></figure></p>
 <p><code>Client</code><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> socket</span><br><span class="line">sk = socket.socket()</span><br><span class="line">sk.connect((<span class="string">"192.168.1.136"</span>, <span class="number">8888</span>))  <span class="comment"># 与局域网内Server端IP地址Connect</span></span><br><span class="line">send_data = <span class="string">"Hello Server"</span></span><br><span class="line">sk.sendall(bytes(send_data, encoding=<span class="string">"utf8"</span>))</span><br><span class="line">accept_data = sk.recv(<span class="number">1024</span>)</span><br><span class="line">print(str(accept_data, encoding=<span class="string">"utf8"</span>)) <span class="comment"># 接收到Server端发来的“Hello World!”</span></span><br><span class="line">sk.close()</span><br></pre></td></tr></table></figure></p>
 <p>Tips：</p>
@@ -1458,159 +1733,11 @@ $ conda config --<span class="built_in">set</span> show_channel_urls yes
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/06/hello-world/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="祥吉">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Deep Coding">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/06/hello-world/" itemprop="url">Hexo搭建Step by step！ 👏👏👏</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-06T16:08:28+08:00">
-                2018-01-06
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/01/06/hello-world/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/01/06/hello-world/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="A、Quick-Start"><a href="#A、Quick-Start" class="headerlink" title="A、Quick Start"></a>A、Quick Start</h4><h5 id="Node-js官网下载对应的安装包："><a href="#Node-js官网下载对应的安装包：" class="headerlink" title="Node.js官网下载对应的安装包："></a>Node.js官网下载对应的安装包：</h5><p><font color="blue"> [Download] </font> (<a href="https://nodejs.org/en/" target="_blank" rel="noopener">https://nodejs.org/en/</a>)</p>
-<h5 id="安装Git：Mac用Brew安装，其他方法网上一大堆不再赘述"><a href="#安装Git：Mac用Brew安装，其他方法网上一大堆不再赘述" class="headerlink" title="安装Git：Mac用Brew安装，其他方法网上一大堆不再赘述"></a>安装Git：Mac用Brew安装，其他方法网上一大堆不再赘述</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ brew install git</span><br></pre></td></tr></table></figure>
-<h5 id="Node和Git都安装好后，可执行如下命令安装hexo："><a href="#Node和Git都安装好后，可执行如下命令安装hexo：" class="headerlink" title="Node和Git都安装好后，可执行如下命令安装hexo："></a>Node和Git都安装好后，可执行如下命令安装hexo：</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo npm install -g hexo</span><br></pre></td></tr></table></figure>
-<h5 id="Desktop-或其它文件夹-中新建一个Blog文件夹，cd到新创建的Blog："><a href="#Desktop-或其它文件夹-中新建一个Blog文件夹，cd到新创建的Blog：" class="headerlink" title="Desktop(或其它文件夹)中新建一个Blog文件夹，cd到新创建的Blog："></a>Desktop(或其它文件夹)中新建一个Blog文件夹，cd到新创建的Blog：</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo init</span><br></pre></td></tr></table></figure>
-<h5 id="至此：全部安装工作已经完成！生成静态页面："><a href="#至此：全部安装工作已经完成！生成静态页面：" class="headerlink" title="至此：全部安装工作已经完成！生成静态页面："></a>至此：全部安装工作已经完成！生成静态页面：</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo g</span><br></pre></td></tr></table></figure>
-<h5 id="启动本地服务："><a href="#启动本地服务：" class="headerlink" title="启动本地服务："></a>启动本地服务：</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<h5 id="此时浏览器输入-http-localhost-4000-即可访问原生默认网页"><a href="#此时浏览器输入-http-localhost-4000-即可访问原生默认网页" class="headerlink" title="此时浏览器输入 http://localhost:4000 即可访问原生默认网页"></a>此时浏览器输入 <a href="http://localhost:4000" target="_blank" rel="noopener">http://localhost:4000</a> 即可访问原生默认网页</h5><h4 id="B、主题下载"><a href="#B、主题下载" class="headerlink" title="B、主题下载"></a>B、主题下载</h4><p>此时如果想尝鲜，可以下载个新的主题到themes文件夹下，笔者用的主题是<a href="https://github.com/iissnan/hexo-theme-next" target="_blank" rel="noopener">Download</a></p>
-<p>修改根目录中_config.yml文件的theme项为新下载的主题的名字：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">theme: hexo-theme-next-master</span><br></pre></td></tr></table></figure>
-<p>保存文件后，执行下面的指令，重新打开浏览器即可看到新的一片天地</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo g    hexo server</span><br></pre></td></tr></table></figure>
-<h4 id="C、绑定Github，实现远程访问"><a href="#C、绑定Github，实现远程访问" class="headerlink" title="C、绑定Github，实现远程访问"></a>C、绑定Github，实现远程访问</h4><h5 id="Github上建立一个与用户名【相同】的Repository"><a href="#Github上建立一个与用户名【相同】的Repository" class="headerlink" title="Github上建立一个与用户名【相同】的Repository"></a>Github上建立一个与用户名【相同】的Repository</h5><h5 id="在建立的Repository-Setting中，最后一项Deploy添加SSH-key"><a href="#在建立的Repository-Setting中，最后一项Deploy添加SSH-key" class="headerlink" title="在建立的Repository Setting中，最后一项Deploy添加SSH key"></a>在建立的Repository Setting中，最后一项Deploy添加SSH key</h5><p>获取SSH key的方式如下：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ssh-keygen -t rsa -C “wuxj231@163.com” <span class="comment"># 这里填写你的Github地址</span></span><br></pre></td></tr></table></figure>
-<p>一路回车Ctrl，生成两个文件，用记事本打开其中的id_rsa.pub(执行上面Shell语句时会提示路径所在)，复制其内容，粘贴到上一步Github/Repository Setting页面中的key目录中，Title随便取即可</p>
-<p><img src="/img/ssh.jpeg" alt=""></p>
-<h5 id="编辑-config-yml，翻到最下面，修改相应内容如下："><a href="#编辑-config-yml，翻到最下面，修改相应内容如下：" class="headerlink" title="编辑 _config.yml，翻到最下面，修改相应内容如下："></a>编辑 _config.yml，翻到最下面，修改相应内容如下：</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  type: git</span><br><span class="line">  repository: git@github.com:Wxjwjj/Wxjwjj.github.io.git  </span><br><span class="line">  branch: master</span><br><span class="line">``` </span><br><span class="line"></span><br><span class="line"><span class="comment">##### 保存后，执行如下命令使用git部署，便会同步到Github目录</span></span><br><span class="line"></span><br><span class="line">``` bash</span><br><span class="line">$ npm install hexo-deployer-git --save</span><br><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>此时可以通过Github链接 <em><a href="https://wxjwjj.github.io" target="_blank" rel="noopener">https://wxjwjj.github.io</a></em> ，实现远程博客访问（如果本地文件更改后，均需要通过此步骤提交到Github，才能使变化生效）</p>
-<h5 id="Refer："><a href="#Refer：" class="headerlink" title="Refer："></a>Refer：</h5><p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in [troubleshooting](<a href="https://hexo.io/docs/" target="_blank" rel="noopener">https://hexo.io/docs/</a></p>
-<hr>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span>
+    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1660,7 +1787,7 @@ $ conda config --<span class="built_in">set</span> show_channel_urls yes
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">39</span>
+                  <span class="site-state-item-count">41</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1758,7 +1885,7 @@ $ conda config --<span class="built_in">set</span> show_channel_urls yes
  
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共32.7k字</span>
+  <span class="post-count">博客全站共34.0k字</span>
 </div>
 
 <div class="powered-by">

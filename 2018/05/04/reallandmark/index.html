@@ -86,21 +86,21 @@
 
 
 
-<meta name="description" content="背景前段时间的人脸68关键点检测项目，需要移植到手机端，而且需要达到实时性，所以对算法进行了改进。大致的解决方案是，由于人脸检测耗时较大，所以搭配追踪、模板匹配、ROI区域内检测算法。用一幅图说明如下所示： real_dlib_muban_roi.cpp功能：实时单人脸区域检测(从摄像头读取)，及人脸68个关键点位置检测实时帧率：23 fps视频大小：320$\ast$240 标清硬件平台：Int">
+<meta name="description" content="背景前段时间的人脸68关键点检测项目，需要移植到手机端，而且需要达到实时性，所以对算法进行了改进。大致的解决方案是，由于人脸检测耗时较大，所以搭配追踪、模板匹配、ROI区域内检测算法。用一幅图说明如下所示： Mac端需要先配置dlib依赖直接使用brew安装下面两个依赖12brew install openblasbrew install opencv X11是执行Unix程序的图形窗口环境。Ma">
 <meta name="keywords" content="CV">
 <meta property="og:type" content="article">
 <meta property="og:title" content="实时人脸68关键点检测 for Mac&#x2F;iOS">
 <meta property="og:url" content="http://yoursite.com/2018/05/04/reallandmark/index.html">
 <meta property="og:site_name" content="Deep Coding">
-<meta property="og:description" content="背景前段时间的人脸68关键点检测项目，需要移植到手机端，而且需要达到实时性，所以对算法进行了改进。大致的解决方案是，由于人脸检测耗时较大，所以搭配追踪、模板匹配、ROI区域内检测算法。用一幅图说明如下所示： real_dlib_muban_roi.cpp功能：实时单人脸区域检测(从摄像头读取)，及人脸68个关键点位置检测实时帧率：23 fps视频大小：320$\ast$240 标清硬件平台：Int">
+<meta property="og:description" content="背景前段时间的人脸68关键点检测项目，需要移植到手机端，而且需要达到实时性，所以对算法进行了改进。大致的解决方案是，由于人脸检测耗时较大，所以搭配追踪、模板匹配、ROI区域内检测算法。用一幅图说明如下所示： Mac端需要先配置dlib依赖直接使用brew安装下面两个依赖12brew install openblasbrew install opencv X11是执行Unix程序的图形窗口环境。Ma">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/img/real.png">
 <meta property="og:image" content="http://yoursite.com/img/tracking.png">
 <meta property="og:image" content="http://yoursite.com/img/Test_box_1.jpg">
-<meta property="og:updated_time" content="2018-05-04T10:16:41.434Z">
+<meta property="og:updated_time" content="2018-05-05T03:59:32.359Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="实时人脸68关键点检测 for Mac&#x2F;iOS">
-<meta name="twitter:description" content="背景前段时间的人脸68关键点检测项目，需要移植到手机端，而且需要达到实时性，所以对算法进行了改进。大致的解决方案是，由于人脸检测耗时较大，所以搭配追踪、模板匹配、ROI区域内检测算法。用一幅图说明如下所示： real_dlib_muban_roi.cpp功能：实时单人脸区域检测(从摄像头读取)，及人脸68个关键点位置检测实时帧率：23 fps视频大小：320$\ast$240 标清硬件平台：Int">
+<meta name="twitter:description" content="背景前段时间的人脸68关键点检测项目，需要移植到手机端，而且需要达到实时性，所以对算法进行了改进。大致的解决方案是，由于人脸检测耗时较大，所以搭配追踪、模板匹配、ROI区域内检测算法。用一幅图说明如下所示： Mac端需要先配置dlib依赖直接使用brew安装下面两个依赖12brew install openblasbrew install opencv X11是执行Unix程序的图形窗口环境。Ma">
 <meta name="twitter:image" content="http://yoursite.com/img/real.png">
 
 
@@ -342,14 +342,16 @@
 
       
         <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>前段时间的人脸68关键点检测项目，需要移植到手机端，而且需要达到实时性，所以对算法进行了改进。大致的解决方案是，由于人脸检测耗时较大，所以搭配追踪、模板匹配、ROI区域内检测算法。用一幅图说明如下所示：<br><img src="/img/real.png" width="400" alt="图片名称" align="center"></p>
-<h4 id="real-dlib-muban-roi-cpp"><a href="#real-dlib-muban-roi-cpp" class="headerlink" title="real_dlib_muban_roi.cpp"></a>real_dlib_muban_roi.cpp</h4><p>功能：实时单人脸区域检测(从摄像头读取)，及人脸68个关键点位置检测<br>实时帧率：23 fps<br>视频大小：320$\ast$240 标清<br>硬件平台：Intel(R) Core(TM) i5 @ 2.70GHz（Mac）<br>算法描述：<br>1、先进行Face Detect得到第一帧中人脸区域；<br>2、将该区域放大1.2倍，取为ROI区域；<br>3、在ROI区域中进行模板匹配（模板为前一帧中检测的人脸）<br>4、假如模板匹配算法得分较低，或者<code>bbox</code>超出了图像边界(即人脸出界)，则在整张图中重新进行Face Detect</p>
+<h4 id="Mac端需要先配置dlib依赖"><a href="#Mac端需要先配置dlib依赖" class="headerlink" title="Mac端需要先配置dlib依赖"></a>Mac端需要先配置dlib依赖</h4><p>直接使用brew安装下面两个依赖<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">brew install openblas</span><br><span class="line">brew install opencv</span><br></pre></td></tr></table></figure></p>
+<p>X11是执行Unix程序的图形窗口环境。Mac OS X本身的程序是Aqua界面的，但是为了能够兼容unix和linux移植过来的程序（Mac OS X由BSD-UNIX修改而来），比如MatLab，就需要x11窗口环境。<br>&nbsp;<br>运行dlib需要X11，但Mac目前没有自带X11，需要重新下载安装，<a href="https://www.xquartz.org/" target="_blank" rel="noopener">下载地址</a><br>下载后直接安装，默认安装目录为/opt/X11，需要在/usr/loca/opt目录下创建软连接（最好使用绝对地址），创建命令如下，创建后重启Mac。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/opt</span><br><span class="line">ln -s /opt/X11 X11</span><br></pre></td></tr></table></figure></p>
+<h4 id="real-dlib-muban-roi-cpp"><a href="#real-dlib-muban-roi-cpp" class="headerlink" title="real_dlib_muban_roi.cpp"></a>real_dlib_muban_roi.cpp</h4><p>功能：实时单人脸区域检测(从摄像头读取)，及人脸68个关键点位置检测<br>实时帧率：23 fps<br>视频大小：320$\ast$240 标清<br>硬件平台：Intel(R) Core(TM) i5 @ 2.70GHz（Mac）<br>算法描述：<br>1、先进行Face Detect得到第一帧中人脸区域；<br>2、将该区域放大1.2倍，取为ROI区域；<br>3、在ROI区域中进行模板匹配（模板为前一帧中检测的人脸）<br>4、假如模板匹配算法得分较低，或者<code>bbox</code>超出了图像边界(即人脸出界)，则在整张图中重新进行Face Detect<br>调用指令： <code>./real_dlib_muban_roi</code></p>
 <p>Tips：笔者也尝试过在ROI区域中不执行模板匹配，而是直接执行Face Detect，但实际人脸静止情况下，检测到的人脸位置突变极大。折腾了两三天，不断运行代码，发现位置分布居然是有规律的，就在几个固定位置跳动。<br>突然意识到人脸检测器不是每个像素划窗的(🤦‍♂️)，而是每20/40个像素滑，这样就不能在ROI区域中完美匹配到上次的位置。所以采取了模板匹配的方法，挨个像素滑动，这样检测位置便是正确的了。</p>
-<h4 id="video-Seeta-Track-cpp"><a href="#video-Seeta-Track-cpp" class="headerlink" title="video_Seeta_Track.cpp"></a>video_Seeta_Track.cpp</h4><p>功能：实时单人脸区域检测（从视频读取），及人脸68个关键点位置检测<br>实时帧率：25 fps<br>视频大小：320$\ast$240 标清<br>硬件平台：Intel(R) Core(TM) i5 @ 2.70GHz（Mac）<br>算法描述：追踪代码运行超过75次，或者追踪失败的情况下，调用Face Detect函数，重新进行人脸位置检测<br>调用指令： ./video_Seeta_Track<br>检测demo附图：<img src="/img/tracking.png" width="500" alt="图片名称" align="center"></p>
-<h4 id="real-dlib-cpp-real-seeta-cpp"><a href="#real-dlib-cpp-real-seeta-cpp" class="headerlink" title="real_dlib.cpp / real_seeta.cpp"></a>real_dlib.cpp / real_seeta.cpp</h4><p>功能：多人脸区域检测(从摄像头读取)，及多人脸68个关键点位置检测<br>实时帧率：8～10 fps<br>视频大小：320$\ast$240 标清<br>硬件平台：Intel(R) Core(TM) i5 @ 2.70GHz（Mac）<br>算法描述：<br>这两个算法，仅用了face detect，而detect在人脸关键点检测项目中，占据的时间较长，所以仅用检测，无法在mac上达到实时效果。</p>
+<h4 id="video-Seeta-Track-cpp"><a href="#video-Seeta-Track-cpp" class="headerlink" title="video_Seeta_Track.cpp"></a>video_Seeta_Track.cpp</h4><p>功能：实时单人脸区域检测（从视频读取），及人脸68个关键点位置检测<br>实时帧率：25 fps<br>视频大小：320$\ast$240 标清<br>硬件平台：Intel(R) Core(TM) i5 @ 2.70GHz（Mac）<br>算法描述：追踪代码运行超过75次，或者追踪失败的情况下，调用Face Detect函数，重新进行人脸位置检测<br>调用指令： <code>./video_Seeta_Track</code><br>检测demo附图：<img src="/img/tracking.png" width="500" alt="图片名称" align="center"></p>
+<h4 id="real-dlib-cpp-real-seeta-cpp"><a href="#real-dlib-cpp-real-seeta-cpp" class="headerlink" title="real_dlib.cpp / real_seeta.cpp"></a>real_dlib.cpp / real_seeta.cpp</h4><p>功能：多人脸区域检测(从摄像头读取)，及多人脸68个关键点位置检测<br>实时帧率：8～10 fps<br>视频大小：320$\ast$240 标清<br>硬件平台：Intel(R) Core(TM) i5 @ 2.70GHz（Mac）<br>算法描述：<br>这两个算法，仅用了face detect，而detect在人脸关键点检测项目中，占据的时间较长，所以仅用检测，无法在mac上达到实时效果。<br>调用指令：<code>./real_dlib</code>，<code>./real_seeta.cpp</code></p>
 <p>作为对比，分别对seetaface、dlib库进行了测试，发现两个face detect库耗时相当，seetaface人脸检测器，能检测到更小的人脸[40,40]，人脸偏转一定角度(45度范围内)，基本也能检出。而dlib的优势在于其稳定性，这个应该跟模型设计的划窗步长相关，见第二点’Tips’中的分析。</p>
-<h4 id="Pic-LandMark68-cpp"><a href="#Pic-LandMark68-cpp" class="headerlink" title="Pic_LandMark68.cpp"></a>Pic_LandMark68.cpp</h4><p>功能：多人脸区域检测(从图片读取)，及多人脸68个关键点位置检测<br>算法描述：<br>采用Seetaface进行人脸检测，dlib进行后续的人脸关键点检测<br>调用指令：./build/Pic_LandMark68 1.png ./model/seeta_fd_frontal_v1.0.bin<br>检测demo附图：<img src="/img/Test_box_1.jpg" width="650" alt="图片名称" align="center"></p>
+<h4 id="Pic-LandMark68-cpp"><a href="#Pic-LandMark68-cpp" class="headerlink" title="Pic_LandMark68.cpp"></a>Pic_LandMark68.cpp</h4><p>功能：多人脸区域检测(从图片读取)，及多人脸68个关键点位置检测<br>算法描述：<br>采用Seetaface进行人脸检测，dlib进行后续的人脸关键点检测<br>调用指令：<code>./build/Pic_LandMark68 1.png ./model/seeta_fd_frontal_v1.0.bin</code><br>检测demo附图：<img src="/img/Test_box_1.jpg" width="650" alt="图片名称" align="center"></p>
 <h4 id="Github代码连接"><a href="#Github代码连接" class="headerlink" title="Github代码连接"></a>Github代码连接</h4><p>上述代码已经全部上传至github，目前仅实现了实时单人脸68关键点绘制，后面有时间话再完善多人关键点检测代码吧。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># clone该工程</span><br><span class="line">cd Video_Face</span><br><span class="line">mkdir build</span><br><span class="line">cd build</span><br><span class="line">cmake ..</span><br><span class="line">make # 即可在build文件夹中生成可执行程序，调用方式如上</span><br></pre></td></tr></table></figure></p>
-<p>PS：<code>dlib</code>、<code>Seetaface</code>的相关代码我也一起打包到工程中了，如果你自己编译安装了OpenCV，用上述CMakeLists便可以。如果你没有编译OpenCV，恰巧又是Mac平台，可以使用我编译好的OpenCV动态库，就在<code>libs</code>文件夹，OpenCV头文件在<code>include</code>文件夹。<br><a href="https://github.com/Wxjwjj/face-landmark" target="_blank" rel="noopener">github代码链接</a></p>
+<p>PS：<code>dlib</code>、<code>Seetaface</code>的相关代码我也一起打包到工程中了，如果你自己编译安装了OpenCV，用上述CMakeLists便可以。如果你没有编译OpenCV，恰巧又是Mac平台，可以使用我编译好的OpenCV动态库，就在<code>libs</code>文件夹，OpenCV头文件在<code>include</code>文件夹。<br><a href="https://github.com/Wxjwjj/Facial-Landmark" target="_blank" rel="noopener">github代码链接</a></p>
 <h3 id="Ref"><a href="#Ref" class="headerlink" title="Ref:"></a>Ref:</h3><p><a href="https://github.com/seetaface/SeetaFaceEngine" target="_blank" rel="noopener">Face detect模块采用山世光老师开源的seetaface</a><br><a href="https://github.com/davisking/dlib" target="_blank" rel="noopener">Facial Landmark模块采用了dlib库</a></p>
 
       
@@ -390,6 +392,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/05/04/git/" rel="prev" title="git">
+                git <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -477,7 +483,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">39</span>
+                  <span class="site-state-item-count">41</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -545,7 +551,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#real-dlib-muban-roi-cpp"><span class="nav-number">1.1.</span> <span class="nav-text">real_dlib_muban_roi.cpp</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#video-Seeta-Track-cpp"><span class="nav-number">1.2.</span> <span class="nav-text">video_Seeta_Track.cpp</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#real-dlib-cpp-real-seeta-cpp"><span class="nav-number">1.3.</span> <span class="nav-text">real_dlib.cpp / real_seeta.cpp</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Pic-LandMark68-cpp"><span class="nav-number">1.4.</span> <span class="nav-text">Pic_LandMark68.cpp</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Github代码连接"><span class="nav-number">1.5.</span> <span class="nav-text">Github代码连接</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Ref"><span class="nav-number">2.</span> <span class="nav-text">Ref:</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Mac端需要先配置dlib依赖"><span class="nav-number">1.1.</span> <span class="nav-text">Mac端需要先配置dlib依赖</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#real-dlib-muban-roi-cpp"><span class="nav-number">1.2.</span> <span class="nav-text">real_dlib_muban_roi.cpp</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#video-Seeta-Track-cpp"><span class="nav-number">1.3.</span> <span class="nav-text">video_Seeta_Track.cpp</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#real-dlib-cpp-real-seeta-cpp"><span class="nav-number">1.4.</span> <span class="nav-text">real_dlib.cpp / real_seeta.cpp</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Pic-LandMark68-cpp"><span class="nav-number">1.5.</span> <span class="nav-text">Pic_LandMark68.cpp</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Github代码连接"><span class="nav-number">1.6.</span> <span class="nav-text">Github代码连接</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Ref"><span class="nav-number">2.</span> <span class="nav-text">Ref:</span></a></li></ol></div>
             
 
           </div>
@@ -591,7 +597,7 @@
  
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共32.7k字</span>
+  <span class="post-count">博客全站共34.0k字</span>
 </div>
 
 <div class="powered-by">

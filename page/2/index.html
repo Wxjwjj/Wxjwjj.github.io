@@ -259,6 +259,283 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/27/ubuntusys-3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="祥吉">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Deep Coding">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/27/ubuntusys-3/" itemprop="url">Ubuntu1604装机系列(四)：cuda8/cuda9及对应版本的cudnn安装</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-27T12:08:34+08:00">
+                2018-03-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/03/27/ubuntusys-3/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/03/27/ubuntusys-3/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>笔者事先在ubuntu上安装了cuda9.0，然而在编译opencv3.1时候，发生了版本不匹配的冲突。遂又安装了cuda8.0，但二者极其cudnn的安装，如出一辙，在这里记录下安装过程。</p>
+<h3 id="cuda下载及安装"><a href="#cuda下载及安装" class="headerlink" title="cuda下载及安装"></a>cuda下载及安装</h3><p>NVIDIA官网下载cuda8.0的安装<a href="https://developer.nvidia.com/cuda-80-download-archive" target="_blank" rel="noopener">run文件</a><br>注意安装时候不要<code>sudo</code>安装，同样的原因，若安装出错，可能难以卸载干净。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./cuda_8.0.61_375.26_linux-run 注意不要更新显卡驱动，更改安装及链接库路径到个人指定目录下</span><br></pre></td></tr></table></figure></p>
+<p>安装完成后需要在系统内写入<code>bin</code>及<code>lib</code>搜索路径，以笔者的安装路径为例<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vi ~/.bashrc</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:/home/&lt;user name&gt;/wuxj/cuda-8.0/bin:/home/&lt;user name&gt;/wuxj/cuda-9.0/bin</span><br><span class="line"><span class="built_in">export</span> LD_LIBRARY_PATH=<span class="variable">$LD_LIBRARY_PATH</span>:/home/&lt;user name&gt;/wuxj/cuda-8.0/lib64:/home/&lt;user name&gt;/wuxj/cuda-9.0/lib64</span><br></pre></td></tr></table></figure></p>
+<p>其中PATH为<code>bin</code>可执行程序路径，一般添加安装软件的terminal快速启动，<code>LD_LIBRARY_PATH</code>为依赖库的路径。<br>另外笔者同时安装了cuda8.0/cuda9.0，系统路径中哪个在前即可先被访问调用。而在cmake中会更加灵活，直接指定cuda安装目录便可以正确调用。</p>
+<h3 id="cudnn下载及安装"><a href="#cudnn下载及安装" class="headerlink" title="cudnn下载及安装"></a>cudnn下载及安装</h3><p>NVIDIA官网下载cudnn压缩<a href="https://developer.nvidia.com/rdp/cudnn-download" target="_blank" rel="noopener">文件</a>(需先注册)。cudnn其实无需安装， 解压后即可看到里面是<code>include</code>头文件夹，及NVIDIA事先编译好的<code>lib</code>库。所以我们只需要将其复制到cuda对应目录即可。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> cudnn6</span><br><span class="line"></span><br><span class="line">cp include/* ../../cuda-8.0/include/ <span class="comment"># 复制到你cuda安装目录的对应文件夹</span></span><br><span class="line"></span><br><span class="line">cp lib64/* ../../cuda-8.0/lib64/</span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> ../../cuda-8.0/lib64/ </span><br><span class="line"></span><br><span class="line">sudo rm libcudnn.so</span><br><span class="line"></span><br><span class="line">sudo rm libcudnn.so.6</span><br><span class="line"></span><br><span class="line">sudo ln -sf libcudnn.so.6.0.21 libcudnn.so.6</span><br><span class="line"></span><br><span class="line">sudo ln -sf libcudnn.so.6 libcudnn.so</span><br></pre></td></tr></table></figure></p>
+<h3 id="安装成功"><a href="#安装成功" class="headerlink" title="安装成功"></a>安装成功</h3><p><strong>一些体会：</strong>Linux系统完美诠释了文件即一切，所有安装内容都暴露在外部，所有想删除的东西一键删除安装文件夹即可，强烈不推荐sudo安装。<br>pip可以用sudo安装，因为pip安装的软件很容易卸载<br>pip的安装目录：<code>/usr/local/lib/python3.5/dist-packages/ /usr/local/lib/python3.5/dist-packages/</code>，pip安的软件可以到该目录查看是否被安装好</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/27/ubuntusys-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="祥吉">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Deep Coding">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/27/ubuntusys-1/" itemprop="url">Ubuntu1604装机系列(三)：Matlab2017b安装</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-27T11:08:34+08:00">
+                2018-03-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/03/27/ubuntusys-1/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/03/27/ubuntusys-1/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h4><p>Matlab下载<a href="https://pan.baidu.com/s/14U8J9YYP6OSEhCqR1ls-Wg" target="_blank" rel="noopener">链接</a> 密码: ckw4<br>解压后得到<code>xxx_dvd1.iso</code>、<code>xxx_dvd2.iso</code>、<code>crack</code>破解文件</p>
+<h4 id="挂载镜像文件dvd1"><a href="#挂载镜像文件dvd1" class="headerlink" title="挂载镜像文件dvd1"></a>挂载镜像文件dvd1</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir /home/&lt;user name&gt;/Matlab </span><br><span class="line">sudo mount -t auto -o loop /home/&lt;user name&gt;/xxx_dvd1.iso /home/&lt;user name&gt;/Matlab</span><br></pre></td></tr></table></figure>
+<h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> </span><br><span class="line">sudo ./Matlab/install</span><br></pre></td></tr></table></figure>
+<h4 id="Tips"><a href="#Tips" class="headerlink" title="Tips"></a>Tips</h4><p>在弹出的安装对话框中，选择离线安装，并填入<code>license number</code>，复制crack解压后出现的readme.txt文件中的第一个安装密钥即可<br>&nbsp;<br>安装路径默认是系统目录，改为<code>/home/&lt;user name&gt;/matlab/r2017b</code>，这样的好处是遵循了Linux处处是文件的思想，方便每个用户的版本管理，同时若安装失败直接删除该<code>/matlab/r2017b</code>文件夹即可。<br>&nbsp;<br>安装选项中，笔者首先选择了全部安装，但symbolic_doc_en_common模块一直提示安装出错，无奈去掉了该模块的对勾，从目前跑的几个模型来看，该模块并无影响。</p>
+<h4 id="挂载镜像文件dvd2"><a href="#挂载镜像文件dvd2" class="headerlink" title="挂载镜像文件dvd2"></a>挂载镜像文件dvd2</h4><p>安装到一半多，会提示载入dvd2，这时候重启一个终端，用相同的方式载入，点击<code>ok</code>直到安装结束即可<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> </span><br><span class="line">sudo mount -t auto -o loop /home/&lt;user name&gt;/xxx_dvd2.iso /home/&lt;user name&gt;/Matlab</span><br></pre></td></tr></table></figure></p>
+<h4 id="结束安装"><a href="#结束安装" class="headerlink" title="结束安装"></a>结束安装</h4><p>删除不用的文件夹及卸载盘符<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo rm -r /home/&lt;user name&gt;/Matlab  </span><br><span class="line">sudo umount /home/&lt;user name&gt;/Matlab</span><br></pre></td></tr></table></figure></p>
+<h4 id="破解"><a href="#破解" class="headerlink" title="破解"></a>破解</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> crack绝对路径</span><br><span class="line">sudo mkdir /home/&lt;user name&gt;/matlab/r2017b/bin/licenses/  </span><br><span class="line">sudo cp license_standalone.lic /home/&lt;user name&gt;/matlab/r2017b/bin/licenses/  </span><br><span class="line">sudo cp libmwservices.so /home/&lt;user name&gt;/matlab/r2017b/bin/glnxa64/</span><br></pre></td></tr></table></figure>
+<h4 id="启动matlab"><a href="#启动matlab" class="headerlink" title="启动matlab"></a>启动matlab</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /home/&lt;user name&gt;/matlab/r2017b/bin</span><br><span class="line">sudo ./matlab</span><br></pre></td></tr></table></figure>
+<p>第一次打开matlab会再次提示输入破解密钥，在对话框窗口中填入crack目录下的license_standalone.lic绝对路径即可。</p>
+<h4 id="添加Matlab到系统路径"><a href="#添加Matlab到系统路径" class="headerlink" title="添加Matlab到系统路径"></a>添加Matlab到系统路径</h4><p>这里注意一点：路径如果写到/etc/profile，那么会影响到该服务器的所有用户。所以我们在~/.bashrc中进行配置即可<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:/home/&lt;user name&gt;/Matlab/r2017b/bin</span><br></pre></td></tr></table></figure></p>
+<p>笔者尝试第一种解决方案失败，遂采用了下一种，建立软连接到系统启动目录(注意建立软连接一定要使用绝对路径)<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ln -s /home/&lt;user name&gt;/Matlab/r2017b/bin/matlab /usr/<span class="built_in">local</span>/bin/matlab</span><br></pre></td></tr></table></figure></p>
+<h4 id="可能的问题"><a href="#可能的问题" class="headerlink" title="可能的问题"></a>可能的问题</h4><p><code>/usr/local/MATLAB/R2017b/bin/glnxa64/../../sys/os/glnxa64/libstdc++.so.6: version GLIBCXX_3.4.21 not found</code>，运行matlab时出现这样的错误提示是matlab g++版本<code>libstdc++.so.6.0.20</code>版本较低，复制高版本的lib，设置新的软连接即可<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">loacte  libstdc++.so.6.0.21 <span class="comment"># 查看高版本lib路径</span></span><br><span class="line"><span class="built_in">cd</span> ~/&lt;user name&gt;/matlab/r2017b/sys/os/glnxa64</span><br><span class="line">sudo cp /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.21 ./</span><br><span class="line">sudo rm -rf libstdc++.so.6</span><br><span class="line">sudo ln -s libstdc++.so.6.0.21 libstdc++.so.6</span><br></pre></td></tr></table></figure></p>
+<h5 id="不通过sudo启动matlab"><a href="#不通过sudo启动matlab" class="headerlink" title="不通过sudo启动matlab"></a>不通过sudo启动matlab</h5><p>注意matlab是隐藏文件，前面有.<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo chmod -R a+rw ~/.matlab</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/27/ubuntusys-2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1070,7 +1347,7 @@
 <h4 id="创新点2：SVM分类后采用线性回归模型精绘bounding-box"><a href="#创新点2：SVM分类后采用线性回归模型精绘bounding-box" class="headerlink" title="创新点2：SVM分类后采用线性回归模型精绘bounding box"></a>创新点2：SVM分类后采用线性回归模型精绘bounding box</h4><h5 id="训练阶段"><a href="#训练阶段" class="headerlink" title="训练阶段"></a>训练阶段</h5><p>由于SS算法对某个类的bounding box框的不够完美，所以训练一个回归模型，作者论文中采用<code>Bounding-box regression</code>提升了3.5个map。选取的Regions与人工标注的bounding box IoU应当&gt;=0.6，并且仅选取IoU最大的那个作为候选Region。（此处IoU设置比较严格，作者发现如果假设函数与<code>bounding box</code>差距太大话，是学不到东西的）<br>&nbsp;<br>总体目标就是对Region进行两次平移$\Delta x, \Delta y$，再进行两次缩放$S_{x}, S_{y}$。简单说就是输入<code>pool5</code>层的特征向量，经过4次运算后，得到更加精确的bounding box区域。论文公式如下，就是比较简单的线性回归，损失函数采用梯度下降进行优化。<br><img src="/img/rcnn4.png" width="350" alt="图片名称" align="center"><br><img src="/img/rcnn5.png" width="500" alt="图片名称" align="center"><br>其中$d_{x}(P)$、$d_{y}(P)$为平移算术因子，$d_{w}(P)$、$d_{h}(P)$为尺度缩放算术因子。以其中的$d_{x}(P)$来说：它的实际值就是$w\phi$，为权重w乘以特征向量的形式。而其理论值是$t_{\ast }^{i}$，可以通过对(1)、(2)、(3)、(4)变换得到。最终梯度下降的优化目标便是通过最小化均方误差函数来求解该w矩阵。</p>
 <h5 id="测试阶段"><a href="#测试阶段" class="headerlink" title="测试阶段"></a>测试阶段</h5><p>训练阶段，我们可以采用IoU最大的Region进行训练，那test阶段呢？同一物体便可能包含大量重复的矩形框，这里作者采用的是<strong>非极大值抑制（non-maximum suppression）</strong>方法对这些区域进行筛选。<strong>NMS基于一个窗口区域被认为是最有可能表示某一个物体的时候，那么和这个窗口区域交叉面积大的proposal就可以认为不是需要的窗口区域。</strong><br>&nbsp;<br>具体思路为：从所有矩形框(Regions)中(不分类别)选取SVM分类器得分最高的Region，将与该Region IoU面积超过阈值的都删除。再从剩余的矩形框中选取SVM得分最高的Region，重复上述步骤，直到没有矩形框可选为止。</p>
 <h3 id="CNN特征提取相关："><a href="#CNN特征提取相关：" class="headerlink" title="CNN特征提取相关："></a>CNN特征提取相关：</h3><h4 id="CNN为什么选取pool5层的特征？"><a href="#CNN为什么选取pool5层的特征？" class="headerlink" title="CNN为什么选取pool5层的特征？"></a>CNN为什么选取<code>pool5</code>层的特征？</h4><p>真实答案是如果不对模型进行<code>fine-tuning</code>，那么采用<code>pool5</code>、<code>fc6</code>、<code>fc7</code>特征训练的SVM分类器，性能是相似的；如果对模型用VOC数据<code>fine-tuning</code>，利用这些特征训练的分类器性能都会提升，而<code>fc6</code>、<code>fc7</code>会进一步得到更大提升，如下所示：<br><img src="/img/rcnn6.png" alt=""></p>
-<h4 id="为什么不直接采用CNN端到端训练，而要接一个SVM？"><a href="#为什么不直接采用CNN端到端训练，而要接一个SVM？" class="headerlink" title="为什么不直接采用CNN端到端训练，而要接一个SVM？"></a>为什么不直接采用CNN端到端训练，而要接一个SVM？</h4><p>VOC数据集较小，如果直接端到端训练，CNN十分容易过拟合。而SVM则适合小样本训练，所以最后采用SVM进行分类</p>
+<h4 id="为什么不直接采用CNN端到端训练，而要接一个SVM？"><a href="#为什么不直接采用CNN端到端训练，而要接一个SVM？" class="headerlink" title="为什么不直接采用CNN端到端训练，而要接一个SVM？"></a>为什么不直接采用CNN端到端训练，而要接一个SVM？</h4><p>确实也是可以的，但由于VOC数据集较小，如果直接端到端训练，CNN十分容易过拟合。而SVM则适合小样本训练，所以最后采用SVM进行分类。并且SVM虽然适合小样本，但作者经过调参，还是设置IoU&gt;0.3即为正样本，比pretrain Alex Net时（IoU&gt;0.5）的标准宽松，正样例会多一些</p>
 <p><strong>PS：CNN的尺度不变性：</strong>并不是一定不变，而是大概率不变。比如对于两幅size不同，内容相同的图像。假设某个卷积核提取的是图像边缘信息，那么对其<code>Feature map</code>进行<code>Maxpooling</code>操作后，都会把梯度最大值提取出来，调整Pooling的<code>size</code>或<code>stride</code>，很大概率会得到相同的<code>map</code>图。</p>
 <h3 id="RCNN存在四个明显问题："><a href="#RCNN存在四个明显问题：" class="headerlink" title="RCNN存在四个明显问题："></a>RCNN存在四个明显问题：</h3><p>1、多个候选区域对应的图像需要预先提取，占用较大的磁盘空间；<br>2、针对传统CNN需要固定尺寸的输入图像，crop/warp（归一化）产生物体截断或拉伸，会导致输入CNN的信息丢失；<br>3、每一个ProposalRegion都需要进入CNN网络计算，上千个Region存在大量的范围重叠，重复的特征提取带来巨大的计算浪费。<br>4、CNN、SVM、回归模型需要按顺序，进行单独训练，不能端到端训练。</p>
 <h3 id="Ref："><a href="#Ref：" class="headerlink" title="Ref："></a>Ref：</h3><p>📎：<a href="http://www.rossgirshick.info/" target="_blank" rel="noopener">Rbg大神个人主页，包含论文、slides、code等</a><br>📎：<a href="https://www.cnblogs.com/skyfsm/p/6806246.html" target="_blank" rel="noopener">基于深度学习的目标检测技术演进：R-CNN、Fast R-CNN、Faster R-CNN</a><br>📎：<a href="http://blog.csdn.net/linolzhang/article/details/54344350" target="_blank" rel="noopener">目标检测-RCNN系列</a><br>📎：<a href="http://jermmy.xyz/2017/05/08/2017-5-8-paper-notes-rcnn/" target="_blank" rel="noopener">论文笔记：Rich feature hierarchies for accurate object detection and semantic segmentation</a><br>📎：<a href="http://blog.csdn.net/u011534057/article/details/51218250" target="_blank" rel="noopener">RCNN学习笔记</a></p>
@@ -1424,283 +1701,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/02/box/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="祥吉">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Deep Coding">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/03/02/box/" itemprop="url">目标检测任务中的Bounding box绘制</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-02T11:03:57+08:00">
-                2018-03-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/03/02/box/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/03/02/box/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>计算机视觉目标检测任务中，输出的result是一系列图像及对应的txt文档，文档里面记录了检测到类别的<code>bounding box</code>信息：其中每行是一个类别，第1列代表哪一类，第2列是该类别置信度，后面4列是该<code>bounding box</code>的左上、右下的坐标信息(以图的左上方为坐标0点)，如下所示：</p>
-<blockquote>
-<p>7 0.9482899 157.50272 192.24951 216.85303 248.50638<br>12 0.7890044 247.94312 211.89938 304.7307 280.8666<br>18 0.5444266 101.857285 215.64401 181.53456 261.96036</p>
-</blockquote>
-<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><p>为了直观显示每张图像包含了哪些类别，我们用python对<code>bounding box</code>进行了重绘，<strong>并将图像按类别放置于对应的文件夹中，文件夹名称为1～21，以字典形式对应于21个类别，</strong>代码如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"><span class="comment">#!/usr/bin/env Python</span></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> shutil</span><br><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image, ImageDraw</span><br><span class="line"></span><br><span class="line"><span class="comment">#==========================建立索引文件夹==========================</span></span><br><span class="line"></span><br><span class="line">Path1_A = <span class="string">"/home/tucoder/Desktop/demo1_result/S1/"</span> <span class="comment"># 图像按类型分配到各个文件夹</span></span><br><span class="line">Path2_A = <span class="string">"/home/tucoder/Desktop/demo1_result/S2/"</span> <span class="comment"># 存储类型文本</span></span><br><span class="line"></span><br><span class="line">dict1 = &#123;<span class="string">'1'</span>:<span class="string">'飞机'</span>,<span class="string">'2'</span>:<span class="string">'自行车'</span>,<span class="string">'3'</span>:<span class="string">'鸟'</span>,<span class="string">'4'</span>:<span class="string">'船'</span>,<span class="string">'5'</span>:<span class="string">'瓶子'</span>,<span class="string">'6'</span>:<span class="string">'公共汽车'</span>,<span class="string">'7'</span>:<span class="string">'车'</span>,<span class="string">'8'</span>:<span class="string">'猫'</span>,<span class="string">'9'</span>:<span class="string">'椅子'</span>,<span class="string">'10'</span>:<span class="string">'牛'</span>,<span class="string">'11'</span>:<span class="string">'餐桌'</span>,<span class="string">'12'</span>:<span class="string">'狗'</span>, \</span><br><span class="line">    <span class="string">'13'</span>:<span class="string">'马'</span>,<span class="string">'14'</span>:<span class="string">'摩托车'</span>,<span class="string">'15'</span>:<span class="string">'人'</span>,<span class="string">'16'</span>:<span class="string">'植物'</span>,<span class="string">'17'</span>:<span class="string">'羊'</span>,<span class="string">'18'</span>:<span class="string">'沙发'</span>,<span class="string">'19'</span>:<span class="string">'火车'</span>,<span class="string">'20'</span>:<span class="string">'电视'</span>&#125; <span class="comment"># 21类</span></span><br><span class="line">    </span><br><span class="line">os.mkdir(Path1_A)</span><br><span class="line">  </span><br><span class="line">os.mkdir(Path2_A)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, <span class="number">21</span>):</span><br><span class="line">        os.mkdir(Path1_A+str(i))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">draw</span><span class="params">(Path1, x1, y1, x2, y2, path2)</span>:</span></span><br><span class="line">    <span class="string">'''</span></span><br><span class="line"><span class="string">    绘制矩形框函数</span></span><br><span class="line"><span class="string">    原pic位置path1</span></span><br><span class="line"><span class="string">    处理后的pic被存储到path2中</span></span><br><span class="line"><span class="string">    '''</span></span><br><span class="line">    im = Image.open(Path1)</span><br><span class="line">    draw = ImageDraw.Draw(im)</span><br><span class="line">    line = <span class="number">5</span></span><br><span class="line">    x, y = x1, y1</span><br><span class="line">    x_1, y_1 = x2, y2</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, line + <span class="number">1</span>):</span><br><span class="line">        draw.rectangle((x + (line - i), y + (line - i), x_1 + i, y_1 + i), outline=<span class="string">'red'</span>)</span><br><span class="line">    im.save(path2)</span><br><span class="line"></span><br><span class="line"><span class="comment">#==========================main==========================</span></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    result = []</span><br><span class="line">    alllist=os.listdir(<span class="string">"/home/tucoder/Desktop/demo1_result"</span>)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> alllist:</span><br><span class="line">        <span class="keyword">if</span> <span class="string">"."</span> <span class="keyword">in</span> i:</span><br><span class="line">            aa, bb=i.split(<span class="string">"."</span>)</span><br><span class="line">            <span class="keyword">if</span> bb == <span class="string">"txt"</span>:</span><br><span class="line">                result.append(aa+<span class="string">"."</span>+bb)</span><br><span class="line">    A = set()</span><br><span class="line">    <span class="keyword">for</span> filename <span class="keyword">in</span> result:</span><br><span class="line">        set1 = set()</span><br><span class="line">        string = <span class="string">''</span> <span class="comment"># 每幅图片包含其class属性</span></span><br><span class="line">        str1 = filename[:filename.rindex(<span class="string">"."</span>)]</span><br><span class="line">        <span class="keyword">with</span> open(filename, <span class="string">'r'</span>) <span class="keyword">as</span> f:</span><br><span class="line">            <span class="keyword">for</span> line <span class="keyword">in</span> f.readlines():</span><br><span class="line">                list1 = line.split()</span><br><span class="line">                <span class="keyword">if</span> float(list1[<span class="number">1</span>]) &gt;= <span class="number">0.80</span>: <span class="comment"># 类别置信度&gt;=0.8，判定其为真</span></span><br><span class="line">                    A.add(list1[<span class="number">0</span>])</span><br><span class="line">                    Path_1 = str1+<span class="string">".jpg"</span></span><br><span class="line">                    Path_2 = Path1_A+<span class="string">'/'</span>+list1[<span class="number">0</span>]+<span class="string">"/"</span>+str1+<span class="string">".jpg"</span></span><br><span class="line">                    <span class="keyword">if</span> list1[<span class="number">0</span>] <span class="keyword">not</span> <span class="keyword">in</span> set1:</span><br><span class="line">                        set1.add(list1[<span class="number">0</span>]) </span><br><span class="line">                        draw(Path_1, float(list1[<span class="number">2</span>]), float(list1[<span class="number">3</span>]), float(list1[<span class="number">4</span>]), float(list1[<span class="number">5</span>]), Path_2)</span><br><span class="line">                        string = string +list1[<span class="number">0</span>]+<span class="string">"-"</span></span><br><span class="line">                    <span class="keyword">else</span>:</span><br><span class="line">                        draw(Path_2, float(list1[<span class="number">2</span>]), float(list1[<span class="number">3</span>]), float(list1[<span class="number">4</span>]), float(list1[<span class="number">5</span>]), Path_2)</span><br><span class="line">        set1.clear()</span><br><span class="line">        List = []</span><br><span class="line">    <span class="keyword">for</span> str_i <span class="keyword">in</span> list(A):</span><br><span class="line">        List.append(dict1[str_i])</span><br><span class="line">    print(List)</span><br><span class="line">    <span class="keyword">with</span> open(Path2_A+<span class="string">'text'</span>, <span class="string">'w'</span>) <span class="keyword">as</span> f:</span><br><span class="line">        f.write(str(List))</span><br></pre></td></tr></table></figure></p>
-<h3 id="最终效果如图："><a href="#最终效果如图：" class="headerlink" title="最终效果如图："></a>最终效果如图：</h3><p><img src="/img/ren.jpg" width="600" alt="图片名称" align="center"></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/28/baiduapi/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="祥吉">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Deep Coding">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/02/28/baiduapi/" itemprop="url">调用百度SDK进行长语音识别</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-28T14:37:25+08:00">
-                2018-02-28
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/02/28/baiduapi/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/02/28/baiduapi/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>项目中需要用到语音识别技术，之前百度的语音识别SDK只支持时长小于1分钟的语音，所以对于十几分钟的电影，笔者需要自己先进行断句，然后一句句送入百度SDK，这样既麻烦，而且句与句之间的连贯性不够好，经常会造成一些啼笑皆非的识别。</p>
-<h3 id="长语音识别"><a href="#长语音识别" class="headerlink" title="长语音识别"></a>长语音识别</h3><p>2018年1月，百度开放了长语音识别SDK，可以进行自动断句，目测是根据短时能量法（即停顿时间）完成的，对识别后的语句还会自动修改，应该引入了语言模型进行修正。笔者今天上午又进行了一番尝试，至于识别效果嘛，是比以前好一些，但依然不敢恭维，以下：<br>首先采用<code>ffmpeg</code>模块，将视频转化为wav音频文件；接着将文件转码为采样率16K或8K的<code>PCM</code>无损格式<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ffmpeg -i <span class="variable">$audiopath</span> -f wav -vn <span class="variable">$&#123;audiobasename&#125;</span><span class="string">".wav"</span> <span class="comment"># 提取视频中的音频文件</span></span><br><span class="line">ffmpeg -y  -i <span class="variable">$audiobasename</span><span class="string">".wav"</span>  -acodec pcm_s16le -f s16le -ac 1 -ar 16000 16k-0.pcm <span class="comment"># wav音频文件转PCM</span></span><br></pre></td></tr></table></figure></p>
-<p>接着去<a href="http://ai.baidu.com/sdk" target="_blank" rel="noopener">百度Ai开放平台</a>，下载对应平台的SDK。解压后直接cd到<code>sample/asr</code>目录下， 运行<code>build.sh</code>(实际执行的是<code>/src/main.cpp</code>)，便可以识别样例中的一个<code>PCM</code>文件。<br>&nbsp;<br>若要识别你自己的音频文件，需要首先接入<a href="http://ai.baidu.com/docs#/Begin/top" target="_blank" rel="noopener">百度AI服务</a>，由于Access Token的有效期为30天，我们把鉴权请求机制写入<code>build.sh</code>中，这样每次调用SDK都会首先先执行鉴权。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line">curl -i -k &apos;https://aip.baidubce.com/oauth/2.0/token?grant_type=client_credentials&amp;client_id=xxxx&amp;client_secret=xxxx&apos;</span><br><span class="line"># &apos;xxxx&apos;的部分填入你在百度自己申请的id和key</span><br><span class="line">make &amp;&amp; echo &amp;&amp; echo &quot;build success, wait 3s to run&quot;  &amp;&amp; sleep 3 &amp;&amp; ./main</span><br></pre></td></tr></table></figure></p>
-<p>之后修改main.cpp中的<code>asr_set_config_params</code>、<code>asr_set_start_params</code>两个参数，具体如下：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span> app_id = <span class="string">"xxxxx"</span>; 填入你申请的ID</span><br><span class="line"><span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span> chunk_key = <span class="string">"xxxxxxx"</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span> secret_key = <span class="string">"xxxxxxxx"</span>;</span><br></pre></td></tr></table></figure></p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 设置启动参数</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">asr_set_start_params</span><span class="params">(bds::BDSSDKMessage&amp; start_params)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span> app = <span class="string">"xxxxx"</span>; # 填入你申请的任务名称</span><br></pre></td></tr></table></figure>
-<p>将之前转好的音频文件，命名为<code>16k-0.pcm</code>，放置于<code>/asr/pcm</code>路径下，重新执行<code>build.sh</code>，便可以在<code>Terminal</code>生成识别后的音频文件！<br><strong>PS:</strong> 建议的环境是<code>GCC、G++ 4.8.5</code>，笔者在<code>GCC 5.4.0</code>也进行了测试，无法正确运行。</p>
-<h3 id="Textrank"><a href="#Textrank" class="headerlink" title="Textrank"></a>Textrank</h3><p>Textrank是传统抽取文章摘要的方式，算法思想借鉴了网页排序的pagerank技术，这里我们采用Github中已开源的<a href="https://github.com/letiantian/TextRank4ZH" target="_blank" rel="noopener">TextRank4ZH模块</a>，安装及调用文档都比较详细，此处不再赘述。</p>
-<h3 id="Ref："><a href="#Ref：" class="headerlink" title="Ref："></a>Ref：</h3><p><a href="https://www.baidu.com/s?ie=UTF-8&amp;wd=textrank4zh" target="_blank" rel="noopener">https://www.baidu.com/s?ie=UTF-8&amp;wd=textrank4zh</a><br><a href="http://ai.baidu.com/tech/speech/lsr" target="_blank" rel="noopener">http://ai.baidu.com/tech/speech/lsr</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1750,7 +1755,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">39</span>
+                  <span class="site-state-item-count">41</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1848,7 +1853,7 @@
  
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共32.7k字</span>
+  <span class="post-count">博客全站共34.0k字</span>
 </div>
 
 <div class="powered-by">
