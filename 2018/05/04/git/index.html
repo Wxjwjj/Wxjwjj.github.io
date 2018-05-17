@@ -86,18 +86,18 @@
 
 
 
-<meta name="description" content="背景上传本地项目到    github仓库中，便于代码的管理、更新，步骤如下： 在github上新建一个repository，并记录该仓库地址使用命令行进行上传1234567# cd 项目跟目录git init # 建立本地git仓库git add . # 添加所有文件到该仓库git commit -m &quot;first commit&quot; # 提交到仓库git remote add origin git">
+<meta name="description" content="背景上传本地项目到    github或公司私有服务器中，便于代码的存储、协同操作，步骤如下：1234ssh-keygen -t rsa -C &quot;wuxiangji@tucodec.com&quot; # 上述命令会在用户主目录的.ssh目录下，生成id_rsa(私钥)和id_rsa.pub(公钥)# 登陆Git，将公钥添加到“Account settings”，“SSH Keys”即可# Git的ssh">
 <meta name="keywords" content="Linux">
 <meta property="og:type" content="article">
-<meta property="og:title" content="git">
+<meta property="og:title" content="Git相关操作">
 <meta property="og:url" content="http://yoursite.com/2018/05/04/git/index.html">
 <meta property="og:site_name" content="Deep Coding">
-<meta property="og:description" content="背景上传本地项目到    github仓库中，便于代码的管理、更新，步骤如下： 在github上新建一个repository，并记录该仓库地址使用命令行进行上传1234567# cd 项目跟目录git init # 建立本地git仓库git add . # 添加所有文件到该仓库git commit -m &quot;first commit&quot; # 提交到仓库git remote add origin git">
+<meta property="og:description" content="背景上传本地项目到    github或公司私有服务器中，便于代码的存储、协同操作，步骤如下：1234ssh-keygen -t rsa -C &quot;wuxiangji@tucodec.com&quot; # 上述命令会在用户主目录的.ssh目录下，生成id_rsa(私钥)和id_rsa.pub(公钥)# 登陆Git，将公钥添加到“Account settings”，“SSH Keys”即可# Git的ssh">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-05-04T10:55:34.324Z">
+<meta property="og:updated_time" content="2018-05-14T13:08:21.452Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="git">
-<meta name="twitter:description" content="背景上传本地项目到    github仓库中，便于代码的管理、更新，步骤如下： 在github上新建一个repository，并记录该仓库地址使用命令行进行上传1234567# cd 项目跟目录git init # 建立本地git仓库git add . # 添加所有文件到该仓库git commit -m &quot;first commit&quot; # 提交到仓库git remote add origin git">
+<meta name="twitter:title" content="Git相关操作">
+<meta name="twitter:description" content="背景上传本地项目到    github或公司私有服务器中，便于代码的存储、协同操作，步骤如下：1234ssh-keygen -t rsa -C &quot;wuxiangji@tucodec.com&quot; # 上述命令会在用户主目录的.ssh目录下，生成id_rsa(私钥)和id_rsa.pub(公钥)# 登陆Git，将公钥添加到“Account settings”，“SSH Keys”即可# Git的ssh">
 
 
 
@@ -133,7 +133,7 @@
 
 
 
-  <title>git | Deep Coding</title>
+  <title>Git相关操作 | Deep Coding</title>
   
 
 
@@ -277,7 +277,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">git</h1>
+          <h1 class="post-title" itemprop="name headline">Git相关操作</h1>
         
 
         <div class="post-meta">
@@ -337,9 +337,11 @@
       
 
       
-        <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>上传本地项目到    <code>github</code>仓库中，便于代码的管理、更新，步骤如下：</p>
-<h4 id="在github上新建一个repository，并记录该仓库地址"><a href="#在github上新建一个repository，并记录该仓库地址" class="headerlink" title="在github上新建一个repository，并记录该仓库地址"></a>在github上新建一个repository，并记录该仓库地址</h4><h4 id="使用命令行进行上传"><a href="#使用命令行进行上传" class="headerlink" title="使用命令行进行上传"></a>使用命令行进行上传</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># cd 项目跟目录</span></span><br><span class="line">git init <span class="comment"># 建立本地git仓库</span></span><br><span class="line">git add . <span class="comment"># 添加所有文件到该仓库</span></span><br><span class="line">git commit -m <span class="string">"first commit"</span> <span class="comment"># 提交到仓库</span></span><br><span class="line">git remote add origin git@github.com:Wxjwjj/Facial-Landmark.git <span class="comment"># 本地的仓库关联到GitHub，后面是你新建的github仓库地址</span></span><br><span class="line">git pull origin master <span class="comment"># 上传github之前pull一下</span></span><br><span class="line">git push -u origin master <span class="comment"># 上传代码到GitHub远程仓库</span></span><br></pre></td></tr></table></figure>
-<h4 id="使用命令行进行代码更新"><a href="#使用命令行进行代码更新" class="headerlink" title="使用命令行进行代码更新"></a>使用命令行进行代码更新</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">git status <span class="comment"># 查看当前的git仓库状态</span></span><br><span class="line">git add *</span><br><span class="line">git commit -m <span class="string">"更新说明"</span></span><br><span class="line">git pull</span><br><span class="line">git push origin master</span><br></pre></td></tr></table></figure>
+        <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>上传本地项目到    <code>github</code>或公司私有服务器中，便于代码的存储、协同操作，步骤如下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -C <span class="string">"wuxiangji@tucodec.com"</span> </span><br><span class="line"><span class="comment"># 上述命令会在用户主目录的.ssh目录下，生成id_rsa(私钥)和id_rsa.pub(公钥)</span></span><br><span class="line"><span class="comment"># 登陆Git，将公钥添加到“Account settings”，“SSH Keys”即可</span></span><br><span class="line"><span class="comment"># Git的ssh key本质上就是建立了本机与服务器的连接，而且免去了以后输入密码的烦恼</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="git为不同的项目设置不同的用户名"><a href="#git为不同的项目设置不同的用户名" class="headerlink" title="git为不同的项目设置不同的用户名"></a>git为不同的项目设置不同的用户名</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># cd 项目跟目录</span></span><br><span class="line">git init 					<span class="comment"># 建立本地git仓库</span></span><br><span class="line">git config user.name <span class="string">"gitlab's Name"</span></span><br><span class="line">git config user.email <span class="string">"gitlab@xx.com"</span></span><br><span class="line">git config --list <span class="comment"># 查看当前配置, 在当前项目下面查看的配置是全局配置+当前项目的配置, 使用的时候会优先使用当前项目的配置</span></span><br></pre></td></tr></table></figure>
+<h4 id="配置多账户ssh-key"><a href="#配置多账户ssh-key" class="headerlink" title="配置多账户ssh key"></a>配置多账户ssh key</h4><p>在 ~/.ssh 目录下新建一个config文件<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Host 192.28.1.81</span><br><span class="line">    HostName 192.28.1.81</span><br><span class="line">    Port 2222</span><br><span class="line">    User Xiangji_WU</span><br><span class="line">    IdentityFile ~/.ssh/id_rsa_xxx</span><br><span class="line"></span><br><span class="line">Host 192.28.1.83</span><br><span class="line">    HostName 192.28.1.83</span><br><span class="line">    Port 2222</span><br><span class="line">    User Xiangji_WU</span><br><span class="line">    IdentityFile ~/.ssh/id_rsa_yyy</span><br></pre></td></tr></table></figure></p>
+<h4 id="使用命令行进行上传"><a href="#使用命令行进行上传" class="headerlink" title="使用命令行进行上传"></a>使用命令行进行上传</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># cd 项目跟目录</span></span><br><span class="line">git init <span class="comment"># 建立本地git仓库</span></span><br><span class="line">git add . </span><br><span class="line">git commit -m <span class="string">"first commit"</span> </span><br><span class="line">git remote add origin git@github.com:Wxjwjj/Facial-Landmark.git <span class="comment"># 关联某个远程库</span></span><br><span class="line">git pull origin master 		<span class="comment"># 要取回origin主机的分支，与本地的master分支合并</span></span><br><span class="line">git push -u origin master  	<span class="comment"># 第一次推送master分支的所有内容</span></span><br></pre></td></tr></table></figure>
+<h4 id="使用命令行进行代码更新"><a href="#使用命令行进行代码更新" class="headerlink" title="使用命令行进行代码更新"></a>使用命令行进行代码更新</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">git status 					<span class="comment"># 查看当前的git仓库状态</span></span><br><span class="line">git diff readme.txt 		<span class="comment"># 查看修改后的readme.txt和之前的区别</span></span><br><span class="line">git add readme.txt  		<span class="comment"># 文件添加到暂存区 注意每次修改，如果不add到暂存区，那就不会加入到commit中</span></span><br><span class="line">git commit -m <span class="string">"更新说明"</span> 		<span class="comment"># 暂存区的内容提交到当前master分支</span></span><br><span class="line">git <span class="built_in">log</span> --pretty=oneline 	<span class="comment"># 查看一共提交了多少版本</span></span><br><span class="line">git reflog 					<span class="comment"># 查看命令历史</span></span><br><span class="line">git reset --hard  head^ </span><br><span class="line"><span class="comment"># HEAD指向的版本就是当前版本，当要在多个版本的历史之间穿梭，使用命令 git reset --hard commit_id</span></span><br><span class="line">git reset HEAD readme.txt 	<span class="comment"># 已经添加到暂存区的修改</span></span><br><span class="line">git checkout -- readme.txt 	<span class="comment"># 进撤销工作区内容的修改</span></span><br><span class="line">git checkout -- readme.txt 	<span class="comment"># rm指令误删的文件可以从版本库中进行恢复</span></span><br><span class="line">git rm readme.txt 			<span class="comment"># 从版本库中彻底删除，并且要进行commit</span></span><br><span class="line">git commit -m <span class="string">"remove test.txt"</span> </span><br><span class="line">git pull 					<span class="comment"># 当前分支自动与唯一一个追踪分支进行合并</span></span><br><span class="line">git push origin master</span><br></pre></td></tr></table></figure>
       
     </div>
     
@@ -413,7 +415,7 @@
   
     <div class="comments" id="comments">
       <div class="ds-thread" data-thread-key="2018/05/04/git/"
-           data-title="git" data-url="http://yoursite.com/2018/05/04/git/">
+           data-title="Git相关操作" data-url="http://yoursite.com/2018/05/04/git/">
       </div>
     </div>
 
@@ -469,7 +471,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">41</span>
+                  <span class="site-state-item-count">42</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -537,7 +539,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#在github上新建一个repository，并记录该仓库地址"><span class="nav-number">1.1.</span> <span class="nav-text">在github上新建一个repository，并记录该仓库地址</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用命令行进行上传"><span class="nav-number">1.2.</span> <span class="nav-text">使用命令行进行上传</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用命令行进行代码更新"><span class="nav-number">1.3.</span> <span class="nav-text">使用命令行进行代码更新</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#git为不同的项目设置不同的用户名"><span class="nav-number">1.1.</span> <span class="nav-text">git为不同的项目设置不同的用户名</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置多账户ssh-key"><span class="nav-number">1.2.</span> <span class="nav-text">配置多账户ssh key</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用命令行进行上传"><span class="nav-number">1.3.</span> <span class="nav-text">使用命令行进行上传</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用命令行进行代码更新"><span class="nav-number">1.4.</span> <span class="nav-text">使用命令行进行代码更新</span></a></li></ol></li></ol></div>
             
 
           </div>
@@ -583,7 +585,7 @@
  
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共34.0k字</span>
+  <span class="post-count">博客全站共34.9k字</span>
 </div>
 
 <div class="powered-by">

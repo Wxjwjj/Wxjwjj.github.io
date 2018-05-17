@@ -259,6 +259,141 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/14/jpeg/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="祥吉">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Deep Coding">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/05/14/jpeg/" itemprop="url">JPEG图像压缩原理解析</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-14T14:55:06+08:00">
+                2018-05-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/05/14/jpeg/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/05/14/jpeg/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h4><p>JPEG是一种有损压缩技术，在保证视觉效果差别不大的情况下，压缩比可以达到几十倍。它的原理是去除图像中一些不重要的部分，从而用更小的体积保存。一个形象的例子就是“四舍五入”，比如“2.1000000001”，保存为“2.1”，就去掉了“0.0000001”，保留了重要部分做原数字的近似。</p>
+<h4 id="图像分割"><a href="#图像分割" class="headerlink" title="图像分割"></a>图像分割</h4><p>首先将RBG图像转换为YUV(亮度-色差)图像，这是因为人的视觉系统对亮度变化最为敏感，YUV图像可以把亮度channel单独剥离进行处理，更适合图像压缩场景。如图是一幅彩色图像的YUV分量，从中可以看到Y通道携带了图像的大部分细节信息<img src="/img/YUV.png" width="550" alt="图片名称" align="center"> 接着将图像分割成$8\ast 8$的小块，用于后续$DCT$变换的单独处理。</p>
+<h4 id="DCT离散余弦变换"><a href="#DCT离散余弦变换" class="headerlink" title="DCT离散余弦变换"></a>DCT离散余弦变换</h4><p>DCT可以将图像以频域的形式进行表达，经过DCT变换，图像左上角会集中低频部分的能量，右下角集中高频，数值越大，代表此处的能量越多。下图是某前辈对Lena图的第一个$8\ast 8$小块进行DCT变换的结果。<img src="/img/dct1.png" width="550" alt="图片名称" align="center"></p>
+<h4 id="量化"><a href="#量化" class="headerlink" title="量化"></a>量化</h4><p>到目前为止依然是无损的，由于人眼对高频不敏感的特性，我们试图过滤这些右下角的高频分量，此时就要用到<strong>量化</strong>。说白了就是分别scale，把左上角的除一个较小值，右下角的除一个较大值，接着对结果进行取整，这样就会导致右下脚大部分变为0，非常有利于后面的压缩。<img src="/img/dct2.png" width="550" alt="图片名称" align="center"> 但量化时候并不是随便scale，经过长期的经验，人们得到了上面两张量化表，对应位置相除即可（在量化表上乘一个系数，可以得到不同的压缩比）。量化后的结果如下，右下角已大部分为0。<br><img src="/img/dct3.png" width="550" alt="图片名称" align="center">  接着将上述矩阵按Z形编码，得到一个一维数组：<br>Eg:<code>35,7,0,0,0,-6,-2,0,0,-9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,8,0,0,0,…,0</code>，目的是尽可能使0分布在一起。接着主要对非0部分进行编码：采用JPEG提供的标准码表，及霍夫曼编码（无损），得到最终的压缩数据。</p>
+<h4 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h4><p>JPEG编码流程：图像色彩空间变换——DCT——量化(有损)——霍夫曼编码<br>解码流程：霍夫曼编码恢复——反量化——IDCT——重建图</p>
+<h4 id="Ref"><a href="#Ref" class="headerlink" title="Ref"></a>Ref</h4><p><a href="https://thecodeway.com/blog/?p=522" target="_blank" rel="noopener">JPEG哈夫曼编码数组</a><br><a href="https://blog.csdn.net/w394221268/article/details/52232933" target="_blank" rel="noopener">JPEG算法解密</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/07/Retrieval/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -430,7 +565,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/05/04/git/" itemprop="url">git</a></h1>
+                <a class="post-title-link" href="/2018/05/04/git/" itemprop="url">Git相关操作</a></h1>
         
 
         <div class="post-meta">
@@ -492,9 +627,11 @@
       
         
           
-            <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>上传本地项目到    <code>github</code>仓库中，便于代码的管理、更新，步骤如下：</p>
-<h4 id="在github上新建一个repository，并记录该仓库地址"><a href="#在github上新建一个repository，并记录该仓库地址" class="headerlink" title="在github上新建一个repository，并记录该仓库地址"></a>在github上新建一个repository，并记录该仓库地址</h4><h4 id="使用命令行进行上传"><a href="#使用命令行进行上传" class="headerlink" title="使用命令行进行上传"></a>使用命令行进行上传</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># cd 项目跟目录</span></span><br><span class="line">git init <span class="comment"># 建立本地git仓库</span></span><br><span class="line">git add . <span class="comment"># 添加所有文件到该仓库</span></span><br><span class="line">git commit -m <span class="string">"first commit"</span> <span class="comment"># 提交到仓库</span></span><br><span class="line">git remote add origin git@github.com:Wxjwjj/Facial-Landmark.git <span class="comment"># 本地的仓库关联到GitHub，后面是你新建的github仓库地址</span></span><br><span class="line">git pull origin master <span class="comment"># 上传github之前pull一下</span></span><br><span class="line">git push -u origin master <span class="comment"># 上传代码到GitHub远程仓库</span></span><br></pre></td></tr></table></figure>
-<h4 id="使用命令行进行代码更新"><a href="#使用命令行进行代码更新" class="headerlink" title="使用命令行进行代码更新"></a>使用命令行进行代码更新</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">git status <span class="comment"># 查看当前的git仓库状态</span></span><br><span class="line">git add *</span><br><span class="line">git commit -m <span class="string">"更新说明"</span></span><br><span class="line">git pull</span><br><span class="line">git push origin master</span><br></pre></td></tr></table></figure>
+            <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>上传本地项目到    <code>github</code>或公司私有服务器中，便于代码的存储、协同操作，步骤如下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -C <span class="string">"wuxiangji@tucodec.com"</span> </span><br><span class="line"><span class="comment"># 上述命令会在用户主目录的.ssh目录下，生成id_rsa(私钥)和id_rsa.pub(公钥)</span></span><br><span class="line"><span class="comment"># 登陆Git，将公钥添加到“Account settings”，“SSH Keys”即可</span></span><br><span class="line"><span class="comment"># Git的ssh key本质上就是建立了本机与服务器的连接，而且免去了以后输入密码的烦恼</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="git为不同的项目设置不同的用户名"><a href="#git为不同的项目设置不同的用户名" class="headerlink" title="git为不同的项目设置不同的用户名"></a>git为不同的项目设置不同的用户名</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># cd 项目跟目录</span></span><br><span class="line">git init 					<span class="comment"># 建立本地git仓库</span></span><br><span class="line">git config user.name <span class="string">"gitlab's Name"</span></span><br><span class="line">git config user.email <span class="string">"gitlab@xx.com"</span></span><br><span class="line">git config --list <span class="comment"># 查看当前配置, 在当前项目下面查看的配置是全局配置+当前项目的配置, 使用的时候会优先使用当前项目的配置</span></span><br></pre></td></tr></table></figure>
+<h4 id="配置多账户ssh-key"><a href="#配置多账户ssh-key" class="headerlink" title="配置多账户ssh key"></a>配置多账户ssh key</h4><p>在 ~/.ssh 目录下新建一个config文件<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Host 192.28.1.81</span><br><span class="line">    HostName 192.28.1.81</span><br><span class="line">    Port 2222</span><br><span class="line">    User Xiangji_WU</span><br><span class="line">    IdentityFile ~/.ssh/id_rsa_xxx</span><br><span class="line"></span><br><span class="line">Host 192.28.1.83</span><br><span class="line">    HostName 192.28.1.83</span><br><span class="line">    Port 2222</span><br><span class="line">    User Xiangji_WU</span><br><span class="line">    IdentityFile ~/.ssh/id_rsa_yyy</span><br></pre></td></tr></table></figure></p>
+<h4 id="使用命令行进行上传"><a href="#使用命令行进行上传" class="headerlink" title="使用命令行进行上传"></a>使用命令行进行上传</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># cd 项目跟目录</span></span><br><span class="line">git init <span class="comment"># 建立本地git仓库</span></span><br><span class="line">git add . </span><br><span class="line">git commit -m <span class="string">"first commit"</span> </span><br><span class="line">git remote add origin git@github.com:Wxjwjj/Facial-Landmark.git <span class="comment"># 关联某个远程库</span></span><br><span class="line">git pull origin master 		<span class="comment"># 要取回origin主机的分支，与本地的master分支合并</span></span><br><span class="line">git push -u origin master  	<span class="comment"># 第一次推送master分支的所有内容</span></span><br></pre></td></tr></table></figure>
+<h4 id="使用命令行进行代码更新"><a href="#使用命令行进行代码更新" class="headerlink" title="使用命令行进行代码更新"></a>使用命令行进行代码更新</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">git status 					<span class="comment"># 查看当前的git仓库状态</span></span><br><span class="line">git diff readme.txt 		<span class="comment"># 查看修改后的readme.txt和之前的区别</span></span><br><span class="line">git add readme.txt  		<span class="comment"># 文件添加到暂存区 注意每次修改，如果不add到暂存区，那就不会加入到commit中</span></span><br><span class="line">git commit -m <span class="string">"更新说明"</span> 		<span class="comment"># 暂存区的内容提交到当前master分支</span></span><br><span class="line">git <span class="built_in">log</span> --pretty=oneline 	<span class="comment"># 查看一共提交了多少版本</span></span><br><span class="line">git reflog 					<span class="comment"># 查看命令历史</span></span><br><span class="line">git reset --hard  head^ </span><br><span class="line"><span class="comment"># HEAD指向的版本就是当前版本，当要在多个版本的历史之间穿梭，使用命令 git reset --hard commit_id</span></span><br><span class="line">git reset HEAD readme.txt 	<span class="comment"># 已经添加到暂存区的修改</span></span><br><span class="line">git checkout -- readme.txt 	<span class="comment"># 进撤销工作区内容的修改</span></span><br><span class="line">git checkout -- readme.txt 	<span class="comment"># rm指令误删的文件可以从版本库中进行恢复</span></span><br><span class="line">git rm readme.txt 			<span class="comment"># 从版本库中彻底删除，并且要进行commit</span></span><br><span class="line">git commit -m <span class="string">"remove test.txt"</span> </span><br><span class="line">git pull 					<span class="comment"># 当前分支自动与唯一一个追踪分支进行合并</span></span><br><span class="line">git push origin master</span><br></pre></td></tr></table></figure>
           
         
       
@@ -1523,140 +1660,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/27/ubtuntusys-4/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="祥吉">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Deep Coding">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/03/27/ubtuntusys-4/" itemprop="url">Ubuntu1604装机系列(五)：认识Ubuntu系统目录</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-27T14:08:34+08:00">
-                2018-03-27
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/03/27/ubtuntusys-4/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/03/27/ubtuntusys-4/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h4><p>装拆了十几遍ubuntu1604系统、opencv3.1/3.4、cuda8/9后，开始慢慢领悟到ubuntu系统文件即一切的魅力。<br>&nbsp;<br><strong>usr：</strong> 并不是user的意思，而是unix system resrouces，所以上述文件夹都是系统目录，跟服务器中的某个单独用户没什么”私人关系”，直白点说，所有用户都可以访问。<br><strong>bin：</strong> 指代binary，二进制/可执行程序的存储目录，直白点说，这里的文件都可以在terminal中直接输入进行访问</p>
-<hr>
-<p><strong>/bin:</strong> 存储ubuntu很底层的可执行文件，你用到的<code>cp</code>, <code>ls</code>, <code>mv</code>等基本指令都在这里。<br><strong>/usr/bin：</strong>存储系统级的可执行文件，以及apt-get安装的文件。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/bin</span><br><span class="line">ls | grep python     <span class="comment"># 系统自带python</span></span><br><span class="line">python </span><br><span class="line">python3</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">ls | grep ssh       <span class="comment"># 笔者apt-get安装的ssh、tmux软件</span></span><br><span class="line">ssh</span><br><span class="line"></span><br><span class="line">ls | grep tmux</span><br><span class="line">tmux</span><br></pre></td></tr></table></figure></p>
-<p><strong>/usr/local/：</strong>很多人都说用户自己编译的安装目录就在这里，比如opencv、比如cuda。这种方式一般是通过sudo安装。但刚刚说了这些系统目录所有用户都可以访问，所以当A用户装了cuda8，B用户装了cuda9，A用户装了opencv2，B用户装了opencv3…这样就会造成local目录极其混乱。<br>&nbsp;<br>所以建议在安装<code>cuda</code>、<code>opencv</code>时，在安装选项/cmake中指定安装目录到一可见文件夹，比如<code>/home/cuda/</code>，<code>/home/Matlab</code>，这样即使安装出错，删除整个<code>cuda</code>或<code>Matlab</code>文件夹就行了。就没必要非得安装在<code>/usr/local</code>目录。<br>&nbsp;<br><strong>/usr/local/bin：</strong>存储用户级的可执行文件。还是拿matlab来说，可以将/home/Matlab下的bin文件建立软连接到这里，这样系统就可以搜索到了，在终端直接开启matlab。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ln -s /home/Matlab/r2017b/bin/matlab /usr/<span class="built_in">local</span>/bin/matlab</span><br></pre></td></tr></table></figure></p>
-<p><strong>小结：</strong><br><code>/usr/...</code>下的文件，所有用户都可以访问<br><code>bin/</code>、<code>/usr/bin</code>、<code>/usr/local/bin</code>，只要在bin目录下的，都可以在terminal中直接访问。关系为层层递进，以上面的matlab来说，你确实也可以将软连接放到前面两个目录。但它没有cp、mv这些指令底层，也没有python这些工具，是每个用户的通用工具。所以放到最上层的local 目录即可。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1711,7 +1714,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">41</span>
+                  <span class="site-state-item-count">42</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1809,7 +1812,7 @@
  
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共34.0k字</span>
+  <span class="post-count">博客全站共34.9k字</span>
 </div>
 
 <div class="powered-by">

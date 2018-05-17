@@ -75,7 +75,7 @@
 
 
 
-  <meta name="keywords" content="Linux," />
+  <meta name="keywords" content="CV," />
 
 
 
@@ -86,18 +86,23 @@
 
 
 
-<meta name="description" content="20180312更新，之前的操作太复杂了，安装位置也不易管理。在冯博的帮助下，使用下面的方法，修改gcc版本时候只要修改下述软连接便可以了12345678sudo apt-get install gcc-4.9sudo apt-get install g++-4.9 //自动安装到/usr/bin目录下which gcccd 到 gcc 目录ll | grep gcc 显示包含gcc的软连接sud">
-<meta name="keywords" content="Linux">
+<meta name="description" content="背景JPEG是一种有损压缩技术，在保证视觉效果差别不大的情况下，压缩比可以达到几十倍。它的原理是去除图像中一些不重要的部分，从而用更小的体积保存。一个形象的例子就是“四舍五入”，比如“2.1000000001”，保存为“2.1”，就去掉了“0.0000001”，保留了重要部分做原数字的近似。 图像分割首先将RBG图像转换为YUV(亮度-色差)图像，这是因为人的视觉系统对亮度变化最为敏感，YUV图像">
+<meta name="keywords" content="CV">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Ubuntu下gcc&#x2F;g++多版本切换">
-<meta property="og:url" content="http://yoursite.com/2018/02/25/gcc/index.html">
+<meta property="og:title" content="JPEG图像压缩原理解析">
+<meta property="og:url" content="http://yoursite.com/2018/05/14/jpeg/index.html">
 <meta property="og:site_name" content="Deep Coding">
-<meta property="og:description" content="20180312更新，之前的操作太复杂了，安装位置也不易管理。在冯博的帮助下，使用下面的方法，修改gcc版本时候只要修改下述软连接便可以了12345678sudo apt-get install gcc-4.9sudo apt-get install g++-4.9 //自动安装到/usr/bin目录下which gcccd 到 gcc 目录ll | grep gcc 显示包含gcc的软连接sud">
+<meta property="og:description" content="背景JPEG是一种有损压缩技术，在保证视觉效果差别不大的情况下，压缩比可以达到几十倍。它的原理是去除图像中一些不重要的部分，从而用更小的体积保存。一个形象的例子就是“四舍五入”，比如“2.1000000001”，保存为“2.1”，就去掉了“0.0000001”，保留了重要部分做原数字的近似。 图像分割首先将RBG图像转换为YUV(亮度-色差)图像，这是因为人的视觉系统对亮度变化最为敏感，YUV图像">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-15T12:09:53.719Z">
+<meta property="og:image" content="http://yoursite.com/img/YUV.png">
+<meta property="og:image" content="http://yoursite.com/img/dct1.png">
+<meta property="og:image" content="http://yoursite.com/img/dct2.png">
+<meta property="og:image" content="http://yoursite.com/img/dct3.png">
+<meta property="og:updated_time" content="2018-05-14T09:26:27.254Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Ubuntu下gcc&#x2F;g++多版本切换">
-<meta name="twitter:description" content="20180312更新，之前的操作太复杂了，安装位置也不易管理。在冯博的帮助下，使用下面的方法，修改gcc版本时候只要修改下述软连接便可以了12345678sudo apt-get install gcc-4.9sudo apt-get install g++-4.9 //自动安装到/usr/bin目录下which gcccd 到 gcc 目录ll | grep gcc 显示包含gcc的软连接sud">
+<meta name="twitter:title" content="JPEG图像压缩原理解析">
+<meta name="twitter:description" content="背景JPEG是一种有损压缩技术，在保证视觉效果差别不大的情况下，压缩比可以达到几十倍。它的原理是去除图像中一些不重要的部分，从而用更小的体积保存。一个形象的例子就是“四舍五入”，比如“2.1000000001”，保存为“2.1”，就去掉了“0.0000001”，保留了重要部分做原数字的近似。 图像分割首先将RBG图像转换为YUV(亮度-色差)图像，这是因为人的视觉系统对亮度变化最为敏感，YUV图像">
+<meta name="twitter:image" content="http://yoursite.com/img/YUV.png">
 
 
 
@@ -127,13 +132,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/02/25/gcc/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/05/14/jpeg/"/>
 
 
 
 
 
-  <title>Ubuntu下gcc/g++多版本切换 | Deep Coding</title>
+  <title>JPEG图像压缩原理解析 | Deep Coding</title>
   
 
 
@@ -260,7 +265,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/25/gcc/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/14/jpeg/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="祥吉">
@@ -277,7 +282,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Ubuntu下gcc/g++多版本切换</h1>
+          <h1 class="post-title" itemprop="name headline">JPEG图像压缩原理解析</h1>
         
 
         <div class="post-meta">
@@ -289,8 +294,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-25T20:10:19+08:00">
-                2018-02-25
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-14T14:55:06+08:00">
+                2018-05-14
               </time>
             
 
@@ -308,8 +313,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/02/25/gcc/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/02/25/gcc/" itemprop="commentCount"></span>
+                <a href="/2018/05/14/jpeg/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/05/14/jpeg/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -337,17 +342,12 @@
       
 
       
-        <p><font color="red"><strong>20180312更新，之前的操作太复杂了，安装位置也不易管理。在冯博的帮助下，使用下面的方法，修改<code>gcc</code>版本时候只要修改下述软连接便可以了</strong></font><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install gcc-4.9</span><br><span class="line">sudo apt-get install g++-4.9 //自动安装到/usr/bin目录下</span><br><span class="line"><span class="built_in">which</span> gcc</span><br><span class="line"><span class="built_in">cd</span> 到 gcc 目录</span><br><span class="line">ll | grep gcc 显示包含gcc的软连接</span><br><span class="line">sudo rm gcc </span><br><span class="line">sudo ln -sf gcc-4.9 gcc</span><br><span class="line">sudo ln -sf g++-4.9 g++</span><br></pre></td></tr></table></figure></p>
-<hr>
-<p>在编译不同的程序时，往往会遇到gcc、g++版本不兼容问题，那可不可以动态切换gcc&amp;g++环境，来满足编译需求呢？答案是可以的。<br>先看看系统内的<code>gcc</code>和<code>g++</code>是什么版本<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc --version</span><br></pre></td></tr></table></figure></p>
-<p>可以获得如下信息<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc version 5.4.0</span><br></pre></td></tr></table></figure></p>
-<p>查看系统内有哪些版本的gcc<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls /usr/bin/gcc*</span><br></pre></td></tr></table></figure></p>
-<p>首先安装其他版本的<code>gcc</code>、<code>g++</code><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install gcc-4.9 gcc-4.9-multilib g++-4.9 g++-4.9-multilib</span><br></pre></td></tr></table></figure></p>
-<p>安装好后输入以下指令，替换系统默认的<code>gcc</code>：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 40 </span><br><span class="line">sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-5.4 54</span><br></pre></td></tr></table></figure></p>
-<p>接着输入：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo update-alternatives --config gcc</span><br></pre></td></tr></table></figure></p>
-<p>会看到如下的选项，有3个候选项可用于替换<code>gcc</code><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">*0            /usr/bin/gcc-5  50        </span><br><span class="line"> 1            /usr/bin/gcc-5  50        </span><br><span class="line"> 2            /usr/bin/gcc-4.9  40</span><br></pre></td></tr></table></figure></p>
-<p>要维持当前值<code>*</code>请按回车键，或者键入你想切换的gcc版本编号!<br>同样也要设置一下<code>g++</code>的， 方法同上<br>如果想删除可选项的话可以键入以下指令：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo update-alternatives --remove gcc /usr/bin/gcc-4.9</span><br></pre></td></tr></table></figure></p>
-<p>再用<code>gcc -version</code> 来看一下版本是否改变了。</p>
+        <h4 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h4><p>JPEG是一种有损压缩技术，在保证视觉效果差别不大的情况下，压缩比可以达到几十倍。它的原理是去除图像中一些不重要的部分，从而用更小的体积保存。一个形象的例子就是“四舍五入”，比如“2.1000000001”，保存为“2.1”，就去掉了“0.0000001”，保留了重要部分做原数字的近似。</p>
+<h4 id="图像分割"><a href="#图像分割" class="headerlink" title="图像分割"></a>图像分割</h4><p>首先将RBG图像转换为YUV(亮度-色差)图像，这是因为人的视觉系统对亮度变化最为敏感，YUV图像可以把亮度channel单独剥离进行处理，更适合图像压缩场景。如图是一幅彩色图像的YUV分量，从中可以看到Y通道携带了图像的大部分细节信息<img src="/img/YUV.png" width="550" alt="图片名称" align="center"> 接着将图像分割成$8\ast 8$的小块，用于后续$DCT$变换的单独处理。</p>
+<h4 id="DCT离散余弦变换"><a href="#DCT离散余弦变换" class="headerlink" title="DCT离散余弦变换"></a>DCT离散余弦变换</h4><p>DCT可以将图像以频域的形式进行表达，经过DCT变换，图像左上角会集中低频部分的能量，右下角集中高频，数值越大，代表此处的能量越多。下图是某前辈对Lena图的第一个$8\ast 8$小块进行DCT变换的结果。<img src="/img/dct1.png" width="550" alt="图片名称" align="center"></p>
+<h4 id="量化"><a href="#量化" class="headerlink" title="量化"></a>量化</h4><p>到目前为止依然是无损的，由于人眼对高频不敏感的特性，我们试图过滤这些右下角的高频分量，此时就要用到<strong>量化</strong>。说白了就是分别scale，把左上角的除一个较小值，右下角的除一个较大值，接着对结果进行取整，这样就会导致右下脚大部分变为0，非常有利于后面的压缩。<img src="/img/dct2.png" width="550" alt="图片名称" align="center"> 但量化时候并不是随便scale，经过长期的经验，人们得到了上面两张量化表，对应位置相除即可（在量化表上乘一个系数，可以得到不同的压缩比）。量化后的结果如下，右下角已大部分为0。<br><img src="/img/dct3.png" width="550" alt="图片名称" align="center">  接着将上述矩阵按Z形编码，得到一个一维数组：<br>Eg:<code>35,7,0,0,0,-6,-2,0,0,-9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,8,0,0,0,…,0</code>，目的是尽可能使0分布在一起。接着主要对非0部分进行编码：采用JPEG提供的标准码表，及霍夫曼编码（无损），得到最终的压缩数据。</p>
+<h4 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h4><p>JPEG编码流程：图像色彩空间变换——DCT——量化(有损)——霍夫曼编码<br>解码流程：霍夫曼编码恢复——反量化——IDCT——重建图</p>
+<h4 id="Ref"><a href="#Ref" class="headerlink" title="Ref"></a>Ref</h4><p><a href="https://thecodeway.com/blog/?p=522" target="_blank" rel="noopener">JPEG哈夫曼编码数组</a><br><a href="https://blog.csdn.net/w394221268/article/details/52232933" target="_blank" rel="noopener">JPEG算法解密</a></p>
 
       
     </div>
@@ -365,7 +365,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Linux/" rel="tag"><i class="fa fa-tag"></i> Linux</a>
+            <a href="/tags/CV/" rel="tag"><i class="fa fa-tag"></i> CV</a>
           
         </div>
       
@@ -378,8 +378,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/02/24/norm/" rel="next" title="神经网络中的权重初始化">
-                <i class="fa fa-chevron-left"></i> 神经网络中的权重初始化
+              <a href="/2018/05/07/Retrieval/" rel="next" title="两种常用的图像检索算法">
+                <i class="fa fa-chevron-left"></i> 两种常用的图像检索算法
               </a>
             
           </div>
@@ -387,10 +387,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/02/27/BP/" rel="prev" title="神经网络反向传播算法推导">
-                神经网络反向传播算法推导 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -421,8 +417,8 @@
 
   
     <div class="comments" id="comments">
-      <div class="ds-thread" data-thread-key="2018/02/25/gcc/"
-           data-title="Ubuntu下gcc/g++多版本切换" data-url="http://yoursite.com/2018/02/25/gcc/">
+      <div class="ds-thread" data-thread-key="2018/05/14/jpeg/"
+           data-title="JPEG图像压缩原理解析" data-url="http://yoursite.com/2018/05/14/jpeg/">
       </div>
     </div>
 
@@ -449,8 +445,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -527,6 +532,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#图像分割"><span class="nav-number">2.</span> <span class="nav-text">图像分割</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#DCT离散余弦变换"><span class="nav-number">3.</span> <span class="nav-text">DCT离散余弦变换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#量化"><span class="nav-number">4.</span> <span class="nav-text">量化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#小结"><span class="nav-number">5.</span> <span class="nav-text">小结</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Ref"><span class="nav-number">6.</span> <span class="nav-text">Ref</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -742,6 +763,26 @@
   
 
   
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
   
 
 

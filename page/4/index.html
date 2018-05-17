@@ -259,6 +259,148 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/01/python-5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="祥吉">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Deep Coding">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/02/01/python-5/" itemprop="url">python操作(五)：函数、变量及类</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-01T11:05:03+08:00">
+                2018-02-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/02/01/python-5/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/02/01/python-5/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h3><p>在 python 中，类型属于对象，变量是没有类型的，Eg：<code>a=[1,2,3]</code>，其中[1,2,3] 是 List 类型，而变量 a 没有类型，它仅仅是一个对象的引用</p>
+<h3 id="函数的参数传递"><a href="#函数的参数传递" class="headerlink" title="函数的参数传递"></a>函数的参数传递</h3><blockquote>
+<p>不可变类型：类似 c++ 的值传递，如 整数、字符串、元组。如fun（a），传递的只是a的值，没有影响a对象本身。<br>可变类型：类似 c++ 的引用传递，如 列表，字典。如 fun（la），则是将 la 真正的传过去，修改后fun外部的la也会受影响</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">changeme</span><span class="params">( mylist )</span>:</span></span><br><span class="line">    mylist.append([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>])</span><br><span class="line">    <span class="keyword">print</span> (<span class="string">"函数内取值: "</span>, mylist)</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">mylist = [<span class="number">10</span>,<span class="number">20</span>,<span class="number">30</span>]</span><br><span class="line">changeme( mylist )</span><br><span class="line"><span class="comment">#函数内取值:  [10, 20, 30, [1, 2, 3, 4]]</span></span><br><span class="line"><span class="keyword">print</span> (<span class="string">"函数外取值: "</span>, mylist)</span><br><span class="line"><span class="comment">#函数外取值:  [10, 20, 30, [1, 2, 3, 4]]</span></span><br></pre></td></tr></table></figure>
+<h3 id="关键词参数"><a href="#关键词参数" class="headerlink" title="关键词参数"></a>关键词参数</h3><p>python中调用关键词参数，不用注意顺序，解释器会自动进行匹配<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">printinfo( age=<span class="number">50</span>, name=<span class="string">"runoob"</span> )</span><br></pre></td></tr></table></figure></p>
+<h3 id="python遍历："><a href="#python遍历：" class="headerlink" title="python遍历："></a>python遍历：</h3><p>Python3 range() 函数返回的是一个可迭代对象（类型是对象），而不是列表类型， 所以打印的时候不会打印列表<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">range(<span class="number">5</span>)</span><br><span class="line"><span class="comment">#range(0, 5)</span></span><br><span class="line">list(range(<span class="number">5</span>))</span><br><span class="line"><span class="comment">#[0, 1, 2, 3, 4]</span></span><br></pre></td></tr></table></figure></p>
+<p>在序列中遍历时，索引位置和对应值可以使用 enumerate() 函数同时得到：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i, v <span class="keyword">in</span> enumerate([<span class="string">'tic'</span>, <span class="string">'tac'</span>, <span class="string">'toe'</span>]):</span><br><span class="line">print(i, v)</span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">0 tic</span></span><br><span class="line"><span class="string">1 tac</span></span><br><span class="line"><span class="string">2 toe</span></span><br><span class="line"><span class="string">'''</span></span><br></pre></td></tr></table></figure></p>
+<p>同时遍历两个或更多的序列，可以使用 zip() 组合：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">questions = [<span class="string">'name'</span>, <span class="string">'quest'</span>, <span class="string">'favorite color'</span>]</span><br><span class="line">answers = [<span class="string">'lancelot'</span>, <span class="string">'the holy grail'</span>, <span class="string">'blue'</span>]</span><br><span class="line"><span class="keyword">for</span> q, a <span class="keyword">in</span> zip(questions, answers):</span><br><span class="line">    print(<span class="string">'What is your &#123;0&#125;?  It is &#123;1&#125;.'</span>.format(q, a))</span><br><span class="line"><span class="comment">#What is your name?  It is lancelot.</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="python类："><a href="#python类：" class="headerlink" title="python类："></a>python类：</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Complex</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, realpart, imagpart)</span>:</span></span><br><span class="line">        self.r = realpart</span><br><span class="line">        self.i = imagpart</span><br><span class="line">x = Complex(<span class="number">3.0</span>, <span class="number">-4.5</span>)</span><br><span class="line">print(x.r, x.i)   <span class="comment"># 输出结果：3.0 -4.5</span></span><br></pre></td></tr></table></figure>
+<p>self是类的实例，不是类本身，且并不是一个关键字，也可以使用 this/toor等，但是最好还是按照约定是用self</p>
+<h4 id="python类方法-函数："><a href="#python类方法-函数：" class="headerlink" title="python类方法/函数："></a>python类方法/函数：</h4><p>在类地内部，使用 def 关键字来定义一个方法，与一般函数定义不同，类方法必须包含参数 self, 且为第一个参数，self 代表的是类的实例。</p>
+<h4 id="python类属性"><a href="#python类属性" class="headerlink" title="python类属性"></a>python类属性</h4><p><code>__private_ attrs：</code>两个下划线开头，声明该属性为私有，不能在类地外部被使用或直接访问，但可以通过调用类的公有函数访问。在类内部的方法中使用时 <code>self.__private_attrs。</code></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/01/python-2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1454,7 +1596,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/01/16/Conda-md/" itemprop="url">Conda切换python2/3环境！🐶</a></h1>
+                <a class="post-title-link" href="/2018/01/16/Conda-md/" itemprop="url">virtualenv切换python2/3环境！🐶</a></h1>
         
 
         <div class="post-meta">
@@ -1516,188 +1658,11 @@
       
         
           
-            <h3 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h3><p>Python的全局锁有时候非常烦。很多人电脑里都会同时装python2、python3。但在linux安装各种包时，长期混乱地pip、pip3随便安装，时间久了便造成安装环境混乱，导致<font color="blue">“明明安装了某种包，在使用时却未发现该包的错误” </font></p>
-<p>在这里介绍一种牛逼的包管理工具Miniconda，以明确规定python环境，再安装相应python版本的包，再安全使用该包。博主被Tensorflow的各种版本及依赖库苦扰了好久，不要贪图省事儿，一次彻底搞定，后面才可以节节高！</p>
-<h5 id="Minicoda安装："><a href="#Minicoda安装：" class="headerlink" title="Minicoda安装："></a>Minicoda安装：</h5><p>Welcome to <a href="https://conda.io/miniconda.html" target="_blank" rel="noopener">Miniconda</a>! 点击链接，下载对应操作系统的Miniconda即可！<br><img src="/img/conda.jpeg" alt=""><br><strong>Tips：</strong>安装miniconda时不要以root权限安装，同时安装过程最好选择默认选项，最后在Linux的用户目录下创建一个叫miniconda的文件夹。这样的好处，同一台主机的不同用户可以安装自己的anaconda，配置自己的Python环境，大家不相互影响。</p>
-<h5 id="将conda添加到系统环境变量"><a href="#将conda添加到系统环境变量" class="headerlink" title="将conda添加到系统环境变量"></a>将conda添加到系统环境变量</h5><pre><code class="bash">$ vi ~/.bashrc
-在最后添加一项：<span class="built_in">export</span> PATH=<span class="string">"<span class="variable">$PATH</span>:~/miniconda3/bin"</span> 
-此处<span class="variable">$PATH</span>在miniconda3路径之前，默认先调用系统中安装的python
-$ <span class="built_in">source</span> ~/.bashrc
-</code></pre>
-<h5 id="conda创建python2环境"><a href="#conda创建python2环境" class="headerlink" title="conda创建python2环境"></a>conda创建python2环境</h5><pre><code class="bash">$ conda create -n py2k python=2.7
-</code></pre>
-<h5 id="同时安装必要的包"><a href="#同时安装必要的包" class="headerlink" title="同时安装必要的包"></a>同时安装必要的包</h5><p>Tips:通过conda某个环境安装的包都在…/miniconda/envs/py2k/lib/python2.7/site-packages/xxx，需要时候可以查阅各个包的源码</p>
-<pre><code class="bash">$ conda create -n py2k numpy
-</code></pre>
-<h5 id="切换到新环境（-linux-Mac下）"><a href="#切换到新环境（-linux-Mac下）" class="headerlink" title="切换到新环境（ linux/Mac下）"></a>切换到新环境（ linux/Mac下）</h5><pre><code class="bash">$ <span class="built_in">source</span> activate py2k
-</code></pre>
-<p><font color="red"> 比如说需要安装py2版本的Tensorflow及github上其他的一些包，均需要在安装、使用时先切换到该环境下 </font></p>
-<h5 id="退出环境"><a href="#退出环境" class="headerlink" title="退出环境"></a>退出环境</h5><pre><code class="bash">$ deactivate py2k
-</code></pre>
-<h5 id="移除环境"><a href="#移除环境" class="headerlink" title="移除环境"></a>移除环境</h5><pre><code class="bash">$ conda remove -n py2k --all
-</code></pre>
-<h5 id="查看当前所有环境"><a href="#查看当前所有环境" class="headerlink" title="查看当前所有环境"></a>查看当前所有环境</h5><pre><code class="bash">$ conda info -e (带*的就是当前默认环境)
-</code></pre>
-<h5 id="指定查看某环境下安装的package"><a href="#指定查看某环境下安装的package" class="headerlink" title="指定查看某环境下安装的package"></a>指定查看某环境下安装的package</h5><pre><code class="bash">$ conda list -n env_name
-</code></pre>
-<h5 id="查找是否有某个包可被安装"><a href="#查找是否有某个包可被安装" class="headerlink" title="查找是否有某个包可被安装"></a>查找是否有某个包可被安装</h5><pre><code class="bash">$ conda search pyqtgraph
-</code></pre>
-<h5 id="有些包在国外，需要搭梯子，这里推荐清华大学的开源工具包，下载速度飞快！！"><a href="#有些包在国外，需要搭梯子，这里推荐清华大学的开源工具包，下载速度飞快！！" class="headerlink" title="有些包在国外，需要搭梯子，这里推荐清华大学的开源工具包，下载速度飞快！！"></a>有些包在国外，需要搭梯子，这里推荐清华大学的开源工具包，下载速度飞快！！</h5><p>Ps：仅需配置一次，配置文件位于<code>/home/tucodec/.condarc</code></p>
-<pre><code class="bash">$ conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/
-$ conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main/
-$ conda config --<span class="built_in">set</span> show_channel_urls yes
-</code></pre>
-<p>最后看看Miniconda管理的成果吧！<br><img src="/img/conda_1.jpeg" alt=""></p>
-<h5 id="conda与系统环境相关事宜"><a href="#conda与系统环境相关事宜" class="headerlink" title="conda与系统环境相关事宜"></a>conda与系统环境相关事宜</h5><p>1、Terminal窗口下，直接<code>pip install xxx</code>，会默认安装到系统的~/python/sitepackage目录中；conda的python环境下，才会安装到对应~/miniconda/python/sitepackage目录中。<br>2、直接在Terminal窗口输入python2/3，会优先搜索安装在系统路径的python，如果没有对应的python版本，才会调用miniconda中的python。<br>3、假如在系统路径直接pip install gensim，那么在miniconda的python环境下是调不到的，所以最好是先source activate python环境，再pip/conda安装相应的软件 </p>
-<hr>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/14/Knowledge/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="祥吉">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Deep Coding">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/14/Knowledge/" itemprop="url">知识图谱私见！🐶</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-14T12:52:19+08:00">
-                2018-01-14
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/01/14/Knowledge/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/01/14/Knowledge/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="背景："><a href="#背景：" class="headerlink" title="背景："></a>背景：</h3><p>2012年5月，Google推出Google知识图谱（GoogleKnowledge Graph），并利用其在搜索引擎中增强搜索结果。这是“知识图谱”名称的由来，也标志着大规模知识图谱在互联网语义搜索中的成功应用。</p>
-<p>Eg：搜索“吴彦祖的国籍是什么？”，Google/Baidu会给出与之相关的详细搜索结果（可以叫“搜索++”或者“搜索杂烩且精准”，顺带提一句，搜索本身就是AI，没必要将其神秘化，之前到现在一只都有，只是如同其他任何一个行业，发展的越来越好，2012年后随着深度学习的爆发，迎来了一波小高潮）</p>
-<p><img src="/img/wuyanzu.jpeg" alt=""></p>
-<h4 id="知识图谱概念"><a href="#知识图谱概念" class="headerlink" title="知识图谱概念"></a>知识图谱概念</h4><p><strong>定义：</strong>知识图谱旨在描述真实世界中存在的各种实体或概念及其关系，其构成一张巨大的语义网络图，节点表示实体或概念，边则由属性或关系构成。</p>
-<p><strong>节点：</strong>知识图谱包括<code>实体</code>、<code>属性/语义类</code>、<code>属性值</code>、<code>关系</code>这么4种节点。最终以三元组的形式呈现，主要包括(实体1-关系-实体2)和(实体-属性-属性值)等。</p>
-<blockquote>
-<p>中国-首都-北京是一个（实体-关系-实体）的三元组样例.<br>北京-人口-2069.3万是一个（实体-属性-属性值）的三元组样例。</p>
-</blockquote>
-<h4 id="构建："><a href="#构建：" class="headerlink" title="构建："></a>构建：</h4><p>知识图谱的构建技术包括3大方面：知识提取、知识表示、知识融合。后两方面自己目前的知识面尚未覆盖，仅就Deep Learning相关的来说，<br>知识提取部分又包括<strong>实体抽取、语义类抽取、属性和属性值抽取</strong>。</p>
-<blockquote>
-<p>实体抽取目前有用<code>BiLstm+CRF</code>算法来做；<br>语义类抽取笔者自己也尝试了用word2vec进行相似度匹配，效果还不错；<br>属性和属性值抽取，笔者尝试了用命名实体识别工具+正则匹配的方式也能完成一定程度的，像地名、场景、日期、车牌等信息的抽取。</p>
-</blockquote>
-<p>目前工业界基本也是通过从半结构化的数据中抽取信息，而不是通过<strong>“阅读”</strong>句子产生真正的理解来抽取，深层自然语言处理这块儿骨头太硬了。</p>
-<h3 id="小结："><a href="#小结：" class="headerlink" title="小结："></a>小结：</h3><p>写到这里，笔者更认为深度学习也是构建知识图谱的一种方式，深度学习能较好解决机器翻译、客服对话等小任务，也是一定程度上对知识地综合理解，比如通过机器翻译，建立英语、中文之间的联系，通过Imagenet图像分类，建立1000种Object的对应关系。但，深度学习在NLP/图像中对“语义”的理解，还是太过单薄，设计太过简陋，面对这些非结构化的大量知识体系，无从下口、束手无策。</p>
-<blockquote>
-<p>能够将知识图谱的各条“边”剥离清楚的，深度学习还需要再向前推进一大步，远不止目前的CNN、RNN…<br>而知识图谱本身的发展，应该要求更高，需要的是更加综合的知识。</p>
-</blockquote>
-<h5 id="——不能真正创造价值的概念，都是耍流氓！"><a href="#——不能真正创造价值的概念，都是耍流氓！" class="headerlink" title=" ——不能真正创造价值的概念，都是耍流氓！"></a><font color="red"> ——不能真正创造价值的概念，都是耍流氓！</font></h5><p>话说回来吧，借助某位哲人说的，希望自己摒弃热潮，以工程任务为导向。首要解决当下NLP能解决的任务，这也是本博客名称“Deep coding”的由来。</p>
-<hr>
+            <h3 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h3><p>Python的全局锁有时候非常烦。很多人电脑里都会同时装python2、python3。但在linux安装各种包时，长期混乱地pip、pip3随便安装，时间久了便造成安装环境混乱，导致<font color="blue">“明明安装了某种包，在使用时却未发现该包的错误” </font>，而virtualenv就是用来为一个应用创建“隔离”的Python运行环境</p>
+<h5 id="virtualenv安装"><a href="#virtualenv安装" class="headerlink" title="virtualenv安装"></a>virtualenv安装</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 install virtualenv</span><br></pre></td></tr></table></figure>
+<h5 id="进入到独立的某个项目目录中"><a href="#进入到独立的某个项目目录中" class="headerlink" title="进入到独立的某个项目目录中"></a>进入到独立的某个项目目录中</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> Test</span><br><span class="line">virtualenv venv --python=python3 <span class="comment"># 将系统的python3环境单独复制一份过来</span></span><br><span class="line"><span class="built_in">source</span> venv/bin/activate <span class="comment"># 激活该venv环境，修改相关环境变量，让命令python和pip均指向当前的virtualenv环境</span></span><br></pre></td></tr></table></figure>
+<p>注意到命令提示符变了，有个<code>(venv)</code>前缀，表示当前环境是一个名为<code>venv</code>的Python环境</p>
+<h5 id="正常安装其他包便可以了"><a href="#正常安装其他包便可以了" class="headerlink" title="正常安装其他包便可以了"></a>正常安装其他包便可以了</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pip install numpy</span><br><span class="line">deactivate <span class="comment"># 退出前面建立的venv到系统目录下</span></span><br></pre></td></tr></table></figure>
 
           
         
@@ -1787,7 +1752,7 @@ $ conda config --<span class="built_in">set</span> show_channel_urls yes
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">41</span>
+                  <span class="site-state-item-count">42</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1885,7 +1850,7 @@ $ conda config --<span class="built_in">set</span> show_channel_urls yes
  
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共34.0k字</span>
+  <span class="post-count">博客全站共34.9k字</span>
 </div>
 
 <div class="powered-by">
