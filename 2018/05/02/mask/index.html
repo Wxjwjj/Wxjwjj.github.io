@@ -86,18 +86,22 @@
 
 
 
-<meta name="description" content="得到4个采样点后，分别采用双线性插值$$f(i+u,j+v) = (1-u)(1-v)f(i,j)+(1-u)(v)f(i,j+1)+(1-v)(u)f(i+1,j)+uvf(i+1,j+1)$$本质就是在X/Y两个方向做线性插值（算法解析），来计算4个虚拟点的像素值。之后再进行max/average pooling，得到池化后的结果 Ref:📎：详解 ROI Align 的基本原理和实现细节�">
+<meta name="description" content="背景Mask R-CNN是基于Faster R-CNN网络打造的，从下面的图就可以直观看出他们的区别1、首先蓝框中为Faster R-CNN中的全连接网络；2、左边[7, 7]的conv模块为ROI Pooling/Align的结果；3、右边[7, 7]的conv模块为新增的用于训练Mask分支的全卷积网络FCN(这里是pixel to pixel的映射，所以需要用到FCN)   ROI Alig">
 <meta name="keywords" content="CV">
 <meta property="og:type" content="article">
 <meta property="og:title" content="论文笔记：《Mask R-CNN》">
 <meta property="og:url" content="http://yoursite.com/2018/05/02/mask/index.html">
 <meta property="og:site_name" content="Deep Coding">
-<meta property="og:description" content="得到4个采样点后，分别采用双线性插值$$f(i+u,j+v) = (1-u)(1-v)f(i,j)+(1-u)(v)f(i,j+1)+(1-v)(u)f(i+1,j)+uvf(i+1,j+1)$$本质就是在X/Y两个方向做线性插值（算法解析），来计算4个虚拟点的像素值。之后再进行max/average pooling，得到池化后的结果 Ref:📎：详解 ROI Align 的基本原理和实现细节�">
+<meta property="og:description" content="背景Mask R-CNN是基于Faster R-CNN网络打造的，从下面的图就可以直观看出他们的区别1、首先蓝框中为Faster R-CNN中的全连接网络；2、左边[7, 7]的conv模块为ROI Pooling/Align的结果；3、右边[7, 7]的conv模块为新增的用于训练Mask分支的全卷积网络FCN(这里是pixel to pixel的映射，所以需要用到FCN)   ROI Alig">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-05-08T06:26:06.327Z">
+<meta property="og:image" content="http://yoursite.com/img/mask1.png">
+<meta property="og:image" content="http://yoursite.com/img/mask2.png">
+<meta property="og:image" content="http://yoursite.com/img/mask3.png">
+<meta property="og:updated_time" content="2018-05-17T13:38:33.627Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="论文笔记：《Mask R-CNN》">
-<meta name="twitter:description" content="得到4个采样点后，分别采用双线性插值$$f(i+u,j+v) = (1-u)(1-v)f(i,j)+(1-u)(v)f(i,j+1)+(1-v)(u)f(i+1,j)+uvf(i+1,j+1)$$本质就是在X/Y两个方向做线性插值（算法解析），来计算4个虚拟点的像素值。之后再进行max/average pooling，得到池化后的结果 Ref:📎：详解 ROI Align 的基本原理和实现细节�">
+<meta name="twitter:description" content="背景Mask R-CNN是基于Faster R-CNN网络打造的，从下面的图就可以直观看出他们的区别1、首先蓝框中为Faster R-CNN中的全连接网络；2、左边[7, 7]的conv模块为ROI Pooling/Align的结果；3、右边[7, 7]的conv模块为新增的用于训练Mask分支的全卷积网络FCN(这里是pixel to pixel的映射，所以需要用到FCN)   ROI Alig">
+<meta name="twitter:image" content="http://yoursite.com/img/mask1.png">
 
 
 
@@ -337,7 +341,9 @@
       
 
       
-        <p>得到4个采样点后，分别采用双线性插值$$f(i+u,j+v) = (1-u)(1-v)f(i,j)+(1-u)(v)f(i,j+1)+(1-v)(u)f(i+1,j)+uvf(i+1,j+1)$$本质就是在X/Y两个方向做线性插值（<a href="https://blog.csdn.net/xiaqunfeng123/article/details/17362881" target="_blank" rel="noopener">算法解析</a>），来计算4个虚拟点的像素值。之后再进行max/average pooling，得到池化后的结果</p>
+        <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>Mask R-CNN是基于Faster R-CNN网络打造的，从下面的图就可以直观看出他们的区别<br>1、首先蓝框中为Faster R-CNN中的全连接网络；<br>2、左边[7, 7]的conv模块为ROI Pooling/Align的结果；<br>3、右边[7, 7]的conv模块为新增的用于训练Mask分支的全卷积网络FCN(<strong>这里是pixel to pixel的映射，所以需要用到FCN</strong>)</p>
+<p><img src="/img/mask1.png" width="600" alt="图片名称" align="center"> </p>
+<h3 id="ROI-Align"><a href="#ROI-Align" class="headerlink" title="ROI Align"></a>ROI Align</h3><p>借用网上的一张图，Faster R-CNN中会造成两次量化误差，一次是RPN网络产生Region Proposal时，对ground bounding box的量化，另外一次是Pooling到[7, 7]的feature map时的量化，均是因为像素没有浮点数，强行四舍五入造成的。<img src="/img/mask2.png" width="600" alt="图片名称" align="center"> 但是由于feature map大小是原图的1/32，半个像素误差就会导致原图16个像素的差别，这在绘制Mask这种Pixel量级的任务时，会造成很大的误差。<br><img src="/img/mask3.png" width="200" alt="图片名称" align="center">如上图所示，作者在Mask R-CNN中对RPN、Pooling层都保留浮点数值，并且对Pooling后map中的每个像素点，分别采用双线性插值，本质就是在X/Y两个方向做线性插值（<a href="https://blog.csdn.net/xiaqunfeng123/article/details/17362881" target="_blank" rel="noopener">算法解析</a>），来计算4个虚拟点的像素值。之后再进行max/average pooling，池化后的结果即为最终pooling后map的像素值。</p>
 <h3 id="Ref"><a href="#Ref" class="headerlink" title="Ref:"></a>Ref:</h3><p>📎：<a href="http://blog.leanote.com/post/afanti/b5f4f526490b" target="_blank" rel="noopener">详解 ROI Align 的基本原理和实现细节</a><br>📎：<a href="https://www.davex.pw/2018/02/14/paper-reading-of-mask-rcnn/" target="_blank" rel="noopener">目标检测：Mask R-CNN 论文阅读</a><br>📎：<a href="http://lanbing510.info/2017/12/08/Mask-RCNN.html" target="_blank" rel="noopener">Mask RCNN-论文简记</a></p>
 
       
@@ -469,7 +475,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">42</span>
+                  <span class="site-state-item-count">49</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -482,7 +488,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -537,7 +543,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Ref"><span class="nav-number">1.</span> <span class="nav-text">Ref:</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ROI-Align"><span class="nav-number">2.</span> <span class="nav-text">ROI Align</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Ref"><span class="nav-number">3.</span> <span class="nav-text">Ref:</span></a></li></ol></div>
             
 
           </div>
@@ -583,7 +589,7 @@
  
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共34.9k字</span>
+  <span class="post-count">博客全站共37.1k字</span>
 </div>
 
 <div class="powered-by">

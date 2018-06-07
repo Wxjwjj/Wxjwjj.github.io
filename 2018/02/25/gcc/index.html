@@ -86,18 +86,18 @@
 
 
 
-<meta name="description" content="20180312更新，之前的操作太复杂了，安装位置也不易管理。在冯博的帮助下，使用下面的方法，修改gcc版本时候只要修改下述软连接便可以了12345678sudo apt-get install gcc-4.9sudo apt-get install g++-4.9 //自动安装到/usr/bin目录下which gcccd 到 gcc 目录ll | grep gcc 显示包含gcc的软连接sud">
+<meta name="description" content="修改gcc版本时候只要修改下述软连接便可以了，首先看看系统内的gcc和g++是什么版本1gcc --version 可以获得如下信息1gcc version 5.4.0 查看系统内有哪些版本的gcc1ls /usr/bin/gcc* 安装gcc12345678sudo apt-get install gcc-4.9sudo apt-get install g++-4.9 //自动安装到/usr/b">
 <meta name="keywords" content="Linux">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Ubuntu下gcc&#x2F;g++多版本切换">
 <meta property="og:url" content="http://yoursite.com/2018/02/25/gcc/index.html">
 <meta property="og:site_name" content="Deep Coding">
-<meta property="og:description" content="20180312更新，之前的操作太复杂了，安装位置也不易管理。在冯博的帮助下，使用下面的方法，修改gcc版本时候只要修改下述软连接便可以了12345678sudo apt-get install gcc-4.9sudo apt-get install g++-4.9 //自动安装到/usr/bin目录下which gcccd 到 gcc 目录ll | grep gcc 显示包含gcc的软连接sud">
+<meta property="og:description" content="修改gcc版本时候只要修改下述软连接便可以了，首先看看系统内的gcc和g++是什么版本1gcc --version 可以获得如下信息1gcc version 5.4.0 查看系统内有哪些版本的gcc1ls /usr/bin/gcc* 安装gcc12345678sudo apt-get install gcc-4.9sudo apt-get install g++-4.9 //自动安装到/usr/b">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-15T12:09:53.719Z">
+<meta property="og:updated_time" content="2018-05-17T09:23:27.857Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Ubuntu下gcc&#x2F;g++多版本切换">
-<meta name="twitter:description" content="20180312更新，之前的操作太复杂了，安装位置也不易管理。在冯博的帮助下，使用下面的方法，修改gcc版本时候只要修改下述软连接便可以了12345678sudo apt-get install gcc-4.9sudo apt-get install g++-4.9 //自动安装到/usr/bin目录下which gcccd 到 gcc 目录ll | grep gcc 显示包含gcc的软连接sud">
+<meta name="twitter:description" content="修改gcc版本时候只要修改下述软连接便可以了，首先看看系统内的gcc和g++是什么版本1gcc --version 可以获得如下信息1gcc version 5.4.0 查看系统内有哪些版本的gcc1ls /usr/bin/gcc* 安装gcc12345678sudo apt-get install gcc-4.9sudo apt-get install g++-4.9 //自动安装到/usr/b">
 
 
 
@@ -337,17 +337,10 @@
       
 
       
-        <p><font color="red"><strong>20180312更新，之前的操作太复杂了，安装位置也不易管理。在冯博的帮助下，使用下面的方法，修改<code>gcc</code>版本时候只要修改下述软连接便可以了</strong></font><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install gcc-4.9</span><br><span class="line">sudo apt-get install g++-4.9 //自动安装到/usr/bin目录下</span><br><span class="line"><span class="built_in">which</span> gcc</span><br><span class="line"><span class="built_in">cd</span> 到 gcc 目录</span><br><span class="line">ll | grep gcc 显示包含gcc的软连接</span><br><span class="line">sudo rm gcc </span><br><span class="line">sudo ln -sf gcc-4.9 gcc</span><br><span class="line">sudo ln -sf g++-4.9 g++</span><br></pre></td></tr></table></figure></p>
-<hr>
-<p>在编译不同的程序时，往往会遇到gcc、g++版本不兼容问题，那可不可以动态切换gcc&amp;g++环境，来满足编译需求呢？答案是可以的。<br>先看看系统内的<code>gcc</code>和<code>g++</code>是什么版本<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc --version</span><br></pre></td></tr></table></figure></p>
+        <p>修改<code>gcc</code>版本时候只要修改下述软连接便可以了，首先看看系统内的<code>gcc</code>和<code>g++</code>是什么版本<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc --version</span><br></pre></td></tr></table></figure></p>
 <p>可以获得如下信息<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc version 5.4.0</span><br></pre></td></tr></table></figure></p>
 <p>查看系统内有哪些版本的gcc<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls /usr/bin/gcc*</span><br></pre></td></tr></table></figure></p>
-<p>首先安装其他版本的<code>gcc</code>、<code>g++</code><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install gcc-4.9 gcc-4.9-multilib g++-4.9 g++-4.9-multilib</span><br></pre></td></tr></table></figure></p>
-<p>安装好后输入以下指令，替换系统默认的<code>gcc</code>：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 40 </span><br><span class="line">sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-5.4 54</span><br></pre></td></tr></table></figure></p>
-<p>接着输入：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo update-alternatives --config gcc</span><br></pre></td></tr></table></figure></p>
-<p>会看到如下的选项，有3个候选项可用于替换<code>gcc</code><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">*0            /usr/bin/gcc-5  50        </span><br><span class="line"> 1            /usr/bin/gcc-5  50        </span><br><span class="line"> 2            /usr/bin/gcc-4.9  40</span><br></pre></td></tr></table></figure></p>
-<p>要维持当前值<code>*</code>请按回车键，或者键入你想切换的gcc版本编号!<br>同样也要设置一下<code>g++</code>的， 方法同上<br>如果想删除可选项的话可以键入以下指令：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo update-alternatives --remove gcc /usr/bin/gcc-4.9</span><br></pre></td></tr></table></figure></p>
-<p>再用<code>gcc -version</code> 来看一下版本是否改变了。</p>
+<p>安装<code>gcc</code><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install gcc-4.9</span><br><span class="line">sudo apt-get install g++-4.9 //自动安装到/usr/bin目录下</span><br><span class="line"><span class="built_in">which</span> gcc</span><br><span class="line"><span class="built_in">cd</span> 到 gcc 目录</span><br><span class="line">ll | grep gcc 显示包含gcc的软连接</span><br><span class="line">sudo rm gcc </span><br><span class="line">sudo ln -sf gcc-4.9 gcc</span><br><span class="line">sudo ln -sf g++-4.9 g++</span><br></pre></td></tr></table></figure></p>
 
       
     </div>
@@ -469,7 +462,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">42</span>
+                  <span class="site-state-item-count">49</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -482,7 +475,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -567,7 +560,7 @@
  
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共34.9k字</span>
+  <span class="post-count">博客全站共37.1k字</span>
 </div>
 
 <div class="powered-by">

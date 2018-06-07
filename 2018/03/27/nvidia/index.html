@@ -95,7 +95,7 @@
 <meta property="og:description" content="Ubuntu1604系统安装笔者第一次尝试Mac烧系统盘，没想到比windows简单到爆，过程如下：&amp;nbsp;官网下载Ubuntu iso文件&amp;nbsp;格式化一个U盘&amp;nbsp;接着写入U盘镜像123df -hl       # 记住磁盘名称，Eg：/dev/disk2ssudo diskutil umount /dev/disk2s  # 卸载该磁盘sudo dd bs=1m if=/Use">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/img/nvidia.png">
-<meta property="og:updated_time" content="2018-04-23T02:13:06.751Z">
+<meta property="og:updated_time" content="2018-05-25T03:18:52.396Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Ubuntu1604装机系列(一)：Mac烧系统盘及1080Ti显卡(390版本)驱动安装">
 <meta name="twitter:description" content="Ubuntu1604系统安装笔者第一次尝试Mac烧系统盘，没想到比windows简单到爆，过程如下：&amp;nbsp;官网下载Ubuntu iso文件&amp;nbsp;格式化一个U盘&amp;nbsp;接着写入U盘镜像123df -hl       # 记住磁盘名称，Eg：/dev/disk2ssudo diskutil umount /dev/disk2s  # 卸载该磁盘sudo dd bs=1m if=/Use">
@@ -353,9 +353,9 @@
 </ul>
 </blockquote>
 <p>经过上述步骤，会提示显卡驱动已经安装成功，但<code>nvidia-smi</code>依然无效…该最简单但最高效的选手登场了</p>
-<h5 id="编译-NVIDIA-驱动程序"><a href="#编译-NVIDIA-驱动程序" class="headerlink" title="编译 NVIDIA 驱动程序"></a>编译 NVIDIA 驱动程序</h5><p>Nvidia官网下载最新的显卡<a href="https://www.geforce.cn/drivers" target="_blank" rel="noopener">驱动程序</a>，ubuntu的一般就几十兆左右。<br>&nbsp;<br>将<code>nouveau driver</code>加入黑名单<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">blacklist nouveau</span><br><span class="line">options modset=0</span><br></pre></td></tr></table></figure></p>
-<p>终端输入<code>lspci | grep nouveau</code>，如果没有显示证明该驱动被kill</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">reboot <span class="comment"># 一定要重启</span></span><br></pre></td></tr></table></figure>
+<h5 id="编译-NVIDIA-驱动程序"><a href="#编译-NVIDIA-驱动程序" class="headerlink" title="编译 NVIDIA 驱动程序"></a>编译 NVIDIA 驱动程序</h5><p>Nvidia官网下载最新的显卡<a href="https://www.geforce.cn/drivers" target="_blank" rel="noopener">驱动程序</a>，ubuntu的一般就几十兆左右。<br>&nbsp;<br>将<code>nouveau driver</code>加入黑名单<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/modprobe.d/blacklist.conf</span><br><span class="line">blacklist nouveau</span><br><span class="line">options modset=0</span><br></pre></td></tr></table></figure></p>
+<p>输入如下命令使驱动禁用生效<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo update-initramfs -u</span><br></pre></td></tr></table></figure></p>
+<p>终端输入<code>lspci | grep nouveau</code>，如果没有显示证明该驱动被kill<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">reboot <span class="comment"># 一定要重启</span></span><br></pre></td></tr></table></figure></p>
 <p>杀掉<code>LightDM</code>或<code>GDM</code>登录显示器，进入纯文本<code>tty1</code>模式<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo service lightdm stop</span><br><span class="line">sudo dpkg-reconfigure gdm <span class="comment"># 有的人可能安装的不是LightDM界面，可先通过该命令切到LightDM，或者直接stop GDM等界面(第二种笔者未尝试)</span></span><br></pre></td></tr></table></figure></p>
 <p>编译安装NVIDIA驱动，此过程大约耗时3～5分钟<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">chmod +x NVIDIA-xxx.run</span><br><span class="line">sudo ./NVIDIA-xxx.run</span><br></pre></td></tr></table></figure></p>
 <p>需要注意的：<br>1、此处认真看提示，并不是一路选择”yes”。<br>2、假如上一步在安装时，Warning了gcc版本不对，则退出驱动安装，先安装对应版本的gcc之后再继续。笔者安装的驱动程序提示需要gcc-5.4.0，又是一番折腾，还好在冯博的指导下，找到了精干快速的方法。不介意的话可以移步笔者之前的文章<a href="http://localhost:4000/2018/02/25/gcc/" target="_blank" rel="noopener">Ubuntu下gcc/g++多版本切换</a><br>&nbsp;<br>安装成功后，重新开启桌面测试。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo service lightdm start</span><br><span class="line">nvidia-smi</span><br></pre></td></tr></table></figure></p>
@@ -491,7 +491,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">42</span>
+                  <span class="site-state-item-count">49</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -504,7 +504,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -605,7 +605,7 @@
  
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共34.9k字</span>
+  <span class="post-count">博客全站共37.1k字</span>
 </div>
 
 <div class="powered-by">

@@ -86,18 +86,18 @@
 
 
 
-<meta name="description" content="背景笔者事先在ubuntu上安装了cuda9.0，然而在编译opencv3.1时候，发生了版本不匹配的冲突。遂又安装了cuda8.0，但二者极其cudnn的安装，如出一辙，在这里记录下安装过程。 cuda下载及安装NVIDIA官网下载cuda8.0的安装run文件注意安装时候不要sudo安装，同样的原因，若安装出错，可能难以卸载干净。1./cuda_8.0.61_375.26_linux-run">
+<meta name="description" content="背景笔者事先在ubuntu上安装了cuda9.0，然而在编译opencv3.1时候，发生了版本不匹配的冲突。遂又安装了cuda8.0，但二者极其cudnn的安装，如出一辙，在这里记录下安装过程。 cuda下载及安装NVIDIA官网下载cuda8.0的安装run文件注意安装时候不要sudo安装，同样的原因，若安装出错，可能难以卸载干净。12345678910111213141516171819202">
 <meta name="keywords" content="Linux">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Ubuntu1604装机系列(四)：cuda8&#x2F;cuda9及对应版本的cudnn安装">
 <meta property="og:url" content="http://yoursite.com/2018/03/27/ubuntusys-3/index.html">
 <meta property="og:site_name" content="Deep Coding">
-<meta property="og:description" content="背景笔者事先在ubuntu上安装了cuda9.0，然而在编译opencv3.1时候，发生了版本不匹配的冲突。遂又安装了cuda8.0，但二者极其cudnn的安装，如出一辙，在这里记录下安装过程。 cuda下载及安装NVIDIA官网下载cuda8.0的安装run文件注意安装时候不要sudo安装，同样的原因，若安装出错，可能难以卸载干净。1./cuda_8.0.61_375.26_linux-run">
+<meta property="og:description" content="背景笔者事先在ubuntu上安装了cuda9.0，然而在编译opencv3.1时候，发生了版本不匹配的冲突。遂又安装了cuda8.0，但二者极其cudnn的安装，如出一辙，在这里记录下安装过程。 cuda下载及安装NVIDIA官网下载cuda8.0的安装run文件注意安装时候不要sudo安装，同样的原因，若安装出错，可能难以卸载干净。12345678910111213141516171819202">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-05-07T09:46:37.723Z">
+<meta property="og:updated_time" content="2018-05-25T07:16:10.510Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Ubuntu1604装机系列(四)：cuda8&#x2F;cuda9及对应版本的cudnn安装">
-<meta name="twitter:description" content="背景笔者事先在ubuntu上安装了cuda9.0，然而在编译opencv3.1时候，发生了版本不匹配的冲突。遂又安装了cuda8.0，但二者极其cudnn的安装，如出一辙，在这里记录下安装过程。 cuda下载及安装NVIDIA官网下载cuda8.0的安装run文件注意安装时候不要sudo安装，同样的原因，若安装出错，可能难以卸载干净。1./cuda_8.0.61_375.26_linux-run">
+<meta name="twitter:description" content="背景笔者事先在ubuntu上安装了cuda9.0，然而在编译opencv3.1时候，发生了版本不匹配的冲突。遂又安装了cuda8.0，但二者极其cudnn的安装，如出一辙，在这里记录下安装过程。 cuda下载及安装NVIDIA官网下载cuda8.0的安装run文件注意安装时候不要sudo安装，同样的原因，若安装出错，可能难以卸载干净。12345678910111213141516171819202">
 
 
 
@@ -338,10 +338,11 @@
 
       
         <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>笔者事先在ubuntu上安装了cuda9.0，然而在编译opencv3.1时候，发生了版本不匹配的冲突。遂又安装了cuda8.0，但二者极其cudnn的安装，如出一辙，在这里记录下安装过程。</p>
-<h3 id="cuda下载及安装"><a href="#cuda下载及安装" class="headerlink" title="cuda下载及安装"></a>cuda下载及安装</h3><p>NVIDIA官网下载cuda8.0的安装<a href="https://developer.nvidia.com/cuda-80-download-archive" target="_blank" rel="noopener">run文件</a><br>注意安装时候不要<code>sudo</code>安装，同样的原因，若安装出错，可能难以卸载干净。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./cuda_8.0.61_375.26_linux-run 注意不要更新显卡驱动，更改安装及链接库路径到个人指定目录下</span><br></pre></td></tr></table></figure></p>
+<h3 id="cuda下载及安装"><a href="#cuda下载及安装" class="headerlink" title="cuda下载及安装"></a>cuda下载及安装</h3><p>NVIDIA官网下载cuda8.0的安装<a href="https://developer.nvidia.com/cuda-80-download-archive" target="_blank" rel="noopener">run文件</a><br>注意安装时候不要<code>sudo</code>安装，同样的原因，若安装出错，可能难以卸载干净。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">./cuda_8.0.61_375.26_linux-run 注意不要更新显卡驱动，更改安装及链接库路径到个人指定目录下</span><br><span class="line"></span><br><span class="line">Do you accept the previously <span class="built_in">read</span> EULA?</span><br><span class="line">accept/decline/quit: accept</span><br><span class="line"></span><br><span class="line">Install NVIDIA Accelerated Graphics Driver <span class="keyword">for</span> Linux-x86_64 384.81?</span><br><span class="line">(y)es/(n)o/(q)uit: n</span><br><span class="line"></span><br><span class="line">Install the CUDA 9.0 Toolkit?</span><br><span class="line">(y)es/(n)o/(q)uit: y</span><br><span class="line"></span><br><span class="line">Enter Toolkit Location</span><br><span class="line"> [ default is /usr/<span class="built_in">local</span>/cuda-9.0 ]: /home/tucodec/wuxj/cuda-9.0</span><br><span class="line"></span><br><span class="line">Do you want to install a symbolic link at /usr/<span class="built_in">local</span>/cuda?</span><br><span class="line">(y)es/(n)o/(q)uit: n</span><br><span class="line"></span><br><span class="line">Install the CUDA 8.0 Samples?</span><br><span class="line">(y)es/(n)o/(q)uit: y</span><br><span class="line"></span><br><span class="line">Enter CUDA Samples Location</span><br><span class="line"> [ default is /home/tucodec ]: /home/tucodec/wuxj/cuda-8.0</span><br></pre></td></tr></table></figure></p>
 <p>安装完成后需要在系统内写入<code>bin</code>及<code>lib</code>搜索路径，以笔者的安装路径为例<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vi ~/.bashrc</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:/home/&lt;user name&gt;/wuxj/cuda-8.0/bin:/home/&lt;user name&gt;/wuxj/cuda-9.0/bin</span><br><span class="line"><span class="built_in">export</span> LD_LIBRARY_PATH=<span class="variable">$LD_LIBRARY_PATH</span>:/home/&lt;user name&gt;/wuxj/cuda-8.0/lib64:/home/&lt;user name&gt;/wuxj/cuda-9.0/lib64</span><br></pre></td></tr></table></figure></p>
 <p>其中PATH为<code>bin</code>可执行程序路径，一般添加安装软件的terminal快速启动，<code>LD_LIBRARY_PATH</code>为依赖库的路径。<br>另外笔者同时安装了cuda8.0/cuda9.0，系统路径中哪个在前即可先被访问调用。而在cmake中会更加灵活，直接指定cuda安装目录便可以正确调用。</p>
 <h3 id="cudnn下载及安装"><a href="#cudnn下载及安装" class="headerlink" title="cudnn下载及安装"></a>cudnn下载及安装</h3><p>NVIDIA官网下载cudnn压缩<a href="https://developer.nvidia.com/rdp/cudnn-download" target="_blank" rel="noopener">文件</a>(需先注册)。cudnn其实无需安装， 解压后即可看到里面是<code>include</code>头文件夹，及NVIDIA事先编译好的<code>lib</code>库。所以我们只需要将其复制到cuda对应目录即可。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> cudnn6</span><br><span class="line"></span><br><span class="line">cp include/* ../../cuda-8.0/include/ <span class="comment"># 复制到你cuda安装目录的对应文件夹</span></span><br><span class="line"></span><br><span class="line">cp lib64/* ../../cuda-8.0/lib64/</span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> ../../cuda-8.0/lib64/ </span><br><span class="line"></span><br><span class="line">sudo rm libcudnn.so</span><br><span class="line"></span><br><span class="line">sudo rm libcudnn.so.6</span><br><span class="line"></span><br><span class="line">sudo ln -sf libcudnn.so.6.0.21 libcudnn.so.6</span><br><span class="line"></span><br><span class="line">sudo ln -sf libcudnn.so.6 libcudnn.so</span><br></pre></td></tr></table></figure></p>
+<h3 id="兼容-cuda-8-0-和-cuda-9-0"><a href="#兼容-cuda-8-0-和-cuda-9-0" class="headerlink" title="兼容 cuda-8.0 和 cuda-9.0"></a>兼容 cuda-8.0 和 cuda-9.0</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">activate_cuda_80</span></span>() &#123;</span><br><span class="line">    <span class="built_in">echo</span> <span class="string">"切换至 cuda-8.0 环境"</span></span><br><span class="line">    <span class="built_in">export</span> PATH=/home/tucoder/Documents/cuda-8.0/bin:<span class="variable">$PATH</span></span><br><span class="line">    <span class="built_in">export</span> LD_LIBRARY_PATH=/home/tucoder/Documents/cuda-8.0/lib64:<span class="variable">$LD_LIBRARY_PATH</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">activate_cuda_90</span></span>() &#123;</span><br><span class="line">    <span class="built_in">echo</span> <span class="string">"切换至 cuda-9.0 环境"</span></span><br><span class="line">    <span class="built_in">export</span> PATH=/home/tucoder/Documents/cuda-9.0/bin:<span class="variable">$PATH</span></span><br><span class="line">    <span class="built_in">export</span> LD_LIBRARY_PATH=/home/tucoder/Documents/cuda-9.0/lib64:<span class="variable">$LD_LIBRARY_PATH</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="安装成功"><a href="#安装成功" class="headerlink" title="安装成功"></a>安装成功</h3><p><strong>一些体会：</strong>Linux系统完美诠释了文件即一切，所有安装内容都暴露在外部，所有想删除的东西一键删除安装文件夹即可，强烈不推荐sudo安装。<br>pip可以用sudo安装，因为pip安装的软件很容易卸载<br>pip的安装目录：<code>/usr/local/lib/python3.5/dist-packages/ /usr/local/lib/python3.5/dist-packages/</code>，pip安的软件可以到该目录查看是否被安装好</p>
 
       
@@ -473,7 +474,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">42</span>
+                  <span class="site-state-item-count">49</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -486,7 +487,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -541,7 +542,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cuda下载及安装"><span class="nav-number">2.</span> <span class="nav-text">cuda下载及安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cudnn下载及安装"><span class="nav-number">3.</span> <span class="nav-text">cudnn下载及安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装成功"><span class="nav-number">4.</span> <span class="nav-text">安装成功</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cuda下载及安装"><span class="nav-number">2.</span> <span class="nav-text">cuda下载及安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cudnn下载及安装"><span class="nav-number">3.</span> <span class="nav-text">cudnn下载及安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#兼容-cuda-8-0-和-cuda-9-0"><span class="nav-number">4.</span> <span class="nav-text">兼容 cuda-8.0 和 cuda-9.0</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装成功"><span class="nav-number">5.</span> <span class="nav-text">安装成功</span></a></li></ol></div>
             
 
           </div>
@@ -587,7 +588,7 @@
  
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共34.9k字</span>
+  <span class="post-count">博客全站共37.1k字</span>
 </div>
 
 <div class="powered-by">

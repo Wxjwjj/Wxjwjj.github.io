@@ -94,7 +94,7 @@
 <meta property="og:site_name" content="Deep Coding">
 <meta property="og:description" content="下载官网下载opencv3.4.1，选择source版本官网下载opencv3.4.1_contrib，选择source版本 首先安装必要的依赖1sudo apt-get -qq install libopencv-dev build-essential checkinstall cmake pkg-config yasm libjpeg-dev libjasper-dev libavcodec-">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-11T14:41:49.470Z">
+<meta property="og:updated_time" content="2018-05-25T07:35:56.539Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Ubuntu1604装机系列(二)：Opencv安装">
 <meta name="twitter:description" content="下载官网下载opencv3.4.1，选择source版本官网下载opencv3.4.1_contrib，选择source版本 首先安装必要的依赖1sudo apt-get -qq install libopencv-dev build-essential checkinstall cmake pkg-config yasm libjpeg-dev libjasper-dev libavcodec-">
@@ -339,8 +339,8 @@
       
         <h4 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h4><p>官网下载<code>opencv3.4.1</code>，选择source<a href="https://opencv.org/releases.html" target="_blank" rel="noopener">版本</a><br>官网下载<code>opencv3.4.1_contrib</code>，选择source<a href="https://opencv.org/releases.html" target="_blank" rel="noopener">版本</a></p>
 <h4 id="首先安装必要的依赖"><a href="#首先安装必要的依赖" class="headerlink" title="首先安装必要的依赖"></a>首先安装必要的依赖</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get -qq install libopencv-dev build-essential checkinstall cmake pkg-config yasm libjpeg-dev libjasper-dev libavcodec-dev libavformat-dev libswscale-dev libdc1394-22-dev libgstreamer0.10-dev libgstreamer-plugins-base0.10-dev libv4l-dev python-dev python-numpy libtbb-dev libqt4-dev libgtk2.0-dev libfaac-dev libmp3lame-dev libopencore-amrnb-dev libopencore-amrwb-dev libtheora-dev libvorbis-dev libxvidcore-dev x264 v4l-utils</span><br></pre></td></tr></table></figure>
-<h4 id="编译安装opencv"><a href="#编译安装opencv" class="headerlink" title="编译安装opencv"></a>编译安装opencv</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">cp ../opencv3.4.1_contrib ./   <span class="comment"># 复制contrib到opencv3.4.1文件夹并重命名</span></span><br><span class="line"><span class="built_in">cd</span> opencv3.4.1</span><br><span class="line">mv opencv3.4.1_contrib opencv_contrib</span><br><span class="line">mkdir build</span><br><span class="line"><span class="built_in">cd</span> build</span><br><span class="line">cmake ..</span><br><span class="line">ccmake ..</span><br><span class="line">几个要注意的修改项(cuda/python根据自己的安装路径来写)：</span><br></pre></td></tr></table></figure>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">CUDA_TOOLKIT_ROOT_DIR:		/home/&lt;user name&gt;/wuxj/cuda-8.0</span><br><span class="line">OPENCV_EXTRA_MODULES_PATH:	/home/&lt;user name&gt;/wuxj/opencv-3.4.1/opencv_contrib/modules </span><br><span class="line">PYTHON2_EXECUTABLE:			/usr/bin/python2.7                           </span><br><span class="line">PYTHON2_INCLUDE_DIR:		/usr/include/python2.7 </span><br><span class="line">PYTHON2_LIBRARY:			/usr/lib/x86_64-linux-gnu/libpython2.7.so</span><br><span class="line">PYTHON2_NUMPY_INCLUDE_DIRS: /usr/<span class="built_in">local</span>/lib/python2.7/dist-packages/dist-packages/numpy/core/include  </span><br><span class="line">PYTHON2_PACKAGES_PATH:		/lib/python2.7/dist-packages </span><br><span class="line">CMAKE_INSTALL_PREFIX:		/home/&lt;user name&gt;/wuxj   <span class="comment"># make install的安装路径</span></span><br></pre></td></tr></table></figure>
+<h4 id="编译安装opencv"><a href="#编译安装opencv" class="headerlink" title="编译安装opencv"></a>编译安装opencv</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">cp ../opencv3.4.1_contrib ./   <span class="comment"># 复制contrib到opencv3.4.1文件夹并重命名</span></span><br><span class="line"><span class="built_in">cd</span> opencv3.4.1</span><br><span class="line">mv opencv3.4.1_contrib opencv_contrib</span><br><span class="line">mkdir buildc</span><br><span class="line"><span class="built_in">cd</span> build</span><br><span class="line">cmake ..</span><br><span class="line">ccmake ..</span><br><span class="line">几个要注意的修改项(cuda/python根据自己的安装路径来写)：</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">CUDA_TOOLKIT_ROOT_DIR:		/home/&lt;user name&gt;/wuxj/cuda-8.0</span><br><span class="line">OPENCV_EXTRA_MODULES_PATH:	/home/&lt;user name&gt;/wuxj/opencv-3.4.1/opencv_contrib/modules </span><br><span class="line">PYTHON2_EXECUTABLE:			/usr/bin/python2.7                           </span><br><span class="line">PYTHON2_INCLUDE_DIR:		/usr/include/python2.7 </span><br><span class="line">PYTHON2_LIBRARY:			/usr/lib/x86_64-linux-gnu/libpython2.7.so</span><br><span class="line">PYTHON2_NUMPY_INCLUDE_DIRS: /usr/<span class="built_in">local</span>/lib/python2.7/dist-packages/dist-packages/numpy/core/include  </span><br><span class="line">PYTHON2_PACKAGES_PATH:		lib/python2.7/dist-packages </span><br><span class="line">CMAKE_INSTALL_PREFIX:		/home/&lt;user name&gt;/wuxj   <span class="comment"># make install的安装路径</span></span><br></pre></td></tr></table></figure>
 <p><code>make -j8</code> # 等待安装成功即可 8：8核CPU，编译速度更快</p>
 <p><code>make install</code> # 复制上一步build文件夹到<code>/home/&lt;user name&gt;/wuxj</code> 中，这时候wuxj文件夹会包含bin(exe)、include(头文件)、lib(动态库)、share4个文件夹</p>
 
@@ -473,7 +473,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">42</span>
+                  <span class="site-state-item-count">49</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -486,7 +486,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -587,7 +587,7 @@
  
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共34.9k字</span>
+  <span class="post-count">博客全站共37.1k字</span>
 </div>
 
 <div class="powered-by">

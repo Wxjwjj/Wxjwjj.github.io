@@ -96,7 +96,9 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/img/bp1.png">
 <meta property="og:image" content="http://yoursite.com/img/bp2.png">
-<meta property="og:updated_time" content="2018-05-17T01:42:46.474Z">
+<meta property="og:image" content="http://yoursite.com/img/bp3.png">
+<meta property="og:image" content="http://yoursite.com/img/bp4.png">
+<meta property="og:updated_time" content="2018-05-17T12:24:19.578Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="神经网络反向传播算法推导">
 <meta name="twitter:description" content="背景以一个单隐层神经网络简要说明反向传播算法的推导过程，需要注意的一点就是同步更新网络参数，即：在一次方向传播算法中，需要先求所有参数的偏导数，再同时更新参数。而不能以反向传播中较深层次已经更新的参数，带入偏导式子再更新浅层参数。（直观的理解就是多维度上的同步下降） 某个神经元相对于总误差的误差率：是上一层各个神经元的误差率，乘，对应到该层某个神经元的权值，再加和。之后对该神经元激活函数求导$$\">
@@ -341,6 +343,7 @@
 
       
         <h4 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h4><p>以一个单隐层神经网络简要说明反向传播算法的推导过程，需要注意的一点就是<strong>同步更新网络参数</strong>，即：在一次方向传播算法中，需要先求所有参数的偏导数，再同时更新参数。而不能以反向传播中较深层次已经更新的参数，带入偏导式子再更新浅层参数。（直观的理解就是多维度上的同步下降）<br><img src="/img/bp1.png" width="400" alt="图片名称" align="center"> <img src="/img/bp2.png" width="400" alt="图片名称" align="center"><strong>某个神经元相对于总误差的误差率：是上一层各个神经元的误差率，乘，对应到该层某个神经元的权值，再加和。之后对该神经元激活函数求导</strong>$$\delta_{h1}=\sum_{i=0}^{n}\delta_{i}w_{i}\ast out_{h1}(1-out_{h1})$$推导过程中也可以看到梯度消失的原因，每经过一个神经元，都会有<code>sigmoid</code>函数导数产生，用于连乘积，而该值最大值为<code>y*(1-y)=0.25</code></p>
+<p><img src="/img/bp3.png" width="400" alt="图片名称" align="center"><br><img src="/img/bp4.png" width="400" alt="图片名称" align="center"></p>
 
       
     </div>
@@ -471,7 +474,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">42</span>
+                  <span class="site-state-item-count">49</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -484,7 +487,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -585,7 +588,7 @@
  
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共34.9k字</span>
+  <span class="post-count">博客全站共37.1k字</span>
 </div>
 
 <div class="powered-by">

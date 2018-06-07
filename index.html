@@ -259,6 +259,826 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/07/imread/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="祥吉">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Deep Coding">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/06/07/imread/" itemprop="url">图像处理中最常见的三种图像读取方式</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-07T10:05:14+08:00">
+                2018-06-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/06/07/imread/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/06/07/imread/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h4><p>最近计算图像残差时，尝试了用三种方式读取图像，很多时候读取的图像往往都是<code>unit8</code>类型，这样便导致残差的计算全为正数的情况，需要通过numpy类型转换函数进行转换</p>
+<h4 id="opencv"><a href="#opencv" class="headerlink" title="opencv"></a>opencv</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">import cv2</span><br><span class="line">import numpy as np</span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line">type查看python中元素的类型（list、dict、string、float、int）</span><br><span class="line">dtype查看numpy ndrray的数据类型（float、int）</span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line">s1 = cv2.imread(&apos;1.png&apos;)</span><br><span class="line">print (type(s1))  # &lt;type &apos;numpy.ndarray&apos;&gt;</span><br><span class="line">print (s1.dtype)  # uint8</span><br><span class="line"># 通过下面的函数进行数据类型转换，再进行残差计算</span><br><span class="line">s1 = s1.astype(int16)</span><br><span class="line">s1 = s1.astype(float32)</span><br><span class="line">s1 = np.array(s1, &apos;int16&apos;) </span><br><span class="line"># 保存图片前先Scale到[0, 255]之间</span><br><span class="line">s1 = np.maximum(ss, 0)  # &lt; 0 = 0</span><br><span class="line">s1 = np.minimum(ss, 255)  # &gt; 255 = 255</span><br><span class="line">cv2.imwrite(&quot;Recon.png&quot;, s1)</span><br></pre></td></tr></table></figure>
+<h4 id="PIL"><a href="#PIL" class="headerlink" title="PIL"></a>PIL</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">import numpy as np</span><br><span class="line">from PIL import Image</span><br><span class="line">import scipy.misc</span><br><span class="line">s1 = Image.open(&apos;1.png&apos;)</span><br><span class="line">image_1 = np.array(s1)</span><br><span class="line">print (image_1.dtype) # uint8 </span><br><span class="line">image1 = np.array(img1, dtype=&apos;float32&apos;) </span><br><span class="line">print (image_1.dtype) # float32</span><br></pre></td></tr></table></figure>
+<h4 id="Tensorflow"><a href="#Tensorflow" class="headerlink" title="Tensorflow"></a>Tensorflow</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">import tensorflow as tf</span><br><span class="line"></span><br><span class="line">img_name = [&quot;1.jpg&quot;]</span><br><span class="line">filename_queue = tf.train.string_input_producer(img_name)</span><br><span class="line">img_reader = tf.WholeFileReader()</span><br><span class="line">_,image_jpg = img_reader.read(filename_queue)</span><br><span class="line"></span><br><span class="line">image_decode_jpeg = tf.image.decode_jpeg(image_jpg)</span><br><span class="line"># 两种类型转换函数</span><br><span class="line">image_decode_jpeg = tf.image.convert_image_dtype(image_decode_jpeg, dtype=tf.float32) </span><br><span class="line"># image_decode_jpeg = tf.cast(image_decode_jpeg, tf.float32)</span><br><span class="line"></span><br><span class="line">sess = tf.Session()</span><br><span class="line">coord = tf.train.Coordinator()</span><br><span class="line">threads = tf.train.start_queue_runners(sess=sess, coord=coord)</span><br><span class="line"></span><br><span class="line">image_flip_up_down = tf.image.flip_up_down(image_decode_jpeg)</span><br><span class="line">image_flip_up_down = tf.image.convert_image_dtype(image_flip_up_down, dtype=tf.uint8)</span><br><span class="line">image_flip_up_down = tf.image.encode_jpeg(image_flip_up_down)</span><br><span class="line"></span><br><span class="line">img_up_down = sess.run(image_flip_up_down)</span><br><span class="line">hd = tf.gfile.FastGFile(&quot;/home/xsr-ai/study/117262657,640971848_ud.jpg&quot;, &quot;w&quot;)</span><br><span class="line">hd.write(img_up_down)</span><br><span class="line">hd.close()</span><br><span class="line"></span><br><span class="line">coord.request_stop()</span><br><span class="line">sess.close()</span><br><span class="line">print(&quot;test end!&quot;)</span><br></pre></td></tr></table></figure>
+<h4 id="Ref："><a href="#Ref：" class="headerlink" title="Ref："></a>Ref：</h4><p><a href="https://zhuanlan.zhihu.com/p/31582078" target="_blank" rel="noopener">tensorflow如何保存图像</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/05/pyplot/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="祥吉">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Deep Coding">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/06/05/pyplot/" itemprop="url">Python 绘制简单的折线图</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-05T17:39:00+08:00">
+                2018-06-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/06/05/pyplot/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/06/05/pyplot/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <pre><code class="python"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt  
+<span class="keyword">from</span> pylab <span class="keyword">import</span> *
+<span class="string">"""</span>
+<span class="string">绘制简单的折线图</span>
+<span class="string">"""</span>
+x1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">5</span>]  
+y1 = [<span class="number">28.40</span>,<span class="number">30.61</span>,<span class="number">33.66</span>]
+
+x2 = [<span class="number">1.75</span>, <span class="number">2.7</span>, <span class="number">5.9</span>]  
+y2 = [<span class="number">28.53</span>,<span class="number">30.28</span>,<span class="number">32.45</span>] 
+
+x3 = [<span class="number">1.9</span>, <span class="number">2.98</span>, <span class="number">5.1</span>]  
+y3 = [<span class="number">29.49</span>,<span class="number">31.41</span>,<span class="number">33.60</span>]  
+
+plt.title(<span class="string">'H264(b) vs TTG(r) vs BPG(g)'</span>)  
+plt.xlabel(<span class="string">'Mbps'</span>)  
+plt.ylabel(<span class="string">'Average psnr'</span>)  
+
+plt.plot(x1, y1,<span class="string">'b'</span>, label=<span class="string">'H264'</span>)  
+plt.plot(x2, y2,<span class="string">'r'</span>,label=<span class="string">'TNG'</span>)  
+plt.plot(x3, y3,<span class="string">'g'</span>,label=<span class="string">'BPG'</span>)  
+
+<span class="comment"># 设置横轴的上下限</span>
+xlim(<span class="number">1.0</span>,<span class="number">7.0</span>)
+
+<span class="comment"># 设置横轴记号</span>
+xticks(np.linspace(<span class="number">1</span>,<span class="number">7</span>,<span class="number">6</span>,endpoint=<span class="keyword">True</span>))
+
+<span class="comment"># 设置纵轴的上下限</span>
+ylim(<span class="number">28.0</span>,<span class="number">34.0</span>)
+
+<span class="comment"># 设置纵轴记号</span>
+yticks(np.linspace(<span class="number">28</span>,<span class="number">34</span>,<span class="number">4</span>,endpoint=<span class="keyword">True</span>))
+
+plt.grid()  
+plt.show() 
+</code></pre>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/30/tensor-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="祥吉">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Deep Coding">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/05/30/tensor-1/" itemprop="url">tensorflow入门示例</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-30T17:19:46+08:00">
+                2018-05-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/05/30/tensor-1/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/05/30/tensor-1/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="逻辑回归分类示例"><a href="#逻辑回归分类示例" class="headerlink" title="逻辑回归分类示例"></a>逻辑回归分类示例</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">import tensorflow as tf</span><br><span class="line"><span class="string">""</span><span class="string">"</span></span><br><span class="line"><span class="string">Mnist by tensorflow </span></span><br><span class="line"><span class="string">"</span><span class="string">""</span></span><br><span class="line"><span class="comment"># 通过Tensorflow自带模块，加载Mnist数据集 </span></span><br><span class="line">from tensorflow.examples.tutorials.mnist import input_data</span><br><span class="line">mnist = input_data.read_data_sets(<span class="string">'MNIST_data'</span>, one_hot=True)</span><br><span class="line"><span class="comment"># Tensorflow依赖于高效的C++后端来进行计算，与后端的连接叫做session，一般是先构建图，然后在session中启动它</span></span><br><span class="line"><span class="comment"># 更方便的是InteractiveSession类，可以在运行图的时候，动态构建图</span></span><br><span class="line">sess = tf.InteractiveSession()</span><br><span class="line"><span class="comment"># 占位符</span></span><br><span class="line"><span class="comment"># 我们通过为输入图像和目标输出类别创建节点，来开始构建计算图。</span></span><br><span class="line">x = tf.placeholder(<span class="string">"float"</span>, shape=[None, 784])</span><br><span class="line">y_ = tf.placeholder(<span class="string">"float"</span>, shape=[None, 10])</span><br><span class="line"><span class="comment"># 变量 w 为一个[784.10]的矩阵，b是一个10维向量</span></span><br><span class="line">w = tf.Variable(tf.zeros([784, 10]))</span><br><span class="line">b = tf.Variable(tf.zeros([10]))</span><br><span class="line"><span class="comment"># 变量初始化</span></span><br><span class="line">sess.run(tf.global_variables_initializer())</span><br><span class="line"><span class="comment"># 实现softmax回归模型</span></span><br><span class="line">y = tf.nn.softmax(tf.matmul(x,w)+b)</span><br><span class="line"><span class="comment"># loss:整个Mini batch的交叉熵</span></span><br><span class="line">cross_entropy = -tf.reduce_sum(y_*tf.log(y))</span><br><span class="line"><span class="comment"># BP算法</span></span><br><span class="line"><span class="comment"># 返回的train_step对象，运行时会使用梯度下降来更新参数，整个模型的训练通过反复运行train_step来进行</span></span><br><span class="line">train_step = tf.train.GradientDescentOptimizer(0.01).minimize(cross_entropy)</span><br><span class="line"><span class="comment"># 开始反复训练</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(1000):</span><br><span class="line">    batch = mnist.train.next_batch(50)</span><br><span class="line">    <span class="comment"># feed_dict 用数据替换张量x, y_</span></span><br><span class="line">    sess.run(train_step, feed_dict=&#123;x:batch[0], y_:batch[1]&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 模型评估</span></span><br><span class="line">prediction = tf.equal(tf.argmax(y,1), tf.argmax(y_,1))</span><br><span class="line"><span class="comment"># 将上面返回的bool数组转换为float，用以计算准确率</span></span><br><span class="line">accuracy = tf.reduce_mean(tf.cast(prediction, <span class="string">"float"</span>))</span><br><span class="line">Acc = sess.run(accuracy, feed_dict=&#123;x: mnist.test.images, y_: mnist.test.labels&#125;)</span><br><span class="line"><span class="built_in">print</span> (<span class="string">"Accuracy: "</span>, Acc)</span><br></pre></td></tr></table></figure>
+<h3 id="CNN分类示例"><a href="#CNN分类示例" class="headerlink" title="CNN分类示例"></a>CNN分类示例</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line">import tensorflow as tf</span><br><span class="line">from tensorflow.examples.tutorials.mnist import input_data</span><br><span class="line">mnist = input_data.read_data_sets(<span class="string">'MNIST_data'</span>, one_hot=True)</span><br><span class="line">sess = tf.InteractiveSession()</span><br><span class="line">x = tf.placeholder(<span class="string">"float"</span>, shape=[None, 784])</span><br><span class="line">y_ = tf.placeholder(<span class="string">"float"</span>, shape=[None, 10])</span><br><span class="line"><span class="comment"># CNN网络训练时需要随机初始化权重</span></span><br><span class="line"><span class="comment"># tf.truncated_normal(shape, mean, stddev)  shape表示生成张量的维度，mean是均值，stddev是标准差</span></span><br><span class="line"><span class="comment"># 截断正态分布函数，产生正态分布的值如果与均值的差值大于两倍的标准差，那就重新生成</span></span><br><span class="line">def weight_variable(shape):</span><br><span class="line">    initial = tf.truncated_normal(shape, stddev=0.1)</span><br><span class="line">    <span class="built_in">return</span> tf.Variable(initial)</span><br><span class="line">def bias_variable(shape):</span><br><span class="line">    initial = tf.constant(0.1, shape=shape)</span><br><span class="line">    <span class="built_in">return</span> tf.Variable(initial) <span class="comment"># 用0.1赋值的常量</span></span><br><span class="line">def conv2d(x, W):</span><br><span class="line">    <span class="built_in">return</span> tf.nn.conv2d(x, W, strides=[1, 1, 1, 1], padding=<span class="string">'SAME'</span>)</span><br><span class="line">def max_pool_2x2(x):</span><br><span class="line">    <span class="built_in">return</span> tf.nn.max_pool(x, ksize=[1, 2, 2, 1], strides=[1, 2, 2, 1], padding=<span class="string">'SAME'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># patch 大小5*5</span></span><br><span class="line">W_conv1 = weight_variable([5, 5, 1, 32])</span><br><span class="line">b_conv1 = bias_variable([32])</span><br><span class="line"></span><br><span class="line">x_image = tf.reshape(x, [-1,28,28,1])  <span class="comment"># reshape_1，batch*W*H*C</span></span><br><span class="line"></span><br><span class="line">h_conv1 = tf.nn.relu(conv2d(x_image, W_conv1) + b_conv1)</span><br><span class="line">h_pool1 = max_pool_2x2(h_conv1)</span><br><span class="line"></span><br><span class="line">W_conv2 = weight_variable([5, 5, 32, 64])</span><br><span class="line">b_conv2 = bias_variable([64])</span><br><span class="line"></span><br><span class="line">h_conv2 = tf.nn.relu(conv2d(h_pool1, W_conv2) + b_conv2)</span><br><span class="line">h_pool2 = max_pool_2x2(h_conv2)</span><br><span class="line"></span><br><span class="line">W_fc1 = weight_variable([7 * 7 * 64, 1024])</span><br><span class="line">b_fc1 = bias_variable([1024])</span><br><span class="line"></span><br><span class="line">h_pool2_flat = tf.reshape(h_pool2, [-1, 7*7*64]) <span class="comment"># reshape_2 变为1维向量</span></span><br><span class="line">h_fc1 = tf.nn.relu(tf.matmul(h_pool2_flat, W_fc1) + b_fc1)</span><br><span class="line"></span><br><span class="line">keep_prob = tf.placeholder(<span class="string">"float"</span>)</span><br><span class="line">h_fc1_drop = tf.nn.dropout(h_fc1, keep_prob) <span class="comment"># 添加一个占位符，在train、test中灵活改变keep_prob比例</span></span><br><span class="line"></span><br><span class="line">W_fc2 = weight_variable([1024, 10])</span><br><span class="line">b_fc2 = bias_variable([10])</span><br><span class="line"></span><br><span class="line">y_conv=tf.nn.softmax(tf.matmul(h_fc1_drop, W_fc2) + b_fc2)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 模型其他参数</span></span><br><span class="line">cross_entropy = -tf.reduce_sum(y_*tf.log(y_conv))</span><br><span class="line">train_step = tf.train.AdamOptimizer(1e-4).minimize(cross_entropy)</span><br><span class="line">correct_prediction = tf.equal(tf.argmax(y_conv,1), tf.argmax(y_,1))</span><br><span class="line">accuracy = tf.reduce_mean(tf.cast(correct_prediction, <span class="string">"float"</span>))</span><br><span class="line">sess.run(tf.global_variables_initializer())</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(20000):</span><br><span class="line">    batch = mnist.train.next_batch(50)</span><br><span class="line">    <span class="keyword">if</span> i % 100 == 0:</span><br><span class="line">        train_accuracy = sess.run(accuracy, feed_dict=&#123;x:batch[0], y_: batch[1], keep_prob: 1.0&#125;)</span><br><span class="line">        <span class="built_in">print</span> (<span class="string">"step %d, training accuracy %g"</span> % (i, train_accuracy))</span><br><span class="line">    train_step.run(feed_dict=&#123;x: batch[0], y_: batch[1], keep_prob: 0.5&#125;) <span class="comment"># 循环往复执行优化计算</span></span><br><span class="line">Acc = sess.run(accuracy, feed_dict=&#123;x: mnist.test.images, y_: mnist.test.labels, keep_prob: 1.0&#125;)</span><br><span class="line"><span class="comment"># 也可使用Tensor.eval() 和 Operation.run() 方法代替 Session.run()</span></span><br><span class="line"><span class="comment"># print (accuracy.run(feed_dict=&#123;x: mnist.test.images, y_: mnist.test.labels, keep_prob: 1.0&#125;))</span></span><br><span class="line"><span class="built_in">print</span> (<span class="string">"test accuracy"</span>, Acc)</span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/28/tensorflow1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="祥吉">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Deep Coding">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/05/28/tensorflow1/" itemprop="url">Tensorflow 数据读取机制</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-28T10:54:04+08:00">
+                2018-05-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/05/28/tensorflow1/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/05/28/tensorflow1/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="Ref"><a href="#Ref" class="headerlink" title="Ref"></a>Ref</h3><p><a href="https://blog.csdn.net/lujiandong1/article/details/53376802" target="_blank" rel="noopener">tensorflow载入数据的三种方式</a><br><a href="https://blog.csdn.net/zengxyuyu/article/details/53289906" target="_blank" rel="noopener">Tensorflow从文件读取数据</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/22/PSNR/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="祥吉">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Deep Coding">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/05/22/PSNR/" itemprop="url">图像质量评估算法PSNR、MS-SSIM</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-22T15:51:55+08:00">
+                2018-05-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/05/22/PSNR/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/05/22/PSNR/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="PSNR计算"><a href="#PSNR计算" class="headerlink" title="PSNR计算"></a>PSNR计算</h3><p>psnr是“Peak Signal to Noise Ratio”的缩写，即峰值信噪比，是一种评价图像的客观标准，衡量原图像与被处理图像之间的均方误差，单位db。两个图像之间PSNR值越大，则越相似。普遍基准为30dB，30dB以下的图像劣化较为明显。公式如下：$$PSNR=10\times log_{10}(\frac{(2^{n}-1)^{2}}{MSE})$$ n为图像位数(注意即使为RGB三通道图像：n==8)，MSE是原图像与处理图像之间的均方误差。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">class PsnrEstimator(object):</span><br><span class="line">    <span class="string">""</span><span class="string">"psnr评估器</span></span><br><span class="line"><span class="string">    "</span><span class="string">""</span></span><br><span class="line">    def __init__(self, session):</span><br><span class="line">        self.n_samples = 0</span><br><span class="line">        self.psnr, self.se = list(), list()</span><br><span class="line">        self.session = session</span><br><span class="line">        self.tf_origin_image = tf.placeholder(tf.float32, config.IMAGE_SHAPE, <span class="string">'origin_image'</span>)</span><br><span class="line">        self.tf_recon_image = tf.placeholder(tf.float32, config.IMAGE_SHAPE, <span class="string">'recon_image'</span>)</span><br><span class="line"></span><br><span class="line">    def func(self):</span><br><span class="line">        se = tf.square(self.tf_origin_image - self.tf_recon_image)</span><br><span class="line">        mse = tf.reduce_mean(se) <span class="comment"># 每个通道分别计算MSE取平均</span></span><br><span class="line">        psnr = tf.cond(tf.equal(mse, 0),</span><br><span class="line">                       lambda: tf.constant(100, dtype=tf.float32),</span><br><span class="line">                       lambda: 10 * (tf.log(255 * 255 / mse) / np.log(10))) <span class="comment"># 换底公式</span></span><br><span class="line">        <span class="built_in">return</span> se, psnr</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/17/DNNStory/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="祥吉">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Deep Coding">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/05/17/DNNStory/" itemprop="url">深度神经网络架构发展史</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-17T10:38:06+08:00">
+                2018-05-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/05/17/DNNStory/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/05/17/DNNStory/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="Ref"><a href="#Ref" class="headerlink" title="Ref"></a>Ref</h4><p><a href="https://mp.weixin.qq.com/s/DI9ACTp_Q1rq1BHdiZWL1A" target="_blank" rel="noopener">深度概览卷积神经网络全景图</a><br><a href="http://www.sohu.com/a/146196528_697750" target="_blank" rel="noopener">一文带你了解深度神经网络架构发展史</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/14/jpeg/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -807,859 +1627,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/02/mask/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="祥吉">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Deep Coding">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/05/02/mask/" itemprop="url">论文笔记：《Mask R-CNN》</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-02T14:33:35+08:00">
-                2018-05-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/05/02/mask/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/05/02/mask/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>得到4个采样点后，分别采用双线性插值$$f(i+u,j+v) = (1-u)(1-v)f(i,j)+(1-u)(v)f(i,j+1)+(1-v)(u)f(i+1,j)+uvf(i+1,j+1)$$本质就是在X/Y两个方向做线性插值（<a href="https://blog.csdn.net/xiaqunfeng123/article/details/17362881" target="_blank" rel="noopener">算法解析</a>），来计算4个虚拟点的像素值。之后再进行max/average pooling，得到池化后的结果</p>
-<h3 id="Ref"><a href="#Ref" class="headerlink" title="Ref:"></a>Ref:</h3><p>📎：<a href="http://blog.leanote.com/post/afanti/b5f4f526490b" target="_blank" rel="noopener">详解 ROI Align 的基本原理和实现细节</a><br>📎：<a href="https://www.davex.pw/2018/02/14/paper-reading-of-mask-rcnn/" target="_blank" rel="noopener">目标检测：Mask R-CNN 论文阅读</a><br>📎：<a href="http://lanbing510.info/2017/12/08/Mask-RCNN.html" target="_blank" rel="noopener">Mask RCNN-论文简记</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/28/data/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="祥吉">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Deep Coding">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/04/28/data/" itemprop="url">C++连接SQL Server数据库入门</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-28T14:52:08+08:00">
-                2018-04-28
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/04/28/data/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/04/28/data/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h4><p>客户端(网络或C++终端等)管理器通过一系列知名的API（ODBC, OLE-DB, ADO…）提供的不同方式来访问数据库。<br><strong>Tips1:</strong>表现出来的就是同一个数据库，C++中初始化这些API时，方式稍有不同(下面会有代码)，但整体的调用方式，sql语句执行方式都是相同的。<br><strong>Tips2:</strong>另外，不论是<code>access</code>、<code>mysql</code>、<code>sql server</code>，都可以通过同一套API进行访问，以统一的方式处理所有的数据库。</p>
-<h4 id="组成"><a href="#组成" class="headerlink" title="组成"></a>组成</h4><p><strong>API:</strong>（ODBC, OLE-DB, ADO…）<br><strong>驱动程序：</strong> 是一些DLL，提供了API和数据库之间的接口。<br><strong>数据源：</strong> 包含了数据库位置和数据库类型等信息，实际上是一种数据连接的抽象。</p>
-<h4 id="数据库系统和文件系统的关系"><a href="#数据库系统和文件系统的关系" class="headerlink" title="数据库系统和文件系统的关系"></a>数据库系统和文件系统的关系</h4><p>数据库的数据是结构化的，有联系的；而文件系统各记录无联系<br>关系型数据库（相对于文件系统，是各个分散独立无关系的。但数据表中A项目设置N个属性，便建立了多种关系）<br><img src="/img/db1.jpg" width="400" alt="图片名称" align="center"></p>
-<h4 id="ODBC、ADO、DSN关系是什么？"><a href="#ODBC、ADO、DSN关系是什么？" class="headerlink" title="ODBC、ADO、DSN关系是什么？"></a>ODBC、ADO、DSN关系是什么？</h4><p><strong>DSN(Data Source Name):</strong> 为ODBC定义了一个确定的数据库和必须用到的ODBC驱动程序（换句话说要ODBC就必须要建立DSN）<br><strong>ODBC API：</strong> 访问技术只适用于windows系统，因为需要在ODBC驱动程序管理器中进行数据源注册<br><strong>ADO API：</strong> 具有跨系统平台特性，移植性好，无需手动设置DSN连接</p>
-<h4 id="手动建立数据库及数据表"><a href="#手动建立数据库及数据表" class="headerlink" title="手动建立数据库及数据表"></a>手动建立数据库及数据表</h4><blockquote>
-<ul>
-<li>下载安装SQL Server 2016并启动服务（启动方式见<a href="https://blog.csdn.net/u013719984/article/details/51108816" target="_blank" rel="noopener">【启动】</a>）</li>
-<li>找到Managemant studio，点击到SQL Server登陆界面，设置user id：sa，pass word：xxxxxx</li>
-<li>右键【数据库】，添加一个名为【track】的数据库</li>
-<li>右键【track】，添加一张名为【photos】的数据表（会自动带前缀dbo）（如果新表未显示，刷新数据库即可）</li>
-<li>右键【photos】，点击【表】，弹出【列名】、【数据类型】设置窗口，设置两个列属性”path”、”features”，数据类型均为”int”</li>
-<li>右键【photos】，点击【编辑前200行】，可手动增删数据表中的数据，在此我们添加1行数据，path值：888；features值：111。</li>
-</ul>
-</blockquote>
-<p>设计好的数据库界面如图所示<br><img src="/img/data1.png" width="350" alt="图片名称" align="center"></p>
-<h4 id="C-连接SQL"><a href="#C-连接SQL" class="headerlink" title="C++连接SQL"></a>C++连接SQL</h4><p>首先建立一个win32应用程序，在<code>#include &quot;stdafx.h&quot;</code><br>头文件中加入DLL文件，如下：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;windows.h&gt; // cerr头文件</span></span></span><br><span class="line"><span class="meta">#import <span class="meta-string">"C:\Program Files\Common Files\System\ado\msado15.dll"</span> no_namespace rename(<span class="meta-string">"EOF"</span>,<span class="meta-string">"adoEOF"</span>)</span></span><br></pre></td></tr></table></figure></p>
-<p><code>data.cpp</code>文件如下，注释都在代码中。此处采用OLE-DB连接，与ADO一样，具有较强的可移植性。<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"stdafx.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> _tmain(<span class="keyword">int</span> argc, _TCHAR* argv[])</span><br><span class="line">&#123;</span><br><span class="line"> _ConnectionPtr m_pConnection;</span><br><span class="line"> _CommandPtr m_pCommand;</span><br><span class="line"> _RecordsetPtr m_pRecodeset;</span><br><span class="line"></span><br><span class="line"> HRESULT hr = CoInitialize(<span class="literal">NULL</span>); <span class="comment">//初始化COM  </span></span><br><span class="line"> hr = m_pConnection.CreateInstance(<span class="string">"ADODB.Connection"</span>);  <span class="comment">// 建立数据库连接</span></span><br><span class="line"> <span class="keyword">if</span> (FAILED(hr))</span><br><span class="line">  <span class="built_in">cout</span> &lt;&lt; <span class="string">"Init failed!"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"> <span class="keyword">try</span></span><br><span class="line"> &#123;</span><br><span class="line">  <span class="keyword">_bstr_t</span> strConnect = <span class="string">"Provider=SQLOLEDB.1;Persist Security Info=True;Initial Catalog = track; Data Source = 192.168.1.190; User ID = sa; PassWord = 123456;"</span>;</span><br><span class="line">  <span class="comment">//Data Source为主机IP地址，若为access数据库，则为数据库文件名："xxx.mdb"</span></span><br><span class="line">  <span class="comment">//Initial Catalog：数据库名</span></span><br><span class="line">  <span class="comment">//User ID：用户名</span></span><br><span class="line">  <span class="comment">//PassWord：用户密码</span></span><br><span class="line"></span><br><span class="line">  hr = m_pConnection-&gt;Open(strConnect, <span class="string">""</span>, <span class="string">""</span>, adModeUnknown);</span><br><span class="line">  <span class="keyword">if</span> (FAILED(hr))</span><br><span class="line">   <span class="built_in">cout</span> &lt;&lt; <span class="string">"Open failed!"</span> &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="keyword">catch</span> (_com_error e)&#123;</span><br><span class="line">  <span class="comment">//MessageBox(e.Description(), "warning");</span></span><br><span class="line">  <span class="built_in">cerr</span> &lt;&lt; <span class="string">"ERROR:"</span> &lt;&lt; (<span class="keyword">char</span>*)e.Description();</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="keyword">_bstr_t</span> bstrSQL;</span><br><span class="line">    bstrSQL = <span class="string">"update  photos set path = 555 where features = 111"</span>; <span class="comment">// SQL语句，修改features属性中value == 111的path值。</span></span><br><span class="line"> m_pConnection-&gt;Execute(bstrSQL, <span class="literal">NULL</span>, adCmdText); <span class="comment">// 执行SQL语句</span></span><br><span class="line"></span><br><span class="line"> <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>ODBC连接上面写到过只能在win平台，且需要手动建立DSN连接。DSN建立连接方式如下：</p>
-<blockquote>
-<ul>
-<li>【控制面板】——【管理工具】——【ODBC数据源】根据你的电脑选择32、64位</li>
-<li>接着在【用户DSN、系统DSN】中均要添加相应的数据源，<a href="https://blog.csdn.net/kepa520/article/details/50403083" target="_blank" rel="noopener">【添加方式】</a> </li>
-</ul>
-</blockquote>
-<p>接下来仅修改<code>data.cpp</code>文件中<code>connection</code>处的代码即可<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span> strConnection = <span class="string">"dsn="</span>;</span><br><span class="line">strConnection += <span class="string">"sql"</span>;</span><br><span class="line">strConnection += <span class="string">";uid="</span>;</span><br><span class="line">strConnection += <span class="string">"sa"</span>;</span><br><span class="line">strConnection += <span class="string">";pwd="</span>;</span><br><span class="line">strConnection += <span class="string">"123456"</span>;</span><br><span class="line">strConnection += <span class="string">";"</span>;</span><br><span class="line">hr = m_pConnection-&gt;Open(strConnection.c_str(),<span class="string">""</span>,<span class="string">""</span>,adModeUnknown);</span><br></pre></td></tr></table></figure></p>
-<p>Ref:<br>📎：<a href="https://blog.csdn.net/ptsx0607/article/details/68941750" target="_blank" rel="noopener">数据库原理分析</a><br>📎：<a href="https://blog.csdn.net/u013719984/article/details/51108816" target="_blank" rel="noopener">C++与SQL Server2008连接及配置</a><br>📎：<a href="https://blog.csdn.net/kepa520/article/details/50403083" target="_blank" rel="noopener">用数据源(ODBC)创建数据库连接DSN设置</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/15/dlAdr/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="祥吉">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Deep Coding">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/04/15/dlAdr/" itemprop="url">Deeplearning.ai课程备忘录(一)</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-15T18:33:56+08:00">
-                2018-04-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/04/15/dlAdr/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/04/15/dlAdr/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>工作后很少有时间进行理论知识的充电，抽出晚上的时间，再把吴恩达前辈的Deeplearning.ai课程过一遍，重在记录之前掌握不牢靠及容易忽视的知识点。</p>
-<h3 id="神经网络和深度学习"><a href="#神经网络和深度学习" class="headerlink" title="神经网络和深度学习"></a>神经网络和深度学习</h3><p>课程的第一讲，从经典的线性回归、逻辑回归、激活函数、损失函数、梯度下降几个方面，引出了神经网络知识，以下：</p>
-<h4 id="浅层神经网络"><a href="#浅层神经网络" class="headerlink" title="浅层神经网络"></a>浅层神经网络</h4><p>1、NN(neural networks)类似于多层逻辑回归网络，不断执行wx+b、激活、wa+b、激活….到loss function的计算<br>一张图代表逻辑回归和神经元<br><img src="/img/NN1.jpeg" width="300" alt="图片名称" align="center"><br>2、论文中一般说的两层神经网络，为input、hidden、output形式，默认input为0层。<br>3、对于一个样本：wx+b的循环转矩阵的快速运算，[4,3]乘[3,1]加[4,1] 等于<a href="output">4,1</a>。<br><img src="/img/NN2.jpeg" width="300" alt="图片名称" align="center"><br>而对于batch个样本(此处假设有3个样本)，即是把样本特征横向堆叠即可，即：[4,3]乘[3,3]加[4,3] 等于[4,3]，如图示：<br><img src="/img/NN3.jpeg" width="500" alt="图片名称" align="center"><br>4、激活函数<br><strong>sigmoid：</strong>最常用的二分类函数，表达式如下，导数为$g(z)(1-g(z))$，所以最大值为0.25<br>$$g(z)=\frac{1}{1+e^{-z}}$$<br><strong>tanh：</strong>表达式如下，相当于将sigmoid函数平移，然后进行纵向拉伸(-1,1)，除 了最后一层二分类使用sigmoid，中间的hidden layer极力推荐tanh取代它。但这两个函数在Z很大或者很小时，都会发生梯度消失，导数趋近于0。tanh的导数为$(1-g(z)^{2})$<br>$$g(z)=\frac{e^{z}-e^{-z}}{e^{z}+e^{-z}}$$<br><strong>Relu：</strong>表达式为：$a = max(0,z)$，相对来说不容易梯度消失，Z&gt;0时，导数为1，Z&lt;0时，导数为0。Z=0时不可导，我们指定它为0或1就好了(实际Z=0的概率非常低)。三者中目前较常用的函数是Relu，对于拥有大量节点的神经网络来说，总会有很多Z&gt;0的神经元，梯度下降速度还是比较可观的。<br>&nbsp;<br><strong>leaker Relu：</strong>表达式为：$a = max(0.01\ast z,z)$，此处的0.01是个参数，你可以改成其它值进行尝试，说到底就是梯度下降速度的问题（太大了可能扯着蛋…）<br>5、神经网络权重(w)不能初始化为全0，因为这样导致每个神经元对输出的贡献是一样的，所以反向传播后神经元修正也一样。换句话说每个隐藏单元都在计算一样的函数，没有什么意义。<br><code>python:$ w = np.random.randn((2,2))0.01</code>，如前所示，浅层神经网络用接近0的一个高斯分布随机值初始化。深层NN吴恩达老师卖了个关子，且听下次分解吧 </p>
-<h3 id="改善深层神经网络"><a href="#改善深层神经网络" class="headerlink" title="改善深层神经网络"></a>改善深层神经网络</h3><p>主要解决神经网络超参数优化原因及方法</p>
-<h4 id="正则化缓解过拟合"><a href="#正则化缓解过拟合" class="headerlink" title="正则化缓解过拟合"></a>正则化缓解过拟合</h4><p>L2正则化（有时也称weight decay）：$J_{new} = J + \frac{\lambda}{2m}\left | w \right |^{2}$，其中$\left | w\right |^{2}  = \sum_{j=1}^{n}w_{j}^{2} = w^{T}w$。或者如下公式(m:样本数量，n：权重w数量)，可以看到lambda足够大时，会使得权重矩阵w很小，大致想象，再深的网络都可以化为逻辑回归的样式。<br>$$min_{\theta }  \frac{1}{2m} \sum_{i=1}^{m}(h_{\theta }(x^{i})-y^{i})^{2}+\lambda \sum_{j=1}^{n}\theta_{j}^{2}$$<br>换种较理性的方式来解说是：假如激活函数采用tanh，lambda越大，w越小，$g(z)=wx+b$越小，激活函数此时位于斜率$k=1$的线性段(相对来说比较线性的区间)，线性激活函数是拟合不出复杂的边界的。</p>
-<h4 id="Dropout正则化"><a href="#Dropout正则化" class="headerlink" title="Dropout正则化"></a>Dropout正则化</h4><p>反向随机失活推导</p>
-<h4 id="其它缓解过拟合的方法"><a href="#其它缓解过拟合的方法" class="headerlink" title="其它缓解过拟合的方法"></a>其它缓解过拟合的方法</h4><p>数据扩充(左右对称、随机裁剪放大、旋转一定角度、扭曲)，early stoping </p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/11/cmake/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="祥吉">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Deep Coding">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/04/11/cmake/" itemprop="url">CMakeLists入门</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-11T22:01:34+08:00">
-                2018-04-11
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/04/11/cmake/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/04/11/cmake/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h4><p>最近在编写各个C++项目时，经常用到CMakeLists.txt，今天花了半天时间进行了初步学习，现有一个<code>test</code>工程目录，内部的<code>src</code>及工程文件夹下各有一个cpp文件如图示。<br>&nbsp;<br>example<br>├── build<br>├── CMakeLists.txt<br>├── include<br>│   └── Detection.h<br>├── libs<br>├── main.cpp<br>└── src<br>    ├── CMakeLists.txt<br>    └── Detection.cpp</p>
-<p>直接编写CMakeLists.txt，注释已经比较清楚了如下所示<br><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">cmake_minimum_required</span>(VERSION <span class="number">2.8</span>.<span class="number">12</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">project</span>(examples)</span><br><span class="line"></span><br><span class="line"><span class="comment"># find_package()该指令会从8个系统路径查找包，但事先指定CMAKE_PREFIX_PATH(优先级最高的查找路径)，再去找包，保证可以万无一失，就跟在ccmake中指定一样的道理。</span></span><br><span class="line"></span><br><span class="line">list(APPEND CMAKE_PREFIX_PATH <span class="string">"/usr/local/Cellar/opencv/3.4.1_2"</span>) </span><br><span class="line"><span class="keyword">find_package</span>(OpenCV)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># message("OpenCV_INCLUDE_DIRS is : $&#123;OpenCV_INCLUDE_DIRS&#125;")</span></span><br><span class="line"><span class="comment"># message("OpenCV_LIBRARIES is $&#123;OpenCV_LIBS&#125;")</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># PROJECT_SOURCE_DIR 跟 CMakeLists.txt文件位置保持一致</span></span><br><span class="line"><span class="comment"># message("SOURCE_DIR is $&#123;PROJECT_SOURCE_DIR&#125;")  </span></span><br><span class="line"><span class="comment"># message("BINARY_DIR is $&#123;PROJECT_BINARY_DIR&#125;")</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">aux_source_directory</span>(. SRC_LIST) <span class="comment"># 当前目录下的所有源文件</span></span><br><span class="line"><span class="keyword">message</span>(<span class="string">"$&#123;SRC_LIST&#125;"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># where to find Headers</span></span><br><span class="line"><span class="keyword">include_directories</span>(<span class="variable">$&#123;PROJECT_SOURCE_DIR&#125;</span>/<span class="keyword">include</span>)</span><br><span class="line"><span class="keyword">include_directories</span>(<span class="variable">$&#123;OpenCV_INCLUDE_DIRS&#125;</span>) </span><br><span class="line"></span><br><span class="line"><span class="comment"># set 显示的指定变量，把多个cpp文件指定到src_files中</span></span><br><span class="line"><span class="keyword">set</span>(src_files</span><br><span class="line">    main.cpp</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将src子目录加入工程，并指定编译输出路径为bin 目录。如果不指定bin目录，编译结果都将存放在build/src目录，通过这种方式生成的静态库不需要再link_directories。</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># src目录有自己的CMakelists，指导其编译</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">ADD_SUBDIRECTORY</span>(src bin)  </span><br><span class="line"></span><br><span class="line"><span class="comment"># 或者先编译src，将生成的静态库放入libs目录，再通过下式link即可</span></span><br><span class="line"><span class="comment"># link_directories($&#123;PROJECT_SOURCE_DIR&#125;/libs)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># pack objects to static library</span></span><br><span class="line"><span class="keyword">add_library</span>(main STATIC <span class="variable">$&#123;src_files&#125;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">add_executable</span>(demo main.cpp)</span><br><span class="line"></span><br><span class="line"><span class="keyword">target_link_libraries</span>(demo <span class="variable">$&#123;OpenCV_LIBS&#125;</span> detect)</span><br><span class="line"></span><br><span class="line"><span class="comment"># ps:</span></span><br><span class="line"><span class="comment"># 1，变量使用$&#123;&#125;方式取值，但是在IF控制语句中是直接使用变量名</span></span><br><span class="line"><span class="comment"># 2，指令(参数1 参数2...) 参数使用括弧括起，参数之间使用空格或分号分开，风格统一即可</span></span><br><span class="line"><span class="comment"># 3，指令是大小写无关的，参数和变量是大小写相关的。</span></span><br></pre></td></tr></table></figure></p>
-<p><code>src</code>文件夹下的CPP也需要一个CMakeLists.txt进行编译，它的内容如下所示：<br><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">cmake_minimum_required</span>(VERSION <span class="number">2.8</span>.<span class="number">12</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">project</span>(detect)   <span class="comment"># 如果此处未重新定义project，那么$&#123;PROJECT_SOURCE_DIR&#125;指的是上一级cmake所指的目录</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">include_directories</span>(<span class="variable">$&#123;PROJECT_SOURCE_DIR&#125;</span>/../<span class="keyword">include</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">set</span>(src_files </span><br><span class="line">    Detection.cpp</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line"><span class="keyword">SET</span>(LIBRARY_OUTPUT_PATH <span class="variable">$&#123;PROJECT_SOURCE_DIR&#125;</span>/../libs) <span class="comment"># 注意这里变量名后加'/'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">add_library</span>(detect STATIC <span class="variable">$&#123;src_files&#125;</span>)</span><br></pre></td></tr></table></figure></p>
-<h4 id="一点顿悟"><a href="#一点顿悟" class="headerlink" title="一点顿悟"></a>一点顿悟</h4><p>笔者本身做算法研发的，最近接触了一些SDK编写方面的任务，调试CMakeLists的动态、静态库时，突然就想明白了二者的区别。<br>&nbsp;<br>在打包成exe时，静态库会和代码一起打包，这样给到其他用户时基本下载即可使用，无需下载opencv等“乱七八糟”的东西。而动态库则不行，动态库的exe并没有将其打包，只是留了动态库的借口。换句话说，用户使用你的demo时，一定要指到对应的第三库上。比如opencv3.4.1，要么他自己安装一份，要么你把用到的opencv打包一起传给他使用。<br>&nbsp;<br>那他们的优缺点是什么呢？静态库虽然使用方便，但每个demo都需要一份独有的库(因为已经被打包到一起了)，这样就会造成一定的空间浪费。而动态库，英文也叫”share lib”，每个demo可以共享同一份动态库，需要时调用对应的库便可以。<font color="red">对于Mac中，动态库的路径是绝对路径，给笔者最初的调试也造成了很大的困扰。而Linux中，动态库使用相对路径，只要指到对应的库就好。</font></p>
-<p><strong>Eg：</strong></p>
-<blockquote>
-<ul>
-<li>本机：/home/wuxj/opencv/lib/libxxx.so </li>
-<li>其他用户：/home/zhaorui/opencv/lib/libxxx.so</li>
-<li>Linux系统，libxxx.so吻合就ok；而Mac必须动态库路径才行，显然这样的指向，Mac就Error了</li>
-</ul>
-</blockquote>
-<p>Linux中常用动态库的方法是指定库搜索路径，<code>export LD_LIBRARY_PATH=&lt;Path_to_libs&gt;:$LD_LIBRARY_PATH</code><br>&nbsp;<br>另外需要注意在CMakelists中带版本的动态库，需要指向其不带版本的软连接，因为ld查找时就是基于规则libxxxxx.so的查找。而cmake生成带版本的动态库时，会自动生成其相应软连接。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/11/dlib/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="祥吉">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Deep Coding">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/04/11/dlib/" itemprop="url">dlib(C++)人脸关键点检测 for Linux/Mac</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-11T14:14:58+08:00">
-                2018-04-11
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/04/11/dlib/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/04/11/dlib/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h4 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h4><p>上一篇章讲解了Seetaface在Mac端的编译与demo，但Seetaface关键点检测(facial landmark detection)只包含5个关键点，用于人脸姿态矫正完全没问题，但用于美颜、加挂件等场合，则无法施展拳脚。<br>&nbsp;<br>笔者尝试了编译<a href="http://dlib.net/" target="_blank" rel="noopener">dlib C++ Library</a>，这是一个开源的C++图像处理、机器学习库，可以作为opencv的一个良好补充，采用Seetaface Detect模块，检测人脸区域，接着将该区域(Rect)输入dlib的关键点检测模型，可以快速实现人脸68个关键点检测。<br>硬件环境：Intel(R) Core(TM) i5 @ 2.70GHz（mac），单张图片单个人脸，两兄弟默契配合，检测时间如下所示：</p>
-<blockquote>
-<ul>
-<li>Seeta_人脸检测耗时：0.1840 秒</li>
-<li>dlib_人脸关键点检测耗时：0.0023 秒</li>
-</ul>
-</blockquote>
-<p>检测效果如图（原图来源于网络，侵删）：<br><img src="/img/dlib1.jpeg" width="350" alt="图片名称" align="center"></p>
-<h4 id="dlib的依赖"><a href="#dlib的依赖" class="headerlink" title="dlib的依赖"></a>dlib的依赖</h4><p>dlib安装需要的依赖有openblas，opencv。可以直接使用brew安装。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">brew install openblas</span><br><span class="line">brew install opencv</span><br></pre></td></tr></table></figure></p>
-<p>X11是执行Unix程序的图形窗口环境。Mac OS X本身的程序是Aqua界面的，但是为了能够兼容unix和linux移植过来的程序（Mac OS X由BSD-UNIX修改而来），比如MatLab，就需要x11窗口环境。<br>&nbsp;<br>运行dlib需要X11，但Mac目前没有自带X11，需要重新下载安装，<a href="https://www.xquartz.org/" target="_blank" rel="noopener">下载地址</a><br>下载后直接安装，默认安装目录为/opt/X11，需要在/usr/loca/opt目录下创建软连接（最好使用绝对地址），创建命令如下，创建后重启Mac。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/opt</span><br><span class="line">ln -s /opt/X11 X11</span><br></pre></td></tr></table></figure></p>
-<h4 id="编译dlib"><a href="#编译dlib" class="headerlink" title="编译dlib"></a>编译dlib</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/davisking/dlib.git  <span class="comment"># 下载dlib</span></span><br><span class="line"><span class="built_in">cd</span> dlib/examples  </span><br><span class="line">mkdir build</span><br><span class="line"><span class="built_in">cd</span> build</span><br><span class="line"></span><br><span class="line">cmake .. -DUSE_SSE4_INSTRUCTIONS=ON 进行配置</span><br><span class="line">cmake --build . --config Release（此处都是demo，没必要全部进行build，需要用到那些build一下就好了)</span><br></pre></td></tr></table></figure>
-<p>运行一个<code>build</code>好的demo<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> dlib/examples/build/</span><br><span class="line">wget http://dlib.net/files/shape_predictor_68_face_landmarks.dat.bz2  <span class="comment">#下载face landmark模型，并解压文件</span></span><br><span class="line">./webcam_face_pose_ex</span><br></pre></td></tr></table></figure></p>
-<p>至此，会出现X11窗口，打开Mac摄像头自动检测人脸并标注人脸的landmar。</p>
-<h5 id="dlib-Rect-与-opencv-Rect转换"><a href="#dlib-Rect-与-opencv-Rect转换" class="headerlink" title="dlib::Rect 与 opencv::Rect转换"></a>dlib::Rect 与 opencv::Rect转换</h5><p>dlib、opencv Rect结构体参数是不同的，所以需要进行一下转换<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// cv 转 dlib</span><br><span class="line">dlib::rectangle dlibrect;</span><br><span class="line">dlibrect = dlib::rectangle((long)face_rect.tl().x, (long)face_rect.tl().y, (long)face_rect.br().x - 1, (long)face_rect.br().y - 1);</span><br><span class="line">// dlib 转 cv，分别为左上、右下[x,y]坐标</span><br><span class="line">faces[i].left(), faces[i].top(), faces[i].right()+1, faces[i].bottom()</span><br></pre></td></tr></table></figure></p>
-<h5 id="dlib加载图像的两种方式"><a href="#dlib加载图像的两种方式" class="headerlink" title="dlib加载图像的两种方式"></a>dlib加载图像的两种方式</h5><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">array2d&lt;rgb_pixel&gt; cimg;  <span class="comment">//dlib方式读取图像（从图像路径）</span></span><br><span class="line">load_image(cimg, srcImagePath); </span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">vector</span>&lt;full_object_detection&gt; shapes;</span><br><span class="line"></span><br><span class="line">array2d&lt;bgr_pixel&gt; cimg(gallery_img_color.rows, gallery_img_color.cols); <span class="comment">//dlib方式读取图像（从cv::MAT）</span></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>; i &lt; gallery_img_color.rows; i++) </span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>; j &lt; gallery_img_color.cols; j++) </span><br><span class="line">    &#123;</span><br><span class="line">        cimg[i][j].blue = gallery_img_color.at&lt; cv::Vec3b&gt;(i,j)[<span class="number">0</span>];</span><br><span class="line">        cimg[i][j].green= gallery_img_color.at&lt; cv::Vec3b&gt;(i,j)[<span class="number">1</span>];</span><br><span class="line">        cimg[i][j].red = gallery_img_color.at&lt; cv::Vec3b&gt;(i,j)[<span class="number">2</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>Ref:<br>📎：<a href="http://noahsnail.com/2016/12/10/2016-12-11-Mac%E4%B8%8Bdlib%E5%AE%89%E8%A3%85/" target="_blank" rel="noopener">Mac下dlib安装</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/29/Seetaface-linux/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="祥吉">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Deep Coding">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/03/29/Seetaface-linux/" itemprop="url">Seetaface 人脸识别 for Linux/Mac</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-29T14:33:12+08:00">
-                2018-03-29
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2018/03/29/Seetaface-linux/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/03/29/Seetaface-linux/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>最近做人脸检测的项目，需要用到中科院山世光老师团队开源的SeetaFace，在Ubuntu、Mac端分别进行了编译，系统信息如下：</p>
-<blockquote>
-<p>Ubuntu:16.04     opencv:3.1.0    cmake:3.5.1<br>MacOS:10.13        opencv:3.4.3    cmake:3.0.2</p>
-</blockquote>
-<h4 id="FaceDetection-模块"><a href="#FaceDetection-模块" class="headerlink" title="FaceDetection 模块"></a>FaceDetection 模块</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/&lt;user name&gt;/SeetaFaceEngine/FaceDetection</span><br><span class="line">mkdir build</span><br><span class="line"><span class="built_in">cd</span> build</span><br><span class="line">cmake ..</span><br><span class="line">make -j8</span><br></pre></td></tr></table></figure>
-<p>不出意外即可在build目录下生成可执行文件<code>facedet_test</code>，调用方式<code>./facedet_test image_path ../model/seeta_fd_frontal_v1.0.bin</code>，结果如图示<br><img src="/img/seeta1.jpeg" width="400" alt="图片名称" align="center"><br><strong>PS:</strong><br>1、编译阶段若提示opencv版本问题<br>ccmake .. 修改其中OpenCV_DIR路径为自己的opencv安装目录，configuration使之生效<br>Eg：OpenCV_DIR /home/<user name="">/opencv-3.1.0/build<br>接着设置CUDA_USE_STATIC_CUDA_RUNTIME OFF<br>重新<code>cmake ..</code>，不报错再继续<code>make</code>。</user></p>
-<h4 id="FaceAlignment-模块"><a href="#FaceAlignment-模块" class="headerlink" title="FaceAlignment 模块"></a>FaceAlignment 模块</h4><p>该模块依赖FaceDetection，先检测图像中哪个区域存在人脸，之后进行关键点检测，所以先复制FaceDetection模块中的相关头文件、依赖、模型到FaceAlignment/build目录中，具体如下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/&lt;user name&gt;/SeetaFaceEngine/FaceAlignment</span><br><span class="line">mkdir build</span><br><span class="line"><span class="built_in">cd</span> build</span><br><span class="line">cp ../../FaceDetection/include/face_detection.h ../include</span><br><span class="line">cp ../../FaceDetection/build/libseeta_facedet_lib.so ./</span><br><span class="line">cp ../../FaceDetection/model/seeta_fd_frontal_v1.0.bin ./</span><br></pre></td></tr></table></figure></p>
-<p>接着修改<code>face_alignment_test.cpp</code>中，FaceDetection model路径<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// Initialize face detection model</span><br><span class="line">seeta::FaceDetection detector(&quot;./build/seeta_fd_frontal_v1.0.bin&quot;);</span><br></pre></td></tr></table></figure></p>
-<p>接着编译<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cmake ..</span><br><span class="line">make -j8</span><br></pre></td></tr></table></figure></p>
-<p>之后运行下<code>./build/fa_test</code>，生成如图示的关键点检测图片(注意.cpp文件中定义了仅能检测一张人脸)<br><img src="/img/seeta2.jpeg" width="400" alt="图片名称" align="center"><br><strong>PS:</strong><br>1、编译阶段若提示‘isnan’ was not declared in this scope，定位到源文件，修改为<code>std::isnan</code>便可以了。<br>2、运行阶段提示Segmentation fault (core dumped)，应该是模型或图片路径不对，对于Linux或mac，cpp文件中指定的路径应当是相对于<code>CMakelists.txt</code>的路径</p>
-<h4 id="FaceIdentification-模块"><a href="#FaceIdentification-模块" class="headerlink" title="FaceIdentification 模块"></a>FaceIdentification 模块</h4><p>类似的步骤如上，把FaceDetection、FaceAlignment模块的相关依赖拷贝进入build文件夹。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/&lt;user name&gt;/SeetaFaceEngine/FaceAlignment</span><br><span class="line">mkdir build</span><br><span class="line"><span class="built_in">cd</span> build</span><br><span class="line">cp ../../FaceDetection/include/face_detection.h ../include</span><br><span class="line">cp ../../FaceDetection/build/libseeta_facedet_lib.so ./</span><br><span class="line">cp ../../FaceDetection/model/seeta_fd_frontal_v1.0.bin ./</span><br><span class="line">cp ../../FaceAlignment/include/face_alignment.h ../include</span><br><span class="line">cp ../../FaceAlignment/build/libseeta_fa_lib.so ./</span><br><span class="line">cp ../../FaceAlignment/model/seeta_fa_v1.1.bin ./</span><br></pre></td></tr></table></figure></p>
-<p>解压FaceIdentification/model中的两个文件(解压part1，会自动将part2解压)，同样修改<code>./src/test</code>目录的两个CPP文件中，前两个model的路径，同上。<br>&nbsp;<br>再修改<code>/test</code>下的两个cpp文件，加上<code>opencv2</code>头文件，注意这里头文件顺序需要放在<code>cvLIB</code>宏定义之后，如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;opencv2/opencv.hpp&gt;</span><br><span class="line">#include &lt;opencv2/highgui/highgui.hpp&gt;</span><br><span class="line">#include &lt;opencv2/imgproc/imgproc.hpp&gt;</span><br></pre></td></tr></table></figure></p>
-<p>接着编译<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cmake ..</span><br><span class="line">make -j8</span><br></pre></td></tr></table></figure></p>
-<p>之后运行<code>./build/src/test/test_face_recognizer.bin</code>，测试3个模块。<code>./build/src/test/test_face_verification.bin</code>测试存取的样本中图片的相似度即可。<br><strong>PS:</strong><br>1、编译到99%时报错，提示没有相关的库，需要改写/src/test中的Cmakelists.txt，在其中添加Detect、Align模块的lib库（也就是在当前build文件夹下查找），如下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">aux_source_directory (. SRC_LIST)</span><br><span class="line">link_directories(<span class="variable">$&#123;PROJECT_BINARY_DIR&#125;</span>) <span class="comment"># 添加lib库搜索路径</span></span><br><span class="line">message(<span class="variable">$&#123;SRC_LIST&#125;</span>)</span><br><span class="line"><span class="comment"># add external libraries</span></span><br><span class="line">find_package(OpenCV REQUIRED)</span><br><span class="line">include_directories(<span class="variable">$&#123;seeta_facedet_lib_INCLUDE_DIRS&#125;</span> <span class="variable">$&#123;seeta_fa_lib_INCLUDE_DIRS&#125;</span>)</span><br><span class="line">list(APPEND seeta_fi_lib_required_libs <span class="variable">$&#123;OpenCV_LIBS&#125;</span> seeta_facedet_lib seeta_fa_lib)</span><br><span class="line">enable_testing ()</span><br><span class="line">foreach (f <span class="variable">$&#123;SRC_LIST&#125;</span>)</span><br><span class="line">  string(REGEX REPLACE <span class="string">"[.]cpp"</span> <span class="string">".bin"</span> BIN <span class="variable">$&#123;f&#125;</span>)</span><br><span class="line">  add_executable(<span class="variable">$&#123;BIN&#125;</span> <span class="variable">$&#123;f&#125;</span>)</span><br><span class="line">  <span class="comment">#target_link_libraries($&#123;BIN&#125; viplnet $&#123;OpenCV_LIBS&#125; seeta_facede_lib seeta_fa_lib)</span></span><br><span class="line">  target_link_libraries(<span class="variable">$&#123;BIN&#125;</span> viplnet <span class="variable">$&#123;seeta_fi_lib_required_libs&#125;</span>) <span class="comment"># 添加lib</span></span><br><span class="line">endforeach ()</span><br></pre></td></tr></table></figure></p>
-<h4 id="Mac编译"><a href="#Mac编译" class="headerlink" title="Mac编译"></a>Mac编译</h4><p>与Linux相比，Mac的就非常简单了，需要注意Detection模块中，CMakelists.txt要求的cmake为3.1及以上，笔者是3.0，所以在这里对CMakelists.txt做简单修改，如果是Brew安装的opencv，那其他的<code>ccmake</code>配置也不用修改<br>&nbsp;<br>之后的操作步骤与Linux描述的基本一致，编译过程中可能会有很多warning，不用管，直接<code>make</code>即可。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1714,7 +1681,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">42</span>
+                  <span class="site-state-item-count">49</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1727,7 +1694,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -1812,7 +1779,7 @@
  
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共34.9k字</span>
+  <span class="post-count">博客全站共37.1k字</span>
 </div>
 
 <div class="powered-by">

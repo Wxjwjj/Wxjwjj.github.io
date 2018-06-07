@@ -259,6 +259,1041 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/30/python-str/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="祥吉">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Deep Coding">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/30/python-str/" itemprop="url">python操作(二)：字符串</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-30T22:05:21+08:00">
+                2018-01-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/01/30/python-str/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/01/30/python-str/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="找出最后一个以’-’开始的字符串"><a href="#找出最后一个以’-’开始的字符串" class="headerlink" title="找出最后一个以’.’开始的字符串"></a>找出最后一个以’.’开始的字符串</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 第一种方法</span></span><br><span class="line">filename = <span class="string">"/home/tucodec/ZJU.mp4"</span></span><br><span class="line">str_1 = filename[filename.rindex(<span class="string">"."</span>):] <span class="comment"># rindex：返回最后一个'.'的位置信息</span></span><br><span class="line">print(str1) <span class="comment"># 输出“.mp4”</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 第二种方法</span></span><br><span class="line">str_1 = filename.split(<span class="string">'.'</span>)[<span class="number">-1</span>]</span><br></pre></td></tr></table></figure>
+<h4 id="获取某文件夹下包含文件名称的绝对路径"><a href="#获取某文件夹下包含文件名称的绝对路径" class="headerlink" title="获取某文件夹下包含文件名称的绝对路径"></a>获取某文件夹下包含文件名称的绝对路径</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">all_path</span><span class="params">(dirname)</span>:</span></span><br><span class="line">    result = []</span><br><span class="line">    <span class="keyword">for</span> maindir, subdir, file_name_list <span class="keyword">in</span> os.walk(dirname):</span><br><span class="line">        <span class="keyword">for</span> filename <span class="keyword">in</span> file_name_list:</span><br><span class="line">            apath = os.path.join(maindir, filename)</span><br><span class="line">            result.append(apath)</span><br><span class="line">    <span class="keyword">return</span> result</span><br></pre></td></tr></table></figure>
+<h4 id="获取文件下文件名称的另一种方式"><a href="#获取文件下文件名称的另一种方式" class="headerlink" title="获取文件下文件名称的另一种方式"></a>获取文件下文件名称的另一种方式</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">result = [] </span><br><span class="line">alllist=os.listdir(<span class="string">"/Users/wxj/Desktop/1"</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> alllist:</span><br><span class="line">    <span class="keyword">if</span> <span class="string">"."</span> <span class="keyword">in</span> i:</span><br><span class="line">        aa, bb=i.split(<span class="string">"."</span>)</span><br><span class="line">        <span class="keyword">if</span> bb == <span class="string">"txt"</span>:</span><br><span class="line">            result.append(aa+<span class="string">"."</span>+bb)</span><br></pre></td></tr></table></figure>
+<h4 id="还是获取文件列表到一个list，并排序"><a href="#还是获取文件列表到一个list，并排序" class="headerlink" title="还是获取文件列表到一个list，并排序"></a>还是获取文件列表到一个list，并排序</h4><p>glob模块提供了一个函数用于从目录通配符搜索中生成文件列表:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> glob</span><br><span class="line">list_1 = glob.glob(<span class="string">'*.jpg'</span>)</span><br><span class="line"><span class="comment"># ['2.jpg', '1.jpg', '5.jpg']</span></span><br><span class="line">sorted(list_1)</span><br><span class="line"><span class="comment"># ['1.jpg', '2.jpg', '5.jpg']</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="3种连接字符串方式"><a href="#3种连接字符串方式" class="headerlink" title="3种连接字符串方式"></a>3种连接字符串方式</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">seq1 = [<span class="string">'hello'</span>,<span class="string">'good'</span>,<span class="string">'boy'</span>,<span class="string">'doiido'</span>]</span><br><span class="line"><span class="keyword">print</span> <span class="string">' '</span>.join(seq1) <span class="comment"># 已空格符连接一个list中的字符串</span></span><br><span class="line">输出：hello good boy doiido</span><br><span class="line">===============================================</span><br><span class="line">os.path.join(<span class="string">'/hello/'</span>,<span class="string">'good/boy/'</span>,<span class="string">'doiido'</span>) <span class="comment"># 合并目录，注意‘/’不能多写</span></span><br><span class="line">输出：<span class="string">'/hello/good/boy/doiido'</span> <span class="comment"># 这样可以正确处理不同操作系统的路径分隔符</span></span><br><span class="line">===============================================</span><br><span class="line">a = <span class="string">'/hello/'</span></span><br><span class="line">b = <span class="string">'good/boy/'</span></span><br><span class="line">print(a+b)  </span><br><span class="line">输出：<span class="string">'/hello/good/boy/'</span></span><br></pre></td></tr></table></figure>
+<h4 id="分割字符串成list"><a href="#分割字符串成list" class="headerlink" title="分割字符串成list"></a>分割字符串成list</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">line = <span class="string">"我们 大 中国"</span></span><br><span class="line">line.split()</span><br><span class="line">[<span class="string">'我们'</span>, <span class="string">'大'</span>, <span class="string">'中国'</span>]</span><br></pre></td></tr></table></figure>
+<h4 id="删除不同位置的空格"><a href="#删除不同位置的空格" class="headerlink" title="删除不同位置的空格"></a>删除不同位置的空格</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">s.strip(rm)        <span class="comment">#删除s字符串中开头、结尾处，位于rm删除序列的字符</span></span><br><span class="line">s.lstrip(rm)       <span class="comment">#删除s字符串中开头处</span></span><br><span class="line">s.rstrip(rm)      <span class="comment">#删除s字符串中结尾处</span></span><br><span class="line"><span class="comment"># rm删除序列是只要边（开头或结尾）上的字符在删除序列内，就删除掉</span></span><br><span class="line">a = <span class="string">'123abc'</span></span><br><span class="line">a.strip(<span class="string">'21'</span>)</span><br><span class="line">a.strip(<span class="string">'12'</span>)</span><br><span class="line"><span class="comment"># 结果是一样的：'3abc'</span></span><br></pre></td></tr></table></figure>
+<h4 id="python全局变量"><a href="#python全局变量" class="headerlink" title="python全局变量"></a>python全局变量</h4><p>Python 中只有模块（module），类（class）以及函数（def、lambda）才会引入新的作用域，其它的代码块是不会引入新的作用域的。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="keyword">True</span>:</span><br><span class="line">    msg = <span class="string">'I am from Runoob'</span></span><br><span class="line">print(msg)  <span class="comment"># 'I am from Runoob'</span></span><br><span class="line"><span class="comment">#=============global=======nonlocal===================</span></span><br><span class="line"><span class="keyword">global</span> str1 <span class="comment"># 在给全局变量str1赋值时，需要先声明global，否则str1会被当作新定义的局部变量</span></span><br><span class="line">str1 = <span class="string">"new year"</span></span><br><span class="line">str2 = str1 <span class="comment"># 全局变量赋值给另一个局部变量时，不需global声明，程序会先找局部变量str1，没得话就去全局变量区域找</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">()</span>:</span></span><br><span class="line">    str1 = <span class="string">"中国"</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">func_1</span><span class="params">()</span>:</span></span><br><span class="line">        <span class="keyword">nonlocal</span> str1</span><br><span class="line">        str1 = <span class="string">"南京"</span>  <span class="comment">#修改嵌套作用域（函数A的变量作用在子函数B时）中的变量需要使用 nonlocal 关键字</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="python-list、dict、tuple、set"><a href="#python-list、dict、tuple、set" class="headerlink" title="python list、dict、tuple、set"></a>python list、dict、tuple、set</h4><p>set：通过set.add()函数添加元素，set会自动去重，且查找效率高(hash)<br>tuple是只读的list()，list可以通过下标、循环等方式访问，通过.append()来访问<br>dict是key、value一一对应的关系，常用于序号跟真值之间的查询，比如NMT任务的vocab<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">dict1 = &#123;<span class="string">'1'</span>:<span class="string">'飞机'</span>,<span class="string">'2'</span>:<span class="string">'自行车'</span>,<span class="string">'3'</span>:<span class="string">'鸟'</span>,<span class="string">'4'</span>:<span class="string">'船'</span>,<span class="string">'5'</span>:<span class="string">'瓶子'</span>,<span class="string">'6'</span>:<span class="string">'公共汽车'</span>,<span class="string">'7'</span>:<span class="string">'车'</span>,<span class="string">'8'</span>:<span class="string">'猫'</span>,<span class="string">'9'</span>:<span class="string">'椅子'</span>,<span class="string">'10'</span>:<span class="string">'牛'</span>,<span class="string">'11'</span>:<span class="string">'餐桌'</span>,<span class="string">'12'</span>:<span class="string">'狗'</span>, \</span><br><span class="line">    <span class="string">'13'</span>:<span class="string">'马'</span>,<span class="string">'14'</span>:<span class="string">'摩托车'</span>,<span class="string">'15'</span>:<span class="string">'人'</span>,<span class="string">'16'</span>:<span class="string">'植物'</span>,<span class="string">'17'</span>:<span class="string">'羊'</span>,<span class="string">'18'</span>:<span class="string">'沙发'</span>,<span class="string">'19'</span>:<span class="string">'火车'</span>,<span class="string">'20'</span>:<span class="string">'电视'</span>&#125;</span><br><span class="line">    <span class="keyword">for</span> str_i <span class="keyword">in</span> list(A):</span><br><span class="line">    List.append(dict1[str_i]) <span class="comment">#listA中是一个纯数字列表，LIST中对应其在字典中的真实类别</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="write、writelines区别"><a href="#write、writelines区别" class="headerlink" title="write、writelines区别"></a>write、writelines区别</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">f.write(name + <span class="string">'\n'</span>) <span class="comment"># write只能写入str</span></span><br><span class="line">f.writelines(text) <span class="comment"># 自动迭代写入一个字符串列表[str]</span></span><br></pre></td></tr></table></figure>
+<h4 id="文件批量命名"><a href="#文件批量命名" class="headerlink" title="文件批量命名"></a>文件批量命名</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line">f = sorted(os.listdir())</span><br><span class="line">n = <span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> f:</span><br><span class="line">    <span class="keyword">if</span> n &lt; <span class="number">9</span>:</span><br><span class="line">        oldname = f[n]</span><br><span class="line">        newname = <span class="string">"000"</span>+str(n+<span class="number">1</span>)+<span class="string">".jpg"</span></span><br><span class="line">        os.rename(oldname, newname)</span><br><span class="line">        print(oldname, <span class="string">"--------&gt;"</span>, newname)</span><br><span class="line">    <span class="keyword">elif</span> n &lt; <span class="number">99</span>:</span><br><span class="line">        oldname = f[n]</span><br><span class="line">        newname = <span class="string">"00"</span>+str(n+<span class="number">1</span>)+<span class="string">".jpg"</span></span><br><span class="line">        os.rename(oldname, newname)</span><br><span class="line">        print(oldname, <span class="string">"--------&gt;"</span>, newname)</span><br><span class="line">    <span class="keyword">elif</span> n &lt; <span class="number">999</span>:</span><br><span class="line">        oldname = f[n]</span><br><span class="line">        newname = <span class="string">"0"</span>+str(n+<span class="number">1</span>)+<span class="string">".jpg"</span></span><br><span class="line">        os.rename(oldname, newname)</span><br><span class="line">        print(oldname, <span class="string">"--------&gt;"</span>, newname)</span><br><span class="line">    n += <span class="number">1</span></span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/30/socket/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="祥吉">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Deep Coding">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/30/socket/" itemprop="url">python操作(一)：网络编程入门</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-30T20:54:55+08:00">
+                2018-01-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/01/30/socket/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/01/30/socket/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="背景简介"><a href="#背景简介" class="headerlink" title="背景简介"></a>背景简介</h3><p>最近做的文本相似度匹配任务，需要部署到web端，毫无网络背景知识的笔者在老板的“压榨”下，3天速成了python websocket通信，并于公司<code>json</code>小哥合作，实现了图片、文本的server-client端通信。<br><img src="/img/Http.jpg" alt=""><br>整个要完成的架构如上图所示：Client send一个“字符串/图片”给Server，Server进行一系列运算后，send“字符串/图片”给Client，完成一次通信。在这里我们只记录<code>红块</code>、<code>黄块</code>内的工作内容。</p>
+<h4 id="网络进程之间如何通信？"><a href="#网络进程之间如何通信？" class="headerlink" title="网络进程之间如何通信？"></a>网络进程之间如何通信？</h4><p>TCP/IP协议可以唯一的标识网络中的主机，即“网络层的IP地址”；主机中的应用程序（进程），通过“协议+端口”的形式指定；利用这样的“IP地址+协议+端口”的三元组，就可以标识网络中的唯一一个进程了<br>而编写/操作TCP/IP协议的应用程序接口，通常采用socket套接字。有一些前辈的直观解释是：socket类似于文件操作的“open—write/read—close”模式，只是将其应用在了TCP/IP协议上</p>
+<h3 id="socket的基本操作函数："><a href="#socket的基本操作函数：" class="headerlink" title="socket的基本操作函数："></a>socket的基本操作函数：</h3><h4 id="socket-函数"><a href="#socket-函数" class="headerlink" title="socket()函数"></a>socket()函数</h4><p>int socket(int domain, int type, int protocol)<br>socket函数对应于一个普通的文件打开操作，返回一个socket描述字，后续的操作都有用到它，把它作为参数，通过它来进行一些读写操作。通过调用bind()函数给该描述字分配一个端口(PORT)，如果不指定会随机分配<br>domain:地址类型，如：AF_INET决定了要用ipv4地址<br>type：socket类型<br>protocol：TCP/IP等传输协议，默认选择跟type类型对应的协议</p>
+<h4 id="bind-函数"><a href="#bind-函数" class="headerlink" title="bind()函数"></a>bind()函数</h4><p><code>int bind(int sockfd, const struct sockaddr *addr, socklen_t addrlen)</code><br>通常服务器在启动的时候都会绑定一个众所周知的地址（如ip地址+端口号），用于提供服务，客户就可以通过它来接连服务器，所以通常服务器端在listen之前会调用bind()</p>
+<h4 id="listen-函数"><a href="#listen-函数" class="headerlink" title="listen()函数"></a>listen()函数</h4><p><code>int listen(int sockfd, int backlog);</code><br>作为一个服务器，在调用socket()、bind()之后就会调用listen()来监听这个socket，如果客户端这时调用connect()发出连接请求，服务器端就会接收到这个请求。<br>第一个参数是socket描述字，第二个参数是socket可以排队的最大连接个数</p>
+<h4 id="accept-函数"><a href="#accept-函数" class="headerlink" title="accept()函数"></a>accept()函数</h4><p><code>int accept(int sockfd, struct sockaddr *addr, socklen_t *addrlen)</code><br>Server端通过socket(),bind(),listen()操作，就可以监听指定的socket地址了。Client端通过requests.get(url)函数建立连接请求，Server端监听到后调用accept()接收这个请求，之后就可以进行两端的I/O操作了。</p>
+<h4 id="close-函数"><a href="#close-函数" class="headerlink" title="close()函数"></a>close()函数</h4><p>传输完成需要关闭连接。以上是socket的C代码解读，python中的非常类似，如下是用python写的socket传输字符串，基本都可以看懂。<br><code>Server</code><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> socket</span><br><span class="line">HOST, PORT = <span class="string">''</span>, <span class="number">8888</span> <span class="comment"># Server端网络IP及端口</span></span><br><span class="line">listen_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)</span><br><span class="line">listen_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, <span class="number">1</span>)</span><br><span class="line">listen_socket.bind((HOST, PORT))</span><br><span class="line">listen_socket.listen(<span class="number">1</span>)  <span class="comment">#设置监听，最多有5个端排队等侯</span></span><br><span class="line"><span class="keyword">print</span> <span class="string">'Serving HTTP on port %s ...'</span> % PORT  <span class="comment"># 开启了一个侦听socket</span></span><br><span class="line"><span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">  coon, addr = listen_socket.accept()  <span class="comment"># 开启一个永续循环，被动等待客户端连接</span></span><br><span class="line">  request = coon.recv(<span class="number">1024</span>) <span class="comment"># 接收bytes类型数据，每次接收1024b</span></span><br><span class="line">  accept_data = str(request, encoding=<span class="string">"utf8"</span>) </span><br><span class="line">  <span class="comment">#print(request)</span></span><br><span class="line">  print(<span class="string">""</span>.join((<span class="string">"接收内容："</span>, accept_data, <span class="string">"    客户端口："</span>, str(addr[<span class="number">1</span>]))))</span><br><span class="line"> </span><br><span class="line">  http_response = <span class="string">"Hello World!"</span></span><br><span class="line"> </span><br><span class="line">  conn.sendall(bytes(http_response, encoding=<span class="string">"utf8"</span>))  <span class="comment"># 重新建立连接后，返回一个服务器中预定义的字符串</span></span><br><span class="line">  coon.close()</span><br></pre></td></tr></table></figure></p>
+<p><code>Client</code><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> socket</span><br><span class="line">sk = socket.socket()</span><br><span class="line">sk.connect((<span class="string">"192.168.1.136"</span>, <span class="number">8888</span>))  <span class="comment"># 与局域网内Server端IP地址Connect</span></span><br><span class="line">send_data = <span class="string">"Hello Server"</span></span><br><span class="line">sk.sendall(bytes(send_data, encoding=<span class="string">"utf8"</span>))</span><br><span class="line">accept_data = sk.recv(<span class="number">1024</span>)</span><br><span class="line">print(str(accept_data, encoding=<span class="string">"utf8"</span>)) <span class="comment"># 接收到Server端发来的“Hello World!”</span></span><br><span class="line">sk.close()</span><br></pre></td></tr></table></figure></p>
+<p>Tips：</p>
+<blockquote>
+<ul>
+<li>需要注意<code>send</code>、<code>recv</code>函数必须是一一对应的，有接必有收，逻辑上必须足够清楚。否则会造成不知名的一些Error。</li>
+<li>在python3中，所有数据的传输必须用bytes类型（bytes只支持ascii码）所以在发送数据的时候要么在发送的字符串前面加 ‘b’，要么使用encode(‘utf-8’)进行转换成bytes类型发送</li>
+</ul>
+</blockquote>
+<h3 id="通过Socket在局域网内传输图片-视频-PDF等"><a href="#通过Socket在局域网内传输图片-视频-PDF等" class="headerlink" title="通过Socket在局域网内传输图片/视频/PDF等"></a>通过Socket在局域网内传输图片/视频/PDF等</h3><p>通过上面的工作，已经能够实现普通字符串的传输了，那么怎样搭建一个通用的文件传输系统呢？这里只需要加一个Trick，依然是每次<code>recv(1024)</code>，但要循环接收，直到文件全部被传输完毕为止。关键代码如下：<br><code>Server</code><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os,socket,hashlib</span><br><span class="line"><span class="comment"># ...</span></span><br><span class="line"><span class="comment"># socket监听定义</span></span><br><span class="line"><span class="comment"># ...</span></span><br><span class="line"><span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">    conn, addr = listen_socket.accept()</span><br><span class="line">    request = conn.recv(<span class="number">1024</span>)</span><br><span class="line">    data = str(request, encoding=<span class="string">"utf8"</span>)</span><br><span class="line">    print(<span class="string">"接收内容："</span>, data)</span><br><span class="line">    filename = <span class="string">"/home/tucodec/ZJU.mp4"</span></span><br><span class="line">    <span class="keyword">if</span> os.path.isfile(filename):</span><br><span class="line">        f = open(filename,<span class="string">"rb"</span>)</span><br><span class="line">        m = hashlib.md5() <span class="comment"># 哈希码用来加密文件</span></span><br><span class="line">        file_size = os.stat(filename).st_size</span><br><span class="line">        conn.send(str(file_size).encode(<span class="string">"utf-8"</span>)) <span class="comment"># send size to client，计算需要循环多少个1024 byte</span></span><br><span class="line">        conn.recv(<span class="number">1024</span>) <span class="comment"># 联系两个send会发生粘包，加一个recv</span></span><br><span class="line">        <span class="keyword">for</span> line <span class="keyword">in</span> f:</span><br><span class="line">            m.update(line)</span><br><span class="line">            conn.send(line) <span class="comment"># 循环发送</span></span><br><span class="line">        f.close()</span><br><span class="line">    print(<span class="string">"send done..."</span>)</span><br></pre></td></tr></table></figure></p>
+<p><code>Client</code><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> socket,hashlib</span><br><span class="line"><span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">	sk = socket.socket()</span><br><span class="line">	sk.connect((<span class="string">"192.168.1.136"</span>, <span class="number">8888</span>))  <span class="comment"># 主动初始化与服务器端的连接</span></span><br><span class="line">	<span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">		strs = input(<span class="string">"请输入："</span>)</span><br><span class="line">		<span class="keyword">if</span> len(strs) == <span class="number">0</span>:</span><br><span class="line">			<span class="keyword">continue</span></span><br><span class="line">		sk.send(bytes(strs, encoding=<span class="string">"utf8"</span>))</span><br><span class="line">		server_resp_size = sk.recv(<span class="number">1024</span>)  <span class="comment"># 接收send_filesize，bytes类型的数据</span></span><br><span class="line">		file_total_size = int(server_resp_size.decode()) <span class="comment"># 格式转换</span></span><br><span class="line">		sk.send(bytes(<span class="string">"开始接收文件..."</span>, encoding=<span class="string">"utf8"</span>))</span><br><span class="line">		f = open(<span class="string">'new.mp4'</span>, <span class="string">"wb"</span>)</span><br><span class="line">		m = hashlib.md5()</span><br><span class="line">		recv_size = <span class="number">0</span></span><br><span class="line">		<span class="keyword">while</span> recv_size &lt; file_total_size:</span><br><span class="line">		    <span class="keyword">if</span> file_total_size - recv_size &gt; <span class="number">1024</span>:   <span class="comment">#最后一次接收之前,接收大小设置为1024</span></span><br><span class="line">		        size = <span class="number">1024</span></span><br><span class="line">		    <span class="keyword">else</span>:                                    <span class="comment">#最后一次不足1024，则只接收文件剩余的部分</span></span><br><span class="line">		        size = file_total_size - recv_size</span><br><span class="line">		    data = sk.recv(size)</span><br><span class="line">		    recv_size += len(data)</span><br><span class="line">		    f.write(data)</span><br><span class="line">		    m.update(data)</span><br><span class="line">		f.close()</span><br><span class="line">		sk.close()</span><br><span class="line">		<span class="keyword">break</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="aaugustin-websockets"><a href="#aaugustin-websockets" class="headerlink" title="aaugustin/websockets"></a>aaugustin/websockets</h3><p>尝试了socket的细节后，对网络编程有了些基础的认识。但是要和<code>json</code>小哥通信还是不行的，用上述的<code>socket.recv(1024)</code>方法得到的，是小哥发过来的是Http报头，需要各种校验，才能完成握手。果断上Github寻找别人写好的包，这时<a href="https://websockets.readthedocs.io/en/stable/intro.html" target="_blank" rel="noopener">aaugustin/websockets</a>以其简洁管事儿进入了我的视线，直接把文档中的例子拿来跑便可以一目了然。<br><code>Server</code><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"><span class="keyword">import</span> websockets</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">hello</span><span class="params">(websocket, path)</span>:</span></span><br><span class="line">    name = <span class="keyword">await</span> websocket.recv()</span><br><span class="line">    print(<span class="string">"&lt; &#123;&#125;"</span>.format(name))</span><br><span class="line"></span><br><span class="line">    greeting = <span class="string">"Hello &#123;&#125;!"</span>.format(name)</span><br><span class="line">    <span class="keyword">await</span> websocket.send(greeting)</span><br><span class="line">    print(<span class="string">"&gt; &#123;&#125;"</span>.format(greeting))</span><br><span class="line"></span><br><span class="line">start_server = websockets.serve(hello, <span class="string">''</span>, <span class="number">8888</span>)</span><br><span class="line"></span><br><span class="line">asyncio.get_event_loop().run_until_complete(start_server)</span><br><span class="line">asyncio.get_event_loop().run_forever()</span><br></pre></td></tr></table></figure></p>
+<p><code>Client</code><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"><span class="keyword">import</span> websockets</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">hello</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">with</span> websockets.connect(<span class="string">'ws://192.168.1.136:8888'</span>) <span class="keyword">as</span> websocket:</span><br><span class="line">        name = input(<span class="string">"What's your name? "</span>)</span><br><span class="line">        <span class="keyword">await</span> websocket.send(name)</span><br><span class="line">        print(<span class="string">"&gt; &#123;&#125;"</span>.format(name))</span><br><span class="line"></span><br><span class="line">        greeting = <span class="keyword">await</span> websocket.recv()</span><br><span class="line">        print(<span class="string">"&lt; &#123;&#125;"</span>.format(greeting))</span><br><span class="line"></span><br><span class="line">asyncio.get_event_loop().run_until_complete(hello())</span><br></pre></td></tr></table></figure></p>
+<h3 id="查看某个网络端口占用并将其Kill"><a href="#查看某个网络端口占用并将其Kill" class="headerlink" title="查看某个网络端口占用并将其Kill"></a>查看某个网络端口占用并将其Kill</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ lsof -i :8888</span><br><span class="line">$ <span class="built_in">kill</span> 4688</span><br></pre></td></tr></table></figure>
+<h3 id="Refer："><a href="#Refer：" class="headerlink" title="Refer："></a>Refer：</h3><p><a href="https://websockets.readthedocs.io/en/stable/intro.html" target="_blank" rel="noopener">aaugustin/websockets</a><br><a href="https://liam0205.me/2016/02/27/The-requests-library-in-Python/" target="_blank" rel="noopener">Python HTTP 库：requests 快速入门</a><br><a href="http://www.jb51.net/article/79663.html" target="_blank" rel="noopener">使用Python来编写HTTP服务器的超级指南</a><br><a href="http://blog.csdn.net/gneveek/article/details/8699198" target="_blank" rel="noopener">网络编程学习笔记一：Socket编程</a><br><a href="https://www.cnblogs.com/idontknowthisperson/p/5958536.html" target="_blank" rel="noopener">Python3 Socket网络编程</a><br><a href="https://www.cnblogs.com/rainowl-ymj/p/7221668.html" target="_blank" rel="noopener">Python 3.x–Socket实现简单的ssh和文件下载功能</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/30/doc2vec/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="祥吉">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Deep Coding">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/30/doc2vec/" itemprop="url">文本语义匹配/相似度度量</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-30T10:03:31+08:00">
+                2018-01-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/01/30/doc2vec/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/01/30/doc2vec/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="Word2vec语义相似度计算"><a href="#Word2vec语义相似度计算" class="headerlink" title="Word2vec语义相似度计算"></a>Word2vec语义相似度计算</h3><p>上一章节，我们用1.1G的中文维基百科语料训练了词向量。而短文本的语义相似度度量，最简单的方法便是把每个句子的词向量相加，然后计算其余弦相似度。gensim包中同样用函数实现了这一算法，如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">n_similarity</span><span class="params">(self, ws1, ws2)</span>:</span></span><br><span class="line">    v1 = [self[word] <span class="keyword">for</span> word <span class="keyword">in</span> ws1]</span><br><span class="line">    v2 = [self[word] <span class="keyword">for</span> word <span class="keyword">in</span> ws2]</span><br><span class="line">    <span class="keyword">return</span> dot(matutils.unitvec(array(v1).mean(axis=<span class="number">0</span>)), matutils.unitvec(array(v2).mean(axis=<span class="number">0</span>)))</span><br></pre></td></tr></table></figure></p>
+<p>建立一个<code>target.txt</code>文件存放待匹配的问题，代码比较简单如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"><span class="comment">#!/usr/bin/env Python</span></span><br><span class="line"><span class="keyword">from</span> gensim.models <span class="keyword">import</span> Word2Vec</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> jieba</span><br><span class="line">jieba.load_userdict(<span class="string">"dict.txt"</span>)</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ResultInfo</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, index, score, text)</span>:</span></span><br><span class="line">        self.id = index</span><br><span class="line">        self.score = score</span><br><span class="line">        self.text = text</span><br><span class="line"></span><br><span class="line">target = <span class="string">"target.txt"</span> <span class="comment"># 问题集合</span></span><br><span class="line">model = <span class="string">"./model/word2vec"</span></span><br><span class="line"></span><br><span class="line">model_w2v = Word2Vec.load(model) <span class="comment">#加载模型 文字摘要</span></span><br><span class="line"><span class="keyword">print</span> (<span class="string">"模型加载成功！"</span>)</span><br><span class="line">candidates = []</span><br><span class="line"><span class="keyword">with</span> open(target) <span class="keyword">as</span> f:</span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> f:</span><br><span class="line">        candidates.append(line.strip().split()) <span class="comment"># candidates列表中加载所有问题，</span></span><br><span class="line">并用空格分割</span><br><span class="line"><span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">    text = input(<span class="string">"请输入查询指令： "</span>)</span><br><span class="line">    words = list(jieba.cut(text.strip()))</span><br><span class="line">    <span class="keyword">if</span> len(words) == <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">continue</span></span><br><span class="line">    flag = <span class="keyword">False</span></span><br><span class="line">    <span class="keyword">for</span> w <span class="keyword">in</span> words:</span><br><span class="line">        <span class="keyword">if</span> w <span class="keyword">not</span> <span class="keyword">in</span> model_w2v.wv.vocab:</span><br><span class="line">            <span class="keyword">print</span> (<span class="string">"输入指令中词汇“%s”不在字典中"</span> % w)</span><br><span class="line">            flag = <span class="keyword">True</span></span><br><span class="line">    <span class="keyword">if</span> flag:</span><br><span class="line">        <span class="keyword">continue</span></span><br><span class="line">    res = []</span><br><span class="line">    index = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> candidate <span class="keyword">in</span> candidates:</span><br><span class="line">        score = model_w2v.n_similarity(words, candidate)</span><br><span class="line">        res.append(ResultInfo(index, score, <span class="string">" "</span>.join(candidate)))</span><br><span class="line">        index += <span class="number">1</span></span><br><span class="line">    res.sort(key=<span class="keyword">lambda</span> x:x.score, reverse=<span class="keyword">True</span>)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> res:</span><br><span class="line">        <span class="keyword">print</span> i.text <span class="comment"># 输出相似度最高的语句</span></span><br></pre></td></tr></table></figure></p>
+<p>最后测试结果如下，在短文本的相似度测量上，基于词向量相似度度量的算法在计算速度和质量上均是比较满意的。</p>
+<blockquote>
+<p>  ============<strong>体育</strong>=============<br>    3 世界 锦标赛 中国队 胜出 0.42<br>    4 中国 足球 失败 0.41<br>    2 奥运会 中国 女排 夺冠 0.40<br>    ============<strong>农业</strong>=============<br>    1 农民 在 江苏 种 水稻 0.55<br>    0 人工智能 和 农业 怎么 结合 0.45<br>    5 山东 苹果 丰收 0.42  </p>
+</blockquote>
+<h3 id="Doc2vec语义相似度计算"><a href="#Doc2vec语义相似度计算" class="headerlink" title="Doc2vec语义相似度计算"></a>Doc2vec语义相似度计算</h3><p>Doc2vec的原理暂未深入研究，参照网上各路教程跑通后的代码如下。笔者用该doc2vec进行了语义相似度检测，但效果差强人意（具体来说，能捕捉到一定程度句子结构信息，但对语义很模糊）。可能跟语料库选取关系较大，此处用的不是一行行的短句，而是训练word2vec的语料，一行一段话…接下来若有文本分类等任务，再补上详细研究路线<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> gensim</span><br><span class="line"><span class="keyword">import</span> smart_open</span><br><span class="line"><span class="keyword">import</span> multiprocessing</span><br><span class="line"><span class="keyword">import</span> logging</span><br><span class="line"><span class="keyword">from</span> gensim.models.doc2vec <span class="keyword">import</span> TaggedDocument, Doc2Vec</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line">reload(sys)</span><br><span class="line">sys.setdefaultencoding(<span class="string">'utf-8'</span>)</span><br><span class="line"></span><br><span class="line">data_set = <span class="string">"pre0"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">read_corpus</span><span class="params">(fname, tokens_only=False)</span>:</span></span><br><span class="line">    <span class="keyword">with</span> smart_open.smart_open(fname, encoding=<span class="string">"utf-8"</span>) <span class="keyword">as</span> f:</span><br><span class="line">        <span class="keyword">for</span> i, line <span class="keyword">in</span> enumerate(f):</span><br><span class="line">            <span class="keyword">if</span> tokens_only:</span><br><span class="line">                <span class="keyword">yield</span> gensim.utils.simple_preprocess(line)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                text = line.split()</span><br><span class="line">                <span class="keyword">yield</span> TaggedDocument(text[:], [i])</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">train_data = list(read_corpus(data_set))</span><br><span class="line"><span class="keyword">print</span> len(train_data)</span><br><span class="line"></span><br><span class="line">logging.basicConfig(format=<span class="string">'%(asctime)s : %(levelname)s : %(message)s'</span>, level=logging.INFO)</span><br><span class="line">model = Doc2Vec(size=<span class="number">100</span>, min_count=<span class="number">1</span>, iter=<span class="number">10</span>, workers=multiprocessing.cpu_count())</span><br><span class="line">model.build_vocab(train_data)</span><br><span class="line">model.train(train_data, total_examples=model.corpus_count, epochs=<span class="number">100</span>)</span><br><span class="line">model.save(<span class="string">'./model/model_new.doc2vec'</span>)</span><br></pre></td></tr></table></figure></p>
+<h3 id="Ref："><a href="#Ref：" class="headerlink" title="Ref："></a>Ref：</h3><p><a href="http://someth.duapp.com/2017/08/10/LSTM-%E5%8F%A5%E5%AD%90%E7%9B%B8%E4%BC%BC%E5%BA%A6%E5%88%86%E6%9E%90/" target="_blank" rel="noopener">LSTM 句子相似度分析</a><br><a href="http://blog.csdn.net/lenbow/article/details/52120230" target="_blank" rel="noopener">基于gensim的Doc2Vec简析</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/25/word2vec-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="祥吉">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Deep Coding">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/25/word2vec-1/" itemprop="url">中文维基百科词向量Word2vec实战！</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-25T23:11:28+08:00">
+                2018-01-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/01/25/word2vec-1/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/01/25/word2vec-1/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>上一篇文章详细学习了Word2vec的含义及实现原理，包含两大语言模型：Cbow、Skip-Gram，以及两大快速训练技巧：Negative sampling、哈夫曼树形式查找Target word。这一篇主要讲基于中文维基百科语料库的Word2vec训练，采用了开源的python gensim包</p>
+<h2 id="安装gensim包"><a href="#安装gensim包" class="headerlink" title="安装gensim包"></a>安装gensim包</h2><p>Google最初开源的Word2vec是用C++写的，后来陆续出现了很多版本，我们采用的是<a href="https://radimrehurek.com/gensim/models/word2vec.html" target="_blank" rel="noopener"><font color="blue"><strong>gensim</strong></font></a> ，gensim已经被集成在了conda中，所以我们可以方便地利用miniconda进行安装。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span> activate py2k  <span class="comment"># 激活python2环境，当然python3也可以的，只不过笔者此处用的python2版本</span></span><br><span class="line">conda install gensim</span><br></pre></td></tr></table></figure></p>
+<h2 id="获取维基百科语料库"><a href="#获取维基百科语料库" class="headerlink" title="获取维基百科语料库"></a>获取维基百科语料库</h2><h3 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h3><p>2017版百科语料下载地址为：<a href="https://dumps.wikimedia.org/zhwiki/latest/zhwiki-latest-pages-articles.xml.bz2。" target="_blank" rel="noopener">https://dumps.wikimedia.org/zhwiki/latest/zhwiki-latest-pages-articles.xml.bz2。</a> 下载后是一个压缩包，里面的内容是从网上爬取的“标题–摘要–正文”对，以及其他的html、json标志符等。</p>
+<h3 id="语料抽取"><a href="#语料抽取" class="headerlink" title="语料抽取"></a>语料抽取</h3><p><a href="https://github.com/attardi/wikiextractor" target="_blank" rel="noopener">Wikipedia Extractor</a>是一个开源的语料抽取工具，语料库压缩包不用在本地解压，直接用Wikipedia Extractor脚本执行：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ git <span class="built_in">clone</span> https://github.com/attardi/wikiextractor.git wikiextractor</span><br><span class="line">$ <span class="built_in">cd</span> wikiextractor</span><br><span class="line">$ sudo python setup.py install</span><br><span class="line">$ ./WikiExtractor.py -b 1024M -o extracted zhwiki-latest-pages-articles.xml.bz2 <span class="comment">#</span></span><br></pre></td></tr></table></figure></p>
+<p>其中<code>2000M</code>代表抽取后的预料库最大允许size，因为原始语料库size约1.3G，这里用2000M的话相当于把语料全部抽取到一个文本文件“wiki_00”中。<code>extracted</code>代表抽取后语料存放路径。<br>最终控制台log输出：INFO: Finished 7-process extraction of 986891 articles in 1393.9s (708.0 art/s)，代表全部抽取完成共986891篇文章。<br>抽取后的内容格式为：每篇文章被一对<code>&lt;doc&gt;</code>、<code>&lt;/doc&gt;</code>包起来，而<code>&lt;doc&gt;</code>中的包含的属性有文章id、url和title属性，如<code>&lt;doc id=&quot;xxx&quot; url=&quot;https://zh.wikipedia.org/xxx&quot; title=&quot;xxx&quot;&gt;</code>。</p>
+<h3 id="繁体字转简体"><a href="#繁体字转简体" class="headerlink" title="繁体字转简体"></a>繁体字转简体</h3><p>上一步抽取的中文维基百科语料库比较杂乱，既有繁体字也有简体字，这里需要将其统一变为简体字，采用开源的 <a href="https://github.com/BYVoid/OpenCC" target="_blank" rel="noopener">OpenCC</a>转换器。ubuntu下使用方法如下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt-get install opencc</span><br><span class="line">$ opencc -i wiki_00 -o zh_wiki_00 -c zht2zhs.ini</span><br></pre></td></tr></table></figure></p>
+<h3 id="去除标点"><a href="#去除标点" class="headerlink" title="去除标点"></a>去除标点</h3><p>去除标点是因为：训练标点符号意义不大，且标点符号出现次数过多，影响一定训练效率。可以通过正则表达式去除。感谢<a href="http://wulc.me" target="_blank" rel="noopener">吴良超的学习笔记</a>提供的去标点程序，使用格式为：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python script.py input_file output_file</span><br></pre></td></tr></table></figure></p>
+<p>pre1.py源码如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*- </span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> io</span><br><span class="line"></span><br><span class="line">reload(sys)</span><br><span class="line">sys.setdefaultencoding(<span class="string">'utf-8'</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">pre_process</span><span class="params">(input_file, output_file)</span>:</span></span><br><span class="line">    multi_version = re.compile(<span class="string">ur'-\&#123;.*?(zh-hans|zh-cn):([^;]*?)(;.*?)?\&#125;-'</span>)</span><br><span class="line">    punctuation = re.compile(<span class="string">u"[-~!@#$%^&amp;*()_+`=\[\]\\\&#123;\&#125;\"|;':,./&lt;&gt;?·！@#￥%……&amp;*（）——+【】、；‘：“”，。、《》？「『」』]"</span>)</span><br><span class="line">    <span class="keyword">with</span> io.open(output_file, mode = <span class="string">'w'</span>, encoding = <span class="string">'utf-8'</span>) <span class="keyword">as</span> outfile:</span><br><span class="line">        <span class="keyword">with</span> io.open(input_file, mode = <span class="string">'r'</span>, encoding =<span class="string">'utf-8'</span>) <span class="keyword">as</span> infile:</span><br><span class="line">            <span class="keyword">for</span> line <span class="keyword">in</span> infile:</span><br><span class="line">                line = multi_version.sub(<span class="string">ur'\2'</span>, line)</span><br><span class="line">                line = punctuation.sub(<span class="string">''</span>, line.decode(<span class="string">'utf8'</span>))</span><br><span class="line">                outfile.write(line)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    <span class="keyword">if</span> len(sys.argv) != <span class="number">3</span>:</span><br><span class="line">        <span class="keyword">print</span> <span class="string">"Usage: python pre1.py input_file output_file"</span></span><br><span class="line">        sys.exit()</span><br><span class="line">    input_file, output_file = sys.argv[<span class="number">1</span>], sys.argv[<span class="number">2</span>]</span><br><span class="line">    pre_process(input_file, output_file)</span><br></pre></td></tr></table></figure></p>
+<h3 id="去除标识符及分词"><a href="#去除标识符及分词" class="headerlink" title="去除标识符及分词"></a>去除标识符及分词</h3><p>经过上一步处理，每一篇文章被存放在了<code>doc</code>/doc<code>标签。同时肉眼对比抽取后的句子，每一段落的开头跟标题都是重复的，也需要去除。还有前辈们建议把一篇段落的文章放到一行，但词向量关注的</code>window size`一般大小为3、5，感觉也没这个必要。安装<a href="https://github.com/fxsjy/jieba" target="_blank" rel="noopener">jieba分词</a>，pre2.py代码如下:<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> io</span><br><span class="line"><span class="keyword">import</span> jieba</span><br><span class="line"></span><br><span class="line">reload(sys)</span><br><span class="line">sys.setdefaultencoding(<span class="string">'utf-8'</span>)</span><br><span class="line"></span><br><span class="line">jieba.load_userdict(<span class="string">"dict.txt"</span>) <span class="comment"># 如果有的话加载用户自定义词典</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">cut_words</span><span class="params">(input_file, output_file)</span>:</span></span><br><span class="line">    count = <span class="number">0</span></span><br><span class="line">    a = <span class="number">1</span> <span class="comment"># 标识符</span></span><br><span class="line">    <span class="keyword">with</span> io.open(output_file, mode = <span class="string">'w'</span>, encoding = <span class="string">'utf-8'</span>) <span class="keyword">as</span> outfile:</span><br><span class="line">        <span class="keyword">with</span> io.open(input_file, mode = <span class="string">'r'</span>, encoding = <span class="string">'utf-8'</span>) <span class="keyword">as</span> infile:</span><br><span class="line">            <span class="keyword">for</span> line <span class="keyword">in</span> infile:</span><br><span class="line">                <span class="keyword">if</span> a == <span class="number">-1</span>:</span><br><span class="line">                    a = a*(<span class="number">-1</span>)</span><br><span class="line">                    <span class="keyword">continue</span></span><br><span class="line">                line = line.strip() </span><br><span class="line">                <span class="keyword">if</span> len(line) &lt; <span class="number">1</span>: </span><br><span class="line">                    <span class="keyword">continue</span></span><br><span class="line">                <span class="comment"># 移除字符串首尾的\r \n 空格等字符，此处希望一篇文章的所有内容位于一行，使得训练预料更规整</span></span><br><span class="line">                <span class="keyword">if</span> line.startswith(<span class="string">'doc'</span>):</span><br><span class="line">                    <span class="keyword">if</span> line == <span class="string">'doc'</span>: </span><br><span class="line">                        outfile.write(<span class="string">u'\n'</span>) </span><br><span class="line">                        count += <span class="number">1</span></span><br><span class="line">                        str = <span class="string">"已完成 %d 篇百科文章转换"</span> % (count)</span><br><span class="line">                        <span class="keyword">print</span> str </span><br><span class="line">                    <span class="keyword">else</span>:</span><br><span class="line">                        a = <span class="number">-1</span></span><br><span class="line">                        <span class="keyword">continue</span></span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    <span class="keyword">for</span> word <span class="keyword">in</span> jieba.cut(line):</span><br><span class="line">                        outfile.write(word + <span class="string">' '</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    <span class="keyword">if</span> len(sys.argv) &lt; <span class="number">3</span>:</span><br><span class="line">        <span class="keyword">print</span> <span class="string">"Terminal Format: python script.py input_file output_file"</span></span><br><span class="line">        sys.exit()</span><br><span class="line">    input_file, output_file = sys.argv[<span class="number">1</span>], sys.argv[<span class="number">2</span>]</span><br><span class="line">    cut_words(input_file, output_file)</span><br></pre></td></tr></table></figure></p>
+<p>最终log输出：<code>已完成 986891 篇百科文章转换</code>，代表全部文章转换完毕。</p>
+<h3 id="文本去重"><a href="#文本去重" class="headerlink" title="文本去重"></a>文本去重</h3><p>NLP常规操作，这么大的数据量，采用利用哈希表检测重复并去除，pre3.py代码如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*- </span></span><br><span class="line"><span class="comment">#程序功能是为了完成判断文件中是否有重复句子</span></span><br><span class="line"><span class="comment">#并将重复句子打印出来</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> shutil</span><br><span class="line">res_list = set()</span><br><span class="line">f = open(<span class="string">'pre2'</span>,<span class="string">'r'</span>)</span><br><span class="line">w = open(<span class="string">'pre3'</span>, <span class="string">'w'</span>)</span><br><span class="line">k = <span class="number">1</span></span><br><span class="line">index = <span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> f.readlines():</span><br><span class="line">    index = index + <span class="number">1</span></span><br><span class="line">    <span class="keyword">if</span> line <span class="keyword">in</span> res_list:</span><br><span class="line">        k = k + <span class="number">1</span></span><br><span class="line">        print(<span class="string">"Repeat"</span>, k, <span class="string">"All:"</span>, index, <span class="string">"Percent: %.5f%%"</span> % (<span class="number">100</span>*k/index))</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        res_list.add(line)</span><br><span class="line">        w.write(line)</span><br></pre></td></tr></table></figure></p>
+<p>最终log输出:<code>Repeat&#39;, 18649, &#39;All:&#39;, 986884, &#39;Percent: 1.00000%&#39;</code>，重复了1%的语料。</p>
+<h2 id="用gensim训练词向量"><a href="#用gensim训练词向量" class="headerlink" title="用gensim训练词向量"></a>用gensim训练词向量</h2><h3 id="初始训练"><a href="#初始训练" class="headerlink" title="初始训练"></a>初始训练</h3><p>解释下参数含义：<br><code>multiprocessing</code>:python中的多线程模块，这里这里采用的是8核CPU进行训练，网络比较简单的情况下速度要比GPU快。<br><code>LineSentence</code>：将输入文件转为 gensim 内部的 LineSentence 对象，要求输入的文件的格式为<strong>每行一篇文章，对于中文每篇文章经过分词处理。</strong><br><code>min_count</code>：低于min_count的词频的词不参与训练；<code>sg</code>:0表示CBOW语言模型，1表示Skip-gram模型；<code>size</code>：词向量维度<br><code>iter</code>:迭代的epoch次数，这里着重讲下<strong>#此处的iter值会被直接设置到百分比进度条中，而不是日常训练神经网络一样epoch1、epoch2…epoch100</strong></p>
+<p>train.py代码如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> os, sys</span><br><span class="line"><span class="keyword">import</span> multiprocessing</span><br><span class="line"><span class="keyword">import</span> gensim  </span><br><span class="line"><span class="keyword">import</span> logging</span><br><span class="line"></span><br><span class="line">reload(sys)</span><br><span class="line">sys.setdefaultencoding(<span class="string">'utf-8'</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">word2vec_train</span><span class="params">(input_file, output_file)</span>:</span></span><br><span class="line">    logging.basicConfig(format=<span class="string">'%(asctime)s : %(levelname)s : %(message)s'</span>, level=logging.INFO)</span><br><span class="line">    sentences = gensim.models.word2vec.LineSentence(input_file)</span><br><span class="line">    model = gensim.models.Word2Vec(sentences, size=<span class="number">800</span>, window=<span class="number">5</span>, min_count=<span class="number">3</span>, iter=<span class="number">100</span>,sg=<span class="number">0</span>, workers=multiprocessing.cpu_count())</span><br><span class="line">    <span class="comment"># model.train(sentences, total_examples=model.corpus_count, epochs = 100) 默认参数，也可以指定</span></span><br><span class="line">    model.save(output_file)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    <span class="keyword">if</span> len(sys.argv) &lt; <span class="number">3</span>:</span><br><span class="line">        <span class="keyword">print</span> <span class="string">"Terminal Format: python script.py infile outfile"</span></span><br><span class="line">        sys.exit()</span><br><span class="line">    input_file, output_file = sys.argv[<span class="number">1</span>], sys.argv[<span class="number">2</span>]</span><br><span class="line">    word2vec_train(input_file, output_file)</span><br></pre></td></tr></table></figure></p>
+<p>最终log输出：<code>2018-01-22 19:37:52,179 : INFO : PROGRESS: at 100.00% examples, 122591 words/s, in_qsize 16, out_qsize 0</code><br>代表完成训练。</p>
+<blockquote>
+<ul>
+<li>实验环境：ubuntu16.04、 CPU：8核</li>
+</ul>
+<ol>
+<li>迭代5次epoch，耗时1.5小时</li>
+<li>相同参数下，迭代100次epcoh，耗时40小时</li>
+</ol>
+</blockquote>
+<h3 id="增量训练"><a href="#增量训练" class="headerlink" title="增量训练"></a>增量训练</h3><p>增量训练可以在新的语料库上，基于原有模型进行叠加训练，而不用从头开始。<br>train_add.py关键部分代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">def word2vec_train(input_file, output_file):</span><br><span class="line">    logging.basicConfig(format=&apos;%(asctime)s : %(levelname)s : %(message)s&apos;, level=logging.INFO)</span><br><span class="line">    model = gensim.models.Word2Vec.load(&apos;word2vec&apos;)</span><br><span class="line">    more_sentences = gensim.models.word2vec.LineSentence(input_file)</span><br><span class="line">    model.build_vocab(more_sentences, update=True)</span><br><span class="line">    model.train(more_sentences, total_examples=model.corpus_count, epochs=model.iter)</span><br></pre></td></tr></table></figure></p>
+<p>上面的代码先加载了一个已经训练好的词向量模型，然后再添加新的文章进行训练，同样新增的文章的格式也要满足每行一篇文章，每篇文章的词语通过空格分开的格式。由于前段时间参加Ai Challenge比赛，正好有1000W行处理后的中文数据可以加入训练。</p>
+<h2 id="使用词向量模型"><a href="#使用词向量模型" class="headerlink" title="使用词向量模型"></a>使用词向量模型</h2><p>直接上代码了，infer.py如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#encoding=utf-8</span></span><br><span class="line"><span class="keyword">import</span> gensim</span><br><span class="line"><span class="keyword">from</span> gensim.models <span class="keyword">import</span> word2vec</span><br><span class="line">model=gensim.models.Word2Vec.load(<span class="string">'word2vec'</span>)</span><br><span class="line"><span class="keyword">print</span> <span class="string">"模型加载成功！"</span></span><br><span class="line"><span class="keyword">print</span> <span class="string">"----词向量维度------"</span></span><br><span class="line"><span class="keyword">print</span> len(model[<span class="string">u'男人'</span>])</span><br><span class="line"><span class="keyword">print</span> <span class="string">"----跟“滋润”相近的词------"</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> model.most_similar(<span class="string">u"滋润"</span>):</span><br><span class="line">    <span class="keyword">print</span> i[<span class="number">0</span>],i[<span class="number">1</span>]</span><br></pre></td></tr></table></figure></p>
+<p>Refer：<br><a href="http://blog.csdn.net/qq_32166627/article/details/68942216" target="_blank" rel="noopener">word2vec实战：获取和预处理中文维基百科(Wikipedia)语料库，并训练成word2vec模型</a><br><a href="http://wulc.me" target="_blank" rel="noopener">中文维基百科语料库词向量的训练</a><br><a href="http://kexue.fm/archives/4304/" target="_blank" rel="noopener">不可思议的Word2Vec</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/21/word2vec/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="祥吉">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Deep Coding">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/21/word2vec/" itemprop="url">Word2vec词向量原理解析！</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-21T15:46:11+08:00">
+                2018-01-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/01/21/word2vec/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/01/21/word2vec/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="1-词汇表示Background"><a href="#1-词汇表示Background" class="headerlink" title="1. 词汇表示Background"></a>1. 词汇表示Background</h2><h3 id="one-hot编码"><a href="#one-hot编码" class="headerlink" title="one-hot编码"></a>one-hot编码</h3><p>文本、字符串看似简单，其实是经过几千万年的演化，人类抽象出的非常高维、稀疏的特征。拿汉语来说，词汇数量约为几十万。如果采用ont-hot形式编码，一个词语的维度就将占据几十万维。训练时候往往是上亿个词，这便会造成巨大的维数灾难。</p>
+<h3 id="Word2vec"><a href="#Word2vec" class="headerlink" title="Word2vec"></a>Word2vec</h3><p>而<strong>Word2vec</strong>(中文名：词向量/词嵌入)，可以自由控制词汇的维度，常用的维度数一般为256、512…1024维。相对于one-hot编码词汇的离散表示，Word2vec是一种词汇的分布式表示(distribution representation)。比如某个词汇被以维度为[1,256]的一维向量表示，如果是一个包含100个词的句子，那么这句话被表示为[100,256]。写到这里，其实便可以意识到这跟图像用像素矩阵来表示是非常类似的。<br> <img src="/img/wpic2.jpeg" width="400" alt="图片名称" align="center"></p>
+<h3 id="Word2vec特点"><a href="#Word2vec特点" class="headerlink" title="Word2vec特点"></a>Word2vec特点</h3><p>因为Deep learning的优势是从低维特征中自动学习、提取高维特征，词的分布式表示便可以充当词汇的低维特征表示，所以目前像文本分类、机器翻译、摘要等NLP任务，都使用Word2vec表示的词汇来作为模型的input。使得NLP领域也因为Deep learning 取得了不错的进步。如下是搜索“爱因斯坦”的相近词汇</p>
+<pre><code class="bash">----跟“爱因斯坦”相近的词------
+宇宙学 0.808888375759
+牛顿 0.800362348557
+相对论 0.791419327259
+定律 0.76971578598
+拓扑 0.764759659767
+</code></pre>
+<p>但因为Word2vec衡量的是文本共现程度，只能反映两者经常在相近的上下文环境中出现。所以它并不是真正意义上的语义表示，只能说一种近似，或者说其中存在很多的语义误差，并不像像素可以精确表示一副图像的底层信息。笔者认为这也是造成NLP领域并没有像图像、语音识别领域取得非常长足进步的重要原因。</p>
+<blockquote>
+<p>由于词汇背后丰富的语义信息，并不能通过Word2vec完全表示，最近也有学者尝试用更细的粒度来表示词汇。清华大学的刘知远老师利用HowNet：一种用最基本的、不宜再被分割的最小语义单位来表示的语义体系，跟Word2vec相结合，也获得了一些可以展望的成果<a href="https://www.zybuluo.com/cmd/" target="_blank" rel="noopener"><font color="#9999FF">《在深度学习时代用HowNet搞事情》</font></a></p>
+</blockquote>
+<hr>
+<h3 id="Word2vec重要组件"><a href="#Word2vec重要组件" class="headerlink" title="Word2vec重要组件"></a>Word2vec重要组件</h3><p>Word2vec(以下简称词向量)，虽然作为概率语言模型的input，但其实是训练语言模型产生的中间结果。</p>
+<blockquote>
+<ul>
+<li><strong>两个语言模型：</strong><ul>
+<li>Skip-gram：根据当前词语w<sub>t</sub>，预测上下文的词语(w<sub>t-1</sub>、w<sub>t+1</sub>)的模型。</li>
+<li>CBOW：Continuous Bag-of-Words Model的缩写，与Skip-gram正好相反</li>
+</ul>
+</li>
+<li><strong>优化Softmax归一化：</strong><ul>
+<li>Hierarchical Softmax：采用哈夫曼树思想分层求取Target概率</li>
+<li>Negative sampling：softmax时仅采样少量词汇作映射</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<hr>
+<h2 id="2-Word2vec重要组件详解"><a href="#2-Word2vec重要组件详解" class="headerlink" title="2. Word2vec重要组件详解"></a>2. Word2vec重要组件详解</h2><h3 id="神经网络语言模型简化"><a href="#神经网络语言模型简化" class="headerlink" title="神经网络语言模型简化"></a>神经网络语言模型简化</h3><p>简化后训练Language model的神经网络如图所示，甚至都没有Hidden Layer层，是一个直接从input到output的映射。<br> <img src="/img/wpic5.jpeg" width="400" alt="图片名称" align="center"><br>图中的三层含义：</p>
+<blockquote>
+<p>input：上下文的词向量(注意我们训练的是CBOW语言模型，词向量只是模型的一个参数，起始时是个随机值)<br>  projection：上下文词向量simply add(若是Skip-gram为input本身)<br>  output：按理说此处应当是在词表维度C上的概率分布</p>
+</blockquote>
+<p>参数化表示上面的CBOW语言模型后，如下图所示：(看这里更清楚了，这不就是纯粹的softmax公式么…)<br> <img src="/img/wpic7.jpeg" width="350" alt="图片名称" align="center"><br>简单计算下这个网络从projection Layer到Output Layer 全连接网络层之间的参数：projection Layer即词向量维度在10<sup>2</sup>量级；词表(Vocab)数量在10<sup>5</sup>量级；语料库中需要训练的词汇数量一般在10<sup>7</sup>量级以上。这样的运算次数是十分吓人的！</p>
+<h3 id="Hierarchical-Softmax"><a href="#Hierarchical-Softmax" class="headerlink" title="Hierarchical Softmax"></a>Hierarchical Softmax</h3><p><strong><code>重点：</code></strong>作者此处便采用了哈夫曼树的思想：具体做法是将语料库中的词按先词频排序，然后不断合并最小的两个节点成为一棵哈夫曼树，最终合并效果如下所示，词表中的所有词汇均为于树的叶节点上(详见：<a href="http://www.icourse163.org/learn/ZJU-93001?tid=1002019005#/learn/content?type=detail&amp;id=1002635018&amp;cid=1002891113" target="_blank" rel="noopener"><font color="blue">10分钟便能懂的公开课</font></a>)<br> <img src="/img/wpic8.jpeg" width="450" alt="图片名称" align="center"><br><strong>生成Target词汇的概率为从跟节点到叶子节点路径的概率连乘</strong>(见下图)。而哈夫曼树相比于其他形式的二叉树，将高频词赋予更短的编码，可以进一步减少概率P相乘次数。下面用图解的方式说明为什么采用哈夫曼树可以加快计算速度。</p>
+<blockquote>
+<p>极限假设词向量维度为3，词表大小为20。那么全连接网络1次迭代需要训练的参数数量为60个，接着再进行softmax归一化。<br>哈夫曼树的形式，假设目标词汇是图中的节点8，根结点到8节点一共经过5个节点(哈夫曼树编码知识，8节点的编码表示为:11110，那么计算Target词汇概率，仅涉及3*5=15个参数的计算。</p>
+</blockquote>
+<p><img src="/img/wpic9.jpeg" width="450" alt="图片名称" align="center"><br>基于二叉树的这种性质，计算复杂度从之前的O(N)变为O(logN)，运算速度指数级提升。<br>而<strong>Cost函数为对概率连乘取log对数</strong>，如下：<br> <img src="/img/wpic12.jpeg" width="250" alt="图片名称" align="center"><br> <img src="/img/wpic13.jpeg" width="250" alt="图片名称" align="center"></p>
+<p>训练目标是最大化Cost函数，采用的算法是梯度上升。其实跟梯度下降非常类似，cost对参数向量取偏导数得到梯度，参数更新时候再加上该梯度乘learning rate就可以了，不过此处涉及两个参数向量，一个是权重theta，另一个就是词向量。此处直接复制Hankcs.com中的推导结果，两个参数更新方式如下：<br> <img src="/img/wpic10.jpeg" width="300" alt="图片名称" align="center"><br> <img src="/img/wpic11.jpeg" width="300" alt="图片名称" align="center"><br>如此便完成了一次完整的训练周期！<br> <font color="red"><strong>更简单直白的总结是：扁平的softmax在计算P(y=j)，需要计算整个词表每个词的概率，而现在分层的softmax只需要计算一条路径上节点的概率值，便可以得到P(y=j)，接着进行梯度上升，不断使概率P变大</strong></font></p>
+<hr>
+<h3 id="Negative-sampling"><a href="#Negative-sampling" class="headerlink" title="Negative sampling"></a>Negative sampling</h3><h4 id="定义："><a href="#定义：" class="headerlink" title="定义："></a>定义：</h4><p>由于Hierarchical Softmax对于频率较低的词汇，依然需要花费较长的步骤才能找到该词。所以作者引入了另一种算法：<strong>Negative sampling</strong>(sampled softmax)，即：为了加快训练速度，在loss计算时，采用负采样方式，并不是求整个vocab的softmax概率，而是随机采样的W个。这样每次训练中就可以更新这少量的W个参数，其他参数被冻结(需要注意总的参数数量不变，只是每次参与迭代计算的数量锐减)。<br><strong><code>需要注意：</code></strong>在Test阶段，要到整个词表中softmax(此时词向量本身及其权重已经被计算了出来)，来确定下一次选中的是哪些词汇(可接beam search)。若是哈夫曼树，Test时会找出一个确定的词<br>我们原来模型每次运行，假设词向量维度：300；vocab大小：1W，之前每次迭代需要跟新300W参数。现在负采样个数N=5。只要跟新300×(1+5)=1800，参数减少了非常多，训练速度大幅加快。</p>
+<h4 id="采样方法："><a href="#采样方法：" class="headerlink" title="采样方法："></a>采样方法：</h4><p>那怎样确定负采样个数N呢？其实就是随机抽取，但要考虑词频的影响，词频越高，越容易被抽出来。具体到word2vec中，作者是这样实现的：采用一个大小为M的table(M&gt;&gt;vocab size，一般取10^8)。分为M份，每份代表一个词，如图所示；<br> <img src="/img/wpic14.jpeg" width="450" alt="图片名称" align="center"><br>但具体怎么确定哪一份对应什么词呢？作者采用了如下的公示计算每个词的份额(对应在tabel上占据的长度)<br> <img src="/img/wpic15.jpeg" width="270" alt="图片名称" align="center"><br>在paper中提到0.75这个超参是试出来的，实现的话就是直接1～M取一个随机数，从中提取对应的项便可以了。</p>
+<hr>
+<h2 id="Ref："><a href="#Ref：" class="headerlink" title="Ref："></a>Ref：</h2><p><a href="http://www.hankcs.com/nlp/word2vec.html" target="_blank" rel="noopener"><font color="#9999FF">Blog：Word2vec原理推导与代码分析</font></a><br><a href="https://www.zybuluo.com/Dounm/note/591752#71-paragraph2vec" target="_blank" rel="noopener"><font color="#9999FF">Blog：Word2vec-知其然知其所以然</font></a><br><a href="http://wulc.me/" target="_blank" rel="noopener"><font color="#9999FF">Blog：中文维基百科语料库词向量的训练</font></a><br><a href="http://blog.csdn.net/layumi1993/article/details/72868399#t1" target="_blank" rel="noopener"><font color="#9999FF">Blog：Word2vec教程-Negative Sampling</font></a><br>《word2vec中的数学原理详解》<br>《Tensorflow实战》</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/17/tmux/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="祥吉">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Deep Coding">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/17/tmux/" itemprop="url">tmux——轻松实现进程后台托管!</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-17T23:04:15+08:00">
+                2018-01-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/01/17/tmux/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/01/17/tmux/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h4><p>远程连接服务器跑模型时，经常由于客户端IP地址发生变化，或者关闭Terminal窗口，而导致服务器Session终端，这里介绍一种<strong>可随时从Session中抽离，又能在需要时候重新回到该Session的方法</strong></p>
+<p><font color="blue"> 以下程序均为在服务器端操作，或者SSH远程服务器操作 </font></p>
+<h5 id="1、服务器端安装tmux"><a href="#1、服务器端安装tmux" class="headerlink" title="1、服务器端安装tmux"></a>1、服务器端安装tmux</h5><pre><code class="bash">$ apt-get install tmux
+</code></pre>
+<h5 id="2、Terminal窗口直接键入tmux，进入一个session，左下角显示该session进程号"><a href="#2、Terminal窗口直接键入tmux，进入一个session，左下角显示该session进程号" class="headerlink" title="2、Terminal窗口直接键入tmux，进入一个session，左下角显示该session进程号"></a>2、Terminal窗口直接键入tmux，进入一个session，左下角显示该session进程号</h5><pre><code class="bash">$ tmux
+</code></pre>
+<p>现在便可随时关闭Terminal，Session便可以在后台安静稳定地运行！需要恢复该Session时：</p>
+<pre><code class="bash">$ tmux attach -t 0
+</code></pre>
+<h5 id="3、杀掉该session"><a href="#3、杀掉该session" class="headerlink" title="3、杀掉该session"></a>3、杀掉该session</h5><p>在某个tmux窗口内，输入exit便可以kill并退出</p>
+<pre><code class="bash">$ <span class="built_in">exit</span>
+</code></pre>
+<hr>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/16/Conda-md/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="祥吉">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://ws1.sinaimg.cn/large/006tNc79ly1fnu0obfmlbj30sg0iyabk.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Deep Coding">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/16/Conda-md/" itemprop="url">virtualenv切换python2/3环境！🐶</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-16T15:52:19+08:00">
+                2018-01-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/01/16/Conda-md/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/01/16/Conda-md/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h3><p>Python的全局锁有时候非常烦。很多人电脑里都会同时装python2、python3。但在linux安装各种包时，长期混乱地pip、pip3随便安装，时间久了便造成安装环境混乱，导致<font color="blue">“明明安装了某种包，在使用时却未发现该包的错误” </font>，而virtualenv就是用来为一个应用创建“隔离”的Python运行环境</p>
+<h5 id="virtualenv安装"><a href="#virtualenv安装" class="headerlink" title="virtualenv安装"></a>virtualenv安装</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 install virtualenv</span><br></pre></td></tr></table></figure>
+<h5 id="进入到独立的某个项目目录中"><a href="#进入到独立的某个项目目录中" class="headerlink" title="进入到独立的某个项目目录中"></a>进入到独立的某个项目目录中</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> Test</span><br><span class="line">virtualenv venv --python=python3 <span class="comment"># 将系统的python3环境单独复制一份过来</span></span><br><span class="line"><span class="built_in">source</span> venv/bin/activate <span class="comment"># 激活该venv环境，修改相关环境变量，让命令python和pip均指向当前的virtualenv环境</span></span><br></pre></td></tr></table></figure>
+<p>注意到命令提示符变了，有个<code>(venv)</code>前缀，表示当前环境是一个名为<code>venv</code>的Python环境</p>
+<h5 id="正常安装其他包便可以了"><a href="#正常安装其他包便可以了" class="headerlink" title="正常安装其他包便可以了"></a>正常安装其他包便可以了</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pip install numpy</span><br><span class="line">deactivate <span class="comment"># 退出前面建立的venv到系统目录下</span></span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/14/Knowledge/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -596,7 +1631,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">42</span>
+                  <span class="site-state-item-count">49</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -609,7 +1644,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -694,7 +1729,7 @@
  
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共34.9k字</span>
+  <span class="post-count">博客全站共37.1k字</span>
 </div>
 
 <div class="powered-by">
