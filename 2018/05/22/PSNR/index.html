@@ -94,7 +94,7 @@
 <meta property="og:site_name" content="Deep Coding">
 <meta property="og:description" content="PSNR计算psnr是“Peak Signal to Noise Ratio”的缩写，即峰值信噪比，是一种评价图像的客观标准，衡量原图像与被处理图像之间的均方误差，单位db。两个图像之间PSNR值越大，则越相似。普遍基准为30dB，30dB以下的图像劣化较为明显。公式如下：$$PSNR=10\times log_{10}(\frac{(2^{n}-1)^{2}}{MSE})$$ n为图像位数(注意">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-05-22T08:45:41.299Z">
+<meta property="og:updated_time" content="2018-06-07T06:58:43.907Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="图像质量评估算法PSNR、MS-SSIM">
 <meta name="twitter:description" content="PSNR计算psnr是“Peak Signal to Noise Ratio”的缩写，即峰值信噪比，是一种评价图像的客观标准，衡量原图像与被处理图像之间的均方误差，单位db。两个图像之间PSNR值越大，则越相似。普遍基准为30dB，30dB以下的图像劣化较为明显。公式如下：$$PSNR=10\times log_{10}(\frac{(2^{n}-1)^{2}}{MSE})$$ n为图像位数(注意">
@@ -337,7 +337,8 @@
       
 
       
-        <h3 id="PSNR计算"><a href="#PSNR计算" class="headerlink" title="PSNR计算"></a>PSNR计算</h3><p>psnr是“Peak Signal to Noise Ratio”的缩写，即峰值信噪比，是一种评价图像的客观标准，衡量原图像与被处理图像之间的均方误差，单位db。两个图像之间PSNR值越大，则越相似。普遍基准为30dB，30dB以下的图像劣化较为明显。公式如下：$$PSNR=10\times log_{10}(\frac{(2^{n}-1)^{2}}{MSE})$$ n为图像位数(注意即使为RGB三通道图像：n==8)，MSE是原图像与处理图像之间的均方误差。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">class PsnrEstimator(object):</span><br><span class="line">    <span class="string">""</span><span class="string">"psnr评估器</span></span><br><span class="line"><span class="string">    "</span><span class="string">""</span></span><br><span class="line">    def __init__(self, session):</span><br><span class="line">        self.n_samples = 0</span><br><span class="line">        self.psnr, self.se = list(), list()</span><br><span class="line">        self.session = session</span><br><span class="line">        self.tf_origin_image = tf.placeholder(tf.float32, config.IMAGE_SHAPE, <span class="string">'origin_image'</span>)</span><br><span class="line">        self.tf_recon_image = tf.placeholder(tf.float32, config.IMAGE_SHAPE, <span class="string">'recon_image'</span>)</span><br><span class="line"></span><br><span class="line">    def func(self):</span><br><span class="line">        se = tf.square(self.tf_origin_image - self.tf_recon_image)</span><br><span class="line">        mse = tf.reduce_mean(se) <span class="comment"># 每个通道分别计算MSE取平均</span></span><br><span class="line">        psnr = tf.cond(tf.equal(mse, 0),</span><br><span class="line">                       lambda: tf.constant(100, dtype=tf.float32),</span><br><span class="line">                       lambda: 10 * (tf.log(255 * 255 / mse) / np.log(10))) <span class="comment"># 换底公式</span></span><br><span class="line">        <span class="built_in">return</span> se, psnr</span><br></pre></td></tr></table></figure></p>
+        <h3 id="PSNR计算"><a href="#PSNR计算" class="headerlink" title="PSNR计算"></a>PSNR计算</h3><p>psnr是“Peak Signal to Noise Ratio”的缩写，即峰值信噪比，是一种评价图像的客观标准，衡量原图像与被处理图像之间的均方误差，单位db。两个图像之间PSNR值越大，则越相似。普遍基准为30dB，30dB以下的图像劣化较为明显。公式如下：$$PSNR=10\times log_{10}(\frac{(2^{n}-1)^{2}}{MSE})$$ n为图像位数(注意即使为RGB三通道图像：n==8)，MSE是原图像与测试图像所有像素之间的误差平方和，再取平均（如下代码所示）<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">class PsnrEstimator(object):</span><br><span class="line">    <span class="string">""</span><span class="string">"psnr评估器</span></span><br><span class="line"><span class="string">    "</span><span class="string">""</span></span><br><span class="line">    def func(self):</span><br><span class="line">        se = tf.square(self.tf_origin_image - self.tf_recon_image)</span><br><span class="line">        mse = tf.reduce_mean(se) <span class="comment"># 每个通道分别计算MSE取平均</span></span><br><span class="line">        psnr = tf.cond(tf.equal(mse, 0),</span><br><span class="line">                       lambda: tf.constant(100, dtype=tf.float32),</span><br><span class="line">                       lambda: 10 * (tf.log(255 * 255 / mse) / np.log(10))) <span class="comment"># 换底公式</span></span><br><span class="line">        <span class="built_in">return</span> se, psnr</span><br></pre></td></tr></table></figure></p>
+<p>另外需要注意的一点是，假如计算图像残差的PSNR，因为本身残差图像像素值就很小，所以即使训练的图像与原始残差PSNR值较高，但差距依然可能很大。所以对于残差图像的PSNR，要求要更加严格。</p>
 
       
     </div>
@@ -582,7 +583,7 @@
  
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共37.1k字</span>
+  <span class="post-count">博客全站共37.2k字</span>
 </div>
 
 <div class="powered-by">
